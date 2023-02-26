@@ -70,7 +70,7 @@ namespace WooAsset
         private static FileCheckType GetFileCheckType() => setting.GetFileCheckType();
         private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(buildTarget, bundleName);
         private static string GetVersionUrl() => setting.GetVersionUrl(buildTarget);
-        private static IAssetStraemEncrypt GetEncrypt() => setting.GetEncrypt();
+        private static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
 
 

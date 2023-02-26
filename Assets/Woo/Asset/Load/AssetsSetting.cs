@@ -21,7 +21,7 @@ namespace WooAsset
         public virtual FileCheckType GetFileCheckType() { return FileCheckType.MD5; }
         public virtual int GetWebRequestTimeout() { return 30; }
 
-        public virtual IAssetStraemEncrypt GetEncrypt() { return new DefaultAssetStraemEncrypt(); }
+        public virtual IAssetStreamEncrypt GetEncrypt() { return new DefaultAssetStreamEncrypt(); }
         public virtual bool GetAutoUnloadBundle() { return true; }
 
     }

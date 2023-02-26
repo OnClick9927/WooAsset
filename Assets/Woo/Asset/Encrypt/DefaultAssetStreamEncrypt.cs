@@ -2,7 +2,7 @@
 
 namespace WooAsset
 {
-    public class DefaultAssetStraemEncrypt : IAssetStraemEncrypt
+    public class DefaultAssetStreamEncrypt : IAssetStreamEncrypt
     {
         public byte[] DeCode(string bundleName, byte[] buffer)
         {

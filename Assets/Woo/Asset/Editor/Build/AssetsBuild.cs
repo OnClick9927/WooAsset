@@ -120,7 +120,7 @@ namespace WooAsset
         static void Encrypt(string outputPath, string[] bundles)
         {
             Type type = setting.GetStreamEncryptType();
-            IAssetStraemEncrypt en = Activator.CreateInstance(type) as IAssetStraemEncrypt;
+            IAssetStreamEncrypt en = Activator.CreateInstance(type) as IAssetStreamEncrypt;
             foreach (var abPath in bundles)
             {
                 string filepath = AssetsInternal.CombinePath(outputPath, abPath);

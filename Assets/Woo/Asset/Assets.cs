@@ -37,9 +37,9 @@ namespace WooAsset
         }
 
 
-        public static void CopyDLCFromSteam()
+        public static CopyBundleOperation CopyDLCFromSteam()
         {
-            AssetsInternal.CopyDLCFromSteam();
+            return AssetsInternal.CopyDLCFromSteam();
         }
 
 

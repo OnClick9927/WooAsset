@@ -64,7 +64,7 @@ namespace WooAsset
         [SerializeField] public List<string> buildPaths = new List<string>();
         private void OnEnable()
         {
-            encrypt.baseType = typeof(IAssetStraemEncrypt);
+            encrypt.baseType = typeof(IAssetStreamEncrypt);
             buildGroup.baseType = typeof(ICollectBundle);
             buildGroup.Enable();
             encrypt.Enable();
