@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a73d416caf26d4ea61f26e136fb8d0, type: 3}
+  m_Name: manifest
+  m_EditorClassIdentifier: 
+  assets:
+  - path: Assets/Woo/__Example/New Scene.unity
+    bundleName: 9bf989050bb23b71533d7fb98345c672
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/New Scene2.unity
+    bundleName: 154ab6f43c219effeea4c16e1081e9cf
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/shadervariants.shadervariants
+    bundleName: 5fda24ef2d4f2ac4db845d58358f5f94
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/New Folder/Cube.prefab
+    bundleName: 2009838c42236b14064ee9cabf504103
+    tag: 
+    dps:
+    - Assets/Woo/__Example/New Folder/New Material.mat
+  - path: Assets/Woo/__Example/New Folder/New Material.mat
+    bundleName: b4a2db69758710956c4b4bf0df3a52e7
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/px.spriteatlas
+    bundleName: 8eb77909ef08e086ebbf8ddc1d8ccc99
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/px/3.png
+    bundleName: 1c494ca90c6a5d5edad848c19cf6f6eb
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/px/2.png
+    bundleName: 1c494ca90c6a5d5edad848c19cf6f6eb
+    tag: 
+    dps: []
+  - path: Assets/Woo/__Example/px/1.png
+    bundleName: 1c494ca90c6a5d5edad848c19cf6f6eb
+    tag: 
+    dps: []

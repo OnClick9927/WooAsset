@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe8120c32a4bcf4a84413f3cad2eda6, type: 3}
+  m_Name: AssetsToolSetting
+  m_EditorClassIdentifier: 
+  fastMode: 0
+  shaderVariantDirectory: Assets/Woo/__Example
+  atlasPaths:
+  - Assets/Woo/__Example
+  packSetting:
+    blockOffset: 1
+    enableRotation: 0
+    enableTightPacking: 0
+    padding: 2
+  textureSetting:
+    readable: 0
+    generateMipMaps: 0
+    sRGB: 1
+    filterMode: 1
+    anisoLevel: 1
+  PlatformSetting:
+    m_Name: DefaultTexturePlatform
+    m_Overridden: 0
+    m_MaxTextureSize: 2048
+    m_ResizeAlgorithm: 0
+    m_TextureFormat: -1
+    m_TextureCompression: 1
+    m_CompressionQuality: 50
+    m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    m_CrunchedCompression: 1
+    m_AllowsAlphaSplitting: 0
+    m_AndroidETC2FallbackOverride: 0

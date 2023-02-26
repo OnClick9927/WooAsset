@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e032500462931bd4b862324ca75e46f1, type: 3}
+  m_Name: AssetsBuildSetting
+  m_EditorClassIdentifier: 
+  buildGroup:
+    types:
+    - WooAsset.SimpleCollectBundle
+    - WooAsset.SoBigCollectBundle
+    - WooAsset.AssetsBuild+DefaultCollectBundle
+    shortTypes:
+    - SimpleCollectBundle
+    - SoBigCollectBundle
+    - DefaultCollectBundle
+    typeIndex: 2
+  encrypt:
+    types:
+    - WooAsset.DefaultAssetStraemEncrypt
+    - WooAsset.NoneAssetStraemEncrypt
+    shortTypes:
+    - DefaultAssetStraemEncrypt
+    - NoneAssetStraemEncrypt
+    typeIndex: 0
+  tags: []
+  version: 0.0.1
+  bundleSize: 8388608
+  forceRebuild: 0
+  IgnoreTypeTreeChanges: 1
+  ignoreFileEtend:
+  - .cs
+  - .meta
+  buildPaths:
+  - Assets/Woo/__Example
