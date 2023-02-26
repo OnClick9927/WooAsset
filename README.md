@@ -55,16 +55,17 @@
   | tags          | 资源的标记，和 bundle group 混合使用 |
   | bundle group  | 用来把所有资源分组的脚本             |
   | encrypt       | ab 的加密方式                        |
-  ![](../WooAsset/Pic/1.jpg)
+  ![](https://github.com/OnClick9927/WooAsset/Pic/1.jpg)
 * 3 点击 tools/bundle/build
 ## 可选项
 * 收集shader变体/打图集/编辑器快速加载
-  ![](../WooAsset/Pic/2.png)
+  ![](https://github.com/OnClick9927/WooAsset/Pic/2.png)
 * 关于 tag
   * 打包参数里面 tags 列举所有的tag
   * 执行 tools/preview/ just collect assets
   * 在右边的串口选好想要设置的资源
   * 鼠标右键 即可
+  * 在运行时 可以根据tag 获取一组资源，同时加载与卸载
 * 关于分组
      * 写一个继承于ICollectBundle的类
      * 打包参数里面 bundle group 选中 它
@@ -78,6 +79,6 @@
   * Assets    需要打包的所有资源的预览
   * Bundles   打爆出来的bundle 预览
   * AssetLife 资源运行时的使用情况
-  ![](../WooAsset/Pic/3.png)
+  ![](https://github.com/OnClick9927/WooAsset/Pic/3.png)
 ### 我们（QQ 782290296）
 ### 欢迎加入我们一起交流
