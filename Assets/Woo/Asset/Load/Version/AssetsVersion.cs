@@ -6,6 +6,7 @@ namespace WooAsset
     [System.Serializable]
     public class AssetsVersion
     {
+        public const string versionName = "#########version";
         [System.Serializable]
         public class VersionData
         {

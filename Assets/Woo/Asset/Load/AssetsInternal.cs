@@ -157,7 +157,7 @@ namespace WooAsset
             Debug.LogError("Assets : " + err);
         }
 
-        public static string GetMd5(string str)
+        public static string GetNameHash(string str)
         {
             MD5CryptoServiceProvider md5CSP = new MD5CryptoServiceProvider();
             byte[] retVal = md5CSP.ComputeHash(Encoding.Default.GetBytes(str));
@@ -168,7 +168,7 @@ namespace WooAsset
             }
             return sb.ToString();
         }
-        public static string GetFileMD5(string path)
+        public static string GetFileHash(string path)
         {
             if (!File.Exists(path))
                 return "";

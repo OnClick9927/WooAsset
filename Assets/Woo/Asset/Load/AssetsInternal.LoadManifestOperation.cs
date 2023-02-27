@@ -31,7 +31,7 @@ namespace WooAsset
                 if (isNormalMode)
                 {
                     string path = AssetManifest.Path;
-                    bundle = await LoadBundleAsync(AssetsInternal.GetMd5(path));
+                    bundle = await LoadBundleAsync(AssetsInternal.GetNameHash(path));
                     op = await bundle.LoadAssetAsync(path, typeof(AssetManifest));
                     manifest = op.asset as AssetManifest;
                 }

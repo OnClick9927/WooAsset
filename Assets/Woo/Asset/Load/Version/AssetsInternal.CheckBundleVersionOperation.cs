@@ -59,7 +59,7 @@ namespace WooAsset
                             if (type == FileCheckType.MD5)
                             {
                                 var md5 = item.md5;
-                                var localMD5 = AssetsInternal.GetFileMD5(localPath);
+                                var localMD5 = AssetsInternal.GetFileHash(localPath);
                                 if (localMD5 != md5)
                                     downLoadOnes.Add(item);
                             }

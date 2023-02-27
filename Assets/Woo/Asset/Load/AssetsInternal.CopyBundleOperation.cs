@@ -29,23 +29,31 @@ namespace WooAsset
             }
             public CopyBundleOperation(string srcPath, string destPath)
             {
-                this.srcPath = srcPath;
-                this.destPath = destPath;
-                DirectoryInfo dir = new DirectoryInfo(srcPath);
-                fileinfos = dir.GetFiles();
-                dirinfos = dir.GetDirectories();
-                Done();
+                if (!Directory.Exists(srcPath))
+                {
+                    this.SetErr($"source directory not exist {srcPath}");
+                    this.InvokeComplete();
+
+                }
+                else
+                {
+                    this.srcPath = srcPath;
+                    this.destPath = destPath;
+                    DirectoryInfo dir = new DirectoryInfo(srcPath);
+                    fileinfos = dir.GetFiles();
+                    dirinfos = dir.GetDirectories();
+                    Done();
+                }
+
 
             }
             private async void Done()
             {
                 if (!Directory.Exists(destPath))
-                {
                     Directory.CreateDirectory(destPath);
-                }
                 foreach (var item in dirinfos)
                 {
-                    string _destpath = CombinePath(destPath,item.Name);
+                    string _destpath = CombinePath(destPath, item.Name);
                     queue.Enqueue(new CopyBundleOperation(item.FullName, _destpath));
                     while (queue.Count > 0)
                     {
@@ -56,19 +64,26 @@ namespace WooAsset
                 foreach (var item in fileinfos)
                 {
                     string _destpath = CombinePath(destPath, item.Name);
-
-                    using (FileStream SourceStream = File.Open(item.FullName, FileMode.Open))
+                    if (File.Exists(_destpath))
                     {
-                        using (FileStream DestinationStream = File.Create(_destpath))
+                        continue;
+                    }
+                    else
+                    {
+                        using (FileStream SourceStream = File.Open(item.FullName, FileMode.Open))
                         {
-                            await SourceStream.CopyToAsync(DestinationStream);
-                            step++;
+                            using (FileStream DestinationStream = File.Create(_destpath))
+                            {
+                                await SourceStream.CopyToAsync(DestinationStream);
+                            }
                         }
                     }
+                    step++;
+
                 }
                 this.InvokeComplete();
             }
         }
     }
-  
+
 }

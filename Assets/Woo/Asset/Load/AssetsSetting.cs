@@ -16,7 +16,7 @@ namespace WooAsset
         }
         public virtual string GetVersionUrl(string buildTarget)
         {
-            return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath(GetBaseUrl(),$"{buildTarget}/version"));
+            return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath(GetBaseUrl(),$"{buildTarget}/{AssetsInternal.GetNameHash(AssetsVersion.versionName)}"));
         }
         public virtual FileCheckType GetFileCheckType() { return FileCheckType.MD5; }
         public virtual int GetWebRequestTimeout() { return 30; }

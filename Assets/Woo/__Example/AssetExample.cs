@@ -27,12 +27,12 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            //var op = await Assets.VersionCheck();
-            //for (int i = 0; i < op.downLoadOnes.Count; i++)
-            //{
-            //    await Assets.DownLoadBundle(op.downLoadOnes[i].bundleName);
-            //}
-            await Assets.CopyDLCFromSteam();
+            var op = await Assets.VersionCheck();
+            for (int i = 0; i < op.downLoadOnes.Count; i++)
+            {
+                await Assets.DownLoadBundle(op.downLoadOnes[i].bundleName);
+            }
+            //await Assets.CopyDLCFromSteam();
             await Assets.InitAsync();
             await Assets.InstantiateAsync("Assets/Woo/__Example/New Folder/Cube.prefab", null);
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Woo/__Example/New Scene2.unity");
