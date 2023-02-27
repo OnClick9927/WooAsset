@@ -153,7 +153,7 @@ namespace WooAsset
                 version.datas.Add(data);
             }
             version.version = version_txt;
-            var v = JsonUtility.ToJson(version, true);
+            var v = JsonUtility.ToJson(version);
             string version_file_name = AssetsInternal.GetNameHash(AssetsVersion.versionName);
             var bytes = en.EnCode(version_file_name, AssetsVersion.encoding.GetBytes(v));
             File.WriteAllBytes(AssetsInternal.CombinePath(outputPath, version_file_name), bytes);
