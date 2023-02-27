@@ -24,11 +24,11 @@ MonoBehaviour:
     typeIndex: 2
   encrypt:
     types:
-    - WooAsset.DefaultAssetStraemEncrypt
-    - WooAsset.NoneAssetStraemEncrypt
+    - WooAsset.DefaultAssetStreamEncrypt
+    - WooAsset.NoneAssetStreamEncrypt
     shortTypes:
-    - DefaultAssetStraemEncrypt
-    - NoneAssetStraemEncrypt
+    - DefaultAssetStreamEncrypt
+    - NoneAssetStreamEncrypt
     typeIndex: 0
   tags: []
   version: 0.0.1

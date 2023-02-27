@@ -85,6 +85,11 @@ namespace WooAsset
             cache.SetPreviewBundles(result);
             cache.Save();
         }
+        public static void ClearCache()
+        {
+            cache.Clear();
+            cache.Save();
+        }
         static List<string> GetAllFilesIncludeList(string directory, List<string> exName, List<string> result)
         {
             DirectoryInfo root = new DirectoryInfo(directory);
@@ -222,14 +227,15 @@ namespace WooAsset
         }
         public static void Build()
         {
-            AssetsBuild.ShaderVariantCollector.Run(() =>
+            AssetsBuild.ShaderVariantCollector.Run(async () =>
             {
-                AssetsBuild.AtlasBuild.Run();
+                await AssetsBuild.AtlasBuild.Run();
                 string outputPath = AssetsBuild.outputPath;
                 BuildAssetBundleOptions option = setting.GetOption();
                 string version_txt = setting.version;
                 CollectInBuildAssets();
-                AssetBundleManifest main = BuildPipeline.BuildAssetBundles(outputPath, CollectMain(CollectBundleGroup()).ConvertAll(x =>
+                FreshPreViewBundles(true);
+                AssetBundleManifest main = BuildPipeline.BuildAssetBundles(outputPath, cache.GetPreviewBundles().ConvertAll(x =>
                 {
                     return new AssetBundleBuild()
                     {

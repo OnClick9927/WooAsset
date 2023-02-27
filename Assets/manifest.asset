@@ -37,7 +37,10 @@ MonoBehaviour:
   - path: Assets/Woo/__Example/px.spriteatlas
     bundleName: 8eb77909ef08e086ebbf8ddc1d8ccc99
     tag: 
-    dps: []
+    dps:
+    - Assets/Woo/__Example/px/2.png
+    - Assets/Woo/__Example/px/3.png
+    - Assets/Woo/__Example/px/1.png
   - path: Assets/Woo/__Example/px/3.png
     bundleName: 1c494ca90c6a5d5edad848c19cf6f6eb
     tag: 

@@ -24,16 +24,27 @@ namespace WooAsset
         private void JustCollectAssets()
         {
             AssetsBuild.CollectInBuildAssets();
-            right.ReLoad();
+            FreshPreview();
         }
         private void PreView(bool md5)
         {
             AssetsBuild.FreshPreViewBundles(md5);
-            right.ReLoad();
+            FreshPreview();
         }
         private void CollectShaderVariant()
         {
             AssetsBuild.ShaderVariantCollector.Run(() => { PreView(false); });
+        }
+        private void FreshPreview()
+        {
+            right.ReLoad();
+
+        }
+        private void ClearPreview()
+        {
+            AssetsBuild.ClearCache();
+            FreshPreview();
+
         }
         private void OnDisable()
         {
@@ -62,16 +73,20 @@ namespace WooAsset
                 if (GUILayout.Button(new GUIContent("Tools"),EditorStyles.toolbarDropDown,GUILayout.Width(100)))
                 {
                     GenericMenu menu = new GenericMenu();
-                    menu.AddItem(new GUIContent("Help/Build Atlas"), false, AssetsBuild.AtlasBuild.Run);
+                    menu.AddItem(new GUIContent("Help/Build Atlas"), false, () => { AssetsBuild.AtlasBuild.Run(); });
                     menu.AddItem(new GUIContent("Help/Collect Shader Variant"), false, CollectShaderVariant);
 
                     menu.AddItem(new GUIContent("Preview/Just Collect Assets"), false, () => { JustCollectAssets(); });
                     menu.AddItem(new GUIContent("Preview/Bundle"), false, () => { PreView(false); });
                     menu.AddItem(new GUIContent("Preview/MD5 Bundle"), false, () => { PreView(true); });
+                    menu.AddItem(new GUIContent("Preview/Clear"), false, () => { ClearPreview(); });
+                    menu.AddItem(new GUIContent("Preview/Fresh"), false, () => { FreshPreview(); });
+
+
 
 
                     menu.AddSeparator("");
-                    menu.AddItem(new GUIContent("Bundle/Build"), false, AssetsBuild.Build);
+                    menu.AddItem(new GUIContent("Bundle/Build"), false, () => { AssetsBuild.Build(); });
                     menu.AddItem(new GUIContent("Bundle/Copy To Steam"), false, AssetsBuild.CopyToStreamPath);
 
                     menu.AddItem(new GUIContent("Output/Open Floder"), false, AssetsBuild.OpenOutputFloder);

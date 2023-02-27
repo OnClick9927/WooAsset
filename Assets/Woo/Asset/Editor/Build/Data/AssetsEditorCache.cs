@@ -5,6 +5,11 @@ namespace WooAsset
 {
     partial class AssetsEditorCache : AssetsScriptableObject
     {
+        public void Clear()
+        {
+            tree.Clear();
+            previewBundles = new List<BundleGroup>();
+        }
 
         [SerializeField] private AssetsTree tree = new AssetsTree();
 

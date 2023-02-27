@@ -63,7 +63,10 @@ MonoBehaviour:
     - _path: Assets/Woo/__Example/px.spriteatlas
       _parentPath: Assets/Woo/__Example
       _type: 12
-      dps: []
+      dps:
+      - Assets/Woo/__Example/px/2.png
+      - Assets/Woo/__Example/px/3.png
+      - Assets/Woo/__Example/px/1.png
     - _path: Assets/Woo/__Example/shadervariants.shadervariants
       _parentPath: Assets/Woo/__Example
       _type: 4
@@ -89,8 +92,8 @@ MonoBehaviour:
     - Assets/Woo/__Example/shadervariants.shadervariants
     lens:
     - path: Assets/Woo/__Example/shadervariants.shadervariants
-      len: 3591
-    length: 3591
+      len: 4012
+    length: 4012
   - name: 2009838c42236b14064ee9cabf504103
     assets:
     - Assets/Woo/__Example/New Folder/Cube.prefab
@@ -130,7 +133,7 @@ MonoBehaviour:
     - Assets/manifest.asset
     lens:
     - path: Assets/manifest.asset
-      len: 1401
-    length: 1401
+      len: 1638
+    length: 1638
   tags:
     assets: []
