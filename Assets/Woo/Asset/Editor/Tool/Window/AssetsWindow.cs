@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -31,9 +32,10 @@ namespace WooAsset
             AssetsBuild.FreshPreViewBundles(md5);
             FreshPreview();
         }
-        private void CollectShaderVariant()
+        private async void CollectShaderVariant()
         {
-            AssetsBuild.ShaderVariantCollector.Run(() => { PreView(false); });
+            await AssetsBuild.ShaderVariantCollector.Run();
+            PreView(false);
         }
         private void FreshPreview()
         {
@@ -70,7 +72,7 @@ namespace WooAsset
             GUILayout.BeginArea(position);
             {
                 GUILayout.BeginHorizontal(EditorStyles.toolbar);
-                if (GUILayout.Button(new GUIContent("Tools"),EditorStyles.toolbarDropDown,GUILayout.Width(100)))
+                if (GUILayout.Button(new GUIContent("Tools"), EditorStyles.toolbarDropDown, GUILayout.Width(100)))
                 {
                     GenericMenu menu = new GenericMenu();
                     menu.AddItem(new GUIContent("Help/Build Atlas"), false, () => { AssetsBuild.AtlasBuild.Run(); });
@@ -94,7 +96,7 @@ namespace WooAsset
                     menu.DropDown(GUILayoutUtility.GetLastRect());
                 }
                 GUILayout.FlexibleSpace();
-                right.treeType = (WindowRight.TreeType)GUILayout.Toolbar((int)right.treeType, System.Enum.GetNames(typeof(WindowRight.TreeType)),EditorStyles.toolbarButton,GUILayout.Width(300));
+                right.treeType = (WindowRight.TreeType)GUILayout.Toolbar((int)right.treeType, System.Enum.GetNames(typeof(WindowRight.TreeType)), EditorStyles.toolbarButton, GUILayout.Width(300));
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndArea();
