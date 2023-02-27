@@ -226,7 +226,7 @@ namespace WooAsset
         {
             return setting.SetStreamEncryptType(type);
         }
-        public async static Task Build()
+        public async static void Build()
         {
             await AssetsBuild.ShaderVariantCollector.Run();
             await AssetsBuild.AtlasBuild.Run();
