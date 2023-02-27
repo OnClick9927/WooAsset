@@ -73,49 +73,49 @@ MonoBehaviour:
       dps: []
     singles: []
   previewBundles:
-  - name: Assets/Woo/__Example/New Scene
+  - name: 9bf989050bb23b71533d7fb98345c672
     assets:
     - Assets/Woo/__Example/New Scene.unity
     lens:
     - path: Assets/Woo/__Example/New Scene.unity
       len: 16895
     length: 16895
-  - name: Assets/Woo/__Example/New Scene2
+  - name: 154ab6f43c219effeea4c16e1081e9cf
     assets:
     - Assets/Woo/__Example/New Scene2.unity
     lens:
     - path: Assets/Woo/__Example/New Scene2.unity
       len: 14043
     length: 14043
-  - name: Assets/Woo/__Example_0
+  - name: 5fda24ef2d4f2ac4db845d58358f5f94
     assets:
     - Assets/Woo/__Example/shadervariants.shadervariants
     lens:
     - path: Assets/Woo/__Example/shadervariants.shadervariants
       len: 4012
     length: 4012
-  - name: Assets/Woo/__Example/New Folder/Cube
+  - name: 2009838c42236b14064ee9cabf504103
     assets:
     - Assets/Woo/__Example/New Folder/Cube.prefab
     lens:
     - path: Assets/Woo/__Example/New Folder/Cube.prefab
       len: 2747
     length: 2747
-  - name: Assets/Woo/__Example/New Folder_0
+  - name: b4a2db69758710956c4b4bf0df3a52e7
     assets:
     - Assets/Woo/__Example/New Folder/New Material.mat
     lens:
     - path: Assets/Woo/__Example/New Folder/New Material.mat
       len: 2118
     length: 2118
-  - name: Assets/Woo/__Example/px
+  - name: 8eb77909ef08e086ebbf8ddc1d8ccc99
     assets:
     - Assets/Woo/__Example/px.spriteatlas
     lens:
     - path: Assets/Woo/__Example/px.spriteatlas
       len: 1628
     length: 1628
-  - name: Assets/Woo/__Example/px_0
+  - name: 1c494ca90c6a5d5edad848c19cf6f6eb
     assets:
     - Assets/Woo/__Example/px/3.png
     - Assets/Woo/__Example/px/2.png
@@ -128,5 +128,12 @@ MonoBehaviour:
     - path: Assets/Woo/__Example/px/1.png
       len: 407
     length: 1296
+  - name: de6cf5d38be42ed1562f03a511e3e844
+    assets:
+    - Assets/manifest.asset
+    lens:
+    - path: Assets/manifest.asset
+      len: 1638
+    length: 1638
   tags:
     assets: []

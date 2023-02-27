@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using Application = UnityEngine.Application;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WooAsset
 {
@@ -226,28 +225,30 @@ namespace WooAsset
         {
             return setting.SetStreamEncryptType(type);
         }
-        public async static Task Build()
+        public static void Build()
         {
-            await AssetsBuild.ShaderVariantCollector.Run();
-            await AssetsBuild.AtlasBuild.Run();
-            string outputPath = AssetsBuild.outputPath;
-            BuildAssetBundleOptions option = setting.GetOption();
-            string version_txt = setting.version;
-            CollectInBuildAssets();
-            FreshPreViewBundles(true);
-            AssetBundleManifest main = BuildPipeline.BuildAssetBundles(outputPath, cache.GetPreviewBundles().ConvertAll(x =>
+            AssetsBuild.ShaderVariantCollector.Run(async () =>
             {
-                return new AssetBundleBuild()
+                await AssetsBuild.AtlasBuild.Run();
+                string outputPath = AssetsBuild.outputPath;
+                BuildAssetBundleOptions option = setting.GetOption();
+                string version_txt = setting.version;
+                CollectInBuildAssets();
+                FreshPreViewBundles(true);
+                AssetBundleManifest main = BuildPipeline.BuildAssetBundles(outputPath, cache.GetPreviewBundles().ConvertAll(x =>
                 {
-                    assetBundleName = x.name,
-                    assetNames = x.assets.ToArray()
-                };
-            }).ToArray(), option, EditorUserBuildSettings.activeBuildTarget);
-            var bundles = main.GetAllAssetBundles();
-            RemoveUselessFiles(outputPath, bundles);
-            IAssetStreamEncrypt en = Activator.CreateInstance(setting.GetStreamEncryptType()) as IAssetStreamEncrypt;
-            Encrypt(en, outputPath, bundles);
-            BuildVersion(en, outputPath, version_txt, bundles);
+                    return new AssetBundleBuild()
+                    {
+                        assetBundleName = x.name,
+                        assetNames = x.assets.ToArray()
+                    };
+                }).ToArray(), option, EditorUserBuildSettings.activeBuildTarget);
+                var bundles = main.GetAllAssetBundles();
+                RemoveUselessFiles(outputPath, bundles);
+                IAssetStreamEncrypt en = Activator.CreateInstance(setting.GetStreamEncryptType()) as IAssetStreamEncrypt;
+                Encrypt(en, outputPath, bundles);
+                BuildVersion(en, outputPath, version_txt, bundles);
+            });
 
         }
 

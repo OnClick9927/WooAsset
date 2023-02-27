@@ -7,7 +7,6 @@ using System.Linq;
 using System.Diagnostics;
 using UnityEditor.SceneManagement;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace WooAsset
 {
@@ -64,75 +63,113 @@ namespace WooAsset
             private enum ESteps
             {
                 None,
-                Run
+                Prepare,
+                CollectAllMaterial,
+                CollectVariants,
+                CollectSleeping,
+                WaitingDone,
             }
 
-            private const int WaitMilliseconds = 1000;
-            private const int SleepMilliseconds = 100;
+            private const float WaitMilliseconds = 1000f;
+            private const float SleepMilliseconds = 100f;
             private static string _savePath;
             private static List<string> _buildPaths;
 
             private static int _processMaxNum;
 
             private static ESteps _steps = ESteps.None;
+            private static Stopwatch _elapsedTime;
             private static List<string> _allMaterials;
             private static GameObject root;
+            private static Action _call_back;
             static UnityEngine.SceneManagement.Scene active;
 
 
             /// <summary>
             /// 开始收集
             /// </summary>
-            public static async Task Run()
+            public static void Run(Action call_back)
             {
                 if (_steps != ESteps.None) return;
                 _savePath = tool.shaderVariantDirectory;
                 if (!Directory.Exists(_savePath)) return;
                 _savePath = AssetsInternal.ToRegularPath(AssetsInternal.CombinePath(_savePath, "shadervariants.shadervariants"));
                 _buildPaths = setting.buildPaths;
+                _call_back = call_back;
                 _processMaxNum = int.MaxValue;
                 AssetDatabase.DeleteAsset(_savePath);
+
+
                 // 聚焦到游戏窗口
                 ShaderVariantCollectionHelper.FocusUnityGameWindow();
                 // 创建临时测试场景
                 active = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
-                _steps = ESteps.Run;
-                await Prepare();
+                _steps = ESteps.Prepare;
+                EditorApplication.update += EditorUpdate;
             }
 
-            private static async Task Prepare()
-            {
-                ShaderVariantCollectionHelper.ClearCurrentShaderVariantCollection();
-                await Task.Delay(SleepMilliseconds);
-                _allMaterials = GetAllMaterials();
-                await Task.Delay(SleepMilliseconds);
-                await CollectVariants();
-            }
 
-            private static async Task CollectVariants()
+
+
+            private static void EditorUpdate()
             {
-                int count = Mathf.Min(_processMaxNum, _allMaterials.Count);
-                List<string> range = _allMaterials.GetRange(0, count);
-                _allMaterials.RemoveRange(0, count);
-                CollectVariants(range);
-                if (_allMaterials.Count > 0)
+                if (_steps == ESteps.None) return;
+
+                if (_steps == ESteps.Prepare)
                 {
-                    await Task.Delay(SleepMilliseconds);
-                    await CollectVariants();
+                    ShaderVariantCollectionHelper.ClearCurrentShaderVariantCollection();
+                    _steps = ESteps.CollectAllMaterial;
+                    return; //等待一帧
                 }
-                else
+
+                if (_steps == ESteps.CollectAllMaterial)
                 {
-                    await Task.Delay(WaitMilliseconds);
+                    _allMaterials = GetAllMaterials();
+                    _steps = ESteps.CollectVariants;
+                    return; //等待一帧
+                }
 
-                    // 保存结果并创建清单
-                    ShaderVariantCollectionHelper.SaveCurrentShaderVariantCollection(_savePath);
-                    GameObject.DestroyImmediate(root);
+                if (_steps == ESteps.CollectVariants)
+                {
+                    int count = Mathf.Min(_processMaxNum, _allMaterials.Count);
+                    List<string> range = _allMaterials.GetRange(0, count);
+                    _allMaterials.RemoveRange(0, count);
+                    CollectVariants(range);
+                    _elapsedTime = Stopwatch.StartNew();
+                    if (_allMaterials.Count > 0)
+                        _steps = ESteps.CollectSleeping;
+                    else
+                        _steps = ESteps.WaitingDone;
 
-                    // 尝试释放编辑器加载的资源
-                    EditorUtility.UnloadUnusedAssetsImmediate(true);
-                    AssetDatabase.Refresh();
-                    EditorSceneManager.CloseScene(active, true);
-                    _steps = ESteps.None;
+                }
+
+                if (_steps == ESteps.CollectSleeping)
+                {
+                    if (_elapsedTime.ElapsedMilliseconds > SleepMilliseconds)
+                    {
+                        _elapsedTime.Stop();
+                        _steps = ESteps.CollectVariants;
+                    }
+                }
+
+                if (_steps == ESteps.WaitingDone)
+                {
+                    // 注意：一定要延迟保存才会起效
+                    if (_elapsedTime.ElapsedMilliseconds > WaitMilliseconds)
+                    {
+                        _elapsedTime.Stop();
+                        // 保存结果并创建清单
+                        ShaderVariantCollectionHelper.SaveCurrentShaderVariantCollection(_savePath);
+                        GameObject.DestroyImmediate(root);
+
+                        // 尝试释放编辑器加载的资源
+                        EditorUtility.UnloadUnusedAssetsImmediate(true);
+                        AssetDatabase.Refresh();
+                        EditorSceneManager.CloseScene(active, true);
+                        _call_back?.Invoke();
+                        EditorApplication.update -= EditorUpdate;
+                        _steps = ESteps.None;
+                    }
                 }
             }
             private static List<string> GetAllMaterials()
