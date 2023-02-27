@@ -42,8 +42,8 @@ namespace WooAsset
                 else
                 {
                     unUseBundles = new List<string>(AssetsInternal.GetLocalBundles());
-                    var txt = downloader.text;
-                    AssetsVersion remote = JsonUtility.FromJson<AssetsVersion>(txt);
+                    var bytes = GetEncrypt().DeCode(AssetsInternal.GetNameHash(AssetsVersion.versionName), downloader.data);
+                    AssetsVersion remote = JsonUtility.FromJson<AssetsVersion>(AssetsVersion.encoding.GetString(bytes));
                     for (int i = 0; i < remote.datas.Count; i++)
                     {
                         _progress = i / (float)remote.datas.Count;

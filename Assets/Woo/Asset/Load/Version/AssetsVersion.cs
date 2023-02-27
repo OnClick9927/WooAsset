@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Text;
 
 namespace WooAsset
 {
@@ -7,6 +8,7 @@ namespace WooAsset
     public class AssetsVersion
     {
         public const string versionName = "#########version";
+        public static Encoding encoding = Encoding.Default;
         [System.Serializable]
         public class VersionData
         {
