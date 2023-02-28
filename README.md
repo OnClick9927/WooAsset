@@ -7,20 +7,20 @@
  * 1  纯粹的C#空包，   （注意：本地不会有任何ab）
  * 2 发布 正常流程包       （比模式1 多一个版本检查）
  * 3 发布 游戏前期的体验包  (把资源拷贝到stream)
-
-| 模式/流程          | 编辑器模拟加载 | 纯粹的C#空包 | 发布 正常流程包 | 发布 游戏前期的体验包 |
-| ------------------ | :------------: | :----------: | :-------------: | :-------------------: |
-| 打包流程           |
-| 勾选FastMode       |       ✔        |              |                 |                       |
-| 打包资源           |                |      ✔       |        ✔        |           ✔           |
-| 拷贝资源到stream   |                |              |                 |           ✔           |
-| 上传资源到服务器   |                |      ✔       |        ✔        |                       |
-| 运行时加载流程     |
-| 设置AssetsSetting  |       ✔        |      ✔       |        ✔        |           ✔           |
-| 拷贝资源到沙盒路径 |                |              |                 |           ✔           |
-| 版本检查           |                |              |        ✔        |                       |
-| 初始化             |       ✔        |      ✔       |        ✔        |           ✔           |
-| 正常加载           |       ✔        |      ✔       |        ✔        |           ✔           |
+<table>
+<tr><th></th><th>模式/流程</th><th>编辑器模拟</th><th>纯粹的C#空包</th><th>正常流程包</th><th>游戏前期的体验包</th></tr>
+<tr ><td rowspan="5">打包流程</td></tr>
+<tr><th>勾选FastMode        </th><th>✔</th><th> </th><th> </th><th> </th></tr>
+<tr><th>打包资源            </th><th>  </th><th>✔</th><th>✔</th><th>✔</th></tr>
+<tr><th>拷贝资源到stream     </th><th>  </th><th> </th><th> </th><th>✔</th></tr>
+<tr><th>上传资源到服务器     </th><th>  </th><th>✔</th><th>✔</th><th> </th></tr>
+<tr ><td rowspan="6">加载流程</td></tr>
+<tr><th>设置AssetsSetting   </th><th>✔</th><th>✔</th><th>✔</th><th>✔</th></tr>
+<tr><th>拷贝资源到沙盒路径   </th><th> </th><th> </th><th> </th><th>✔</th></tr>
+<tr><th>版本检查            </th><th> </th><th> </th><th>✔</th><th> </th></tr>
+<tr><th>初始化              </th><th>✔</th><th>✔</th><th>✔</th><th>✔</th></tr>
+<tr><th>正常加载            </th><th>✔</th><th>✔</th><th>✔</th><th>✔</th></tr>
+</table>
 
 ---
 ## 如何加载
@@ -55,6 +55,7 @@
   | tags          | 资源的标记，和 bundle group 混合使用 |
   | bundle group  | 用来把所有资源分组的脚本             |
   | encrypt       | ab 的加密方式                        |
+  
   ![](./Pic/1.jpg)
 * 3 点击 tools/bundle/build
 ## 可选项
