@@ -55,11 +55,11 @@
   | tags          | 资源的标记，和 bundle group 混合使用 |
   | bundle group  | 用来把所有资源分组的脚本             |
   | encrypt       | ab 的加密方式                        |
-  ![](https://github.com/OnClick9927/WooAsset/tree/main/Pic/1.jpg)
+  ![](./Pic/1.jpg)
 * 3 点击 tools/bundle/build
 ## 可选项
 * 收集shader变体/打图集/编辑器快速加载
-  ![](https://github.com/OnClick9927/WooAsset/tree/main/Pic/2.png)
+  ![](./Pic/2.png)
 * 关于 tag
   * 打包参数里面 tags 列举所有的tag
   * 执行 tools/preview/ just collect assets
@@ -79,6 +79,6 @@
   * Assets    需要打包的所有资源的预览
   * Bundles   打爆出来的bundle 预览
   * AssetLife 资源运行时的使用情况
-  ![](https://github.com/OnClick9927/WooAsset/tree/main/Pic/3.png)
+  ![](./Pic/3.png)
 ### 我们（QQ 782290296）
 ### 欢迎加入我们一起交流
