@@ -9,7 +9,7 @@ namespace WooAsset
     public partial class Assets
     {
 
-        private static LoadManifestOperation manifestop;
+        private static LoadManifestOperation manifestOp;
         private static bool IsScene(string path)
         {
             return path.EndsWith("unity");
@@ -45,16 +45,16 @@ namespace WooAsset
 
         public static bool Initialized()
         {
-            if (manifestop == null) return false;
-            return manifestop.isDone;
+            if (manifestOp == null) return false;
+            return manifestOp.isDone;
         }
         public static LoadManifestOperation InitAsync(bool again = false)
         {
             if (again)
-                manifestop = null;
-            if (manifestop == null)
-                manifestop = new LoadManifestOperation();
-            return manifestop;
+                manifestOp = null;
+            if (manifestOp == null)
+                manifestOp = new LoadManifestOperation();
+            return manifestOp;
         }
 
         public static void UnloadBundles() => AssetsInternal.UnloadBundles();

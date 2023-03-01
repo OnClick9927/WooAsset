@@ -188,7 +188,7 @@ namespace WooAsset
         {
             return Directory.Exists(path);
         }
-        public static IEnumerable<Type> GetSubTypesInAssemblys(this Type self)
+        public static IEnumerable<Type> GetSubTypesInAssemblies(this Type self)
         {
             if (self.IsInterface)
             {

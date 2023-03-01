@@ -14,7 +14,7 @@ namespace WooAsset
             }
             
 
-            private RefenceMap<T> refs = new RefenceMap<T>();
+            private ReferenceMap<T> refs = new ReferenceMap<T>();
 
             private Dictionary<string, T> map = new Dictionary<string, T>();
             public T Find(string name)
@@ -59,7 +59,7 @@ namespace WooAsset
                     if (GetRefCount(item.Value) == 0) result.Add(item.Key);
                 return result;
             }
-            protected void TryRealUnlod(string path)
+            protected void TryRealUnload(string path)
             {
                 T asset = Find(path);
                 if (GetRefCount(asset) != 0) return;

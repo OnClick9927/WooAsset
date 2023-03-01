@@ -16,8 +16,8 @@ namespace WooAsset
         private static AssetsSetting setting;
         private static AssetManifest manifest;
 
-        private static IAssetMode _defaultMode = new NomalAssetMode();
-        public static bool isNormalMode => mode is NomalAssetMode;
+        private static IAssetMode _defaultMode = new NormalAssetMode();
+        public static bool isNormalMode => mode is NormalAssetMode;
         public static IAssetMode mode { get; set; }
         public static string localSaveDir;
 
@@ -99,10 +99,10 @@ namespace WooAsset
         }
 
         private static string GetBundleNameByAssetPath(string assetPath) => manifest.GetBundle(assetPath);
-        private static void ReleseBundleByAssetPath(string assetpath)
+        private static void ReleaseBundleByAssetPath(string assetPath)
         {
             if (IsManifestNull()) return;
-            string bundle = GetBundleNameByAssetPath(assetpath);
+            string bundle = GetBundleNameByAssetPath(assetPath);
             bundles.Release(bundle);
         }
         private static Bundle LoadBundleByAssetPath(string assetPath)
@@ -121,7 +121,7 @@ namespace WooAsset
         public static Asset LoadAssetAsync(string path)
         {
             LoadDps(path);
-            Asset asset = assets.LoadAssetAyync(path);
+            Asset asset = assets.LoadAssetAsync(path);
             return asset;
         }
         public static SceneAsset LoadSceneAssetAsync(string path)
@@ -130,9 +130,9 @@ namespace WooAsset
             SceneAsset asset = assets.LoadSceneAssetAsync(path);
             return asset;
         }
-        private static List<string> GetAssetDps(string assetpath)
+        private static List<string> GetAssetDps(string assetPath)
         {
-            return IsManifestNull() ? null : manifest.GetAssetDependences(assetpath);
+            return IsManifestNull() ? null : manifest.GetAssetDependencies(assetPath);
         }
 
         private static void LoadDps(string path)

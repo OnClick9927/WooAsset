@@ -43,16 +43,16 @@ namespace WooAsset
             static List<Texture> FindTex(string directory)
             {
                 var files = Directory.GetFiles(directory);
-                List<Texture> texs = new List<Texture>();
+                List<Texture> textures = new List<Texture>();
                 foreach (var item in files)
                 {
                     var load = AssetDatabase.LoadAssetAtPath<Texture>(item);
                     if (load)
                     {
-                        texs.Add(load);
+                        textures.Add(load);
                     }
                 }
-                return texs;
+                return textures;
             }
             static void Delete(string directory)
             {
@@ -62,15 +62,15 @@ namespace WooAsset
             }
             static void BuildAtlas(string directory)
             {
-                List<Texture> texs = FindTex(directory);
+                List<Texture> textures = FindTex(directory);
                 string file_path = $"{directory}.spriteatlas";
-                if (texs.Count <= 0) return;
+                if (textures.Count <= 0) return;
                 SpriteAtlas atlas = new SpriteAtlas();
                 atlas.SetPlatformSettings(tool.PlatformSetting);
                 atlas.SetTextureSettings(tool.GetTextureSetting());
                 atlas.SetPackingSettings(tool.GetPackingSetting());
                 AssetDatabase.CreateAsset(atlas, file_path);
-                atlas.Add(texs.ToArray());
+                atlas.Add(textures.ToArray());
                 EditorUtility.SetDirty(atlas);
 
             }

@@ -44,10 +44,10 @@ namespace WooAsset
                     unUseBundles = new List<string>(AssetsInternal.GetLocalBundles());
                     var bytes = GetEncrypt().DeCode(AssetsInternal.GetNameHash(AssetsVersion.versionName), downloader.data);
                     AssetsVersion remote = JsonUtility.FromJson<AssetsVersion>(AssetsVersion.encoding.GetString(bytes));
-                    for (int i = 0; i < remote.datas.Count; i++)
+                    for (int i = 0; i < remote.data_list.Count; i++)
                     {
-                        _progress = i / (float)remote.datas.Count;
-                        var item = remote.datas[i];
+                        _progress = i / (float)remote.data_list.Count;
+                        var item = remote.data_list[i];
                         var bundleName = item.bundleName;
                         var localPath = ToRegularPath(AssetsInternal.GetBundleLocalPath(bundleName));
                         if (!File.Exists(localPath)) downLoadOnes.Add(item);
@@ -67,8 +67,8 @@ namespace WooAsset
                             {
                                 var length = item.length;
                                 FileInfo file = new FileInfo(localPath);
-                                var localLenght = file.Length;
-                                if (length != localLenght)
+                                var localLen = file.Length;
+                                if (length != localLen)
                                     downLoadOnes.Add(item);
                             }
 

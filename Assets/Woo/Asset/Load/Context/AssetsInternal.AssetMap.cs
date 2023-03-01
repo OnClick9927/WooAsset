@@ -17,7 +17,7 @@ namespace WooAsset
                     return AssetsInternal.CreateSceneAsset(name, GetDpAssets(name), (SceneAssetLoadArgs)args);
                 return null;
             }
-            public Asset LoadAssetAyync(string path)
+            public Asset LoadAssetAsync(string path)
             {
                 AssetLoadArgs args = new AssetLoadArgs(path);
                 Asset asset = base.LoadAsync(path, args);
@@ -36,9 +36,9 @@ namespace WooAsset
                 Asset result = Find(path);
                 if (result == null) return;
                 ReleaseRef(result);
-                ReleseBundleByAssetPath(result.path);
+                ReleaseBundleByAssetPath(result.path);
                 ReleaseDpAssets(result.path);
-                TryRealUnlod(path);
+                TryRealUnload(path);
             }
 
 

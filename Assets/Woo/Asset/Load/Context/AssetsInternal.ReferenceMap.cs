@@ -6,7 +6,7 @@ namespace WooAsset
 {
     partial class AssetsInternal
     {
-        public class RefenceMap<T>
+        public class ReferenceMap<T>
         {
             private Dictionary<T, int> map = new Dictionary<T, int>();
             public void Retain(T t)

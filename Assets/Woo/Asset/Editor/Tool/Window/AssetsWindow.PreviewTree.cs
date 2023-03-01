@@ -76,7 +76,7 @@ namespace WooAsset
             {
                 var rs = rect.HorizontalSplit(20);
                 search.OnGUI(rs[0]);
-                if (dp.assetinfo == null || dp.assetinfo.dps.Count == 0)
+                if (dp.asset == null || dp.asset.dps.Count == 0)
                 {
                     base.OnGUI(rs[1]);
                 }
@@ -91,7 +91,7 @@ namespace WooAsset
             {
                 return new TreeViewItem() { id = -10, depth = -1 };
             }
-            private static TreeViewItem CreateItem(string path, TreeViewItem parrent, IList<TreeViewItem> result)
+            private static TreeViewItem CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result)
             {
                 Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
                 var _item = new TreeViewItem()
@@ -101,8 +101,8 @@ namespace WooAsset
                     displayName = path,
                     icon = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path))
                 };
-                _item.parent = parrent;
-                parrent.AddChild(_item);
+                _item.parent = parent;
+                parent.AddChild(_item);
                 result.Add(_item);
                 return _item;
             }
@@ -193,8 +193,8 @@ namespace WooAsset
             }
             protected override void RowGUI(RowGUIArgs args)
             {
-                float indet = this.GetContentIndent(args.item);
-                var first = args.GetCellRect(0).Zoom(AnchorType.MiddleRight, new Vector2(-indet, 0));
+                float indent = this.GetContentIndent(args.item);
+                var first = args.GetCellRect(0).Zoom(AnchorType.MiddleRight, new Vector2(-indent, 0));
                 long length = 0;
                 if (args.item.depth == 0)
                 {

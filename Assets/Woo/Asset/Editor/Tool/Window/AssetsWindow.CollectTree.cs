@@ -120,8 +120,8 @@ namespace WooAsset
 
             protected override void RowGUI(RowGUIArgs args)
             {
-                float indet = this.GetContentIndent(args.item);
-                var first = args.GetCellRect(0).Zoom(AnchorType.MiddleRight, new Vector2(-indet, 0));
+                float indent = this.GetContentIndent(args.item);
+                var first = args.GetCellRect(0).Zoom(AnchorType.MiddleRight, new Vector2(-indent, 0));
                 if (string.IsNullOrEmpty(searchString))
                     GUI.Label(first, new GUIContent(Path.GetFileName(args.label), args.item.icon));
                 else
@@ -138,7 +138,7 @@ namespace WooAsset
 
             private void LoopCreateForSearch(IList<TreeViewItem> result, TreeViewItem root, AssetInfo info)
             {
-                var paths = cache.GetSubFloders(info);
+                var paths = cache.GetSubFolders(info);
                 var filepaths = cache.GetSubFiles(info);
                 if (paths.Count > 0 || filepaths.Count > 0)
                 {
@@ -147,14 +147,14 @@ namespace WooAsset
                 }
 
             }
-            private void BuildDirsForSearch(IList<TreeViewItem> result, TreeViewItem parrent, List<AssetInfo> dirs)
+            private void BuildDirsForSearch(IList<TreeViewItem> result, TreeViewItem parent, List<AssetInfo> dirs)
             {
                 foreach (var path in dirs)
                 {
-                    LoopCreateForSearch(result, parrent, path);
+                    LoopCreateForSearch(result, parent, path);
                 }
             }
-            private void BuildFilesForSearch(IList<TreeViewItem> result, TreeViewItem parrent, List<AssetInfo> assets)
+            private void BuildFilesForSearch(IList<TreeViewItem> result, TreeViewItem parent, List<AssetInfo> assets)
             {
                 foreach (var asset in assets)
                 {
@@ -177,46 +177,46 @@ namespace WooAsset
                     bool could = source.Contains(this.searchString);
                     if (could)
                     {
-                        CreateItem(asset.path, parrent, result);
+                        CreateItem(asset.path, parent, result);
                     }
                 }
             }
 
 
 
-            private static TreeViewItem CreateItem(string path, TreeViewItem parrent, IList<TreeViewItem> result)
+            private static TreeViewItem CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result)
             {
                 Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
                 var _item = new TreeViewItem()
                 {
                     id = o.GetInstanceID(),
-                    depth = parrent.depth + 1,
+                    depth = parent.depth + 1,
                     displayName = path,
-                    parent = parrent,
+                    parent = parent,
                     icon = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path))
                 };
-                parrent.AddChild(_item);
+                parent.AddChild(_item);
                 result.Add(_item);
                 return _item;
             }
-            private void BuildDirs(IList<TreeViewItem> result, TreeViewItem parrent, List<AssetInfo> dirs)
+            private void BuildDirs(IList<TreeViewItem> result, TreeViewItem parent, List<AssetInfo> dirs)
             {
                 foreach (var path in dirs)
                 {
-                    LoopCreate(result, parrent, path);
+                    LoopCreate(result, parent, path);
                 }
             }
-            private static void BuildFiles(IList<TreeViewItem> result, TreeViewItem parrent, List<AssetInfo> paths)
+            private static void BuildFiles(IList<TreeViewItem> result, TreeViewItem parent, List<AssetInfo> paths)
             {
                 foreach (var _path in paths)
                 {
-                    CreateItem(_path.path, parrent, result);
+                    CreateItem(_path.path, parent, result);
                 }
             }
-            private void LoopCreate(IList<TreeViewItem> result, TreeViewItem parrent, AssetInfo info)
+            private void LoopCreate(IList<TreeViewItem> result, TreeViewItem parent, AssetInfo info)
             {
-                var item = CreateItem(info.path, parrent, result);
-                var paths = cache.GetSubFloders(info);
+                var item = CreateItem(info.path, parent, result);
+                var paths = cache.GetSubFolders(info);
                 var filepaths = cache.GetSubFiles(info);
                 if (paths.Count > 0 || filepaths.Count > 0)
                 {

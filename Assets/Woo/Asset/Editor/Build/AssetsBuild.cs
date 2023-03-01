@@ -70,7 +70,7 @@ namespace WooAsset
         }
         public static void CollectInBuildAssets()
         {
-            cache.Colllect(setting.buildPaths);
+            cache.Collect(setting.buildPaths);
             RemoveUseLessTagAssets();
             cache.Save();
         }
@@ -155,7 +155,7 @@ namespace WooAsset
                 data.length = fileInfo.Length;
                 data.bundleName = bundle;
                 data.md5 = AssetsInternal.GetFileHash(path);
-                version.datas.Add(data);
+                version.data_list.Add(data);
             }
             version.version = version_txt;
             var v = JsonUtility.ToJson(version);
@@ -173,9 +173,9 @@ namespace WooAsset
             assets.AddRange(cache.GetSingleFiles());
             assets.RemoveAll(x => x.type == AssetInfo.AssetType.Directory);
             assets.RemoveAll(x => x.path == AssetManifest.Path);
-            var creater = Activator.CreateInstance(collectType) as ICollectBundle;
+            var collector = Activator.CreateInstance(collectType) as ICollectBundle;
             var builds = new List<BundleGroup>();
-            creater.Create(assets, dic, builds);
+            collector.Create(assets, dic, builds);
             builds.RemoveAll(x => x.assets.Count == 0);
             builds.Sort((a, b) =>
             {
@@ -191,7 +191,7 @@ namespace WooAsset
                 build.name = AssetsInternal.GetNameHash(build.name);
             }
             Dictionary<string, string> allAssets = new Dictionary<string, string>();
-            Dictionary<string, List<string>> assetdps = new Dictionary<string, List<string>>();
+            Dictionary<string, List<string>> assetDependence = new Dictionary<string, List<string>>();
 
             foreach (var build in builds)
             {
@@ -205,16 +205,16 @@ namespace WooAsset
                 var path = item.Key;
                 var dps = cache.GetDps(path);
                 if (dps != null)
-                    assetdps.Add(path, dps);
+                    assetDependence.Add(path, dps);
             }
             if (!File.Exists(AssetManifest.Path))
                 AssetsEditorTool.CreateScriptableObject<AssetManifest>(AssetManifest.Path);
             AssetManifest main = AssetsEditorTool.Load<AssetManifest>(AssetManifest.Path);
-            main.Read(allAssets, assetdps, cache.GetTagDic());
+            main.Read(allAssets, assetDependence, cache.GetTagDic());
             AssetsEditorTool.Update(main);
-            BundleGroup mainbuild = new BundleGroup(AssetsInternal.GetNameHash(AssetManifest.Path));
-            mainbuild.AddAsset(AssetManifest.Path);
-            builds.Add(mainbuild);
+            BundleGroup mainGroup = new BundleGroup(AssetsInternal.GetNameHash(AssetManifest.Path));
+            mainGroup.AddAsset(AssetManifest.Path);
+            builds.Add(mainGroup);
             return builds;
         }
         public bool SetBuildGroupType(Type type)
@@ -256,11 +256,11 @@ namespace WooAsset
 
 
 
-        public static void OpenOutputFloder()
+        public static void OpenOutputFolder()
         {
             EditorUtility.OpenWithDefaultApp(outputPath);
         }
-        public static void ClearOutputFloder()
+        public static void ClearOutputFolder()
         {
             Directory.Delete(outputPath, true);
         }
@@ -283,9 +283,9 @@ namespace WooAsset
         {
             var list = AssetsInternal.ToRegularPath(path).Split('/').ToList();
             if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;
-            for (int i = 0; i < setting.ignoreFileEtend.Count; i++)
+            for (int i = 0; i < setting.ignoreFileExtend.Count; i++)
             {
-                if (path.EndsWith(setting.ignoreFileEtend[i]))
+                if (path.EndsWith(setting.ignoreFileExtend[i]))
                 {
                     return true;
                 }

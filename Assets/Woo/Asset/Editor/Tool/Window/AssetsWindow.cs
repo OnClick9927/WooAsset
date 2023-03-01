@@ -89,8 +89,8 @@ namespace WooAsset
                     menu.AddItem(new GUIContent("Bundle/Build"), false, () => { AssetsBuild.Build(); });
                     menu.AddItem(new GUIContent("Bundle/Copy To Steam"), false, AssetsBuild.CopyToStreamPath);
 
-                    menu.AddItem(new GUIContent("Output/Open Floder"), false, AssetsBuild.OpenOutputFloder);
-                    menu.AddItem(new GUIContent("Output/Clear Floder"), false, AssetsBuild.ClearOutputFloder);
+                    menu.AddItem(new GUIContent("Output/Open Folder"), false, AssetsBuild.OpenOutputFolder);
+                    menu.AddItem(new GUIContent("Output/Clear Folder"), false, AssetsBuild.ClearOutputFolder);
                     menu.DropDown(GUILayoutUtility.GetLastRect());
                 }
                 GUILayout.FlexibleSpace();

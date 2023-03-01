@@ -23,7 +23,7 @@ namespace WooAsset
         {
             return singles;
         }
-        public List<AssetInfo> GetSubFloders(AssetInfo info)
+        public List<AssetInfo> GetSubFolders(AssetInfo info)
         {
             string path = info.path;
             return assets.FindAll(x => x.parentPath == path && x.type == AssetInfo.AssetType.Directory);
@@ -73,11 +73,11 @@ namespace WooAsset
             }
 
         }
-        private void LoopAdd(string path, string parrent)
+        private void LoopAdd(string path, string parent)
         {
-            AssetInfo info = new AssetInfo(path, parrent);
+            AssetInfo info = new AssetInfo(path, parent);
 
-            if (string.IsNullOrEmpty(parrent))
+            if (string.IsNullOrEmpty(parent))
                 rootDir.Add(info);
             assets.Add(info);
             string[] dirs = AssetsBuild.GetLegalDirectories(path);
@@ -135,7 +135,7 @@ namespace WooAsset
         {
             int sum = 0;
             sum += this.GetSubFiles(info).Count;
-            var fs = this.GetSubFloders(info);
+            var fs = this.GetSubFolders(info);
             foreach (var item in fs)
             {
                 sum += GetFileCount(item);

@@ -17,7 +17,7 @@ namespace WooAsset
             public Type baseType;
             public void Enable()
             {
-                var list = baseType.GetSubTypesInAssemblys()
+                var list = baseType.GetSubTypesInAssemblies()
                .Where(type => !type.IsAbstract);
                 types = list.Select(type => type.FullName).ToArray();
                 shortTypes = list.Select(type => type.Name).ToArray();
@@ -25,7 +25,7 @@ namespace WooAsset
             public Type GetSelectType()
             {
                 var type_str = types[typeIndex];
-                Type type = baseType.GetSubTypesInAssemblys()
+                Type type = baseType.GetSubTypesInAssemblies()
                    .Where(type => !type.IsAbstract)
                    .ToList()
                    .Find(x => x.FullName == type_str);
@@ -57,7 +57,7 @@ namespace WooAsset
         public bool forceRebuild = false;
         public bool IgnoreTypeTreeChanges = true;
 
-        public List<string> ignoreFileEtend = new List<string>() {
+        public List<string> ignoreFileExtend = new List<string>() {
             ".cs",
             ".meta"
         };

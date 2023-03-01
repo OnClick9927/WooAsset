@@ -10,10 +10,10 @@ namespace WooAsset
     {
         private class DpTree : TreeView
         {
-            public AssetInfo assetinfo;
+            public AssetInfo asset;
             public void SetAssetInfo(AssetInfo info)
             {
-                this.assetinfo = info;
+                this.asset = info;
                 showAlternatingRowBackgrounds = true;
                 this.Reload();
             }
@@ -65,9 +65,9 @@ namespace WooAsset
                 var result = GetRows() ?? new List<TreeViewItem>();
                 result.Clear();
 
-                if (this.assetinfo != null && this.assetinfo.dps.Count > 0)
+                if (this.asset != null && this.asset.dps.Count > 0)
                 {
-                    Build(root, assetinfo.dps, result);
+                    Build(root, asset.dps, result);
                 }
 
                 SetupParentsAndChildrenFromDepths(root, result);
@@ -78,7 +78,7 @@ namespace WooAsset
             {
                 return new TreeViewItem() { id = -10, depth = -1 };
             }
-            private static TreeViewItem CreateItem(string path, TreeViewItem parrent, IList<TreeViewItem> result)
+            private static TreeViewItem CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result)
             {
                 Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
                 var _item = new TreeViewItem()
@@ -88,18 +88,18 @@ namespace WooAsset
                     displayName = path,
                     icon = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path))
                 };
-                _item.parent = parrent;
-                parrent.AddChild(_item);
+                _item.parent = parent;
+                parent.AddChild(_item);
                 result.Add(_item);
                 return _item;
             }
             protected override void RowGUI(RowGUIArgs args)
             {
                 string path = args.label;
-                float indet = this.GetContentIndent(args.item);
+                float indent = this.GetContentIndent(args.item);
 
                 BundleGroup group = cache.GetBundleGroupByAssetPath(path);
-                GUI.Label(args.GetCellRect(0).Zoom(AnchorType.MiddleRight, new Vector2(-indet, 0)), new GUIContent(path, args.item.icon));
+                GUI.Label(args.GetCellRect(0).Zoom(AnchorType.MiddleRight, new Vector2(-indent, 0)), new GUIContent(path, args.item.icon));
                 GUI.Label(args.GetCellRect(1), PreviewTree.GetSizeString(group.GetLength(path)));
                 GUI.Label(args.GetCellRect(2), cache.GetAssetTag(path));
                 EditorGUI.SelectableLabel(args.GetCellRect(3), group.name);

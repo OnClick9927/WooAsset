@@ -6,7 +6,7 @@ namespace WooAsset
 {
     partial class AssetsInternal
     {
-        private class NomalAssetMode : IAssetMode
+        private class NormalAssetMode : IAssetMode
         {
     
 

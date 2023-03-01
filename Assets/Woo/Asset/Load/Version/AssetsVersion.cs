@@ -17,6 +17,6 @@ namespace WooAsset
             public string md5;
         }
         public string version;
-        public List<VersionData> datas = new List<VersionData>();
+        public List<VersionData> data_list = new List<VersionData>();
     }
 }

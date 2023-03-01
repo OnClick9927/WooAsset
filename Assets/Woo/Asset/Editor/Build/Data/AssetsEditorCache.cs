@@ -17,9 +17,10 @@ namespace WooAsset
         {
             return tree.GetRootDirPaths();
         }
-        public List<AssetInfo> GetSubFloders(AssetInfo info)
+        
+        public List<AssetInfo> GetSubFolders(AssetInfo info)
         {
-            return tree.GetSubFloders(info);
+            return tree.GetSubFolders(info);
         }
         public List<AssetInfo> GetSubFiles(AssetInfo info)
         {
@@ -50,7 +51,7 @@ namespace WooAsset
 
 
 
-        public void Colllect(List<string> paths)
+        public void Collect(List<string> paths)
         {
             //AssetDatabase.ForceReserializeAssets();
             tree.Clear();

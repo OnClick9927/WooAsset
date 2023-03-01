@@ -40,10 +40,10 @@ namespace WooAsset
                     shaderBundle.AddAsset(assets[i].path);
                 result.Add(shaderBundle);
             }
-            public static void SizeBundle_ALL(string baseName, List<AssetInfo> assets, Dictionary<AssetInfo, List<AssetInfo>> dpdic, List<BundleGroup> result)
+            public static void SizeBundle_ALL(string baseName, List<AssetInfo> assets, Dictionary<AssetInfo, List<AssetInfo>> dependentMap, List<BundleGroup> result)
             {
-                var find = assets.FindAll(x => dpdic[x].Count >= 2);
-                assets.RemoveAll(x => dpdic[x].Count >= 2);
+                var find = assets.FindAll(x => dependentMap[x].Count >= 2);
+                assets.RemoveAll(x => dependentMap[x].Count >= 2);
                 OneFileBundle_ALL(find, result);
                 if (find.Count == assets.Count) return;
 
@@ -83,12 +83,12 @@ namespace WooAsset
                     result.Add(lastBundle);
                 }
             }
-            public static void SizeAndTopDirBundle_ALL(List<AssetInfo> assets, Dictionary<AssetInfo, List<AssetInfo>> dpdic, List<BundleGroup> result)
+            public static void SizeAndTopDirBundle_ALL(List<AssetInfo> assets, Dictionary<AssetInfo, List<AssetInfo>> dependentMap, List<BundleGroup> result)
             {
                 var path_dic = MakeDirDic(assets);
                 foreach (var item in path_dic)
                 {
-                    SizeBundle_ALL(item.Key, item.Value, dpdic, result);
+                    SizeBundle_ALL(item.Key, item.Value, dependentMap, result);
                 }
             }
 
@@ -118,19 +118,19 @@ namespace WooAsset
                 assets.RemoveAll(x => x.type == type);
                 AllInOneBundle_ALL(shaders, type.ToString(), result);
             }
-            public static void TagSizeBundle(List<AssetInfo> assets, string tag, Dictionary<AssetInfo, List<AssetInfo>> dpdic, List<BundleGroup> result)
+            public static void TagSizeBundle(List<AssetInfo> assets, string tag, Dictionary<AssetInfo, List<AssetInfo>> dependentMap, List<BundleGroup> result)
             {
                 List<AssetInfo> find = assets.FindAll(x => cache.GetAssetTag(x.path) == tag);
                 assets.RemoveAll(x => cache.GetAssetTag(x.path) == tag);
                 OneFileBundle(find, AssetType.Scene, result);
-                SizeBundle_ALL($"tag_bundle_{tag}", find, dpdic, result);
+                SizeBundle_ALL($"tag_bundle_{tag}", find, dependentMap, result);
             }
-            public static void TagSizeAndTopDirBundle(List<AssetInfo> assets, string tag, Dictionary<AssetInfo, List<AssetInfo>> dpdic, List<BundleGroup> result)
+            public static void TagSizeAndTopDirBundle(List<AssetInfo> assets, string tag, Dictionary<AssetInfo, List<AssetInfo>> dependentMap, List<BundleGroup> result)
             {
                 List<AssetInfo> find = assets.FindAll(x => cache.GetAssetTag(x.path) == tag);
                 assets.RemoveAll(x => cache.GetAssetTag(x.path) == tag);
                 OneFileBundle(find, AssetType.Scene, result);
-                SizeAndTopDirBundle_ALL(find, dpdic, result);
+                SizeAndTopDirBundle_ALL(find, dependentMap, result);
             }
 
             public void Create(List<AssetInfo> assets, Dictionary<AssetInfo, List<AssetInfo>> dic, List<BundleGroup> result)

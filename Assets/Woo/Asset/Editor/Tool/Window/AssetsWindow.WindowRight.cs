@@ -17,9 +17,9 @@ namespace WooAsset
                 AssetLife
             }
             public TreeType treeType = TreeType.Assets;
-            [SerializeField] private TreeViewState collectstate = new TreeViewState();
-            [SerializeField] private TreeViewState previewstate = new TreeViewState();
-            [SerializeField] private TreeViewState rtstate = new TreeViewState();
+            [SerializeField] private TreeViewState collectState = new TreeViewState();
+            [SerializeField] private TreeViewState previewState = new TreeViewState();
+            [SerializeField] private TreeViewState rtState = new TreeViewState();
 
             [SerializeField] private CollectTree.SearchType colSearchType = CollectTree.SearchType.Name;
             [SerializeField] private PreviewTree.SearchType preSearchType = PreviewTree.SearchType.AssetByPath;
@@ -31,9 +31,9 @@ namespace WooAsset
 
             public void OnEnable()
             {
-                col = new CollectTree(collectstate, colSearchType);
-                pre = new PreviewTree(previewstate, preSearchType);
-                rt = new RTTree(rtstate, rtSearchType);
+                col = new CollectTree(collectState, colSearchType);
+                pre = new PreviewTree(previewState, preSearchType);
+                rt = new RTTree(rtState, rtSearchType);
                 AssetsEditorTool.onAssetLifChange += rt.Reload;
             }
             public void OnDisable()

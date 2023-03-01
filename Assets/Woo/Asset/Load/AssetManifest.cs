@@ -20,7 +20,7 @@ namespace WooAsset
 
         [SerializeField] private List<AssetData> assets = new List<AssetData>();
 
-        public void Read(Dictionary<string, string> allAssets, Dictionary<string, List<string>> assetdps,Dictionary<string,string> tags)
+        public void Read(Dictionary<string, string> allAssets, Dictionary<string, List<string>> assetDependence,Dictionary<string,string> tags)
         {
             if (Application.isEditor)
             {
@@ -30,9 +30,9 @@ namespace WooAsset
                     AssetData data = new AssetData();
                     data.path = item.Key;
                     data.bundleName = item.Value;
-                    if (assetdps.ContainsKey(item.Key))
+                    if (assetDependence.ContainsKey(item.Key))
                     {
-                        data.dps = assetdps[item.Key];
+                        data.dps = assetDependence[item.Key];
                     }
                     if (tags.ContainsKey(item.Key))
                     {
@@ -43,7 +43,7 @@ namespace WooAsset
             }
         }
 
-        private Dictionary<string, List<string>> assetdps;
+        private Dictionary<string, List<string>> assetDependence;
         private Dictionary<string, string> allAssets;
         private List<string> allPaths;
         private Dictionary<string, List<string>> tagAssets;
@@ -51,10 +51,10 @@ namespace WooAsset
 
         private void Check()
         {
-            if (assetdps == null)
+            if (assetDependence == null)
             {
                 tagAssets = new Dictionary<string, List<string>>();
-                assetdps = new Dictionary<string, List<string>>();
+                assetDependence = new Dictionary<string, List<string>>();
                 allAssets = new Dictionary<string, string>();
                 allPaths = new List<string>();
                 assetTags = new Dictionary<string, string>();
@@ -64,7 +64,7 @@ namespace WooAsset
                     string path = asset.path;
                     string tag = asset.tag;
 
-                    assetdps.Add(path, asset.dps);
+                    assetDependence.Add(path, asset.dps);
                     allAssets.Add(path, asset.bundleName);
                     allPaths.Add(path);
                     if (!tagAssets.ContainsKey(tag))
@@ -93,13 +93,14 @@ namespace WooAsset
             }
             return null;
         }
-        public List<string> GetAssetDependences(string assetPath)
+        
+        public List<string> GetAssetDependencies(string assetPath)
         {
             try
             {
                 Check();
-                if (assetdps.ContainsKey(assetPath))
-                    return assetdps[assetPath];
+                if (assetDependence.ContainsKey(assetPath))
+                    return assetDependence[assetPath];
             }
             catch (Exception e)
             {

@@ -35,7 +35,7 @@ namespace WooAsset
                 if (result == null) return;
                 ReleaseRef(result);
                 if (!GetAutoUnloadBundle()) return;
-                TryRealUnlod(path);
+                TryRealUnload(path);
             }
             private List<string> useless = new List<string>();
             public void UnloadBundles()
@@ -44,7 +44,7 @@ namespace WooAsset
                 GetZeroRefKeys(useless);
                 for (int i = 0; i < useless.Count; i++)
                 {
-                    TryRealUnlod(useless[i]);
+                    TryRealUnload(useless[i]);
                 }
             }
         }
