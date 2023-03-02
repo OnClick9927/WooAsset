@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace WooAsset
 {
@@ -20,7 +21,7 @@ namespace WooAsset
 
         [SerializeField] private List<AssetData> assets = new List<AssetData>();
 
-        public void Read(Dictionary<string, string> allAssets, Dictionary<string, List<string>> assetDependence,Dictionary<string,string> tags)
+        public void Read(Dictionary<string, string> allAssets, Dictionary<string, List<string>> assetDependence, Dictionary<string, string> tags)
         {
             if (Application.isEditor)
             {
@@ -48,7 +49,7 @@ namespace WooAsset
         private List<string> allPaths;
         private Dictionary<string, List<string>> tagAssets;
         private Dictionary<string, string> assetTags;
-
+        private List<string> allTags;
         private void Check()
         {
             if (assetDependence == null)
@@ -72,6 +73,7 @@ namespace WooAsset
                     tagAssets[tag].Add(path);
                     assetTags.Add(path, tag);
                 }
+                allTags = tagAssets.Keys.ToList();
             }
         }
         public string GetAssetTag(string assetPath)
@@ -93,7 +95,7 @@ namespace WooAsset
             }
             return null;
         }
-        
+
         public List<string> GetAssetDependencies(string assetPath)
         {
             try
@@ -127,6 +129,11 @@ namespace WooAsset
         {
             Check();
             return allPaths;
+        }
+
+        public IReadOnlyList<string> GetAllTags()
+        {
+            return allTags;
         }
     }
 }

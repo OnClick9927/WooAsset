@@ -8,6 +8,7 @@ namespace WooAsset
         SceneAsset CreateSceneAsset(string assetPath, List<Asset> dps, SceneAssetLoadArgs arg);
         IReadOnlyList<string> GetAllAssetPaths();
         IReadOnlyList<string> GetTagAssetPaths(string tag);
+        IReadOnlyList<string> GetAllTags();
 
         string GetAssetTag(string assetPath);
     }

@@ -63,6 +63,10 @@ namespace WooAsset
         {
             return mode.GetTagAssetPaths(tag);
         }
+        public static IReadOnlyList<string> GetAllTags()
+        {
+            return mode.GetAllTags();
+        }
         public static string GetAssetTag(string assetPath) => mode.GetAssetTag(assetPath);
 
         public static void SetAssetsSetting(AssetsSetting setting) => AssetsInternal.setting = setting;

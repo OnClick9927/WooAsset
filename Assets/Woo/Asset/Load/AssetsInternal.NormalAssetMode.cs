@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using static WooAsset.AssetManifest;
 
 namespace WooAsset
 {
@@ -33,6 +34,12 @@ namespace WooAsset
             public string GetAssetTag(string assetPath)
             {
                 return IsManifestNull() ? null : manifest.GetAssetTag(assetPath);
+
+            }
+
+            public IReadOnlyList<string> GetAllTags()
+            {
+                return IsManifestNull() ? null : manifest.GetAllTags();
 
             }
         }

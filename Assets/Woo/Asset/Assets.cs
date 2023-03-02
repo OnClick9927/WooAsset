@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static WooAsset.AssetsInternal;
 
@@ -15,14 +16,7 @@ namespace WooAsset
             return path.EndsWith("unity");
         }
 
-        public static IReadOnlyList<string> GetAllAssetPaths()
-        {
-            return AssetsInternal.GetAllAssetPaths();
-        }
-        private static IReadOnlyList<string> GetTagAssetPaths(string tag)
-        {
-            return AssetsInternal.GetTagAssetPaths(tag);
-        }
+
         public static void SetAssetsSetting(AssetsSetting setting)
         {
             AssetsInternal.SetAssetsSetting(setting);
@@ -35,14 +29,10 @@ namespace WooAsset
         {
             return new DownLoadBundleOperation(bundleName);
         }
-
-
         public static CopyBundleOperation CopyDLCFromSteam()
         {
             return AssetsInternal.CopyDLCFromSteam();
         }
-
-
         public static bool Initialized()
         {
             if (manifestOp == null) return false;
@@ -56,9 +46,6 @@ namespace WooAsset
                 manifestOp = new LoadManifestOperation();
             return manifestOp;
         }
-
-        public static void UnloadBundles() => AssetsInternal.UnloadBundles();
-
         public static Asset LoadAssetAsync(string path)
         {
             if (IsScene(path))
@@ -71,17 +58,35 @@ namespace WooAsset
         {
             return AssetsInternal.LoadSceneAssetAsync(path);
         }
-
         public static void Release(Asset asset)
         {
             AssetsInternal.Release(asset);
+        }
+        public static void UnloadBundles() => AssetsInternal.UnloadBundles();
+
+
+
+        public static IReadOnlyList<string> GetAllAssetPaths()
+        {
+            return AssetsInternal.GetAllAssetPaths();
+        }
+        public static IReadOnlyList<string> GetTagAssetPaths(string tag)
+        {
+            return AssetsInternal.GetTagAssetPaths(tag);
+        }
+        public static IReadOnlyList<string> GetAllTags()
+        {
+            return AssetsInternal.GetAllTags();
         }
         public static AssetsGroupOperation PrepareAssets(string[] paths)
         {
             return new AssetsGroupOperation(paths);
         }
-
-
+        public static AssetsGroupOperation PrepareAssetsByTag(string tag)
+        {
+            var assets = GetTagAssetPaths(tag);
+            return new AssetsGroupOperation(assets.ToArray());
+        }
         public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent)
         {
             return new InstantiateObjectOperation(path, parent);
@@ -90,5 +95,6 @@ namespace WooAsset
         {
             InstantiateObjectOperation.Destroy(gameObject);
         }
+
     }
 }

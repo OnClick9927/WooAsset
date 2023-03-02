@@ -42,6 +42,11 @@ namespace WooAsset
             {
                 return cache.GetAssetTag(assetPath);
             }
+
+            public IReadOnlyList<string> GetAllTags()
+            {
+                return setting.tags;
+            }
         }
     }
 
