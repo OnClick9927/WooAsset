@@ -48,9 +48,9 @@ namespace WooAsset
             else
             {
                 AssetImporter importer = AssetImporter.GetAtPath(path);
-                if (path.EndsWith(".unity")) _type = AssetType.Scene;
-                else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
+                if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
                 else if (importer is ModelImporter) _type = AssetType.Model;
+                else if (AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(path) != null) _type = AssetType.Scene;
                 else if (AssetDatabase.LoadAssetAtPath<ScriptableObject>(path) != null) _type = AssetType.ScriptObject;
                 else if (AssetDatabase.LoadAssetAtPath<Animation>(path) != null) _type = AssetType.Animation;
                 else if (AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path) != null) _type = AssetType.SpriteAtlas;

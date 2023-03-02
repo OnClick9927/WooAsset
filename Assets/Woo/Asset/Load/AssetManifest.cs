@@ -50,84 +50,56 @@ namespace WooAsset
         private Dictionary<string, List<string>> tagAssets;
         private Dictionary<string, string> assetTags;
         private List<string> allTags;
-        private void Check()
+        public void Prepare()
         {
-            if (assetDependence == null)
+            tagAssets = new Dictionary<string, List<string>>();
+            assetDependence = new Dictionary<string, List<string>>();
+            allAssets = new Dictionary<string, string>();
+            allPaths = new List<string>();
+            assetTags = new Dictionary<string, string>();
+            for (int i = 0; i < assets.Count; i++)
             {
-                tagAssets = new Dictionary<string, List<string>>();
-                assetDependence = new Dictionary<string, List<string>>();
-                allAssets = new Dictionary<string, string>();
-                allPaths = new List<string>();
-                assetTags = new Dictionary<string, string>();
-                for (int i = 0; i < assets.Count; i++)
-                {
-                    AssetData asset = assets[i];
-                    string path = asset.path;
-                    string tag = asset.tag;
+                AssetData asset = assets[i];
+                string path = asset.path;
+                string tag = asset.tag;
 
-                    assetDependence.Add(path, asset.dps);
-                    allAssets.Add(path, asset.bundleName);
-                    allPaths.Add(path);
-                    if (!tagAssets.ContainsKey(tag))
-                        tagAssets.Add(tag, new List<string>());
-                    tagAssets[tag].Add(path);
-                    assetTags.Add(path, tag);
-                }
-                allTags = tagAssets.Keys.ToList();
+                assetDependence.Add(path, asset.dps);
+                allAssets.Add(path, asset.bundleName);
+                allPaths.Add(path);
+                if (!tagAssets.ContainsKey(tag))
+                    tagAssets.Add(tag, new List<string>());
+                tagAssets[tag].Add(path);
+                assetTags.Add(path, tag);
             }
+            allTags = tagAssets.Keys.ToList();
         }
+       
         public string GetAssetTag(string assetPath)
         {
-            Check();
             return assetTags[assetPath];
         }
         public List<string> GetTagAssetPaths(string tag)
         {
-            try
-            {
-                Check();
-                if (tagAssets.ContainsKey(tag))
-                    return tagAssets[tag];
-            }
-            catch (Exception e)
-            {
-                AssetsInternal.LogError(e.Message);
-            }
+            if (tagAssets.ContainsKey(tag))
+                return tagAssets[tag];
             return null;
         }
 
         public List<string> GetAssetDependencies(string assetPath)
         {
-            try
-            {
-                Check();
-                if (assetDependence.ContainsKey(assetPath))
-                    return assetDependence[assetPath];
-            }
-            catch (Exception e)
-            {
-                AssetsInternal.LogError(e.Message);
-            }
+            if (assetDependence.ContainsKey(assetPath))
+                return assetDependence[assetPath];
             return null;
         }
         public string GetBundle(string assetPath)
         {
-            try
-            {
-                Check();
-                if (allAssets.ContainsKey(assetPath))
-                    return allAssets[assetPath];
-            }
-            catch (Exception e)
-            {
-                AssetsInternal.LogError(e.Message);
-            }
+            if (allAssets.ContainsKey(assetPath))
+                return allAssets[assetPath];
             return null;
         }
 
         public IReadOnlyList<string> GetAssets()
         {
-            Check();
             return allPaths;
         }
 
@@ -135,5 +107,7 @@ namespace WooAsset
         {
             return allTags;
         }
+
+ 
     }
 }

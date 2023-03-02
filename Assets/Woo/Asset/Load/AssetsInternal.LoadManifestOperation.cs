@@ -34,6 +34,7 @@ namespace WooAsset
                     bundle = await LoadBundleAsync(AssetsInternal.GetNameHash(path));
                     op = await bundle.LoadAssetAsync(path, typeof(AssetManifest));
                     manifest = op.asset as AssetManifest;
+                    manifest.Prepare();
                 }
                 InvokeComplete();
             }

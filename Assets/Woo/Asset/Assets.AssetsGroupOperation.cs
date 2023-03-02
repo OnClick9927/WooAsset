@@ -27,15 +27,19 @@ namespace WooAsset
             }
             private async void Done()
             {
-                assets = new Asset[paths.Length];
-                for (int i = 0; i < paths.Length; i++)
+                if (paths != null)
                 {
-                    assets[i] = Assets.LoadAssetAsync(paths[i]);
+                    assets = new Asset[paths.Length];
+                    for (int i = 0; i < paths.Length; i++)
+                    {
+                        assets[i] = Assets.LoadAssetAsync(paths[i]);
+                    }
+                    for (int i = 0; i < paths.Length; i++)
+                    {
+                        await assets[i];
+                    }
                 }
-                for (int i = 0; i < paths.Length; i++)
-                {
-                    await assets[i];
-                }
+
                 InvokeComplete();
             }
 
