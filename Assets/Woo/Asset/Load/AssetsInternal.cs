@@ -43,7 +43,7 @@ namespace WooAsset
             mode = _defaultMode;
             bundles = new BundleMap();
             assets = new AssetMap();
-            localSaveDir = CombinePath(Application.persistentDataPath,"DLC");
+            localSaveDir = CombinePath(Application.persistentDataPath, "DLC");
         }
 
         public static void SetAssetListen(IAssetLife<Asset> asset, IAssetLife<Bundle> bundle)
@@ -55,11 +55,19 @@ namespace WooAsset
     }
     partial class AssetsInternal
     {
-        private static Asset CreateAsset(string assetPath, List<Asset> dps, AssetLoadArgs arg) {
-            if (!assetPath.StartsWith("Assets"))
+        private static Asset CreateAsset(string assetPath, List<Asset> dps, AssetLoadArgs arg)
+        {
+            if (!assetPath.StartsWith("Assets") || assetPath.Contains("Resources"))
+            {
+                if (assetPath.Contains("Resources"))
+                {
+                    var idnex = arg.path.LastIndexOf("Resources");
+                    arg.path = arg.path.Remove(0, idnex + "Resources".Length + 1);
+                }
                 return new ResourcesAsset(null, null, arg);
+            }
             return mode.CreateAsset(assetPath, dps, arg);
-        } 
+        }
         private static SceneAsset CreateSceneAsset(string assetPath, List<Asset> dps, SceneAssetLoadArgs arg) => mode.CreateSceneAsset(assetPath, dps, arg);
         public static IReadOnlyList<string> GetAllAssetPaths() => mode.GetAllAssetPaths();
         public static IReadOnlyList<string> GetTagAssetPaths(string tag)
