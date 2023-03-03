@@ -55,8 +55,11 @@ namespace WooAsset
     }
     partial class AssetsInternal
     {
-
-        private static Asset CreateAsset(string assetPath, List<Asset> dps, AssetLoadArgs arg) => mode.CreateAsset(assetPath, dps, arg);
+        private static Asset CreateAsset(string assetPath, List<Asset> dps, AssetLoadArgs arg) {
+            if (!assetPath.StartsWith("Assets"))
+                return new ResourcesAsset(null, null, arg);
+            return mode.CreateAsset(assetPath, dps, arg);
+        } 
         private static SceneAsset CreateSceneAsset(string assetPath, List<Asset> dps, SceneAssetLoadArgs arg) => mode.CreateSceneAsset(assetPath, dps, arg);
         public static IReadOnlyList<string> GetAllAssetPaths() => mode.GetAllAssetPaths();
         public static IReadOnlyList<string> GetTagAssetPaths(string tag)

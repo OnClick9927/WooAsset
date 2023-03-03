@@ -53,7 +53,7 @@ namespace WooAsset
         protected async override void OnLoad()
         {
             await bundle;
-            loadOp = bundle.LoadAssetAsync(loadArgs.path, typeof(UnityEngine.Object));
+            loadOp = bundle.LoadAssetAsync(path, typeof(UnityEngine.Object));
             await loadOp;
             SetResult(loadOp.asset);
         }

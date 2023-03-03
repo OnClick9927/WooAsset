@@ -109,6 +109,10 @@ namespace WooAsset
         {
             return new AsyncOperationAwaiter<AssetBundleCreateRequest>(target);
         }
+        public static IAwaiter<ResourceRequest> GetAwaiter(this ResourceRequest target)
+        {
+            return new AsyncOperationAwaiter<ResourceRequest>(target);
+        }
         public static IAwaiter<AsyncOperation> GetAwaiter(this AsyncOperation target)
         {
             return new AsyncOperationAwaiter<AsyncOperation>(target);
@@ -134,6 +138,10 @@ namespace WooAsset
         public static IAwaiter<Asset> GetAwaiter(this Asset target)
         {
             return new AssetOperationAwaiter<Asset>(target);
+        }
+        public static IAwaiter<ResourcesAsset> GetAwaiter(this ResourcesAsset target)
+        {
+            return new AssetOperationAwaiter<ResourcesAsset>(target);
         }
         public static IAwaiter<SceneAsset> GetAwaiter(this SceneAsset target)
         {
