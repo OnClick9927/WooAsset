@@ -52,7 +52,7 @@ namespace WooAsset
             {
                 var find = singles.Find(x => x.path == path);
                 if (find != null || AssetsBuild.IsIgnorePath(path)) return;
-                singles.Add(new AssetInfo(path, ""));
+                singles.Add(new AssetInfo(path, Path.GetDirectoryName(path).ToAssetsPath()));
             }
             for (int i = singles.Count - 1; i >= 0; i--)
             {
