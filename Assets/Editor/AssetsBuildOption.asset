@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e032500462931bd4b862324ca75e46f1, type: 3}
+  m_Name: AssetsBuildOption
+  m_EditorClassIdentifier: 
+  shaderVariantDirectory: Assets/Example
+  atlasPaths:
+  - Assets/Example
+  packSetting:
+    blockOffset: 1
+    enableRotation: 0
+    enableTightPacking: 0
+    padding: 2
+  textureSetting:
+    readable: 1
+    generateMipMaps: 0
+    sRGB: 1
+    filterMode: 1
+    anisoLevel: 1
+  PlatformSetting:
+    m_Name: DefaultTexturePlatform
+    m_Overridden: 0
+    m_MaxTextureSize: 2048
+    m_ResizeAlgorithm: 0
+    m_TextureFormat: -1
+    m_TextureCompression: 1
+    m_CompressionQuality: 50
+    m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    m_CrunchedCompression: 1
+    m_AllowsAlphaSplitting: 0
+    m_AndroidETC2FallbackOverride: 0
+  version: 0.0.1
+  bundleSize: 8388608
+  forceRebuild: 0
+  ignoreTypeTreeChanges: 1
+  compress: 1
+  buildGroups:
+  - build: 1
+    name: new
+    path: Assets/Example/New Folder
+    description: 
+    tags: []
+  - build: 1
+    name: px
+    path: Assets/Example/px
+    description: 
+    tags: []
+  - build: 1
+    name: sc
+    path: Assets/Example/Scene
+    description: 
+    tags: []
+  build:
+    types:
+    - WooAsset.AssetsEditorTool+DefaultAssetBuild
+    shortTypes:
+    - DefaultAssetBuild
+    typeIndex: 0
+  mode:
+    types:
+    - WooAsset.NormalAssetMode
+    - WooAsset.AssetsEditorTool+FastAssetMode
+    shortTypes:
+    - NormalAssetMode
+    - FastAssetMode
+    typeIndex: 0
+  encrypt:
+    types:
+    - WooAsset.DefaultAssetStreamEncrypt
+    - WooAsset.NoneAssetStreamEncrypt
+    shortTypes:
+    - DefaultAssetStreamEncrypt
+    - NoneAssetStreamEncrypt
+    typeIndex: 0
+  ignoreFileExtend:
+  - .cs
+  - .meta
+  enableServer: 1
+  serverDirectory: DLC/Server
+  serverPort: 8080

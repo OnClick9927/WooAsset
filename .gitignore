@@ -1,0 +1,12 @@
+.vs/
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+WooAsset.sln
+.vsconfig
+Library/
+Temp/
+ProjectSettings/
+Logs/
+obj/
+UserSettings/EditorUserSettings.asset
+*.csproj
