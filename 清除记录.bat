@@ -1,13 +1,8 @@
 chcp 65001
-@echo off
-set /p gd=输入要清除历史提交信息的仓库目录的绝对路径:
-echo 待处理的路径：%gd%
-set /p gm=输入提交说明：
-pushd
-cd /d %gd%
+
 git checkout --orphan latest_branch
 git add -A
-git commit -am "%gm%"
+git commit -am 清除提交记录
 git branch -D main
 git branch -m main
 git push -f origin main
