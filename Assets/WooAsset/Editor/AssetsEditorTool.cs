@@ -78,7 +78,6 @@ namespace WooAsset
         {
             bundles.Clear();
             assets.Clear();
-            AssetTaskRunner.PreviewAssets();
             AssetsInternal.mode = Activator.CreateInstance(option.GetAssetModeType()) as IAssetMode;
             AssetsInternal.localSaveDir = AssetsEditorTool.outputPath;
             if (option.enableServer && AssetsInternal.mode is NormalAssetMode)

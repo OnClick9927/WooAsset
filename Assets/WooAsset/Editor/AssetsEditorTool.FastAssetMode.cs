@@ -6,7 +6,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        public class FastAssetMode : CheckBundleVersionOperation, IAssetMode
+        public class FastAssetMode : IAssetMode
         {
             private class FastCopy : CopyBundleOperation
             {
@@ -18,105 +18,72 @@ namespace WooAsset
                     InvokeComplete();
                 }
             }
-            private class FastCompare : VersionCompareOperation
+
+            private class FastCheck : CheckBundleVersionOperation
             {
-                public FastCompare(CheckBundleVersionOperation _check, int index, params string[] names) : base(_check, index, names)
+                private class FastCompare : VersionCompareOperation
                 {
+                    public FastCompare(CheckBundleVersionOperation _check, int index, params string[] names) : base(_check, index, names)
+                    {
+                    }
+                    protected override void Compare()
+                    {
+                        change = new List<FileData>();
+                        delete = new List<FileData>();
+                        add = new List<FileData>();
+                        InvokeComplete();
+                    }
                 }
-                protected override void Compare()
+                List<AssetsVersionCollection.VersionData> _versions = new List<AssetsVersionCollection.VersionData>();
+                public override List<AssetsVersionCollection.VersionData> versions => _versions;
+                protected override void Done()
                 {
-                    change = new List<FileData>();
-                    delete = new List<FileData>();
-                    add = new List<FileData>();
+                    AssetsInternal.Log($"Check Version Complete");
                     InvokeComplete();
                 }
+                public override VersionCompareOperation Compare(int versionIndex, params string[] tags)
+                {
+                    return new FastCompare(null, versionIndex, tags);
+                }
             }
 
+            bool IAssetMode.Initialized() => _task != null && _task.isDone;
+            private AssetTask _task;
 
-            public override float progress => 1;
-            public bool Initialized()
+            AssetOperation IAssetMode.InitAsync(string version, bool again, string[] tags)
             {
-                return true;
+                if (_task == null)
+                    _task = AssetTaskRunner.PreviewAssets();
+                return _task;
             }
 
-            public AssetOperation InitAsync(string version, bool again, string[] tags)
-            {
-                if (!isDone)
-                    InvokeComplete();
-                return this;
-            }
-            List<AssetsVersionCollection.VersionData> _versions = new List<AssetsVersionCollection.VersionData>();
-            public override List<AssetsVersionCollection.VersionData> versions => _versions;
-            public CheckBundleVersionOperation VersionCheck()
-            {
-                return this;
-            }
-            protected override void Done()
-            {
-                AssetsInternal.Log($"Check Version Complete");
-                InvokeComplete();
-            }
+            CheckBundleVersionOperation IAssetMode.VersionCheck() => new FastCheck();
 
-            public AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg)
-            {
-                if (arg.scene)
-                    return new EditorSceneAsset(arg);
-                return new EditorAsset(arg);
-            }
 
-            public IReadOnlyList<string> GetAllAssetPaths()
-            {
-                return cache.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory).ConvertAll(asset => asset.path);
-            }
-            public IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result)
-            {
-                result = GetAllAssetPaths().Where(x => Path.GetFileName(name).Contains(name)).ToList();
-                return result;
-            }
+            AssetHandle IAssetMode.CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);
 
-            public IReadOnlyList<string> GetTagAssetPaths(string tag)
-            {
-                return cache.tags.GetTagAssetPaths(tag);
-            }
+            IReadOnlyList<string> IAssetMode.GetAllAssetPaths() => cache.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory).ConvertAll(asset => asset.path);
+            IReadOnlyList<string> IAssetMode.GetAssetsByAssetName(string name, List<string> result) => ((IAssetMode)this).GetAllAssetPaths().Where(x => Path.GetFileName(name).Contains(name)).ToList();
 
-            public IReadOnlyList<string> GetAssetTags(string assetPath)
-            {
-                return cache.tags.GetAssetTags(assetPath);
-            }
+            IReadOnlyList<string> IAssetMode.GetTagAssetPaths(string tag) => cache.tags.GetTagAssetPaths(tag);
 
-            public IReadOnlyList<string> GetAllTags()
-            {
-                return cache.tags.GetAllTags();
-            }
+            IReadOnlyList<string> IAssetMode.GetAssetTags(string assetPath) => cache.tags.GetAssetTags(assetPath);
 
-            public IReadOnlyList<string> GetAssetDependencies(string assetPath)
-            {
-                return cache.tree.GetAssetData(assetPath)?.dps;
-            }
+            IReadOnlyList<string> IAssetMode.GetAllTags() => cache.tags.GetAllTags();
 
-            public IReadOnlyList<string> GetAllAssetPaths(string bundleName)
-            {
-                return cache.previewBundles.Find(x => x.hash == bundleName)?.GetAssets();
-            }
+            IReadOnlyList<string> IAssetMode.GetAssetDependencies(string assetPath) => cache.tree.GetAssetData(assetPath)?.dps;
+
+            IReadOnlyList<string> IAssetMode.GetAllAssetPaths(string bundleName) => cache.previewBundles.Find(x => x.hash == bundleName)?.GetAssets();
 
 
 
-            public CopyBundleOperation CopyToSandBox(string from, string to, bool cover)
-            {
-                return new FastCopy(from, to, cover);
-            }
-            public override VersionCompareOperation Compare(int versionIndex, params string[] tags)
-            {
-                return new FastCompare(null, versionIndex, tags);
-            }
+            CopyBundleOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new FastCopy(from, to, cover);
 
 
-            public AssetType GetAssetType(string assetPath)
-            {
-                return cache.tree.GetAssetData(assetPath).type;
-            }
 
-       
+            AssetType IAssetMode.GetAssetType(string assetPath) => cache.tree.GetAssetData(assetPath).type;
+
+
         }
     }
 

@@ -117,15 +117,15 @@ MonoBehaviour:
       directory: Assets/Example/px
     - path: Assets/Example/Scene
       name: Scene
-      length: 24304
+      length: 27940
       hash: 85037ddcb1ef134e5b57635b483efafb
       dps: []
       type: 1
       directory: Assets/Example
     - path: Assets/Example/Scene/New Scene.unity
       name: New Scene.unity
-      length: 12082
-      hash: 49ef844464650bd706f9ee41a5022c6a
+      length: 15718
+      hash: 1488d2f94dc716d8697f3c0ac4b663c5
       dps: []
       type: 7
       directory: Assets/Example/Scene

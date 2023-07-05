@@ -72,7 +72,7 @@ MonoBehaviour:
     shortTypes:
     - NormalAssetMode
     - FastAssetMode
-    typeIndex: 0
+    typeIndex: 1
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt
@@ -84,6 +84,6 @@ MonoBehaviour:
   ignoreFileExtend:
   - .cs
   - .meta
-  enableServer: 1
+  enableServer: 0
   serverDirectory: DLC/Server
   serverPort: 8080
