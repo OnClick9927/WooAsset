@@ -13,7 +13,8 @@ namespace WooAsset
                 AssetHandle asset = Find(path);
                 if (asset == null) return;
                 ReleaseRef(asset);
-                ReleaseBundleByAsset(asset);
+                if (asset.bundle != null)
+                    bundles.Release(asset.bundle.bundleName);
                 TryRealUnload(path);
                 if (asset.dps != null)
                 {
@@ -34,6 +35,13 @@ namespace WooAsset
                         Remove(all[i].path);
                     }
                 }
+            }
+
+            protected override void OnRetain(AssetHandle asset, bool old)
+            {
+                RetainRef(asset);
+                if (!old) return;
+                bundles.RetainRef(asset.bundle);
             }
         }
     }

@@ -53,7 +53,7 @@ namespace WooAsset
             AssetOperation IAssetMode.InitAsync(string version, bool again, string[] tags)
             {
                 if (_task == null)
-                    _task = AssetTaskRunner.PreviewAssets();
+                    _task = AssetTaskRunner.PreviewBundles();
                 return _task;
             }
 

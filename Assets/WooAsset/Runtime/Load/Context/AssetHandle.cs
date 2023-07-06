@@ -42,10 +42,8 @@ namespace WooAsset
 
         void IAsset.Retain()
         {
-            OnRetain(_ref != 0);
             _ref++;
         }
-        protected abstract void OnRetain(bool old);
         int IAsset.Release()
         {
             _ref--;

@@ -30,6 +30,10 @@ namespace WooAsset
                 }
             }
 
+            protected override void OnRetain(Bundle asset, bool old)
+            {
+                RetainRef(asset);
+            }
         }
     }
 }

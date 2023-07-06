@@ -50,12 +50,7 @@ namespace WooAsset
             base.SetResult(value);
         }
         protected sealed override void OnUnLoad() { }
-        protected sealed override void OnRetain(bool old)
-        {
-            if (!old) return;
-            if (this.bundle == null) return;
-            (this.bundle as IAsset).Retain();
-        }
+     
     }
 
 }

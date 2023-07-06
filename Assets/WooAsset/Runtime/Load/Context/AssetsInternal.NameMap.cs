@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static UnityEngine.Networking.UnityWebRequest;
 
 namespace WooAsset
 {
@@ -24,6 +25,12 @@ namespace WooAsset
             }
             protected abstract T CreateNew(string name, IAssetArgs args);
 
+            public void RetainRef(T asset)
+            {
+                if (asset == null) return;
+                asset.Retain();
+                listen?.OnAssetRetain(asset, asset.refCount);
+            }
             protected T LoadAsync(string name, IAssetArgs args)
             {
                 T result = Find(name);
@@ -35,12 +42,10 @@ namespace WooAsset
                     result.LoadAsync();
                     listen?.OnAssetCreate(name, result);
                 }
-                result.Retain();
-
-                listen?.OnAssetRetain(result, result.refCount);
+                OnRetain(result, result.refCount != 0);
                 return result;
-
             }
+            protected abstract void OnRetain(T asset, bool old);
             public abstract void Release(string name);
             protected int ReleaseRef(T t)
             {

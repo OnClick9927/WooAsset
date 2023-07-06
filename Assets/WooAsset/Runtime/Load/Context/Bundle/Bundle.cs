@@ -115,6 +115,5 @@ namespace WooAsset
             return value.LoadAssetWithSubAssets(name, type);
         }
 
-        protected sealed override void OnRetain(bool old) { }
     }
 }

@@ -101,47 +101,7 @@ namespace WooAsset
                     break;
             }
         }
-        static string[] OnWillSaveAssets(string[] paths)
-        {
-            bool go = false;
-            foreach (string path in paths)
-            {
-                if (!IsIgnorePath(path))
-                {
-                    go = true;
-                    break;
-                }
-            }
-            if (go)
-
-                AssetTaskRunner.PreviewAssets();
-
-            return paths;
-        }
-        static void OnWillCreateAsset(string path)
-        {
-            if (IsIgnorePath(path)) return;
-            AssetTaskRunner.PreviewAssets();
-        }
-
-        //--监听“资源即将被移动”事件
-        static AssetMoveResult OnWillMoveAsset(string assetPath, string newPath)
-        {
-            if (!IsIgnorePath(assetPath))
-            {
-                AssetTaskRunner.PreviewAssets();
-            }
-            return AssetMoveResult.DidNotMove;
-        }
-        //--监听“资源即将被删除”事件
-        static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions option)
-        {
-            if (!IsIgnorePath(assetPath))
-            {
-                AssetTaskRunner.PreviewAssets();
-            }
-            return AssetDeleteResult.DidNotDelete;
-        }
+       
     }
     public partial class AssetsEditorTool
     {

@@ -140,11 +140,7 @@ namespace WooAsset
             return bundles.LoadAsync(new BundleLoadArgs(bundleName, async));
         }
 
-        private static void ReleaseBundleByAsset(AssetHandle asset)
-        {
-            if (asset.bundle == null) return;
-            bundles.Release(asset.bundle.bundleName);
-        }
+    
 
         public static string RawToRawObjectPath(string path)
         {
