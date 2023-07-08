@@ -46,17 +46,7 @@ MonoBehaviour:
   buildGroups:
   - build: 1
     name: new
-    path: Assets/Example/New Folder
-    description: 
-    tags: []
-  - build: 1
-    name: px
-    path: Assets/Example/px
-    description: 
-    tags: []
-  - build: 1
-    name: sc
-    path: Assets/Example/Scene
+    path: Assets/Example
     description: 
     tags: []
   build:
@@ -72,7 +62,7 @@ MonoBehaviour:
     shortTypes:
     - NormalAssetMode
     - FastAssetMode
-    typeIndex: 1
+    typeIndex: 0
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt
@@ -84,6 +74,6 @@ MonoBehaviour:
   ignoreFileExtend:
   - .cs
   - .meta
-  enableServer: 0
+  enableServer: 1
   serverDirectory: DLC/Server
   serverPort: 8080

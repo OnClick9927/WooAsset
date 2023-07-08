@@ -16,7 +16,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example/New Folder
       name: New Folder
-      length: 33656
+      length: 33740
       hash: 24bbafb9a7a362e3a9f8fc89057304ff
       dps: []
       type: 1
@@ -66,14 +66,14 @@ MonoBehaviour:
       directory: Assets/Example/New Folder
     - path: Assets/Example/New Folder/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2766
-      hash: e77c660ccd22215e2f76ecb723c29f3e
+      length: 2850
+      hash: efb5e19c8cadf923cd7ee90522fd2618
       dps: []
       type: 4
       directory: Assets/Example/New Folder
     - path: Assets/Example/px
       name: px
-      length: 5868
+      length: 5714
       hash: 2a679d0c0f30f472975d58e5b9662848
       dps: []
       type: 1
@@ -101,42 +101,118 @@ MonoBehaviour:
       directory: Assets/Example/px
     - path: Assets/Example/px/One.prefab
       name: One.prefab
-      length: 2286
-      hash: 2004f30666106c93ffbbe04db5f24cdf
+      length: 2209
+      hash: 779574084950a028591e28a6fd16a763
       dps:
       - Assets/Example/px/1.png
       type: 9
       directory: Assets/Example/px
     - path: Assets/Example/px/Two.prefab
       name: Two.prefab
-      length: 2286
-      hash: 8ec75e59358cf00908b62e5758cd92ed
+      length: 2209
+      hash: 76d74da6ed17581486bb93fef6951cdc
       dps:
       - Assets/Example/px/1.png
       type: 9
       directory: Assets/Example/px
     - path: Assets/Example/Scene
       name: Scene
-      length: 27940
+      length: 28990
       hash: 85037ddcb1ef134e5b57635b483efafb
       dps: []
       type: 1
       directory: Assets/Example
     - path: Assets/Example/Scene/New Scene.unity
       name: New Scene.unity
-      length: 15718
-      hash: 1488d2f94dc716d8697f3c0ac4b663c5
+      length: 16312
+      hash: 6f2eedeca901bb152a333454fbb53fc5
       dps: []
       type: 7
       directory: Assets/Example/Scene
     - path: Assets/Example/Scene/New Scene2.unity
       name: New Scene2.unity
-      length: 12222
-      hash: 7fdeadabbb6962861f0eb76ec18002cb
+      length: 12678
+      hash: d80dc6173d3bca5b2d8d2f5b60566114
       dps: []
       type: 7
       directory: Assets/Example/Scene
-  previewBundles: []
+  previewBundles:
+  - hash: 16ce6fd36be6aa6e6e1bfc82b6d11359
+    length: 24055
+    assets:
+    - path: Assets/Example/New Folder/a.jpg
+      name: a.jpg
+      length: 23166
+      hash: 6de058942339e09666a74eccc57d7a00
+    - path: Assets/Example/px/3.png
+      name: 3.png
+      length: 470
+      hash: 89774a5daaaf4992a55619ccb6660c7b
+    - path: Assets/Example/px/2.png
+      name: 2.png
+      length: 419
+      hash: ad6c8de70668d4a6dd34ce44ab6f815a
+  - hash: 08e8bdd1976259ae7b8ef59fdc76d7c9
+    length: 16312
+    assets:
+    - path: Assets/Example/Scene/New Scene.unity
+      name: New Scene.unity
+      length: 16312
+      hash: 6f2eedeca901bb152a333454fbb53fc5
+  - hash: 692272eff59436071f5f94c881c77870
+    length: 12678
+    assets:
+    - path: Assets/Example/Scene/New Scene2.unity
+      name: New Scene2.unity
+      length: 12678
+      hash: d80dc6173d3bca5b2d8d2f5b60566114
+  - hash: cfd173b915c002b1467c0de456e3885d
+    length: 7262
+    assets:
+    - path: Assets/Example/New Folder/Cube.prefab
+      name: Cube.prefab
+      length: 2844
+      hash: 0221ac0e5696a1f3aedad196edaac679
+    - path: Assets/Example/px/One.prefab
+      name: One.prefab
+      length: 2209
+      hash: 779574084950a028591e28a6fd16a763
+    - path: Assets/Example/px/Two.prefab
+      name: Two.prefab
+      length: 2209
+      hash: 76d74da6ed17581486bb93fef6951cdc
+  - hash: 553fbe73a2a295b01ac54d0a87d26856
+    length: 4394
+    assets:
+    - path: Assets/Example/New Folder/New Material 1.mat
+      name: New Material 1.mat
+      length: 2198
+      hash: d882027734006859076f557c2806d379
+    - path: Assets/Example/New Folder/New Material.mat
+      name: New Material.mat
+      length: 2196
+      hash: 98a28e10526b63e2a25bbc484abcb314
+  - hash: b2c2f585de9733925fbe3bb4aa6637c7
+    length: 2850
+    assets:
+    - path: Assets/Example/New Folder/shadervariants.shadervariants
+      name: shadervariants.shadervariants
+      length: 2850
+      hash: efb5e19c8cadf923cd7ee90522fd2618
+  - hash: e0503e9f52624471e1d98501accc60c1
+    length: 477
+    assets:
+    - path: Assets/Example/New Folder/aaa.asset
+      name: aaa.asset
+      length: 477
+      hash: f2faa0814a9f5d35e96ef575e4fcb18b
+  - hash: c4993cc8c33b53a4ff0fdc7cae49b18d
+    length: 407
+    assets:
+    - path: Assets/Example/px/1.png
+      name: 1.png
+      length: 407
+      hash: e2f30f55a684a7d510149a288e134f56
   tags:
     assets:
     - path: Assets/Example/New Folder/a.jpg

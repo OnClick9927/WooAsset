@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 
 namespace WooAsset
 {
@@ -14,7 +13,7 @@ namespace WooAsset
             var hashMap = assets.ToDictionary(x => x.path, y => y.dps.ConvertAll(x => context.tree.GetAssetData(x).hash));
             var builds = new List<BundleGroup>();
 
-            context.assetBuild.Create(context.tags, context.needBuildAssets, dps, builds);
+            context.assetBuild.Create(context.tags, context.needBuildAssets.FindAll(x => x.type != AssetType.SpriteAtlas), dps, builds);
 
             List<string> rawAssets = new List<string>();
             for (int i = 0; i < builds.Count; i++)
