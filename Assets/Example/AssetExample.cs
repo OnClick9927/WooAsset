@@ -37,7 +37,7 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            await Assets.CopyToSandBox();
+            //await Assets.CopyToSandBox();
             var op = await Assets.VersionCheck();
             if (op.versions != null)
             {

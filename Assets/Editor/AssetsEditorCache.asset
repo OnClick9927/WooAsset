@@ -14,12 +14,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tree:
     assets:
+    - path: Assets/Example
+      name: Example
+      length: 74449
+      hash: d365b40c6946f1ec0add277791d7ea38
+      dps: []
+      type: 1
+      directory: Assets
     - path: Assets/Example/New Folder
       name: New Folder
       length: 33740
       hash: 24bbafb9a7a362e3a9f8fc89057304ff
       dps: []
       type: 1
+      directory: Assets/Example
+    - path: Assets/Example/px
+      name: px
+      length: 5714
+      hash: 2a679d0c0f30f472975d58e5b9662848
+      dps: []
+      type: 1
+      directory: Assets/Example
+    - path: Assets/Example/Scene
+      name: Scene
+      length: 28990
+      hash: 85037ddcb1ef134e5b57635b483efafb
+      dps: []
+      type: 1
+      directory: Assets/Example
+    - path: Assets/Example/New Folder.spriteatlas
+      name: New Folder.spriteatlas
+      length: 1498
+      hash: 64d570b95c006f92937e67a3bbcd9807
+      dps:
+      - Assets/Example/New Folder/a.jpg
+      type: 14
+      directory: Assets/Example
+    - path: Assets/Example/px.spriteatlas
+      name: px.spriteatlas
+      length: 1628
+      hash: 48099e468559abdc5e0b20eecaac4cf2
+      dps:
+      - Assets/Example/px/2.png
+      - Assets/Example/px/3.png
+      - Assets/Example/px/1.png
+      type: 14
+      directory: Assets/Example
+    - path: Assets/Example/shadervariants.shadervariants
+      name: shadervariants.shadervariants
+      length: 2879
+      hash: 677a7e1d13b6db8c7581ddc0d29b3176
+      dps: []
+      type: 4
       directory: Assets/Example
     - path: Assets/Example/New Folder/a.jpg
       name: a.jpg
@@ -71,13 +117,6 @@ MonoBehaviour:
       dps: []
       type: 4
       directory: Assets/Example/New Folder
-    - path: Assets/Example/px
-      name: px
-      length: 5714
-      hash: 2a679d0c0f30f472975d58e5b9662848
-      dps: []
-      type: 1
-      directory: Assets/Example
     - path: Assets/Example/px/1.png
       name: 1.png
       length: 407
@@ -115,13 +154,6 @@ MonoBehaviour:
       - Assets/Example/px/1.png
       type: 9
       directory: Assets/Example/px
-    - path: Assets/Example/Scene
-      name: Scene
-      length: 28990
-      hash: 85037ddcb1ef134e5b57635b483efafb
-      dps: []
-      type: 1
-      directory: Assets/Example
     - path: Assets/Example/Scene/New Scene.unity
       name: New Scene.unity
       length: 16312
@@ -181,6 +213,17 @@ MonoBehaviour:
       name: Two.prefab
       length: 2209
       hash: 76d74da6ed17581486bb93fef6951cdc
+  - hash: 9b3330069cb591bae915b6f3e0b92e94
+    length: 5729
+    assets:
+    - path: Assets/Example/shadervariants.shadervariants
+      name: shadervariants.shadervariants
+      length: 2879
+      hash: 677a7e1d13b6db8c7581ddc0d29b3176
+    - path: Assets/Example/New Folder/shadervariants.shadervariants
+      name: shadervariants.shadervariants
+      length: 2850
+      hash: efb5e19c8cadf923cd7ee90522fd2618
   - hash: 553fbe73a2a295b01ac54d0a87d26856
     length: 4394
     assets:
@@ -192,13 +235,6 @@ MonoBehaviour:
       name: New Material.mat
       length: 2196
       hash: 98a28e10526b63e2a25bbc484abcb314
-  - hash: b2c2f585de9733925fbe3bb4aa6637c7
-    length: 2850
-    assets:
-    - path: Assets/Example/New Folder/shadervariants.shadervariants
-      name: shadervariants.shadervariants
-      length: 2850
-      hash: efb5e19c8cadf923cd7ee90522fd2618
   - hash: e0503e9f52624471e1d98501accc60c1
     length: 477
     assets:
@@ -215,6 +251,18 @@ MonoBehaviour:
       hash: e2f30f55a684a7d510149a288e134f56
   tags:
     assets:
+    - path: Assets/Example/New Folder.spriteatlas
+      tags:
+      - SpriteAtlas
+      - New Folder
+    - path: Assets/Example/px.spriteatlas
+      tags:
+      - SpriteAtlas
+      - px
+    - path: Assets/Example/shadervariants.shadervariants
+      tags:
+      - ShaderVariant
+      - shadervariants
     - path: Assets/Example/New Folder/a.jpg
       tags:
       - Texture

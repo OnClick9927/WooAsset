@@ -8,7 +8,7 @@ namespace WooAsset
 
         AssetType GetAssetType(string path);
         IReadOnlyList<string> GetTags(EditorAssetData info);
-        void Create(AssetTagCollection tags,List<EditorAssetData> assets, Dictionary<EditorAssetData, List<EditorAssetData>> dpsDic, List<BundleGroup> result);
+        void Create(AssetTagCollection tags, List<EditorAssetData> assets, List<BundleGroup> result);
 
         List<AssetTask> GetPipelineFinishTasks(AssetTaskContext context);
 

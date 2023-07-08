@@ -39,7 +39,7 @@ MonoBehaviour:
     m_AllowsAlphaSplitting: 0
     m_AndroidETC2FallbackOverride: 0
   version: 0.0.1
-  bundleSize: 8388608
+  bundleSize: 99999999999999
   forceRebuild: 0
   ignoreTypeTreeChanges: 1
   compress: 1

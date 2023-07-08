@@ -9,11 +9,10 @@ namespace WooAsset
         {
 
             List<EditorAssetData> assets = context.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
-            var dps = assets.ToDictionary(x => x, y => assets.FindAll(a => { return a.dps.Contains(y.path); }));
             var hashMap = assets.ToDictionary(x => x.path, y => y.dps.ConvertAll(x => context.tree.GetAssetData(x).hash));
             var builds = new List<BundleGroup>();
 
-            context.assetBuild.Create(context.tags, context.needBuildAssets.FindAll(x => x.type != AssetType.SpriteAtlas), dps, builds);
+            context.assetBuild.Create(context.tags, context.needBuildAssets.FindAll(x => x.type != AssetType.SpriteAtlas), builds);
 
             List<string> rawAssets = new List<string>();
             for (int i = 0; i < builds.Count; i++)
