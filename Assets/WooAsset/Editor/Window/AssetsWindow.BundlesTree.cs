@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Object = UnityEngine.Object;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace WooAsset
 {
@@ -18,11 +19,13 @@ namespace WooAsset
                 AssetByTag
 
             }
+            [Flags]
             private enum DpViewType
             {
-                None,
-                Asset,
-                Bundle,
+                None = 0,
+                Asset = 1,
+                Bundle = 2,
+                Usage = 4,
             }
             private DpViewType dpViewType = DpViewType.None;
             List<BundleGroup> previewBundles { get { return cache.previewBundles; } }
@@ -30,13 +33,16 @@ namespace WooAsset
             private SearchField search;
             private AssetDpTree assetDp;
             private BundleDpTree bundleDp;
+            private AssetUsageTree assetUsage;
+
             private SplitView sp = new SplitView() { vertical = false, minSize = 200, split = 300 };
+            private SplitView sp2 = new SplitView() { vertical = true, minSize = 200, split = 300 };
 
             public BundlesTree(TreeViewState state, SearchType _searchType) : base(state)
             {
                 assetDp = new AssetDpTree(new TreeViewState());
                 bundleDp = new BundleDpTree(new TreeViewState());
-
+                assetUsage=new AssetUsageTree(new TreeViewState());
                 this._searchType = _searchType;
                 search = new SearchField(this.searchString, System.Enum.GetNames(typeof(SearchType)), (int)_searchType);
                 search.onValueChange += (value) => { this.searchString = value.ToLower(); };
@@ -56,29 +62,7 @@ namespace WooAsset
 
                 this.multiColumnHeader.ResizeToFit();
                 Reload();
-                sp.fistPan += Sp_fistPan;
-                sp.secondPan += Sp_secondPan;
-            }
 
-            private void Sp_secondPan(Rect obj)
-            {
-                switch (dpViewType)
-                {
-                    case DpViewType.None:
-                        break;
-                    case DpViewType.Asset:
-                        assetDp.OnGUI(obj);
-                        break;
-                    case DpViewType.Bundle:
-                        bundleDp.OnGUI(obj);
-                        break;
-
-                }
-            }
-
-            private void Sp_fistPan(Rect obj)
-            {
-                base.OnGUI(obj);
             }
 
             protected override void SearchChanged(string newSearch)
@@ -91,18 +75,35 @@ namespace WooAsset
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
                 search.OnGUI(rs1[0]);
                 GUI.Label(rs1[1], $"Total Size   {GetSizeString(totalSize)}");
-                switch (dpViewType)
+                if (dpViewType == DpViewType.None)
+                    base.OnGUI(rs[1]);
+                else if (dpViewType == DpViewType.Bundle)
                 {
-                    case DpViewType.None:
-                        base.OnGUI(rs[1]);
-
-                        break;
-                    case DpViewType.Asset:
-                    case DpViewType.Bundle:
-                        sp.OnGUI(rs[1]);
-                        break;
+                    sp.OnGUI(rs[1]);
+                    base.OnGUI(sp.rects[0]);
+                    bundleDp.OnGUI(sp.rects[1]);
 
                 }
+                else
+                {
+                    sp.OnGUI(rs[1]);
+                    base.OnGUI(sp.rects[0]);
+                    if (dpViewType == DpViewType.Asset)
+                        assetDp.OnGUI(sp.rects[1]);
+                    else if (dpViewType == DpViewType.Usage)
+                        assetUsage.OnGUI(sp.rects[1]);
+                    else
+                    {
+                        sp2.OnGUI(sp.rects[1]);
+                        assetDp.OnGUI(sp2.rects[0]);
+                        assetUsage.OnGUI(sp2.rects[1]);
+
+                    }
+            
+                }
+
+
+
             }
 
             protected override TreeViewItem BuildRoot()
@@ -287,19 +288,27 @@ namespace WooAsset
             {
                 var find = this.FindItem(id, this.rootItem);
                 string path = find.displayName;
+                dpViewType = DpViewType.None;
+
                 if (find.depth == 1)
                 {
                     var asset = cache.tree.GetAssetData(path);
-                    if (asset != null && asset.dps.Count != 0)
+                    if (asset.dps.Count != 0)
                     {
                         assetDp.SetAssetInfo(asset);
-                        dpViewType = DpViewType.Asset;
+                        dpViewType |= DpViewType.Asset;
                     }
                     else
-                    {
                         assetDp.SetAssetInfo(null);
-                        dpViewType = DpViewType.None;
+                    var useage = cache.tree.GetUsage(asset);
+                    if (useage != null && useage.Count > 0)
+                    {
+                        dpViewType |= DpViewType.Usage;
+                        assetUsage.SetAssetInfo(asset);
                     }
+                    else
+                        assetUsage.SetAssetInfo(null);
+
                     bundleDp.SetBundleGroup(null);
 
                 }
@@ -310,14 +319,13 @@ namespace WooAsset
                     if (groups.Count != 0)
                     {
                         bundleDp.SetBundleGroup(groups);
-                        dpViewType = DpViewType.Bundle;
+                        dpViewType |= DpViewType.Bundle;
                     }
                     else
-                    {
                         bundleDp.SetBundleGroup(null);
-                        dpViewType = DpViewType.None;
-                    }
                     assetDp.SetAssetInfo(null);
+                    assetUsage.SetAssetInfo(null);
+
                 }
 
                 base.SingleClickedItem(id);

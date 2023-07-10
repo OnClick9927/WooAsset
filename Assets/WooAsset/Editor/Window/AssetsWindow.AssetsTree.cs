@@ -5,6 +5,7 @@ using Object = UnityEngine.Object;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace WooAsset
 {
@@ -22,16 +23,23 @@ namespace WooAsset
             private SearchField search;
             public SearchType _searchType = SearchType.Name;
             private AssetDpTree assetDp;
+            private AssetUsageTree assetUsage;
+
             private SplitView sp = new SplitView() { vertical = false, minSize = 200, split = 300 };
+            private SplitView sp2 = new SplitView() { vertical = true, minSize = 200, split = 300 };
+
+            [Flags]
             private enum DpViewType
             {
-                None,
-                Asset,
+                None = 0,
+                Asset = 2,
+                Usage = 4,
             }
             private DpViewType dpViewType = DpViewType.None;
             public AssetsTree(TreeViewState state, SearchType _searchType) : base(state)
             {
                 assetDp = new AssetDpTree(new TreeViewState());
+                assetUsage = new AssetUsageTree(new TreeViewState());
                 this._searchType = _searchType;
                 search = new SearchField(this.searchString, System.Enum.GetNames(typeof(SearchType)), (int)_searchType);
                 search.onValueChange += (value) => { this.searchString = value.ToLower(); };
@@ -48,25 +56,6 @@ namespace WooAsset
                 }));
                 this.multiColumnHeader.ResizeToFit();
                 this.Reload();
-                sp.fistPan += Sp_fistPan;
-                sp.secondPan += Sp_secondPan;
-            }
-
-            private void Sp_secondPan(Rect obj)
-            {
-                switch (dpViewType)
-                {
-                    case DpViewType.None:
-                        break;
-                    case DpViewType.Asset:
-                        assetDp.OnGUI(obj);
-                        break;
-                }
-            }
-
-            private void Sp_fistPan(Rect obj)
-            {
-                base.OnGUI(obj);
 
             }
 
@@ -112,15 +101,21 @@ namespace WooAsset
                 var find = this.FindItem(id, this.rootItem);
                 string path = find.displayName;
                 EditorAssetData asset = cache.tree.GetAssetData(path);
-                if (asset.dps.Count == 0)
+                dpViewType = DpViewType.None;
+                var useage = cache.tree.GetUsage(asset);
+                if (useage != null && useage.Count > 0)
                 {
-                    assetDp.SetAssetInfo(null);
-                    dpViewType = DpViewType.None;
+                    dpViewType |= DpViewType.Usage;
+                    assetUsage.SetAssetInfo(asset);
                 }
+                else
+                    assetUsage.SetAssetInfo(null);
+                if (asset.dps.Count == 0)
+                    assetDp.SetAssetInfo(null);
                 else
                 {
                     assetDp.SetAssetInfo(asset);
-                    dpViewType = DpViewType.Asset;
+                    dpViewType |= DpViewType.Asset;
                 }
 
 
@@ -132,14 +127,27 @@ namespace WooAsset
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
                 search.OnGUI(rs1[0]);
                 GUI.Label(rs1[1], $"Total Size   {GetSizeString(totalSize)}");
-                switch (dpViewType)
+                if (dpViewType == DpViewType.None)
                 {
-                    case DpViewType.None:
-                        base.OnGUI(rs[1]);
-                        break;
-                    case DpViewType.Asset:
-                        sp.OnGUI(rs[1]);
-                        break;
+                    base.OnGUI(rs[1]);
+                }
+                else
+                {
+
+                    sp.OnGUI(rs[1]);
+                    base.OnGUI(sp.rects[0]);
+                    if (dpViewType == DpViewType.Asset)
+                        assetDp.OnGUI(sp.rects[1]);
+                    else if (dpViewType == DpViewType.Usage)
+                        assetUsage.OnGUI(sp.rects[1]);
+                    else
+                    {
+                        sp2.OnGUI(sp.rects[1]);
+                        assetDp.OnGUI(sp2.rects[0]);
+                        assetUsage.OnGUI(sp2.rects[1]);
+
+                    }
+
                 }
             }
 

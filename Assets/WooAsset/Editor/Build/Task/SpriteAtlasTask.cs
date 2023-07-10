@@ -6,7 +6,6 @@ using UnityEngine.U2D;
 using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
-using File = System.IO.File;
 
 namespace WooAsset
 {
@@ -38,21 +37,20 @@ namespace WooAsset
                 InvokeComplete();
                 return;
             }
-
-            var data = AssetDatabase.FindAssets("t:Texture", context.atlasPaths)
-                .ToList()
-                .ConvertAll(x => AssetDatabase.GUIDToAssetPath(x))
-                .ConvertAll(x => new { dir = Path.GetDirectoryName(x), path = x })
-                .GroupBy(x => x.dir).ToDictionary(x => x.Key, x => x.Select(y => y.path).ToList());
-            foreach (var item in data)
-            {
-                string file_path = $"{item.Key}.spriteatlas";
-                if (File.Exists(file_path))
-                    AssetDatabase.DeleteAsset(file_path);
-            }
+            AssetDatabase.FindAssets("t:SpriteAtlas", context.atlasPaths)
+                    .Select(x => AssetDatabase.GUIDToAssetPath(x))
+                    .ToList()
+                    .ForEach(x =>
+                    {
+                        AssetDatabase.DeleteAsset(x);
+                    });
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             await Task.Delay(1000);
+            var data = AssetDatabase.FindAssets("t:Texture", context.atlasPaths)
+                .Select(x => AssetDatabase.GUIDToAssetPath(x))
+                .Select(x => new { dir = Path.GetDirectoryName(x), path = x })
+                .GroupBy(x => x.dir).ToDictionary(x => x.Key, x => x.Select(y => y.path).ToList());
             foreach (var item in data)
             {
                 BuildAtlas(context, item.Key, item.Value);

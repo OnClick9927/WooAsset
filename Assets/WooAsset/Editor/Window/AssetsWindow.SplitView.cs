@@ -12,7 +12,6 @@ namespace WooAsset
             public bool vertical = true;
             public float split = 200;
             public float minSize = 100;
-            public event Action<Rect> fistPan, secondPan;
             public event Action onBeginResize;
             public event Action onEndResize;
             public bool dragging
@@ -41,19 +40,14 @@ namespace WooAsset
                 }
             }
             private bool _resizing;
+            private Rect position;
+            public Rect[] rects { get { return RectEx.Split(position, vertical, split, 4); } }
             public void OnGUI(Rect position)
             {
-                var rs = RectEx.Split(position, vertical, split, 4);
-                var mid = RectEx.SplitRect(position, vertical, split, 4);
-                if (fistPan != null)
-                {
-                    fistPan(rs[0]);
-                }
-                if (secondPan != null)
-                {
-                    secondPan(rs[1]);
-                }
-                EditorGUI.DrawRect(RectEx.Zoom(mid, TextAnchor.MiddleCenter, -2), Color.gray);
+                this.position = position;
+                var mid = RectEx.SplitRect(position, vertical, split, 10);
+
+                EditorGUI.DrawRect(RectEx.Zoom(mid, TextAnchor.MiddleCenter, -8), Color.gray);
                 Event e = Event.current;
                 if (mid.Contains(e.mousePosition))
                 {

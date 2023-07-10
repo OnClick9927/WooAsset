@@ -9,15 +9,28 @@ namespace WooAsset
             public static MultiColumnHeaderState.Column emptyTitle = new MultiColumnHeaderState.Column()
             {
                 maxWidth = 500,
+                width = 300,
                 minWidth = 300,
                 allowToggleVisibility = false,
 
             };
 
+            public static MultiColumnHeaderState.Column usage = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Usage"),
+                maxWidth = 500,
+                width = 300,
+
+                minWidth = 300,
+                allowToggleVisibility = false,
+
+            };
             public static MultiColumnHeaderState.Column dependence = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Dependence"),
                 maxWidth = 500,
+                width = 300,
+
                 minWidth = 300,
                 allowToggleVisibility = false,
 

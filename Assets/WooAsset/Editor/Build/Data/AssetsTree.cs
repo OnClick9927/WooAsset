@@ -14,8 +14,11 @@ namespace WooAsset
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
         public EditorAssetData GetAssetData(string path) => assets.Find(x => x.path == path);
         public List<EditorAssetData> GetAllAssets() => assets;
-        public List<EditorAssetData> GetSubFolders(EditorAssetData info) => assets.FindAll(x => x.directory == info.path && x.type == AssetType.Directory);
-        public List<EditorAssetData> GetSubFiles(EditorAssetData info) => assets.FindAll(x => x.directory == info.path && x.type != AssetType.Directory);
+        public List<EditorAssetData> GetSubFolders(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type == AssetType.Directory);
+        public List<EditorAssetData> GetSubFiles(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type != AssetType.Directory);
+        public List<EditorAssetData> GetDependence(EditorAssetData data) => data.dps.ConvertAll(x => GetAssetData(x));
+        public List<EditorAssetData> GetUsage(EditorAssetData data) => assets.FindAll(x=>x.dps.Contains(data.path));
+
 
         IAssetBuild assetBuild;
         public void ReadPaths(List<string> folders, IAssetBuild assetBuild)
@@ -25,7 +28,7 @@ namespace WooAsset
             folders.RemoveAll(x => !Directory.Exists(x) || AssetsEditorTool.IsIgnorePath(x));
             for (int i = 0; i < folders.Count; i++)
                 AddPath(folders[i]);
-            CollectDps(folders);
+            CollectDps();
             assets = assets.Distinct(this).ToList();
             assets.RemoveAll(x => NeedRemove(x));
             CalcLength();
@@ -81,7 +84,7 @@ namespace WooAsset
             }
         }
 
-        private void CollectDps(List<string> root)
+        private void CollectDps()
         {
             var paths = AssetDatabase.GetDependencies(assets.FindAll(x => x.type != AssetType.Directory)
                 .ConvertAll(x => x.path).ToArray(), true);

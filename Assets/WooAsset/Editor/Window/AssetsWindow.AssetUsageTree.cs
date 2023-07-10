@@ -9,7 +9,7 @@ namespace WooAsset
 
     partial class AssetsWindow
     {
-        private class AssetDpTree : TreeView
+        private class AssetUsageTree : TreeView
         {
             private EditorAssetData asset;
             public void SetAssetInfo(EditorAssetData info)
@@ -17,19 +17,20 @@ namespace WooAsset
                 this.asset = info;
                 this.Reload();
                 this.multiColumnHeader.ResizeToFit();
+
             }
-            public AssetDpTree(TreeViewState state) : base(state)
+            public AssetUsageTree(TreeViewState state) : base(state)
             {
+                showAlternatingRowBackgrounds = true;
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
-                    TreeColumns.dependence,
+                    TreeColumns.usage,
                     TreeColumns.size,
                     TreeColumns.hash,
                     TreeColumns.bundle,
                     TreeColumns.bundleSize,
                     TreeColumns.tag,
                 }));
-                showAlternatingRowBackgrounds = true;
 
                 this.multiColumnHeader.ResizeToFit();
                 Reload();
@@ -46,13 +47,18 @@ namespace WooAsset
             {
                 var result = GetRows() ?? new List<TreeViewItem>();
                 result.Clear();
-
-                if (this.asset != null && this.asset.dps.Count > 0)
+                if (asset != null)
                 {
-                    Build(root, asset.dps, result);
+                    var usage = cache.tree.GetUsage(asset);
+
+                    if (usage != null && usage.Count > 0)
+                    {
+                        Build(root, usage.ConvertAll(x => x.path), result);
+                    }
+
+                    SetupParentsAndChildrenFromDepths(root, result);
                 }
 
-                SetupParentsAndChildrenFromDepths(root, result);
                 return result;
             }
 
