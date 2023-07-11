@@ -29,7 +29,7 @@ namespace WooAsset
             }
             public static void N2One(List<EditorAssetData> assets, List<BundleGroup> result)
             {
-                result.Add(BundleGroup.Create(assets.ConvertAll(x => x as FileData)));
+                result.Add(BundleGroup.Create(assets));
             }
             public static void N2MBySize(List<EditorAssetData> assets, List<BundleGroup> result)
             {

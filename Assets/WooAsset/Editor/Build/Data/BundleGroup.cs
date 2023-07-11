@@ -12,7 +12,7 @@ namespace WooAsset
     {
         public string hash;
         public long length = 0;
-        [UnityEngine.SerializeField] private List<FileData> assets = new List<FileData>();
+        [UnityEngine.SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         public int assetCount { get { return assets.Count; } }
 
         public void CalcHash(Dictionary<string, List<string>> hashMap)
@@ -37,9 +37,10 @@ namespace WooAsset
         public void RemoveAsset(string path)
         {
             if (!ContainsAsset(path)) return;
-            FileData _find = assets.Find(x => x.path == path);
+            EditorAssetData _find = assets.Find(x => x.path == path);
             assets.Remove(_find);
             length -= _find.length;
+
         }
         public bool ContainsAsset(string assetPath) => assets.Find(x => x.path == assetPath) != null;
         public IReadOnlyList<string> GetAssets() => assets.ConvertAll(x => x.path).ToList();
@@ -62,17 +63,17 @@ namespace WooAsset
                 length += item.length;
             }
         }
-        public static BundleGroup Create(List<FileData> assets)
+        public static BundleGroup Create(List<EditorAssetData> assets)
         {
             BundleGroup group = new BundleGroup();
-            group.assets = new List<FileData>(assets);
+            group.assets = new List<EditorAssetData>(assets);
             group.CalcLength();
             return group;
         }
-        public static BundleGroup Create(FileData asset)
+        public static BundleGroup Create(EditorAssetData asset)
         {
             BundleGroup group = new BundleGroup();
-            group.assets = new List<FileData>
+            group.assets = new List<EditorAssetData>
             {
                 asset
             };

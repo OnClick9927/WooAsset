@@ -6,13 +6,14 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace WooAsset
 {
     partial class AssetsWindow
     {
 
-        private class AssetsTree : TreeView
+        private class AssetsTree : TreeView, IPing<EditorAssetData>
         {
             public enum SearchType
             {
@@ -38,8 +39,8 @@ namespace WooAsset
             private DpViewType dpViewType = DpViewType.None;
             public AssetsTree(TreeViewState state, SearchType _searchType) : base(state)
             {
-                assetDp = new AssetDpTree(new TreeViewState());
-                assetUsage = new AssetUsageTree(new TreeViewState());
+                assetDp = new AssetDpTree(new TreeViewState(), this);
+                assetUsage = new AssetUsageTree(new TreeViewState(), this);
                 this._searchType = _searchType;
                 search = new SearchField(this.searchString, System.Enum.GetNames(typeof(SearchType)), (int)_searchType);
                 search.onValueChange += (value) => { this.searchString = value.ToLower(); };
@@ -48,6 +49,9 @@ namespace WooAsset
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
                     TreeColumns.emptyTitle,
+                    TreeColumns.usageCount,
+                    TreeColumns.depenceCount,
+
                     TreeColumns.type,
                     TreeColumns.size,
                     TreeColumns.hash,
@@ -94,7 +98,14 @@ namespace WooAsset
             protected override void DoubleClickedItem(int id)
             {
                 var rows = this.FindRows(new List<int>() { id });
-                EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
+                if (string.IsNullOrEmpty(searchString))
+                {
+                    EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
+                }
+                else
+                {
+                    Ping(cache.tree.GetAssetData(rows[0].displayName));
+                }
             }
             protected override void SingleClickedItem(int id)
             {
@@ -102,8 +113,7 @@ namespace WooAsset
                 string path = find.displayName;
                 EditorAssetData asset = cache.tree.GetAssetData(path);
                 dpViewType = DpViewType.None;
-                var useage = cache.tree.GetUsage(asset);
-                if (useage != null && useage.Count > 0)
+                if (asset.usageCount > 0)
                 {
                     dpViewType |= DpViewType.Usage;
                     assetUsage.SetAssetInfo(asset);
@@ -155,22 +165,28 @@ namespace WooAsset
 
             protected override void RowGUI(RowGUIArgs args)
             {
-                var data = cache.tree.GetAssetData(args.label);
-                if (data == null) return;
+                var asset = cache.tree.GetAssetData(args.label);
+                if (asset == null) return;
                 float indent = this.GetContentIndent(args.item);
                 var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                 if (string.IsNullOrEmpty(searchString))
                     GUI.Label(first, new GUIContent(Path.GetFileName(args.label), Textures.GetMiniThumbnail(args.label)));
                 else
                     GUI.Label(first, new GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
-                if (data.type != AssetType.Directory)
+                if (asset.type != AssetType.Directory)
                 {
-                    GUI.Label(args.GetCellRect(1), data.type.ToString());
+                    GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
+                    GUI.Label(args.GetCellRect(2), asset.dps.Count.ToString());
 
-                    GUI.Label(args.GetCellRect(4), GetTagsString(cache.tags.GetAssetTags(data.path)));
+
+                    GUI.Label(args.GetCellRect(3), asset.type.ToString());
+
+                    GUI.Label(args.GetCellRect(6), GetTagsString(cache.tags.GetAssetTags(asset.path)));
                 }
-                GUI.Label(args.GetCellRect(2), GetSizeString(data.length));
-                GUI.Label(args.GetCellRect(3), data.hash);
+                GUI.Label(args.GetCellRect(4), GetSizeString(asset.length));
+                GUI.Label(args.GetCellRect(5), asset.hash);
+                if (ping_a == asset)
+                    GUI.Label(RectEx.Zoom(args.rowRect, TextAnchor.MiddleCenter, -8), "", "LightmapEditorSelectedHighlight");
             }
 
 
@@ -270,6 +286,27 @@ namespace WooAsset
                     }
                 }
 
+            }
+            EditorAssetData ping_a;
+
+            public async void Ping(EditorAssetData obj)
+            {
+                if (ping_a != null) return;
+                search.SetVelue("");
+                var find = cache.tree.GetAllAssets().Where(x => x != obj && obj.path.Contains(x.path)).ToList();
+                find.Sort((a, b) => { return a.path.Length - b.path.Length > 0 ? 1 : 1; });
+                foreach (var item in find)
+                {
+                    var _id = AssetDatabase.LoadAssetAtPath<Object>(item.path).GetInstanceID();
+                    this.SetExpanded(_id, true);
+                }
+                Reload();
+                ping_a = obj;
+                var id = AssetDatabase.LoadAssetAtPath<Object>(obj.path).GetInstanceID();
+                this.FrameItem(id);
+                await Task.Delay(1000);
+                ping_a = null;
+                Reload();
             }
         }
     }

@@ -12,6 +12,8 @@ namespace WooAsset
         private class AssetUsageTree : TreeView
         {
             private EditorAssetData asset;
+            private readonly IPing<EditorAssetData> ping;
+
             public void SetAssetInfo(EditorAssetData info)
             {
                 this.asset = info;
@@ -19,12 +21,14 @@ namespace WooAsset
                 this.multiColumnHeader.ResizeToFit();
 
             }
-            public AssetUsageTree(TreeViewState state) : base(state)
+            public AssetUsageTree(TreeViewState state, IPing<EditorAssetData> ping) : base(state)
             {
                 showAlternatingRowBackgrounds = true;
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
                     TreeColumns.usage,
+                    TreeColumns.usageCount,
+                    TreeColumns.depenceCount,
                     TreeColumns.size,
                     TreeColumns.hash,
                     TreeColumns.bundle,
@@ -34,6 +38,7 @@ namespace WooAsset
 
                 this.multiColumnHeader.ResizeToFit();
                 Reload();
+                this.ping = ping;
             }
 
             private void Build(TreeViewItem root, List<string> assets, IList<TreeViewItem> result)
@@ -80,31 +85,36 @@ namespace WooAsset
                 result.Add(_item);
                 return _item;
             }
-            private BundleGroup GetBundleGroupByAssetPath(string assetPath)
-            {
-                return cache.previewBundles.Find(x => x.ContainsAsset(assetPath));
-            }
+  
 
             protected override void RowGUI(RowGUIArgs args)
             {
                 string path = args.label;
                 float indent = this.GetContentIndent(args.item);
 
-                BundleGroup group = GetBundleGroupByAssetPath(path);
+                BundleGroup group = cache.GetBundleGroupByAssetPath(path);
                 EditorAssetData asset = cache.tree.GetAssetData(path);
 
                 GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(path, Textures.GetMiniThumbnail(path)));
-                GUI.Label(args.GetCellRect(1), GetSizeString(asset.length));
-                GUI.Label(args.GetCellRect(2), asset.hash);
-                GUI.Label(args.GetCellRect(5), GetTagsString(cache.tags.GetAssetTags(path)));
+                GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
+                GUI.Label(args.GetCellRect(2), asset.dps.Count.ToString());
+
+                GUI.Label(args.GetCellRect(3), GetSizeString(asset.length));
+                GUI.Label(args.GetCellRect(4), asset.hash);
+                GUI.Label(args.GetCellRect(7), GetTagsString(cache.tags.GetAssetTags(path)));
                 if (group != null)
                 {
-                    EditorGUI.SelectableLabel(args.GetCellRect(3), group.hash);
-                    GUI.Label(args.GetCellRect(4), GetSizeString(group.length));
+                    EditorGUI.SelectableLabel(args.GetCellRect(5), group.hash);
+                    GUI.Label(args.GetCellRect(6), GetSizeString(group.length));
                 }
             }
 
-
+            protected override void DoubleClickedItem(int id)
+            {
+                string path = this.FindItem(id, rootItem).displayName;
+                EditorAssetData asset = cache.tree.GetAssetData(path);
+                this.ping.Ping(asset);
+            }
         }
     }
 }

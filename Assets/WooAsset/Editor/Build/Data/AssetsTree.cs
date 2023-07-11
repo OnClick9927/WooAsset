@@ -32,6 +32,7 @@ namespace WooAsset
             assets = assets.Distinct(this).ToList();
             assets.RemoveAll(x => NeedRemove(x));
             CalcLength();
+            CalcUsage();
         }
         private long GetLength(EditorAssetData data)
         {
@@ -65,6 +66,15 @@ namespace WooAsset
                 var asset = _assets[i];
                 if (asset.type != AssetType.Directory) continue;
                 asset.length = GetLength(asset);
+            }
+        }
+        private void CalcUsage()
+        {
+            for (int i = 0; i < assets.Count; i++)
+            {
+                var asset = assets[i];
+                if (asset.type == AssetType.Directory) continue;
+                asset.usageCount = GetUsage(asset).Count;
             }
         }
 

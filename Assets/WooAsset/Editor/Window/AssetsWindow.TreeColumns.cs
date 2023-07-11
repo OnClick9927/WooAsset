@@ -97,6 +97,22 @@ namespace WooAsset
                 allowToggleVisibility = false,
 
             };
+            public static MultiColumnHeaderState.Column usageCount = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Usage Count"),
+                minWidth = 80,
+                maxWidth = 80,
+                allowToggleVisibility = false,
+
+            };
+            public static MultiColumnHeaderState.Column depenceCount = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Depence Count"),
+                minWidth = 100,
+                maxWidth = 100,
+                allowToggleVisibility = false,
+
+            };
         }
 
     }

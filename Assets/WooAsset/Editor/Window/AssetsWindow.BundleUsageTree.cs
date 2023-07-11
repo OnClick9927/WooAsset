@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEditor.IMGUI.Controls;
+﻿using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,26 +6,25 @@ namespace WooAsset
 {
     partial class AssetsWindow
     {
-
-        private class BundleDpTree : TreeView
+        private class BundleUsageTree : TreeView
         {
             private List<BundleGroup> groups = new List<BundleGroup>();
             private readonly IPing<BundleGroup> bundlesTree;
 
-            public BundleDpTree(TreeViewState state, IPing<BundleGroup> bundlesTree) : base(state)
+            public BundleUsageTree(TreeViewState state, IPing<BundleGroup> bundlesTree) : base(state)
             {
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
-TreeColumns.dependence,
+                TreeColumns.usage,
                    TreeColumns.usageCount,
                     TreeColumns.depenceCount,
-TreeColumns.size,
+                TreeColumns.size,
 
                 }));
 
                 this.multiColumnHeader.ResizeToFit();
-                this.bundlesTree = bundlesTree;
                 Reload();
+                this.bundlesTree = bundlesTree;
             }
 
 

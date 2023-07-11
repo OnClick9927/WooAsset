@@ -30,27 +30,35 @@ namespace WooAsset
                     { typeof(int),typeof(Rect), typeof(string[]) ,typeof(int).MakeByRefType(),typeof(string)},
                     null);
             }
+
+            public void SetVelue(string tmp)
+            {
+                if (tmp != value)
+                {
+                    value = tmp;
+                    if (onValueChange != null)
+                        onValueChange(value);
+                }
+            }
+            public void SetMode(int tmp)
+            {
+                if (tmp != mode)
+                {
+                    mode = tmp;
+                    if (onModeChange != null)
+                        onModeChange(mode);
+                }
+            }
             public void OnGUI(Rect position)
             {
                 if (info != null)
                 {
                     controlID = GUIUtility.GetControlID(("EditorSearchField" /*+ uuid.ToString()*/).GetHashCode(), FocusType.Keyboard, position);
 
-                    int _mode = mode;
-                    object[] args = new object[] { controlID, position, modes, _mode, value };
+                    object[] args = new object[] { controlID, position, modes, mode, value };
                     string tmp = (string)info.Invoke(null, args);
-                    if ((int)args[3] != mode)
-                    {
-                        mode = (int)args[3];
-                        if (onModeChange != null)
-                            onModeChange(mode);
-                    }
-                    if (tmp != value)
-                    {
-                        value = tmp;
-                        if (onValueChange != null)
-                            onValueChange(value);
-                    }
+                    SetMode((int)args[3]);
+                    SetVelue(tmp);
                     Event e = Event.current;
                     if ((e.keyCode == KeyCode.Return || e.keyCode == KeyCode.Escape || e.character == '\n'))
                     {

@@ -10,7 +10,7 @@ namespace WooAsset
         public List<string> dps = new List<string>();
         public AssetType type;
         public string directory;
-
+        public int usageCount;
         public static EditorAssetData Create(string path, AssetType _type)
         {
             string hash = string.Empty;
