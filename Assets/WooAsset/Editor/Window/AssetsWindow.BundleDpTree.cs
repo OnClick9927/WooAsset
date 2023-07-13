@@ -26,14 +26,18 @@ TreeColumns.size,
 
                 this.multiColumnHeader.ResizeToFit();
                 this.bundlesTree = bundlesTree;
+                showAlternatingRowBackgrounds = true;
+
                 Reload();
             }
 
 
-            public void SetBundleGroup(List<BundleGroup> groups)
+            public void SetBundleGroup(BundleGroup group)
             {
-                showAlternatingRowBackgrounds = true;
-                this.groups = groups;
+                if (group != null)
+                    this.groups = group.dependence.ConvertAll(x => cache.GetBundleGroupByBundleName(x));
+                else
+                    this.groups = null;
                 this.Reload();
             }
 
@@ -82,9 +86,8 @@ TreeColumns.size,
                 var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                 GUI.Label(first, new GUIContent(args.label, Textures.folder));
                 BundleGroup group = cache.GetBundleGroupByBundleName(args.label);
-                var groups_usage = cache.GetUsageBundleGroup(group);
 
-                GUI.Label(args.GetCellRect(1), groups_usage.Count.ToString());
+                GUI.Label(args.GetCellRect(1), group.usage.Count.ToString());
                 GUI.Label(args.GetCellRect(2), groups.Count.ToString());
                 GUI.Label(args.GetCellRect(3), GetSizeString(group.length));
 

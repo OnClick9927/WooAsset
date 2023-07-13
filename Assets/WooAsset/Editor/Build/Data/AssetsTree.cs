@@ -16,8 +16,6 @@ namespace WooAsset
         public List<EditorAssetData> GetAllAssets() => assets;
         public List<EditorAssetData> GetSubFolders(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type == AssetType.Directory);
         public List<EditorAssetData> GetSubFiles(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type != AssetType.Directory);
-        public List<EditorAssetData> GetDependence(EditorAssetData data) => data.dps.ConvertAll(x => GetAssetData(x));
-        public List<EditorAssetData> GetUsage(EditorAssetData data) => assets.FindAll(x=>x.dps.Contains(data.path));
 
 
         IAssetBuild assetBuild;
@@ -74,7 +72,7 @@ namespace WooAsset
             {
                 var asset = assets[i];
                 if (asset.type == AssetType.Directory) continue;
-                asset.usageCount = GetUsage(asset).Count;
+                asset.usage = assets.FindAll(x => x.dps.Contains(asset.path)).Select(x => x.path).ToList();
             }
         }
 

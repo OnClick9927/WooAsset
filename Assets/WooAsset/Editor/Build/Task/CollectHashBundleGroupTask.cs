@@ -43,7 +43,52 @@ namespace WooAsset
 
 
             context.allBundleGroups = builds;
+            foreach (BundleGroup group in builds)
+            {
+                GetDependenceBundleGroup(context, group);
+                GetUsageBundleGroup(context, group);
+            }
             InvokeComplete();
         }
+        private BundleGroup GetBundleGroupByAssetPath(List<BundleGroup> previewBundles, string assetPath)
+        {
+            return previewBundles.Find(x => x.ContainsAsset(assetPath));
+        }
+        private void GetDependenceBundleGroup(AssetTaskContext context, BundleGroup group)
+        {
+            foreach (var assetPath in group.GetAssets())
+            {
+                EditorAssetData data = context.tree.GetAssetData(assetPath);
+                if (data != null)
+                {
+                    var dps = data.dps;
+                    foreach (var dp in dps)
+                    {
+                        BundleGroup _group = GetBundleGroupByAssetPath(context.allBundleGroups, dp);
+                        if (!group.dependence.Contains(_group.hash))
+                            group.dependence.Add(_group.hash);
+                        GetDependenceBundleGroup(context, _group);
+                    }
+                }
+
+            }
+        }
+
+        private void GetUsageBundleGroup(AssetTaskContext context, BundleGroup group)
+        {
+            foreach (var item in group.GetAssets())
+            {
+                var asset = context.tree.GetAssetData(item);
+                foreach (var assetPath in asset.usage)
+                {
+                    var g = GetBundleGroupByAssetPath(context.allBundleGroups, assetPath);
+                    if (g == null) continue;
+                    string hash = g.hash;
+                    if (group.usage.Contains(hash)) continue;
+                    group.usage.Add(hash);
+                }
+            }
+        }
+
     }
 }

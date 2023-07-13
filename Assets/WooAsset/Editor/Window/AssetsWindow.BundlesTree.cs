@@ -5,10 +5,7 @@ using Object = UnityEngine.Object;
 using UnityEngine;
 using System.Linq;
 using System;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using System.Runtime.Serialization;
-using System.Reflection;
 
 namespace WooAsset
 {
@@ -252,11 +249,9 @@ namespace WooAsset
                 {
                     GUI.Label(first, new GUIContent(args.label, Textures.folder));
                     BundleGroup group = cache.GetBundleGroupByBundleName(args.label);
-                    var groups = cache.GetDependenceBundleGroup(group, new List<BundleGroup>());
-                    var groups_usage = cache.GetUsageBundleGroup(group);
-
-                    GUI.Label(args.GetCellRect(1), groups_usage.Count.ToString());
-                    GUI.Label(args.GetCellRect(2), groups.Count.ToString());
+                    
+                    GUI.Label(args.GetCellRect(1), group.usage.Count.ToString());
+                    GUI.Label(args.GetCellRect(2), group.dependence.Count.ToString());
                     if (group != null)
                         length = group.length;
                     if (ping_g == group) draw = true;
@@ -330,18 +325,16 @@ namespace WooAsset
                 else if (find.depth == 0)
                 {
                     BundleGroup group = cache.GetBundleGroupByBundleName(path);
-                    var groups = cache.GetDependenceBundleGroup(group, new List<BundleGroup>());
-                    if (groups.Count != 0)
+                    if (group.dependence.Count != 0)
                     {
-                        bundleDp.SetBundleGroup(groups);
+                        bundleDp.SetBundleGroup(group);
                         dpViewType |= DpViewType.Bundle;
                     }
                     else
                         bundleDp.SetBundleGroup(null);
-                    var groups_usage = cache.GetUsageBundleGroup(group);
-                    if (groups_usage.Count != 0)
+                    if (group.usage.Count != 0)
                     {
-                        bundleUsage.SetBundleGroup(groups_usage);
+                        bundleUsage.SetBundleGroup(group);
                         dpViewType |= DpViewType.BundleUsage;
                     }
                     else

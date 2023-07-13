@@ -27,7 +27,7 @@ namespace WooAsset
                     for (int i = 0; i < hashList.Count; i++)
                     {
                         sb.Append(hashList[i]);
-                    }  
+                    }
                 }
             }
 
@@ -54,7 +54,8 @@ namespace WooAsset
             };
         }
 
-
+        public List<string> usage = new List<string>();
+        public List<string> dependence = new List<string>();
         private void CalcLength()
         {
             length = 0;

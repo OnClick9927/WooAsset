@@ -54,11 +54,11 @@ namespace WooAsset
                 result.Clear();
                 if (asset != null)
                 {
-                    var usage = cache.tree.GetUsage(asset);
+                    var usage = asset.usage;
 
                     if (usage != null && usage.Count > 0)
                     {
-                        Build(root, usage.ConvertAll(x => x.path), result);
+                        Build(root, usage, result);
                     }
 
                     SetupParentsAndChildrenFromDepths(root, result);

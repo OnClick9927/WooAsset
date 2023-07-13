@@ -74,6 +74,7 @@ MonoBehaviour:
   ignoreFileExtend:
   - .cs
   - .meta
+  - .spriteatlas
   enableServer: 0
   serverDirectory: DLC/Server
   serverPort: 8080
