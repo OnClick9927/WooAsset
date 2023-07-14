@@ -4,6 +4,8 @@
     public enum AssetType
     {
         None,
+        Meta,
+        CS,
         Directory,
         Texture,
         Shader,

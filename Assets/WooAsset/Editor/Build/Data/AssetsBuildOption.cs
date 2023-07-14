@@ -149,10 +149,7 @@ namespace WooAsset
         [HideInInspector] public TypeSelect build = new TypeSelect();
         [HideInInspector] public TypeSelect mode = new TypeSelect();
         [HideInInspector] public TypeSelect encrypt = new TypeSelect();
-        public List<string> ignoreFileExtend = new List<string>() {
-            ".cs",
-            ".meta"
-        };
+
 
 
         public bool enableServer;

@@ -23,8 +23,6 @@ namespace WooAsset
         public string serverDirectory;
         public bool ignoreTypeTreeChanges;
         public bool forceRebuild;
-        public long bundleSize;
-        public List<string> ignoreFileExtend;
         public List<BuildGroup> buildGroups;
         public BuildGroup buildGroup;
 

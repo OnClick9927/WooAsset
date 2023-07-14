@@ -175,22 +175,6 @@ namespace WooAsset
             }
         }
 
-
-        public static bool IsIgnorePath(string path)
-        {
-            var list = AssetsInternal.ToRegularPath(path).Split('/').ToList();
-            if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;
-            for (int i = 0; i < option.ignoreFileExtend.Count; i++)
-            {
-                if (path.EndsWith(option.ignoreFileExtend[i]))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-
         public static event Action onPipelineFinish;
 
         public class CallPipelineFinishTask : AssetTask

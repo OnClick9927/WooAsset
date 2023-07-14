@@ -94,7 +94,9 @@ namespace WooAsset
                 else
                 {
                     AssetImporter importer = AssetImporter.GetAtPath(path);
-                    if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
+                    if (path.EndsWith(".meta")) _type = AssetType.Meta;
+                    else if (path.EndsWith(".cs")) _type = AssetType.CS;
+                    else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
                     else if (importer is ModelImporter) _type = AssetType.Model;
                     else if (AssetDatabase.LoadAssetAtPath<RawObject>(path) != null) _type = AssetType.RawObject;
                     else if (AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(path) != null) _type = AssetType.Scene;
@@ -114,6 +116,16 @@ namespace WooAsset
                     else if (AssetDatabase.LoadAssetAtPath<DefaultAsset>(path) != null) _type = AssetType.Raw;
                 }
                 return _type;
+            }
+
+            public bool IsIgnorePath(string path)
+            {
+                var type = GetAssetType(path);
+                if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw)
+                    return true;
+                var list = AssetsInternal.ToRegularPath(path).Split('/').ToList();
+                if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;
+                return false;
             }
         }
 

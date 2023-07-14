@@ -64,12 +64,7 @@ namespace WooAsset
                     () =>
                     {
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildGroups"));
-
-
-
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("ignoreFileExtend"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("version"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("bundleSize"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("forceRebuild"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("ignoreTypeTreeChanges"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("compress"));

@@ -33,8 +33,6 @@ namespace WooAsset
 
 
 
-            context.bundleSize = option.bundleSize;
-            context.ignoreFileExtend = option.ignoreFileExtend;
             context.shaderVariantDirectory = option.shaderVariantDirectory;
             context.PlatformSetting = option.PlatformSetting;
             context.TextureSetting = option.GetTextureSetting();

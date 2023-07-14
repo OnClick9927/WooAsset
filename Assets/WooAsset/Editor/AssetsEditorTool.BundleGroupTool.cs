@@ -31,9 +31,8 @@ namespace WooAsset
             {
                 result.Add(BundleGroup.Create(assets));
             }
-            public static void N2MBySize(List<EditorAssetData> assets, List<BundleGroup> result)
+            public static void N2MBySize(List<EditorAssetData> assets, List<BundleGroup> result, long size = 8 * 1024 * 1024)
             {
-                long size = option.bundleSize;
                 var big = assets.FindAll(x => x.length >= size);
                 assets.RemoveAll(x => x.length >= size);
                 One2One(big, result);

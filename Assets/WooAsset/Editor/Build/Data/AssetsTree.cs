@@ -23,7 +23,7 @@ namespace WooAsset
         {
             this.assetBuild = assetBuild;
             assets.Clear();
-            folders.RemoveAll(x => !Directory.Exists(x) || AssetsEditorTool.IsIgnorePath(x));
+            folders.RemoveAll(x => !Directory.Exists(x) || assetBuild.IsIgnorePath(x));
             for (int i = 0; i < folders.Count; i++)
                 AddPath(folders[i]);
             CollectDps();
@@ -84,7 +84,7 @@ namespace WooAsset
 
             List<string> list = new List<string>(Directory.GetDirectories(directory, "*", SearchOption.AllDirectories));
             list.AddRange(Directory.GetFiles(directory, "*", SearchOption.AllDirectories));
-            list.RemoveAll(x => AssetsEditorTool.IsIgnorePath(x));
+            list.RemoveAll(x => assetBuild.IsIgnorePath(x));
             foreach (var item in list)
             {
                 string _path = AssetsInternal.ToRegularPath(item);
@@ -99,7 +99,7 @@ namespace WooAsset
             for (int i = 0; i < paths.Length; i++)
             {
                 var path = AssetsInternal.ToRegularPath(paths[i]);
-                if (AssetsEditorTool.IsIgnorePath(path)) continue;
+                if (assetBuild.IsIgnorePath(path)) continue;
                 if (assets.Find(x => x.path == path) != null) continue;
                 assets.Add(EditorAssetData.Create(path, assetBuild.GetAssetType(path)));
 
@@ -111,7 +111,7 @@ namespace WooAsset
                 var result = AssetDatabase.GetDependencies(asset.path, true)
                     .ToList()
                     .ConvertAll(x => AssetsInternal.ToRegularPath(x))
-                    .Where(x => x != asset.path && !AssetsEditorTool.IsIgnorePath(x) && !AssetsEditorTool.IsDirectory(x));
+                    .Where(x => x != asset.path && !assetBuild.IsIgnorePath(x) && !AssetsEditorTool.IsDirectory(x));
                 asset.dps = result.ToList();
             }
         }
