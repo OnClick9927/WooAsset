@@ -120,7 +120,7 @@ namespace WooAsset
                 }
                 else
                     assetUsage.SetAssetInfo(null);
-                if (asset.dps.Count == 0)
+                if (asset.dependence.Count == 0)
                     assetDp.SetAssetInfo(null);
                 else
                 {
@@ -176,7 +176,7 @@ namespace WooAsset
                 if (asset.type != AssetType.Directory)
                 {
                     GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                    GUI.Label(args.GetCellRect(2), asset.dps.Count.ToString());
+                    GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
 
 
                     GUI.Label(args.GetCellRect(3), asset.type.ToString());

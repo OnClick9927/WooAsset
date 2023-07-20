@@ -28,6 +28,7 @@ namespace WooAsset
                 tag_dic.Add(item.path, tags.ToList());
             }
             context.tags.ReadAssetTags(tag_dic);
+            context.rawAssets = context.tree.GetRawAssets();
             InvokeComplete();
         }
     }

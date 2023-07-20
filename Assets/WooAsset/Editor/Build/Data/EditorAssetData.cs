@@ -7,7 +7,7 @@ namespace WooAsset
     public class EditorAssetData : FileData
     {
 
-        public List<string> dps = new List<string>();
+        public List<string> dependence = new List<string>();
         public AssetType type;
         public string directory;
         public List<string> usage = new List<string>();

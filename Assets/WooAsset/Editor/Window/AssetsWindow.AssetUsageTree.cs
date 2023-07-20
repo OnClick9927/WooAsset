@@ -97,7 +97,7 @@ namespace WooAsset
 
                 GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(path, Textures.GetMiniThumbnail(path)));
                 GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                GUI.Label(args.GetCellRect(2), asset.dps.Count.ToString());
+                GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
 
                 GUI.Label(args.GetCellRect(3), GetSizeString(asset.length));
                 GUI.Label(args.GetCellRect(4), asset.hash);

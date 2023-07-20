@@ -71,7 +71,7 @@ namespace WooAsset
 
             IReadOnlyList<string> IAssetMode.GetAllTags() => cache.tags.GetAllTags();
 
-            IReadOnlyList<string> IAssetMode.GetAssetDependencies(string assetPath) => cache.tree.GetAssetData(assetPath)?.dps;
+            IReadOnlyList<string> IAssetMode.GetAssetDependencies(string assetPath) => cache.tree.GetAssetData(assetPath)?.dependence;
 
             IReadOnlyList<string> IAssetMode.GetAllAssetPaths(string bundleName) => cache.previewBundles.Find(x => x.hash == bundleName)?.GetAssets();
 
@@ -81,7 +81,7 @@ namespace WooAsset
 
 
 
-            AssetType IAssetMode.GetAssetType(string assetPath) => cache.tree.GetAssetData(assetPath).type;
+            AssetType IAssetMode.GetAssetType(string assetPath) => cache.tree.GetAssetType(assetPath);
 
 
         }

@@ -263,7 +263,7 @@ namespace WooAsset
                     length = asset.length;
                     GUI.Label(first, new GUIContent(path, Textures.GetMiniThumbnail(path)));
                     GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                    GUI.Label(args.GetCellRect(2), asset.dps.Count.ToString());
+                    GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
                     GUI.Label(args.GetCellRect(4), asset.hash);
                     BundleGroup group = cache.GetBundleGroupByAssetPath(path);
                     if (group != null)
@@ -304,7 +304,7 @@ namespace WooAsset
                 if (find.depth == 1)
                 {
                     var asset = cache.tree.GetAssetData(path);
-                    if (asset.dps.Count != 0)
+                    if (asset.dependence.Count != 0)
                     {
                         assetDp.SetAssetInfo(asset);
                         dpViewType |= DpViewType.Asset;

@@ -9,21 +9,42 @@ namespace WooAsset
     [System.Serializable]
     public class AssetsTree : IEqualityComparer<EditorAssetData>
     {
-        [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
 
+        [SerializeField] private List<string> rawAssets = new List<string>();
+        [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
+        public List<string> GetRawAssets() => rawAssets;
+
+        public AssetType GetAssetType(string path)
+        {
+            if (rawAssets.Contains(path))
+                return AssetType.Raw;
+            return GetAssetData(path).type;
+        }
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
         public EditorAssetData GetAssetData(string path) => assets.Find(x => x.path == path);
         public List<EditorAssetData> GetAllAssets() => assets;
         public List<EditorAssetData> GetSubFolders(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type == AssetType.Directory);
         public List<EditorAssetData> GetSubFiles(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type != AssetType.Directory);
 
-
+        private bool IsIgnorePath(string path)
+        {
+            path = AssetsInternal.ToRegularPath(path);
+            if (__GetAssetType(path) == AssetType.Raw)
+                if (!rawAssets.Contains(path))
+                    rawAssets.Add(path);
+            return assetBuild.IsIgnorePath(path);
+        }
+        private AssetType __GetAssetType(string path)
+        {
+            return assetBuild.GetAssetType(path);
+        }
         IAssetBuild assetBuild;
         public void ReadPaths(List<string> folders, IAssetBuild assetBuild)
         {
             this.assetBuild = assetBuild;
+            rawAssets.Clear();
             assets.Clear();
-            folders.RemoveAll(x => !Directory.Exists(x) || assetBuild.IsIgnorePath(x));
+            folders.RemoveAll(x => !Directory.Exists(x) || IsIgnorePath(x));
             for (int i = 0; i < folders.Count; i++)
                 AddPath(folders[i]);
             CollectDps();
@@ -72,23 +93,23 @@ namespace WooAsset
             {
                 var asset = assets[i];
                 if (asset.type == AssetType.Directory) continue;
-                asset.usage = assets.FindAll(x => x.dps.Contains(asset.path)).Select(x => x.path).ToList();
+                asset.usage = assets.FindAll(x => x.dependence.Contains(asset.path)).Select(x => x.path).ToList();
             }
         }
 
         private void AddPath(string directory)
         {
             string path = AssetsInternal.ToRegularPath(directory);
-            var root = EditorAssetData.Create(path, assetBuild.GetAssetType(path));
+            var root = EditorAssetData.Create(path, __GetAssetType(path));
             assets.Add(root);
 
             List<string> list = new List<string>(Directory.GetDirectories(directory, "*", SearchOption.AllDirectories));
             list.AddRange(Directory.GetFiles(directory, "*", SearchOption.AllDirectories));
-            list.RemoveAll(x => assetBuild.IsIgnorePath(x));
+            list.RemoveAll(x => IsIgnorePath(x));
             foreach (var item in list)
             {
                 string _path = AssetsInternal.ToRegularPath(item);
-                assets.Add(EditorAssetData.Create(_path, assetBuild.GetAssetType(_path)));
+                assets.Add(EditorAssetData.Create(_path, __GetAssetType(_path)));
             }
         }
 
@@ -99,9 +120,9 @@ namespace WooAsset
             for (int i = 0; i < paths.Length; i++)
             {
                 var path = AssetsInternal.ToRegularPath(paths[i]);
-                if (assetBuild.IsIgnorePath(path)) continue;
+                if (IsIgnorePath(path)) continue;
                 if (assets.Find(x => x.path == path) != null) continue;
-                assets.Add(EditorAssetData.Create(path, assetBuild.GetAssetType(path)));
+                assets.Add(EditorAssetData.Create(path, __GetAssetType(path)));
 
             }
             for (int i = 0; i < assets.Count; i++)
@@ -111,8 +132,8 @@ namespace WooAsset
                 var result = AssetDatabase.GetDependencies(asset.path, true)
                     .ToList()
                     .ConvertAll(x => AssetsInternal.ToRegularPath(x))
-                    .Where(x => x != asset.path && !assetBuild.IsIgnorePath(x) && !AssetsEditorTool.IsDirectory(x));
-                asset.dps = result.ToList();
+                    .Where(x => x != asset.path && !IsIgnorePath(x) && !AssetsEditorTool.IsDirectory(x));
+                asset.dependence = result.ToList();
             }
         }
 

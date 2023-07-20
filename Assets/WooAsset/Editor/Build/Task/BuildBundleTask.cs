@@ -31,7 +31,7 @@ namespace WooAsset
                         {
                             path = assetPath,
                             bundleName = bundleName,
-                            dps = context.tree.GetAssetData(assetPath).dps,
+                            dps = context.tree.GetAssetData(assetPath).dependence,
                             tags = context.tags.GetAssetTags(assetPath).ToList(),
                             type = context.tree.GetAssetData(assetPath).type,
 

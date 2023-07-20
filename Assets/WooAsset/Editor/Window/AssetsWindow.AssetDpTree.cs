@@ -53,9 +53,9 @@ namespace WooAsset
                 var result = GetRows() ?? new List<TreeViewItem>();
                 result.Clear();
 
-                if (this.asset != null && this.asset.dps.Count > 0)
+                if (this.asset != null && this.asset.dependence.Count > 0)
                 {
-                    Build(root, asset.dps, result);
+                    Build(root, asset.dependence, result);
                 }
 
                 SetupParentsAndChildrenFromDepths(root, result);
@@ -92,7 +92,7 @@ namespace WooAsset
 
                 GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(path, Textures.GetMiniThumbnail(path)));
                 GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                GUI.Label(args.GetCellRect(2), asset.dps.Count.ToString());
+                GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
 
                 GUI.Label(args.GetCellRect(3), GetSizeString(asset.length));
                 GUI.Label(args.GetCellRect(4), asset.hash);
