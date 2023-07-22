@@ -222,5 +222,12 @@ namespace WooAsset
             manifest.assets = dic.Values.ToList();
             return manifest;
         }
+
+        public bool ContainsAsset(string assetPath)
+        {
+            if (rawAssets.Contains(assetPath))
+                return true;
+            return allPaths.Contains(assetPath);
+        }
     }
 }

@@ -112,7 +112,7 @@ namespace WooAsset
         public static AssetOperation InitAsync(string version, bool again, string[] tags) => mode.InitAsync(version, again, tags);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
         public static CopyBundleOperation CopyToSandBox() => mode.CopyToSandBox(CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir, false);
-
+        public static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
         public static BundleDownloader DownLoadBundle(string bundleName) => setting.GetBundleDownloader(GetUrlFromBundleName(bundleName), bundleName);
         public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout());
         public static void SetAssetsSetting(AssetsSetting setting)
@@ -140,7 +140,7 @@ namespace WooAsset
             return bundles.LoadAsync(new BundleLoadArgs(bundleName, async));
         }
 
-    
+
 
         public static string RawToRawObjectPath(string path)
         {
@@ -153,6 +153,12 @@ namespace WooAsset
         public static AssetHandle LoadAsset(string path, bool async)
         {
             assets.RemoveUselessAsset();
+            path = ToRegularPath(path);
+            if (!ContainsAsset(path))
+            {
+                LogError($"Not Found Asset: {path}");
+                return null;
+            }
             if (GetAssetType(path) == AssetType.Raw)
                 path = RawToRawObjectPath(path);
 

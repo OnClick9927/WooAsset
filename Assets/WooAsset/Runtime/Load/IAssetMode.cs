@@ -23,5 +23,8 @@ namespace WooAsset
 
         CopyBundleOperation CopyToSandBox(string from, string to, bool cover);
         AssetType GetAssetType(string assetPath);
+
+        bool ContainsAsset(string assetPath);
+
     }
 }

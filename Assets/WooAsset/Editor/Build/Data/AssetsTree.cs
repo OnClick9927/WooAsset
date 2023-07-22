@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using System;
 
 namespace WooAsset
 {
@@ -145,6 +146,13 @@ namespace WooAsset
         public int GetHashCode(EditorAssetData obj)
         {
             return obj.path.GetHashCode();
+        }
+
+        public bool ContainsAsset(string assetPath)
+        {
+            if (rawAssets.Contains(assetPath))
+                return true;
+            return GetAssetData(assetPath) != null;
         }
     }
 }

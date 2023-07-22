@@ -83,7 +83,10 @@ namespace WooAsset
 
             AssetType IAssetMode.GetAssetType(string assetPath) => cache.tree.GetAssetType(assetPath);
 
-
+            public bool ContainsAsset(string assetPath)
+            {
+                return cache.tree.ContainsAsset(assetPath);
+            }
         }
     }
 

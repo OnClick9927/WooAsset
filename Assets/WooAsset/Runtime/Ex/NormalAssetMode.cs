@@ -105,6 +105,13 @@ namespace WooAsset
 
         CopyBundleOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new CopyToSandBox(from, to, cover);
 
+        public bool ContainsAsset(string assetPath)
+        {
+            if (!((IAssetMode)this).Initialized())
+                return false;
+            return manifestOp.manifest.ContainsAsset(assetPath);
+
+        }
     }
 
 }
