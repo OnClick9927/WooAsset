@@ -1,9 +1,7 @@
 ﻿
 
 using System;
-using System.IO;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace WooAsset
@@ -11,54 +9,49 @@ namespace WooAsset
     public class Downloader : AssetOperation
     {
         public string url { get; protected set; }
-        public float timeout { get; protected set; }
+        public int timeout { get; protected set; }
         public byte[] data { get; protected set; }
 
         public override float progress { get { return _progress; } }
         private float _progress;
+        private readonly int retry;
+        private int _retry = 0;
         protected Downloader() { }
-        public Downloader(string url, float timeout)
+        public Downloader(string url, int timeout, int retry)
         {
             this.timeout = timeout;
+            this.retry = retry;
             this.url = url;
             Start();
         }
-
         protected virtual async void Start()
         {
             AssetsInternal.Log($"Download start: {url}");
+        DownLoad:
             var req = UnityWebRequest.Get(url);
             var _ = req.SendWebRequest();
-            ulong lastDownloaded = 0;
-            var lastTime = Time.realtimeSinceStartup;
+            req.timeout = timeout;
             while (!req.isDone)
             {
-                var time = Time.realtimeSinceStartup;
-                var downloaded = req.downloadedBytes;
-                if (lastDownloaded == downloaded)
-                {
-                    if (time - lastTime >= timeout)
-                    {
-                        req.Abort();
-                        SetErr($"timeout:{url}");
-                        break;
-                    }
-                }
-                else
-                {
-                    _progress = req.downloadProgress;
-                    lastTime = time;
-                    lastDownloaded = downloaded;
-                }
+                _progress = req.downloadProgress;
                 await Task.Yield();
             }
 #if UNITY_2020_1_OR_NEWER
             if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
 #else
-                if (req.isHttpError || req.isNetworkError)
+            if (req.isHttpError || req.isNetworkError)
 #endif
             {
-                SetErr($"{req.error}:{url}");
+                if (_retry < retry)
+                {
+                    _retry++;
+                    req.Dispose();
+                    goto DownLoad;
+                }
+                else
+                {
+                    SetErr($"{req.error}:{url}");
+                }
             }
             else
             {

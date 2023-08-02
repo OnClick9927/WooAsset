@@ -5,12 +5,9 @@ namespace WooAsset
     public class BundleDownloader : Downloader
     {
         protected string bundleName;
-        public BundleDownloader(string url, float timeout,string bundleName) 
+        public BundleDownloader(string url, string bundleName) : base(url, AssetsInternal.GetWebRequestTimeout(), AssetsInternal.GetWebRequestRetryCount())
         {
-            this.timeout = timeout;
-            this.url = url;
             this.bundleName = bundleName;
-            Start();
         }
 
         public virtual void SaveBundleToLocal()

@@ -114,7 +114,7 @@ namespace WooAsset
         public static CopyBundleOperation CopyToSandBox() => mode.CopyToSandBox(CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir, false);
         public static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
         public static BundleDownloader DownLoadBundle(string bundleName) => setting.GetBundleDownloader(GetUrlFromBundleName(bundleName), bundleName);
-        public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout());
+        public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static void SetAssetsSetting(AssetsSetting setting)
         {
             AssetsInternal.setting = setting;
@@ -123,6 +123,8 @@ namespace WooAsset
                 AddAssetLife(life);
         }
         public static int GetWebRequestTimeout() => setting.GetWebRequestTimeout();
+        public static int GetWebRequestRetryCount() => setting.GetWebRequestRetryCount();
+
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
         private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(buildTarget, bundleName);
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
