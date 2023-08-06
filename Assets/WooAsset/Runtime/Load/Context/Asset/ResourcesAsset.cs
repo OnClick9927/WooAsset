@@ -38,7 +38,7 @@ namespace WooAsset
             var extend = Path.GetExtension(path);
             resPath = path.Replace(extend, "");
         }
-        protected async override void OnLoad()
+        protected async override void LoadUnityObject()
         {
             _allAssets = Resources.LoadAll<Object>(resPath);
             if (async)

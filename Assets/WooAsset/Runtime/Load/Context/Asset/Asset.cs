@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
-
     public class Asset : AssetHandle
     {
+
         private Object[] assets;
 
         private AssetBundleRequest loadOp;
+        private float directProgress;
         public Asset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
 
@@ -20,6 +22,8 @@ namespace WooAsset
             get
             {
                 if (isDone) return 1;
+                if (direct)
+                    return directProgress;
                 if (async)
                 {
 
@@ -47,8 +51,47 @@ namespace WooAsset
             .FirstOrDefault() as T;
 
 
+        private async void LoadFile()
+        {
+            if (File.Exists(path))
+            {
+                FileObject obj = ScriptableObject.CreateInstance<FileObject>();
+                obj.path = path;
+                obj.fileInfo = new FileInfo(path);
+                using (var stream = File.OpenRead(path))
+                {
+                    if (async)
+                    {
+                        long total = stream.Length;
+                        long last = total;
+                        int offset = 0;
+                        int n = AssetsInternal.GetReadFileBlockSize();
+                        obj.bytes = new byte[total];
+                        while (last > 0)
+                        {
+                            var read = stream.Read(obj.bytes, offset, (int)Mathf.Min(n, last));
+                            offset += read;
+                            last -= read;
+                            directProgress = offset / (float)total;
+                            await new YieldOperation();
+                        }
+                    }
+                    else
+                    {
+                        obj.bytes = File.ReadAllBytes(path);
+                    }
+                }
 
-        protected async override void OnLoad()
+                SetResult(obj);
+            }
+            else
+            {
+                SetErr($"file not exist {path}");
+            }
+            InvokeComplete();
+        }
+
+        protected virtual async void LoadUnityObject()
         {
             await LoadBundle();
             if (bundle.unloaded)
@@ -57,7 +100,6 @@ namespace WooAsset
                 InvokeComplete();
                 return;
             }
-
             if (bundle.isErr)
             {
                 this.SetErr(bundle.error);
@@ -78,7 +120,14 @@ namespace WooAsset
                 SetResult(result[0]);
             }
         }
-       
+        protected sealed override void OnLoad()
+        {
+            if (!direct)
+                LoadUnityObject();
+            else
+                LoadFile();
+        }
+
     }
 
 }

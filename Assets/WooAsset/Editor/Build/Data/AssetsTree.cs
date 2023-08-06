@@ -24,7 +24,8 @@ namespace WooAsset
                 return AssetType.RawCopyFile;
             if (rawAssets.Contains(path))
                 return AssetType.Raw;
-            return GetAssetData(path).type;
+            var data= GetAssetData(path);
+            return data == null ? AssetType.None : data.type;
         }
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
         public EditorAssetData GetAssetData(string path) => assets.Find(x => x.path == path);

@@ -7,6 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -71,7 +72,10 @@ namespace WooAsset
                 await Task.Delay(100);
             }
             oppp.Destroy();
+            var __asset = await Assets.LoadFileAssetAsync(Assets.GetRawFileToDlcPath("Assets/Example/New Folder/kkk.rfc"));
+            var fo = __asset.GetAsset<FileObject>();
+            Debug.Log(fo.bytes.Length);
         }
-     
+
     }
 }

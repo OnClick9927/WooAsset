@@ -46,10 +46,13 @@ namespace WooAsset
 
         AssetHandle IAssetMode.CreateAsset(string assetPath, AssetLoadArgs arg)
         {
-            string bundleName = manifestOp.manifest.GetBundle(assetPath);
-            if (string.IsNullOrEmpty(bundleName))
-                AssetsInternal.LogError($"Not Found  {assetPath}");
-            arg.bundleName = bundleName;
+            if (!arg.direct)
+            {
+                string bundleName = manifestOp.manifest.GetBundle(assetPath);
+                if (string.IsNullOrEmpty(bundleName))
+                    AssetsInternal.LogError($"Not Found  {assetPath}");
+                arg.bundleName = bundleName;
+            }
             if (arg.scene)
                 return new SceneAsset(arg);
             return new Asset(arg);

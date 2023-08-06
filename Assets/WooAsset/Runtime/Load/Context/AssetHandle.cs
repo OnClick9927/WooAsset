@@ -4,7 +4,7 @@ using UnityEngine.Profiling;
 
 namespace WooAsset
 {
-    public abstract class AssetHandle<T> : AssetOperation, IAsset where T : UnityEngine.Object
+    public abstract class AssetHandle<T> : AssetOperation, IAsset
     {
         public abstract bool async { get; }
         public T value { get; private set; }
@@ -31,12 +31,12 @@ namespace WooAsset
 
         protected abstract void OnUnLoad();
         protected abstract void OnLoad();
-
+        protected abstract long ProfilerAsset(T value);
         protected virtual void SetResult(T value)
         {
             this.value = value;
             if (value != null)
-                _assetLength = Profiler.GetRuntimeMemorySizeLong(value);
+                _assetLength = ProfilerAsset(value);
             InvokeComplete();
         }
 

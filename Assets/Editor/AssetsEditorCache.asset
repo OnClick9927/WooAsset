@@ -20,7 +20,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 73924
+      length: 73337
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 3
@@ -52,8 +52,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 3466
-      hash: 8b0293b51843005b9a63f8ae0d708cba
+      length: 2879
+      hash: 677a7e1d13b6db8c7581ddc0d29b3176
       dependence: []
       type: 6
       directory: Assets/Example
@@ -304,13 +304,13 @@ MonoBehaviour:
     usage:
     - cfd173b915c002b1467c0de456e3885d
     dependence: []
-  - hash: c579893fa1b7ba5753ab54bcc9193636
-    length: 3466
+  - hash: 51fba72a6a50309eda9460a776bef159
+    length: 2879
     assets:
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 3466
-      hash: 8b0293b51843005b9a63f8ae0d708cba
+      length: 2879
+      hash: 677a7e1d13b6db8c7581ddc0d29b3176
       dependence: []
       type: 6
       directory: Assets/Example

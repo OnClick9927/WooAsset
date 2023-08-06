@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace WooAsset
 {
@@ -50,7 +51,10 @@ namespace WooAsset
             }
         }
 
-
+        protected override long ProfilerAsset(AssetBundle value)
+        {
+            return Profiler.GetRuntimeMemorySizeLong(value);
+        }
 
         private async void LoadBundle(byte[] buffer)
         {

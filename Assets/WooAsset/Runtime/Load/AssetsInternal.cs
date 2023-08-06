@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
+using static UnityEngine.Networking.UnityWebRequest;
 
 namespace WooAsset
 {
@@ -143,7 +144,7 @@ namespace WooAsset
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
-
+        public static int GetReadFileBlockSize() => setting.GetReadFileBlockSize();
         private static string GetRawFileNameHash(string path)
         {
             string name = Path.GetFileNameWithoutExtension(path);
@@ -173,13 +174,18 @@ namespace WooAsset
             return ToRegularPath(Path.Combine(dir, $"{name}.asset"));
         }
 
-
-        public static AssetHandle LoadAsset(string path, bool async)
+        public static Asset LoadFileAsset(string path, bool async)
+        {
+            return assets.LoadAssetAsync(new AssetLoadArgs(path, true, path.EndsWith("unity"), null, "", async)) as Asset;
+        }
+        public static AssetHandle LoadAsset(string path, bool async, bool tryFile)
         {
             assets.RemoveUselessAsset();
             path = ToRegularPath(path);
             if (!ContainsAsset(path))
             {
+                if (tryFile)
+                    return LoadFileAsset(path, async);
                 LogError($"Not Found Asset: {path}");
                 return null;
             }
@@ -199,12 +205,12 @@ namespace WooAsset
                 result.Clear();
                 foreach (var item in dps)
                 {
-                    AssetHandle _asset = LoadAsset(item, async);
+                    AssetHandle _asset = LoadAsset(item, async, false);
                     if (_asset != null)
                         result.Add(_asset);
                 }
             }
-            return assets.LoadAssetAsync(new AssetLoadArgs(path, path.EndsWith("unity"), result, "", async));
+            return assets.LoadAssetAsync(new AssetLoadArgs(path, false, path.EndsWith("unity"), result, "", async));
         }
 
         public static bool GetIsAssetLoaded(string assetPath) => assets.Find(assetPath) != null;

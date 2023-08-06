@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Profiling;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
@@ -8,6 +9,8 @@ namespace WooAsset
         public bool isBundleUnloaded => bundle == null ? false : bundle.unloaded;
         public Bundle bundle { get; private set; }
         public virtual string path => loadArgs.path;
+        protected bool direct => loadArgs.direct;
+
         public string bundleName => loadArgs.bundleName;
         public List<AssetHandle> dps => loadArgs.dps;
         protected float dpProgress
@@ -36,7 +39,7 @@ namespace WooAsset
             this.loadArgs = loadArgs;
         }
 
-        protected override async void SetResult(Object value)
+        protected override sealed async void SetResult(Object value)
         {
             if (dps != null)
             {
@@ -50,7 +53,10 @@ namespace WooAsset
             base.SetResult(value);
         }
         protected sealed override void OnUnLoad() { }
-     
+        protected override sealed long ProfilerAsset(Object value)
+        {
+            return value == null ? 0 : Profiler.GetRuntimeMemorySizeLong(value);
+        }
     }
 
 }

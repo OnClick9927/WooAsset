@@ -1,7 +1,6 @@
 ﻿
 
 using System;
-using System.Threading.Tasks;
 using UnityEngine.Networking;
 
 namespace WooAsset
@@ -34,7 +33,7 @@ namespace WooAsset
             while (!req.isDone)
             {
                 _progress = req.downloadProgress;
-                await Task.Yield();
+                await new YieldOperation();
             }
 #if UNITY_2020_1_OR_NEWER
             if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)

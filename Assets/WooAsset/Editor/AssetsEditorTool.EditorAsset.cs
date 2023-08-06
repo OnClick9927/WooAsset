@@ -27,7 +27,7 @@ namespace WooAsset
             public Object[] _allAssets;
             public override Object[] allAssets => _allAssets;
 
-            protected override void OnLoad()
+            protected override void LoadUnityObject()
             {
                 _allAssets = AssetDatabase.LoadAllAssetsAtPath(path);
                 var result = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
