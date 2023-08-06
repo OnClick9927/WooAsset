@@ -37,17 +37,19 @@ namespace WooAsset
             public List<string> dps;
             public AssetType type;
         }
-        public void Read(List<AssetData> assets, List<string> raw)
+        public void Read(List<AssetData> assets, List<string> raw, List<string> raw_copy)
         {
             if (Application.isEditor)
             {
                 this.assets = assets;
                 this.rawAssets = raw;
+                this.rawAssets_copy = raw_copy;
             }
         }
 
         [SerializeField] public List<AssetData> assets = new List<AssetData>();
         public List<string> rawAssets = new List<string>();
+        public List<string> rawAssets_copy = new List<string>();
 
         public void Prepare()
         {
@@ -129,6 +131,8 @@ namespace WooAsset
                 return _assets[assetPath].type;
             if (rawAssets.Contains(assetPath))
                 return AssetType.Raw;
+            if (rawAssets_copy.Contains(assetPath))
+                return AssetType.RawCopyFile;
             return AssetType.None;
         }
 
@@ -205,6 +209,8 @@ namespace WooAsset
             for (int i = 0; i < manifests.Count; i++)
             {
                 manifest.rawAssets.AddRange(manifests[i].rawAssets);
+                manifest.rawAssets_copy.AddRange(manifests[i].rawAssets_copy);
+
                 for (int j = 0; j < manifests[i].assets.Count; j++)
                 {
                     var asset = manifests[i].assets[j];
@@ -219,12 +225,15 @@ namespace WooAsset
 
             }
             manifest.rawAssets.Distinct();
+            manifest.rawAssets_copy.Distinct();
             manifest.assets = dic.Values.ToList();
             return manifest;
         }
 
         public bool ContainsAsset(string assetPath)
         {
+            if (rawAssets_copy.Contains(assetPath))
+                return true;
             if (rawAssets.Contains(assetPath))
                 return true;
             return allPaths.Contains(assetPath);

@@ -6,6 +6,7 @@ namespace WooAsset
     {
         public string rawPath;
         public byte[] bytes;
+        public string hash;
     }
 
 }

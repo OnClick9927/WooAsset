@@ -29,6 +29,8 @@ namespace WooAsset
             }
             context.tags.ReadAssetTags(tag_dic);
             context.rawAssets = context.tree.GetRawAssets();
+            context.rawAssets_copy = context.tree.GetRawAssets_Copy();
+
             InvokeComplete();
         }
     }

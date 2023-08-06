@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2554180ab9706de4c909535d52b6a5a4, type: 3}
-  m_Name: aaa
+  m_Name: kkk
   m_EditorClassIdentifier: 
-  rawPath: Assets/Example/New Folder/aaa
-  bytes: 646173646173646173
-  hash: 63373b41cf913e9f9b3226b4a0452737
+  rawPath: Assets/Example/New Folder/kkk.rfc
+  bytes: e598bbe598bbe598bb
+  hash: 0696012131deed80528fdbf89ab0e7f3

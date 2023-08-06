@@ -17,8 +17,9 @@ namespace WooAsset
         private static MixedAssetLife mixedlife;
         private static IAssetMode _defaultMode = new NormalAssetMode();
         public static IAssetMode mode { get; set; }
-        public static string localSaveDir;
+        private static string localSaveDir;
 
+        private static string localRfcDir { get { return CombinePath(localSaveDir, "rfc"); } }
 
         public static string buildTarget
         {
@@ -55,15 +56,25 @@ namespace WooAsset
                 return string.Empty;
             }
         }
+
+        public static void SetLocalSaveDir(string path)
+        {
+            localSaveDir = path;
+            if (!Directory.Exists(localSaveDir))
+                Directory.CreateDirectory(localSaveDir);
+            if (!Directory.Exists(localRfcDir))
+                Directory.CreateDirectory(localRfcDir);
+        }
+        public static string GetLocalSaveDir()
+        {
+            return localSaveDir;
+        }
         static AssetsInternal()
         {
             mode = _defaultMode;
             bundles = new BundleMap();
             assets = new AssetMap();
-
-            localSaveDir = CombinePath(Application.persistentDataPath, "DLC");
-            if (!Directory.Exists(localSaveDir))
-                Directory.CreateDirectory(localSaveDir);
+            SetLocalSaveDir(CombinePath(Application.persistentDataPath, "DLC"));
         }
 
         public static void AddAssetLife(IAssetLife life)
@@ -112,7 +123,9 @@ namespace WooAsset
         public static AssetOperation InitAsync(string version, bool again, string[] tags) => mode.InitAsync(version, again, tags);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
         public static CopyBundleOperation CopyToSandBox() => mode.CopyToSandBox(CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir, false);
-        public static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
+        private static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
+        public static UnzipRawFileOperation UnzipRawFile() => mode.UnzipRawFile();
+
         public static BundleDownloader DownLoadBundle(string bundleName) => setting.GetBundleDownloader(GetUrlFromBundleName(bundleName), bundleName);
         public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static void SetAssetsSetting(AssetsSetting setting)
@@ -131,7 +144,16 @@ namespace WooAsset
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
 
-
+        private static string GetRawFileNameHash(string path)
+        {
+            string name = Path.GetFileNameWithoutExtension(path);
+            string ex = Path.GetExtension(path);
+            string hash = GetStringHash(name);
+            if (string.IsNullOrEmpty(ex))
+                return hash;
+            return $"{hash}{ex}";
+        }
+        public static string GetRawFileToDlcPath(string path) => CombinePath(localRfcDir, GetRawFileNameHash(path));
 
 
         public static string GetBundleLocalPath(string bundleName) => CombinePath(localSaveDir, bundleName);
@@ -161,7 +183,8 @@ namespace WooAsset
                 LogError($"Not Found Asset: {path}");
                 return null;
             }
-            if (GetAssetType(path) == AssetType.Raw)
+            AssetType type = GetAssetType(path);
+            if (type == AssetType.Raw || type == AssetType.RawCopyFile)
                 path = RawToRawObjectPath(path);
 
             List<AssetHandle> result = null;
@@ -214,14 +237,6 @@ namespace WooAsset
         public static string GetFileHash(string path) => File.Exists(path) ? ToHashString(File.ReadAllBytes(path)) : string.Empty;
         public static string CombinePath(string self, string combine) => Path.Combine(self, combine);
         public static string ToRegularPath(string path) => path.Replace('\\', '/');
-
-
-
-
-
-
-
-
 
     }
 }

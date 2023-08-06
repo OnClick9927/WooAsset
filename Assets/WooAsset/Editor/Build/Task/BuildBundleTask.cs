@@ -8,7 +8,7 @@ namespace WooAsset
 {
     public class BuildBundleTask : AssetTask
     {
-       
+
         public class BuildTask : AssetTask
         {
             protected override void OnExecute(AssetTaskContext context)
@@ -41,7 +41,7 @@ namespace WooAsset
 
 
                 ManifestData manifest = new ManifestData();
-                manifest.Read(_assets, context.rawAssets);
+                manifest.Read(_assets, context.rawAssets, context.rawAssets_copy);
                 manifest.Prepare();
                 context.manifest = manifest;
 
@@ -83,12 +83,12 @@ namespace WooAsset
                     }
                 }
                 VersionBuffer.WriteManifest(context.manifest,
-                      AssetsInternal.CombinePath(context.outputPath, 
+                      AssetsInternal.CombinePath(context.outputPath,
                       context.buildGroup.GetManifestFileName(context.version)),
                       context.encrypt
                       );
                 VersionBuffer.WriteBundlesVersion(bVer,
-                      AssetsInternal.CombinePath(context.outputPath, 
+                      AssetsInternal.CombinePath(context.outputPath,
                       context.buildGroup.GetBundleFileName(context.version)),
                       context.encrypt
                       );

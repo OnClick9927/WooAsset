@@ -83,9 +83,16 @@ namespace WooAsset
 
             AssetType IAssetMode.GetAssetType(string assetPath) => cache.tree.GetAssetType(assetPath);
 
-            public bool ContainsAsset(string assetPath)
+            bool IAssetMode.ContainsAsset(string assetPath) => cache.tree.ContainsAsset(assetPath);
+
+            public UnzipRawFileOperation UnzipRawFile()
             {
-                return cache.tree.ContainsAsset(assetPath);
+                if (!((IAssetMode)this).Initialized())
+                {
+                    AssetsInternal.LogError("InitAsync Filrst ");
+                    return null;
+                }
+                return new UnzipRawFileOperation(cache.tree.GetRawAssets_Copy());
             }
         }
     }

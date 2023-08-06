@@ -8,6 +8,12 @@ ShaderVariantCollection:
   m_PrefabAsset: {fileID: 0}
   m_Name: shadervariants
   m_Shaders:
+  - first: {fileID: 64, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SINGLE_CASCADE
+          SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
+        passType: 0
   - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -19,30 +25,14 @@ ShaderVariantCollection:
       - keywords: BILLBOARD_FACE_CAMERA_POS DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
           SHADOWS_SOFT SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
         passType: 4
-      - keywords: BILLBOARD_FACE_CAMERA_POS DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
-          SHADOWS_SOFT SHADOWS_SPLIT_SPHERES SOFTPARTICLES_ON UNITY_HDR_ON
-        passType: 4
       - keywords: 
         passType: 8
       - keywords: SHADOWS_DEPTH SHADOWS_SOFT SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
         passType: 8
-      - keywords: SHADOWS_DEPTH SHADOWS_SOFT SHADOWS_SPLIT_SPHERES SOFTPARTICLES_ON
-          UNITY_HDR_ON
-        passType: 8
       - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SPLIT_SPHERES
         passType: 8
-      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SPLIT_SPHERES SOFTPARTICLES_ON
-          UNITY_HDR_ON
+      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
         passType: 8
-  - first: {fileID: 64, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
-      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SINGLE_CASCADE
-          SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
-        passType: 0
-      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SPLIT_SPHERES SOFTPARTICLES_ON
-          UNITY_HDR_ON
-        passType: 0
   - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -92,5 +82,5 @@ ShaderVariantCollection:
         passType: 0
       - keywords: BILLBOARD_FACE_CAMERA_POS SOFTPARTICLES_ON
         passType: 0
-      - keywords: BILLBOARD_FACE_CAMERA_POS SOFTPARTICLES_ON UNITY_HDR_ON
+      - keywords: BILLBOARD_FACE_CAMERA_POS UNITY_HDR_ON
         passType: 0

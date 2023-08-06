@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace WooAsset
 {
@@ -10,7 +11,7 @@ namespace WooAsset
         public static CopyBundleOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static AssetOperation InitAsync(string version = "", bool again = false, params string[] tags) => AssetsInternal.InitAsync(version, again, tags);
-
+        public static UnzipRawFileOperation UnzipRawFile() => AssetsInternal.UnzipRawFile();
         public static Asset LoadAssetAsync(string path) => AssetsInternal.LoadAsset(path, true) as Asset;
         public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, true) as SceneAsset;
         public static Asset LoadAsset(string path) => AssetsInternal.LoadAsset(path, false) as Asset;
@@ -21,6 +22,7 @@ namespace WooAsset
 
         public static void UnloadBundles() => AssetsInternal.UnloadBundles();
         public static bool GetIsAssetLoaded(string assetPath) => AssetsInternal.GetIsAssetLoaded(assetPath);
+        public static string GetRawFileToDlcPath(string path) => AssetsInternal.GetRawFileToDlcPath(path);
 
 
 
@@ -30,5 +32,6 @@ namespace WooAsset
         public static IReadOnlyList<string> GetAllTags() => AssetsInternal.GetAllTags();
 
         public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => AssetsInternal.GetAllAssetPaths(bundleName);
+
     }
 }

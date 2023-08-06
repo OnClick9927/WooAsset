@@ -29,8 +29,8 @@ namespace WooAsset
             AssetsInternal.Log($"Download start: {url}");
         DownLoad:
             var req = UnityWebRequest.Get(url);
-            var _ = req.SendWebRequest();
             req.timeout = timeout;
+            var _ = req.SendWebRequest();
             while (!req.isDone)
             {
                 _progress = req.downloadProgress;

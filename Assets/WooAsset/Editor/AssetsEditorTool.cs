@@ -71,7 +71,7 @@ namespace WooAsset
         {
             AssetsInternal.AddAssetLife(ins);
             EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
-           
+
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Tool2()
@@ -79,7 +79,7 @@ namespace WooAsset
             bundles.Clear();
             assets.Clear();
             AssetsInternal.mode = Activator.CreateInstance(option.GetAssetModeType()) as IAssetMode;
-            AssetsInternal.localSaveDir = AssetsEditorTool.outputPath;
+            AssetsInternal.SetLocalSaveDir(AssetsEditorTool.outputPath);
             if (option.enableServer && AssetsInternal.mode is NormalAssetMode)
                 AssetsServer.Run(option.serverPort, option.serverDirectory);
         }
@@ -101,7 +101,7 @@ namespace WooAsset
                     break;
             }
         }
-       
+
     }
     public partial class AssetsEditorTool
     {

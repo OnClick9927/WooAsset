@@ -47,6 +47,7 @@ namespace WooAsset
         public string[] atlasPaths;
         public List<AssetTask> pipelineFinishTasks;
         public List<string> rawAssets;
+        public List<string> rawAssets_copy;
     }
 
 }

@@ -9,7 +9,7 @@ namespace WooAsset
     {
         private static List<FileData> GetLocalBundles()
         {
-            var files = Directory.GetFiles(AssetsInternal.localSaveDir);
+            var files = Directory.GetFiles(AssetsInternal.GetLocalSaveDir());
             List<FileData> result = new List<FileData>();
             for (int i = 0; i < files.Length; i++)
             {

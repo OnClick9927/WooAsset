@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace WooAsset
 {
+
     public partial class NormalAssetMode : IAssetMode
     {
 
@@ -28,6 +29,17 @@ namespace WooAsset
                     .Select(x => x.bundleName).ToList()
                     , version, tags);
             return manifestOp;
+        }
+
+        UnzipRawFileOperation IAssetMode.UnzipRawFile()
+        {
+            if (!((IAssetMode)this).Initialized())
+            {
+                AssetsInternal.LogError("InitAsync Filrst ");
+                return null;
+            }
+            return new UnzipRawFileOperation(manifestOp.manifest.rawAssets_copy);
+
         }
 
         CheckBundleVersionOperation IAssetMode.VersionCheck() => new CheckBundleVersionOperation();
@@ -105,13 +117,15 @@ namespace WooAsset
 
         CopyBundleOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new CopyToSandBox(from, to, cover);
 
-        public bool ContainsAsset(string assetPath)
+        bool IAssetMode.ContainsAsset(string assetPath)
         {
             if (!((IAssetMode)this).Initialized())
                 return false;
             return manifestOp.manifest.ContainsAsset(assetPath);
 
         }
+
+
     }
 
 }

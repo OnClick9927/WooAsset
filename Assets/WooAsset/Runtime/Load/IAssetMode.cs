@@ -7,6 +7,9 @@ namespace WooAsset
     {
         bool Initialized();
         AssetOperation InitAsync(string version, bool again, string[] tags);
+
+        UnzipRawFileOperation UnzipRawFile();
+
         AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg);
         IReadOnlyList<string> GetAllAssetPaths();
         IReadOnlyList<string> GetTagAssetPaths(string tag);

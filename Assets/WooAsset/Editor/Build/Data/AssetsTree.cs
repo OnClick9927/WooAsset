@@ -12,11 +12,16 @@ namespace WooAsset
     {
 
         [SerializeField] private List<string> rawAssets = new List<string>();
+        [SerializeField] private List<string> rawAssets_copy = new List<string>();
+
         [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         public List<string> GetRawAssets() => rawAssets;
+        public List<string> GetRawAssets_Copy() => rawAssets_copy;
 
         public AssetType GetAssetType(string path)
         {
+            if (rawAssets_copy.Contains(path))
+                return AssetType.RawCopyFile;
             if (rawAssets.Contains(path))
                 return AssetType.Raw;
             return GetAssetData(path).type;
@@ -33,6 +38,9 @@ namespace WooAsset
             if (__GetAssetType(path) == AssetType.Raw)
                 if (!rawAssets.Contains(path))
                     rawAssets.Add(path);
+            if (__GetAssetType(path) == AssetType.RawCopyFile)
+                if (!rawAssets_copy.Contains(path))
+                    rawAssets_copy.Add(path);
             return assetBuild.IsIgnorePath(path);
         }
         private AssetType __GetAssetType(string path)
@@ -44,6 +52,7 @@ namespace WooAsset
         {
             this.assetBuild = assetBuild;
             rawAssets.Clear();
+            rawAssets_copy.Clear();
             assets.Clear();
             folders.RemoveAll(x => !Directory.Exists(x) || IsIgnorePath(x));
             for (int i = 0; i < folders.Count; i++)
@@ -150,6 +159,8 @@ namespace WooAsset
 
         public bool ContainsAsset(string assetPath)
         {
+            if (rawAssets_copy.Contains(assetPath))
+                return true;
             if (rawAssets.Contains(assetPath))
                 return true;
             return GetAssetData(assetPath) != null;

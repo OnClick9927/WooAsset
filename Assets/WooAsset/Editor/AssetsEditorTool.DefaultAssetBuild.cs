@@ -94,7 +94,8 @@ namespace WooAsset
                 else
                 {
                     AssetImporter importer = AssetImporter.GetAtPath(path);
-                    if (path.EndsWith(".meta")) _type = AssetType.Meta;
+                    if (path.EndsWith(".rfc")) _type = AssetType.RawCopyFile;
+                    else if (path.EndsWith(".meta")) _type = AssetType.Meta;
                     else if (path.EndsWith(".cs")) _type = AssetType.CS;
                     else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
                     else if (importer is ModelImporter) _type = AssetType.Model;
@@ -121,7 +122,7 @@ namespace WooAsset
             public bool IsIgnorePath(string path)
             {
                 var type = GetAssetType(path);
-                if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw)
+                if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw || type== AssetType.RawCopyFile)
                     return true;
                 var list = AssetsInternal.ToRegularPath(path).Split('/').ToList();
                 if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;

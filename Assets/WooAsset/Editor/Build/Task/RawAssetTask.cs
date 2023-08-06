@@ -35,31 +35,18 @@ namespace WooAsset
             {
                 string path = paths[i];
                 var type = context.assetBuild.GetAssetType(path);
-                if (type != AssetType.Raw) continue;
-                string savePath = AssetsInternal.RawToRawObjectPath(path);
-                var source = File.ReadAllBytes(path);
+                if (type != AssetType.Raw && type != AssetType.RawCopyFile) continue;
+                string objPath = AssetsInternal.RawToRawObjectPath(path);
+
                 bool create = false;
-                if (File.Exists(savePath))
+                string hash = AssetsInternal.GetFileHash(path);
+                if (File.Exists(objPath))
                 {
-                    var raw = AssetsEditorTool.Load<RawObject>(savePath);
-                    if (raw != null && source.Length == raw.bytes.Length)
-                    {
-                        for (int j = 0; j < source.Length; j++)
-                        {
-                            if (source[j] != raw.bytes[j])
-                            {
-                                create = true;
-                                break;
-                            }
-                        }
-                    }
-                    else
+                    var raw = AssetsEditorTool.Load<RawObject>(objPath);
+                    if (raw == null || raw.hash != hash )
                     {
                         create = true;
-                    }
-                    if (create)
-                    {
-                        AssetDatabase.DeleteAsset(savePath);
+                        AssetDatabase.DeleteAsset(objPath);
                         AssetDatabase.Refresh();
                     }
                 }
@@ -69,9 +56,10 @@ namespace WooAsset
                 }
                 if (create)
                 {
-                    RawObject sto = AssetsEditorTool.CreateScriptableObject<RawObject>(savePath);
-                    sto.bytes = source;
+                    RawObject sto = AssetsEditorTool.CreateScriptableObject<RawObject>(objPath);
+                    sto.bytes = File.ReadAllBytes(path);
                     sto.rawPath = path;
+                    sto.hash = hash;
                     AssetsEditorTool.Update(sto);
                 }
             }
