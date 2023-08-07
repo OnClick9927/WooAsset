@@ -55,9 +55,10 @@ namespace WooAsset
         {
             if (File.Exists(path))
             {
-                FileObject obj = ScriptableObject.CreateInstance<FileObject>();
-                obj.path = path;
-                obj.fileInfo = new FileInfo(path);
+
+                RawObject obj = ScriptableObject.CreateInstance<RawObject>();
+                obj.rawPath = path;
+                obj.hash = AssetsInternal.GetFileHash(path);
                 using (var stream = File.OpenRead(path))
                 {
                     if (async)

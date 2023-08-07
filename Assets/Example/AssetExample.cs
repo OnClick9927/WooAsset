@@ -73,7 +73,7 @@ namespace WooAsset
             }
             oppp.Destroy();
             var __asset = await Assets.LoadFileAssetAsync(Assets.GetRawFileToDlcPath("Assets/Example/New Folder/kkk.rfc"));
-            var fo = __asset.GetAsset<FileObject>();
+            var fo = __asset.GetAsset<RawObject>();
             Debug.Log(fo.bytes.Length);
         }
 
