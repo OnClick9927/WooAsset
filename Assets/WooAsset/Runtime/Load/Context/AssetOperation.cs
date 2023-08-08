@@ -25,7 +25,7 @@ namespace WooAsset
         protected void SetErr(string err)
         {
             _err = err;
-            AssetsInternal.LogError(this.error);
+            AssetsHelper.LogError(this.error);
         }
         bool IEnumerator.MoveNext() => !isDone;
         void IEnumerator.Reset()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -29,7 +30,7 @@ namespace WooAsset
             {
                 remote = VersionBuffer.ReadAssetsVersionCollection(downloader.data, AssetsInternal.GetEncrypt());
             }
-            AssetsInternal.Log($"Check Version Complete");
+            AssetsHelper.Log($"Check Version Complete");
             InvokeComplete();
         }
     }

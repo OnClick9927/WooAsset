@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace WooAsset
@@ -38,7 +37,7 @@ namespace WooAsset
                 public override List<AssetsVersionCollection.VersionData> versions => _versions;
                 protected override void Done()
                 {
-                    AssetsInternal.Log($"Check Version Complete");
+                    AssetsHelper.Log($"Check Version Complete");
                     InvokeComplete();
                 }
                 public override VersionCompareOperation Compare(int versionIndex, params string[] tags)
@@ -63,7 +62,7 @@ namespace WooAsset
             AssetHandle IAssetMode.CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);
 
             IReadOnlyList<string> IAssetMode.GetAllAssetPaths() => cache.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory).ConvertAll(asset => asset.path);
-            IReadOnlyList<string> IAssetMode.GetAssetsByAssetName(string name, List<string> result) => ((IAssetMode)this).GetAllAssetPaths().Where(x => Path.GetFileName(name).Contains(name)).ToList();
+            IReadOnlyList<string> IAssetMode.GetAssetsByAssetName(string name, List<string> result) => ((IAssetMode)this).GetAllAssetPaths().Where(x => AssetsHelper.GetFileName(name).Contains(name)).ToList();
 
             IReadOnlyList<string> IAssetMode.GetTagAssetPaths(string tag) => cache.tags.GetTagAssetPaths(tag);
 
@@ -89,7 +88,7 @@ namespace WooAsset
             {
                 if (!((IAssetMode)this).Initialized())
                 {
-                    AssetsInternal.LogError("InitAsync Filrst ");
+                    AssetsHelper.LogError("InitAsync Filrst ");
                     return null;
                 }
                 return new UnzipRawFileOperation(cache.tree.GetRawAssets_Copy());

@@ -1,12 +1,11 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using UnityEditor;
 
 namespace WooAsset
 {
     public class RawAssetTask : AssetTask
     {
-        protected override void OnExecute(AssetTaskContext context)
+        protected async override void OnExecute(AssetTaskContext context)
         {
             var builds = context.buildGroups;
             if (builds.Count == 0)
@@ -21,7 +20,7 @@ namespace WooAsset
             {
                 var raw = AssetsEditorTool.Load<RawObject>(rawPaths[i]);
                 if (raw == null) continue;
-                if (!File.Exists(raw.rawPath))
+                if (!AssetsHelper.ExistsFile(raw.rawPath))
                 {
                     AssetDatabase.DeleteAsset(rawPaths[i]);
                     AssetDatabase.Refresh();
@@ -39,11 +38,11 @@ namespace WooAsset
                 string objPath = AssetsInternal.RawToRawObjectPath(path);
 
                 bool create = false;
-                string hash = AssetsInternal.GetFileHash(path);
-                if (File.Exists(objPath))
+                string hash = AssetsHelper.GetFileHash(path);
+                if (AssetsHelper.ExistsFile(objPath))
                 {
                     var raw = AssetsEditorTool.Load<RawObject>(objPath);
-                    if (raw == null || raw.hash != hash )
+                    if (raw == null || raw.hash != hash)
                     {
                         create = true;
                         AssetDatabase.DeleteAsset(objPath);
@@ -57,7 +56,8 @@ namespace WooAsset
                 if (create)
                 {
                     RawObject sto = AssetsEditorTool.CreateScriptableObject<RawObject>(objPath);
-                    sto.bytes = File.ReadAllBytes(path);
+                    var reader = await AssetsHelper.ReadFile(path, true);
+                    sto.bytes = reader.bytes;
                     sto.rawPath = path;
                     sto.hash = hash;
                     AssetsEditorTool.Update(sto);

@@ -2,8 +2,6 @@
 using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
 using UnityEditor;
-
-using System.IO;
 using static WooAsset.AssetsEditorTool;
 using System.Linq;
 
@@ -140,7 +138,7 @@ namespace WooAsset
                 if (AssetsEditorTool.bundles.TryGetValue(name, out life))
                 {
                     float indent = this.GetContentIndent(args.item);
-                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(Path.GetFileName(name), Textures.folder));
+                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(AssetsHelper.GetFileName(name), Textures.folder));
                     GUI.Label(args.GetCellRect(1), life.asset.refCount.ToString());
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
@@ -164,7 +162,7 @@ namespace WooAsset
 
                     if (life.asset.bundle != null)
                     {
-                        EditorGUI.SelectableLabel(args.GetCellRect(5), Path.GetFileName(life.asset.bundle.bundleName));
+                        EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsHelper.GetFileName(life.asset.bundle.bundleName));
                     }
                     GUI.Label(args.GetCellRect(6), GetTagsString(life.tags));
                 }

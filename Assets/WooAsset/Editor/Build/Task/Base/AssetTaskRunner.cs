@@ -43,7 +43,7 @@ namespace WooAsset
                     await Execute(tasks[i], context);
                     if (tasks[i].isErr)
                     {
-                        AssetsInternal.LogError($"{context.Pipeline} Err");
+                        AssetsHelper.LogError($"{context.Pipeline} Err");
                         break;
                     }
                 }
@@ -56,14 +56,14 @@ namespace WooAsset
                         await Execute(context.pipelineFinishTasks[i], context);
                         if (tasks[i].isErr)
                         {
-                            AssetsInternal.LogError($"{context.Pipeline} Err");
+                            AssetsHelper.LogError($"{context.Pipeline} Err");
                             break;
                         }
                     }
                 }
                 sw.Stop();
                 InvokeComplete();
-                AssetsInternal.Log($"{context.Pipeline} Finish {sw.Elapsed.ToString(@"G")}");
+                AssetsHelper.Log($"{context.Pipeline} Finish {sw.Elapsed.ToString(@"G")}");
                 current = null;
                 if (wait.Count > 0)
                 {

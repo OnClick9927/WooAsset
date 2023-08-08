@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -40,12 +40,12 @@ namespace WooAsset
             IAssetStreamEncrypt en = AssetsInternal.GetEncrypt();
             string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionBuffer.localHashName);
             bool download = false;
-            if (!File.Exists(localVersionPath))
+            if (!AssetsHelper.ExistsFile(localVersionPath))
                 download = true;
             else
             {
-                var bytes = File.ReadAllBytes(localVersionPath);
-                version = VersionBuffer.ReadVersionData(bytes, en);
+                var reader = await AssetsHelper.ReadFile(localVersionPath, true);
+                version = VersionBuffer.ReadVersionData(reader.bytes, en);
 
                 if (!string.IsNullOrEmpty(_version))
                     if (version.version != _version)
@@ -69,7 +69,7 @@ namespace WooAsset
                     if (find == null)
                         find = collection.versions.Last();
                     version = find;
-                    VersionBuffer.WriteVersionData(version, localVersionPath, en);
+                    await VersionBuffer.WriteVersionData(version, localVersionPath, en);
                 }
             }
             List<ManifestData> manifests = new List<ManifestData>();
@@ -93,14 +93,17 @@ namespace WooAsset
                     go = true;
                 }
                 if (!go) continue;
-               
+
                 {
                     string fileName = group.manifestFileName;
 
                     string _path = AssetsInternal.GetBundleLocalPath(fileName);
                     ManifestData v = null;
-                    if (File.Exists(_path))
-                        v = VersionBuffer.ReadManifest(File.ReadAllBytes(_path), en);
+                    if (AssetsHelper.ExistsFile(_path))
+                    {
+                        var reader = await AssetsHelper.ReadFile(_path, true);
+                        v = VersionBuffer.ReadManifest(reader.bytes, en);
+                    }
                     else
                     {
                         downloader = AssetsInternal.DownloadVersion(fileName);
@@ -111,7 +114,7 @@ namespace WooAsset
                             break;
                         }
                         v = VersionBuffer.ReadManifest(downloader.data, en);
-                        VersionBuffer.WriteManifest(v, _path, en);
+                        await VersionBuffer.WriteManifest(v, _path, en);
                     }
                     manifests.Add(v);
                 }

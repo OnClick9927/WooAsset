@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine.U2D;
@@ -71,7 +70,7 @@ namespace WooAsset
 
             public IReadOnlyList<string> GetTags(EditorAssetData info)
             {
-                return new string[] { info.type.ToString(), Path.GetFileNameWithoutExtension(info.path) };
+                return new string[] { info.type.ToString(), AssetsHelper.GetFileNameWithoutExtension(info.path) };
             }
 
             public List<AssetTask> GetPipelineFinishTasks(AssetTaskContext context)
@@ -87,7 +86,7 @@ namespace WooAsset
             public AssetType GetAssetType(string path)
             {
                 AssetType _type = AssetType.None;
-                if (AssetsEditorTool.IsDirectory(path))
+                if (AssetsHelper.IsDirectory(path))
                 {
                     _type = AssetType.Directory;
                 }
@@ -124,7 +123,7 @@ namespace WooAsset
                 var type = GetAssetType(path);
                 if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw || type== AssetType.RawCopyFile)
                     return true;
-                var list = AssetsInternal.ToRegularPath(path).Split('/').ToList();
+                var list = AssetsHelper.ToRegularPath(path).Split('/').ToList();
                 if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;
                 return false;
             }

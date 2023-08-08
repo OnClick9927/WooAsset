@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -61,7 +60,7 @@ namespace WooAsset
             {
                 AssetData asset = assets[i];
                 string path = asset.path;
-                string assetName = Path.GetFileName(path);
+                string assetName = AssetsHelper.GetFileName(path);
 
                 IReadOnlyList<string> tags = asset.tags;
                 string bundleName = asset.bundleName;

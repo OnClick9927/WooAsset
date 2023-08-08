@@ -4,7 +4,6 @@ using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace WooAsset
@@ -106,12 +105,12 @@ namespace WooAsset
         protected async override void OnExecute(AssetTaskContext context)
         {
             string _savePath = context.shaderVariantDirectory;
-            if (!Directory.Exists(_savePath))
+            if (!AssetsHelper.ExistsDirectory(_savePath))
             {
                 InvokeComplete();
                 return;
             }
-            _savePath = AssetsInternal.ToRegularPath(AssetsInternal.CombinePath(_savePath, "shadervariants.shadervariants"));
+            _savePath = AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(_savePath, "shadervariants.shadervariants"));
             AssetDatabase.DeleteAsset(_savePath);
             // 聚焦到游戏窗口
             ShaderVariantCollectionHelper.FocusUnityGameWindow();

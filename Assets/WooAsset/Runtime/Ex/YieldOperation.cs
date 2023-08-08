@@ -16,7 +16,7 @@ namespace WooAsset
         private async void Wait()
         {
 #if UNITY_EDITOR
-            await Task.Yield();
+            await Task.Delay(10);
             InvokeComplete();
 #endif
         }

@@ -25,7 +25,7 @@ namespace WooAsset
         }
         protected virtual async void Start()
         {
-            AssetsInternal.Log($"Download start: {url}");
+            AssetsHelper.Log($"Download start: {url}");
         DownLoad:
             var req = UnityWebRequest.Get(url);
             req.timeout = timeout;

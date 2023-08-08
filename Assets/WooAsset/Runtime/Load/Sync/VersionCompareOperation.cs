@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-
+using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -9,11 +8,11 @@ namespace WooAsset
     {
         private static List<FileData> GetLocalBundles()
         {
-            var files = Directory.GetFiles(AssetsInternal.GetLocalSaveDir());
+            var files = AssetsHelper.GetDirectoryFiles(AssetsInternal.GetLocalSaveDir());
             List<FileData> result = new List<FileData>();
             for (int i = 0; i < files.Length; i++)
             {
-                FileData data = FileData.CreateByFile(AssetsInternal.ToRegularPath(files[i]));
+                FileData data = FileData.CreateByFile(AssetsHelper.ToRegularPath(files[i]));
                 result.Add(data);
             }
             return result;
@@ -38,7 +37,7 @@ namespace WooAsset
             Compare();
         }
 
-        
+
         protected virtual async void Compare()
         {
             if (!_check.isErr)
@@ -99,17 +98,17 @@ namespace WooAsset
                         else
                         {
                             ManifestData v = VersionBuffer.ReadManifest(downloader.data, en);
-                            VersionBuffer.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName), en);
+                            await VersionBuffer.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName), en);
                         }
                     }
-                   
+
                 }
                 List<FileData> local = GetLocalBundles();
                 FileData.Compare(local, remoteBundles, AssetsInternal.GetFileCheckType(), out change, out delete, out add);
-                VersionBuffer.WriteVersionData(version,
-                   AssetsInternal.GetBundleLocalPath(VersionBuffer.localHashName),
-                   en
-                   );
+                await VersionBuffer.WriteVersionData(version,
+                      AssetsInternal.GetBundleLocalPath(VersionBuffer.localHashName),
+                      en
+                      );
 
             }
             InvokeComplete();

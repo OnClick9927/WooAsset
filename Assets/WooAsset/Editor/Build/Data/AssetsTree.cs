@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System;
 
 namespace WooAsset
 {
@@ -35,7 +33,7 @@ namespace WooAsset
 
         private bool IsIgnorePath(string path)
         {
-            path = AssetsInternal.ToRegularPath(path);
+            path = AssetsHelper.ToRegularPath(path);
             if (__GetAssetType(path) == AssetType.Raw)
                 if (!rawAssets.Contains(path))
                     rawAssets.Add(path);
@@ -55,7 +53,7 @@ namespace WooAsset
             rawAssets.Clear();
             rawAssets_copy.Clear();
             assets.Clear();
-            folders.RemoveAll(x => !Directory.Exists(x) || IsIgnorePath(x));
+            folders.RemoveAll(x => !AssetsHelper.ExistsDirectory(x) || IsIgnorePath(x));
             for (int i = 0; i < folders.Count; i++)
                 AddPath(folders[i]);
             CollectDps();
@@ -110,16 +108,16 @@ namespace WooAsset
 
         private void AddPath(string directory)
         {
-            string path = AssetsInternal.ToRegularPath(directory);
+            string path = AssetsHelper.ToRegularPath(directory);
             var root = EditorAssetData.Create(path, __GetAssetType(path));
             assets.Add(root);
 
-            List<string> list = new List<string>(Directory.GetDirectories(directory, "*", SearchOption.AllDirectories));
-            list.AddRange(Directory.GetFiles(directory, "*", SearchOption.AllDirectories));
+            List<string> list = new List<string>(AssetsHelper.GetDirectoryDirectories(directory));
+            list.AddRange(AssetsHelper.GetDirectoryFiles(directory));
             list.RemoveAll(x => IsIgnorePath(x));
             foreach (var item in list)
             {
-                string _path = AssetsInternal.ToRegularPath(item);
+                string _path = AssetsHelper.ToRegularPath(item);
                 assets.Add(EditorAssetData.Create(_path, __GetAssetType(_path)));
             }
         }
@@ -130,7 +128,7 @@ namespace WooAsset
                 .ConvertAll(x => x.path).ToArray(), true);
             for (int i = 0; i < paths.Length; i++)
             {
-                var path = AssetsInternal.ToRegularPath(paths[i]);
+                var path = AssetsHelper.ToRegularPath(paths[i]);
                 if (IsIgnorePath(path)) continue;
                 if (assets.Find(x => x.path == path) != null) continue;
                 assets.Add(EditorAssetData.Create(path, __GetAssetType(path)));
@@ -142,8 +140,8 @@ namespace WooAsset
                 if (asset.type == AssetType.Directory) continue;
                 var result = AssetDatabase.GetDependencies(asset.path, true)
                     .ToList()
-                    .ConvertAll(x => AssetsInternal.ToRegularPath(x))
-                    .Where(x => x != asset.path && !IsIgnorePath(x) && !AssetsEditorTool.IsDirectory(x));
+                    .ConvertAll(x => AssetsHelper.ToRegularPath(x))
+                    .Where(x => x != asset.path && !IsIgnorePath(x) && !AssetsHelper.IsDirectory(x));
                 asset.dependence = result.ToList();
             }
         }

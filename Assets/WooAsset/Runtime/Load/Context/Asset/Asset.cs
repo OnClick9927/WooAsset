@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -53,36 +52,13 @@ namespace WooAsset
 
         private async void LoadFile()
         {
-            if (File.Exists(path))
+            if (AssetsHelper.ExistsFile(path))
             {
-
                 RawObject obj = ScriptableObject.CreateInstance<RawObject>();
                 obj.rawPath = path;
-                obj.hash = AssetsInternal.GetFileHash(path);
-                using (var stream = File.OpenRead(path))
-                {
-                    if (async)
-                    {
-                        long total = stream.Length;
-                        long last = total;
-                        int offset = 0;
-                        int n = AssetsInternal.GetReadFileBlockSize();
-                        obj.bytes = new byte[total];
-                        while (last > 0)
-                        {
-                            var read = stream.Read(obj.bytes, offset, (int)Mathf.Min(n, last));
-                            offset += read;
-                            last -= read;
-                            directProgress = offset / (float)total;
-                            await new YieldOperation();
-                        }
-                    }
-                    else
-                    {
-                        obj.bytes = File.ReadAllBytes(path);
-                    }
-                }
-
+                obj.hash = AssetsHelper.GetFileHash(path);
+                var reader = await AssetsHelper.ReadFile(path, async);
+                obj.bytes = reader.bytes;
                 SetResult(obj);
             }
             else

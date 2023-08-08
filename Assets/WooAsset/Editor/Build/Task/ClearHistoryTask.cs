@@ -1,12 +1,10 @@
-﻿using System.IO;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     public class ClearHistoryTask : AssetTask
     {
         protected override void OnExecute(AssetTaskContext context)
         {
-            Directory.Delete(context.historyPath, true);
+            AssetsHelper.DeleteDirectory(context.historyPath);
             InvokeComplete();
         }
     }

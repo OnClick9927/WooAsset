@@ -1,6 +1,4 @@
-using System.IO;
 using System.Net;
-using System;
 
 namespace WooAsset
 {
@@ -10,52 +8,29 @@ namespace WooAsset
         {
             private class GetOperation : AssetOperation
             {
-                public override float progress { get { return isDone ? 1 : _progress; } }
-                private float _progress = 0;
+                public override float progress { get { return isDone ? 1 : 0; } }
                 public GetOperation(HttpListenerContext context, string folder)
                 {
                     HttpListenerRequest request = context.Request;
                     var rawUrl = request.RawUrl;
-                    string filePath = Path.Combine(folder, rawUrl.Remove(0, 1));
+                    string filePath = AssetsHelper.CombinePath(folder, rawUrl.Remove(0, 1));
                     WriteToClient(filePath, context);
                 }
-                public void WriteToClient(string filePath, HttpListenerContext context)
+                public async void WriteToClient(string filePath, HttpListenerContext context)
                 {
                     HttpListenerResponse response = context.Response;
                     var OutputStream = response.OutputStream;
-                    if (File.Exists(filePath))
+                    if (AssetsHelper.ExistsFile(filePath))
                     {
-                        FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
-                        int len = 0;
-                        _progress = 0;
                         response.StatusCode = (int)HttpStatusCode.OK;
-                        byte[] buffer = new byte[1024];
-
-                        void EndWrite(IAsyncResult ar)
-                        {
-                            var num = fs.EndRead(ar);
-                            len += num;
-                            _progress = (float)len / fs.Length;
-                            OutputStream.Write(buffer, 0, num);
-                            if (num < 1)
-                            {
-                                fs.Close();
-                                OutputStream.Close();
-                                InvokeComplete();
-                            }
-                            else
-                            {
-                                fs.BeginRead(buffer, 0, buffer.Length, EndWrite, null);
-                            }
-                        }
-                        fs.BeginRead(buffer, 0, buffer.Length, EndWrite, null);
+                        await AssetsHelper.WriteStream(filePath, OutputStream);
                     }
                     else
                     {
                         response.StatusCode = (int)HttpStatusCode.NotFound;
-                        OutputStream.Close();
-                        InvokeComplete();
                     }
+                    OutputStream.Close();
+                    InvokeComplete();
                 }
 
             }
@@ -67,7 +42,7 @@ namespace WooAsset
             {
                 _dir = directory;
                 _port = port;
-                AssetsInternal.Log($"Server Start {_dir}:{_port}");
+                AssetsHelper.Log($"Server Start {_dir}:{_port}");
                 httpListener = new HttpListener();
                 httpListener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
                 httpListener.Prefixes.Add(string.Format("http://*:{0}/", port));
@@ -76,9 +51,17 @@ namespace WooAsset
             }
             private static async void Receive()
             {
-                var context = await httpListener.GetContextAsync();
-                await new GetOperation(context, _dir);
-                Receive();
+                try
+                {
+                    var context = await httpListener.GetContextAsync();
+                    await new GetOperation(context, _dir);
+                    Receive();
+                }
+                catch (System.Exception)
+                {
+
+                }
+            
             }
             public static void Stop()
             {
@@ -86,7 +69,7 @@ namespace WooAsset
                 {
                     httpListener?.Close();
                     httpListener = null;
-                    AssetsInternal.Log($"Server Stop {_dir}:{_port}");
+                    AssetsHelper.Log($"Server Stop {_dir}:{_port}");
                 }
             }
         }

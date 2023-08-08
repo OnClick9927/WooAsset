@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using static WooAsset.ManifestData;
 using UnityEditor;
+using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -51,13 +51,20 @@ namespace WooAsset
 
         public class EncryptTask : AssetTask
         {
-            protected override void OnExecute(AssetTaskContext context)
+            protected override async void OnExecute(AssetTaskContext context)
             {
 
                 foreach (var bundleName in context.allBundleGroups.ConvertAll(x => x.hash))
                 {
-                    byte[] buffer = File.ReadAllBytes(AssetsInternal.CombinePath(context.historyPath, bundleName));
-                    File.WriteAllBytes(AssetsInternal.CombinePath(context.outputPath, bundleName), EncryptBuffer.Encode(bundleName, buffer, context.encrypt));
+                    var reader = await AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
+                    await AssetsHelper.WriteFile(
+                          EncryptBuffer.Encode(bundleName, reader.bytes, context.encrypt),
+                          AssetsHelper.CombinePath(context.outputPath, bundleName),
+                          true
+                          );
+
+
+
                 }
                 InvokeComplete();
             }
@@ -72,8 +79,8 @@ namespace WooAsset
                 };
                 foreach (var bundle in context.manifest.allBundle)
                 {
-                    string path = AssetsInternal.CombinePath(context.outputPath, bundle);
-                    if (File.Exists(path))
+                    string path = AssetsHelper.CombinePath(context.outputPath, bundle);
+                    if (AssetsHelper.ExistsFile(path))
                         bVer.bundles.Add(FileData.CreateByFile(path));
                     else
                     {
@@ -83,12 +90,12 @@ namespace WooAsset
                     }
                 }
                 VersionBuffer.WriteManifest(context.manifest,
-                      AssetsInternal.CombinePath(context.outputPath,
+                      AssetsHelper.CombinePath(context.outputPath,
                       context.buildGroup.GetManifestFileName(context.version)),
                       context.encrypt
                       );
                 VersionBuffer.WriteBundlesVersion(bVer,
-                      AssetsInternal.CombinePath(context.outputPath,
+                      AssetsHelper.CombinePath(context.outputPath,
                       context.buildGroup.GetBundleFileName(context.version)),
                       context.encrypt
                       );
@@ -112,11 +119,11 @@ namespace WooAsset
                 }
                 VersionBuffer.WriteAssetsVersionCollection(
                      context.versions,
-                     AssetsInternal.CombinePath(context.historyPath, context.remoteHashName),
+                     AssetsHelper.CombinePath(context.historyPath, context.remoteHashName),
                      new NoneAssetStreamEncrypt());
                 VersionBuffer.WriteAssetsVersionCollection(
                      context.versions,
-                     AssetsInternal.CombinePath(context.outputPath, context.remoteHashName),
+                     AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
                      context.encrypt);
                 WriteVersion(context);
                 InvokeComplete();
@@ -135,7 +142,7 @@ namespace WooAsset
 
         protected override async void OnExecute(AssetTaskContext context)
         {
-            context.files = Directory.GetFiles(context.outputPath).ToList().ConvertAll(x => FileData.CreateByFile(x));
+            context.files = AssetsHelper.GetDirectoryFiles(context.outputPath).ToList().ConvertAll(x => FileData.CreateByFile(x));
             List<string> allBundle = new List<string>();
             var builds = context.buildGroups.FindAll(x => x.build);
             if (builds.Count == 0)

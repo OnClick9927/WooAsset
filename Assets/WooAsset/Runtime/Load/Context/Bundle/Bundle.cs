@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -27,7 +26,7 @@ namespace WooAsset
             _async = loadArgs.async;
             type = BundleLoadType.FromFile;
             _path = AssetsInternal.GetBundleLocalPath(bundleName);
-            if (!File.Exists(_path))
+            if (!AssetsHelper.ExistsFile(_path))
                 type = BundleLoadType.FromRequest;
             _async = type == BundleLoadType.FromRequest;
 
@@ -83,7 +82,8 @@ namespace WooAsset
         {
             if (type == BundleLoadType.FromFile)
             {
-                LoadBundle(File.ReadAllBytes(_path));
+                var reader = await AssetsHelper.ReadFile(_path, async);
+                LoadBundle(reader.bytes);
             }
             else
             {
@@ -92,8 +92,8 @@ namespace WooAsset
                 if (!downloader.isErr)
                 {
                     byte[] buffer = downloader.data;
-                    if (AssetsInternal.GetSaveBundlesWhenPlaying()) 
-                        downloader.SaveBundleToLocal();
+                    if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                        await downloader.SaveBundleToLocal();
                     LoadBundle(buffer);
                 }
                 else

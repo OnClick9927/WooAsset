@@ -3,7 +3,6 @@ using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 using UnityEngine;
-using System.IO;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
@@ -170,7 +169,7 @@ namespace WooAsset
                 float indent = this.GetContentIndent(args.item);
                 var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                 if (string.IsNullOrEmpty(searchString))
-                    GUI.Label(first, new GUIContent(Path.GetFileName(args.label), Textures.GetMiniThumbnail(args.label)));
+                    GUI.Label(first, new GUIContent(AssetsHelper.GetFileName(args.label), Textures.GetMiniThumbnail(args.label)));
                 else
                     GUI.Label(first, new GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
                 if (asset.type != AssetType.Directory)
@@ -217,7 +216,7 @@ namespace WooAsset
                     switch (_searchType)
                     {
                         case SearchType.Name:
-                            source = Path.GetFileName(asset.path);
+                            source = AssetsHelper.GetFileName(asset.path);
                             break;
                         case SearchType.Tag:
                             source = GetTagsString(cache.tags.GetAssetTags(asset.path));

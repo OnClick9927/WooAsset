@@ -22,7 +22,7 @@ namespace WooAsset
                 manifestOp = null;
                 AssetsInternal.UnloadBundles();
                 var all = AssetsInternal.GetLoadedBundles();
-                AssetsInternal.Log($"Still exist {all.Count} bundles when init again");
+                AssetsHelper.Log($"Still exist {all.Count} bundles when init again");
             }
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundles()
@@ -35,7 +35,7 @@ namespace WooAsset
         {
             if (!((IAssetMode)this).Initialized())
             {
-                AssetsInternal.LogError("InitAsync Filrst ");
+                AssetsHelper.LogError("InitAsync Filrst ");
                 return null;
             }
             return new UnzipRawFileOperation(manifestOp.manifest.rawAssets_copy);
@@ -50,7 +50,7 @@ namespace WooAsset
             {
                 string bundleName = manifestOp.manifest.GetBundle(assetPath);
                 if (string.IsNullOrEmpty(bundleName))
-                    AssetsInternal.LogError($"Not Found  {assetPath}");
+                    AssetsHelper.LogError($"Not Found  {assetPath}");
                 arg.bundleName = bundleName;
             }
             if (arg.scene)

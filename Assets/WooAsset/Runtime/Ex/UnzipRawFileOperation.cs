@@ -1,7 +1,6 @@
 ﻿
 
 using System.Collections.Generic;
-using System.IO;
 
 namespace WooAsset
 {
@@ -36,12 +35,12 @@ namespace WooAsset
                     RawObject obj = asset.GetAsset<RawObject>();
                     string targetPath = AssetsInternal.GetRawFileToDlcPath(obj.rawPath);
 
-                    bool exist = File.Exists(targetPath);
+                    bool exist = AssetsHelper.ExistsFile(targetPath);
                     if (exist)
-                        if (AssetsInternal.GetFileHash(targetPath) != obj.hash)
+                        if (AssetsHelper.GetFileHash(targetPath) != obj.hash)
                             exist = false;
                     if (!exist)
-                        File.WriteAllBytes(targetPath, obj.bytes);
+                        await AssetsHelper.WriteFile(obj.bytes, targetPath, true);
                     AssetsInternal.Release(asset.path);
                     _progress = i / (float)files.Count;
                 }

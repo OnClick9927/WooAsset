@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     public partial class NormalAssetMode
     {
@@ -9,13 +7,13 @@ namespace WooAsset
             public CopyToSandBox(string srcPath, string destPath, bool cover) : base(srcPath, destPath, cover)
             {
             }
-            protected override string GetDestFileName(FileInfo src)
+            protected override string GetDestFileName(string src)
             {
-                return src.Name.Replace(".bytes", "");
+                return base.GetDestFileName(src).Replace(".bytes", "");
             }
-            protected override bool NeedCopy(FileInfo src)
+            protected override bool NeedCopy(string src)
             {
-                return !src.Name.EndsWith(".meta");
+                return !src.EndsWith(".meta");
             }
         }
 

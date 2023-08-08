@@ -28,7 +28,7 @@
             }
             else
             {
-               downloader.SaveBundleToLocal();
+                await downloader.SaveBundleToLocal();
             }
 
             InvokeComplete();

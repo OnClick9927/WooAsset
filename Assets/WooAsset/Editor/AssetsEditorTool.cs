@@ -1,8 +1,6 @@
 ﻿using UnityEditor;
 using System.Collections.Generic;
-using System.IO;
 using System;
-using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -115,11 +113,9 @@ namespace WooAsset
             get
             {
                 string path = "DLC/";
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                path = AssetsInternal.CombinePath(path, buildTargetName);
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
+                AssetsHelper.CreateDirectory(path);
+                path = AssetsHelper.CombinePath(path, buildTargetName);
+                AssetsHelper.CreateDirectory(path);
                 return path;
             }
         }
@@ -128,11 +124,9 @@ namespace WooAsset
             get
             {
                 string path = "DLC/History/";
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                path = AssetsInternal.CombinePath(path, buildTargetName);
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
+                AssetsHelper.CreateDirectory(path);
+                path = AssetsHelper.CombinePath(path, buildTargetName);
+                AssetsHelper.CreateDirectory(path);
                 return path;
             }
         }
@@ -141,10 +135,8 @@ namespace WooAsset
             get
             {
                 string path = "Assets/Editor";
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
+                AssetsHelper.CreateDirectory(path);
+               
                 return path;
             }
         }
@@ -186,15 +178,8 @@ namespace WooAsset
             }
         }
 
-        public static string ToAssetsPath(string self)
-        {
-            string assetRootPath = Path.GetFullPath(Application.dataPath);
-            return "Assets" + Path.GetFullPath(self).Substring(assetRootPath.Length).Replace("\\", "/");
-        }
-        public static bool IsDirectory(string path)
-        {
-            return Directory.Exists(path);
-        }
+ 
+     
 
         public static T CreateScriptableObject<T>(string savePath) where T : ScriptableObject
         {

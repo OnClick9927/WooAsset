@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEditor.U2D;
 using UnityEditor;
 using UnityEngine.U2D;
@@ -49,7 +48,7 @@ namespace WooAsset
             await Task.Delay(1000);
             var data = AssetDatabase.FindAssets("t:Texture", context.atlasPaths)
                 .Select(x => AssetDatabase.GUIDToAssetPath(x))
-                .Select(x => new { dir = Path.GetDirectoryName(x), path = x })
+                .Select(x => new { dir = AssetsHelper.GetDirectoryName(x), path = x })
                 .GroupBy(x => x.dir).ToDictionary(x => x.Key, x => x.Select(y => y.path).ToList());
             foreach (var item in data)
             {

@@ -23,7 +23,7 @@ namespace WooAsset
             private static Dictionary<string, Texture> _textures = new Dictionary<string, Texture>();
             public static Texture GetMiniThumbnail(string path)
             {
-                if (AssetsEditorTool.IsDirectory(path))
+                if (AssetsHelper.IsDirectory(path))
                     return folder;
                 Texture tx;
                 _textures.TryGetValue(path, out tx);

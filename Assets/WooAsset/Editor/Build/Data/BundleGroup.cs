@@ -20,7 +20,7 @@ namespace WooAsset
             StringBuilder sb = new StringBuilder();
             foreach (var item in assets)
             {
-                sb = sb.Append(item.hash).Append(AssetsInternal.GetStringHash(item.path));
+                sb = sb.Append(item.hash).Append(AssetsHelper.GetStringHash(item.path));
                 if (hashMap.ContainsKey(item.path))
                 {
                     List<string> hashList = hashMap[item.path];
@@ -31,7 +31,7 @@ namespace WooAsset
                 }
             }
 
-            this.hash = AssetsInternal.GetStringHash(sb.ToString());
+            this.hash = AssetsHelper.GetStringHash(sb.ToString());
         }
 
         public void RemoveAsset(string path)

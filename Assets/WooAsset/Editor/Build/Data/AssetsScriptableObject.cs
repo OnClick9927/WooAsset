@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace WooAsset
 {
@@ -8,8 +7,8 @@ namespace WooAsset
 
         public static T Load<T>() where T : AssetsScriptableObject
         {
-            string stoPath = AssetsInternal.CombinePath(AssetsEditorTool.editorPath, $"{typeof(T).Name}.asset");
-            if (File.Exists(stoPath))
+            string stoPath = AssetsHelper.CombinePath(AssetsEditorTool.editorPath, $"{typeof(T).Name}.asset");
+            if (AssetsHelper.ExistsFile(stoPath))
                 return AssetsEditorTool.Load<T>(stoPath);
             return AssetsEditorTool.CreateScriptableObject<T>(stoPath);
         }

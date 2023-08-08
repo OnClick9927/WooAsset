@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     public class CopyToBundlesToServerTask : AssetTask
     {
@@ -10,7 +8,7 @@ namespace WooAsset
             {
                 if (!string.IsNullOrEmpty(context.serverDirectory))
                 {
-                    string target = AssetsInternal.CombinePath(context.serverDirectory, context.buildTargetName);
+                    string target = AssetsHelper.CombinePath(context.serverDirectory, context.buildTargetName);
                     await new CopyBundleOperation(context.outputPath, target, true);
                 }
             }

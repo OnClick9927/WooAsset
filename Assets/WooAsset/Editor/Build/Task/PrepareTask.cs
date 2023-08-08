@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
 using UnityEditor;
+using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
     public class PrepareTask : AssetTask
     {
-        protected override void OnExecute(AssetTaskContext context)
+        protected override async void OnExecute(AssetTaskContext context)
         {
             AssetsBuildOption option = AssetsEditorTool.option;
 
@@ -49,7 +49,7 @@ namespace WooAsset
                     InvokeComplete();
                     return;
                 }
-                if (!Directory.Exists(item.path))
+                if (!AssetsHelper.ExistsDirectory(item.path))
                 {
                     SetErr("buildGroup path not exist");
                     InvokeComplete();
@@ -79,10 +79,11 @@ namespace WooAsset
                 opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
             context.BuildOption = opt;
 
-            string versionPath = AssetsInternal.CombinePath(context.historyPath, context.remoteHashName);
-            if (File.Exists(versionPath))
+            string versionPath = AssetsHelper.CombinePath(context.historyPath, context.remoteHashName);
+            if (AssetsHelper.ExistsFile(versionPath))
             {
-                context.versions = VersionBuffer.ReadAssetsVersionCollection(File.ReadAllBytes(versionPath), new NoneAssetStreamEncrypt());
+                var reader = await AssetsHelper.ReadFile(versionPath, true);
+                context.versions = VersionBuffer.ReadAssetsVersionCollection(reader.bytes, new NoneAssetStreamEncrypt());
             }
             context.version = assetBuild.GetVersion(option.version, context);
             context.pipelineFinishTasks = assetBuild.GetPipelineFinishTasks(context);

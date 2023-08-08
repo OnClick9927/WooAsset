@@ -1,7 +1,6 @@
 ﻿
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace WooAsset
@@ -32,7 +31,7 @@ namespace WooAsset
         public static IReadOnlyList<string> IntersectNameAndTag(string assetName, params string[] tags)
         {
             var searchList = _IntersectTag(tags, new List<string>());
-            searchList.RemoveAll(x => !Path.GetFileName(x).Contains(assetName));
+            searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
             return searchList;
         }
         public static IReadOnlyList<string> IntersectTag(params string[] tags)
@@ -43,7 +42,7 @@ namespace WooAsset
         public static IReadOnlyList<string> IntersectTypeAndNameAndTag(AssetType type, string assetName, params string[] tags)
         {
             var searchList = _IntersectTag(tags, new List<string>());
-            searchList.RemoveAll(x => !Path.GetFileName(x).Contains(assetName));
+            searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
             searchList.RemoveAll(x => AssetsInternal.GetAssetType(x) != type);
             return searchList;
         }
@@ -104,13 +103,13 @@ namespace WooAsset
         public static IReadOnlyList<string> UnionNameAndTag(string assetName, params string[] tags)
         {
             var searchList = _UnionTag(tags, new List<string>());
-            searchList.RemoveAll(x => !Path.GetFileName(x).Contains(assetName));
+            searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
             return searchList;
         }
         public static IReadOnlyList<string> UnionTypeAndNameAndTag(AssetType type, string assetName, params string[] tags)
         {
             var searchList = _UnionTag(tags, new List<string>());
-            searchList.RemoveAll(x => !Path.GetFileName(x).Contains(assetName));
+            searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
             searchList.RemoveAll(x => AssetsInternal.GetAssetType(x) != type);
             return searchList;
         }

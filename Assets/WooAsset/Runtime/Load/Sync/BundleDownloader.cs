@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -10,10 +10,14 @@ namespace WooAsset
             this.bundleName = bundleName;
         }
 
-        public virtual void SaveBundleToLocal()
+        public virtual CopyFileOperation SaveBundleToLocal()
         {
             string path = AssetsInternal.GetBundleLocalPath(bundleName);
-            File.WriteAllBytes(path, this.data);
+            return AssetsHelper.WriteFile(
+                            this.data,
+                            path,
+                            true
+                            );
         }
     }
 

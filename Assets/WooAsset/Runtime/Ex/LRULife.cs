@@ -17,7 +17,7 @@ namespace WooAsset
         {
             string bundleName = bundle.bundleName;
             IReadOnlyList<string> assets = Assets.GetAllAssetPaths(bundleName);
-            AssetsInternal.LogWarning($"Unload Bundle {bundleName} Cos Of Memory Size \n{string.Join(",", assets)}");
+            AssetsHelper.LogWarning($"Unload Bundle {bundleName} Cos Of Memory Size \n{string.Join(",", assets)}");
             if (assets != null)
             {
                 for (int i = 0; i < assets.Count; i++)

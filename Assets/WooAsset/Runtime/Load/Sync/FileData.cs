@@ -1,6 +1,5 @@
 ﻿
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace WooAsset
@@ -22,10 +21,10 @@ namespace WooAsset
         {
             return new FileData()
             {
-                name = Path.GetFileName(path),
+                name = AssetsHelper.GetFileName(path),
                 path = path,
-                length = new FileInfo(path).Length,
-                hash = AssetsInternal.GetFileHash(path),
+                length = AssetsHelper.GetFileLength(path),
+                hash = AssetsHelper.GetFileHash(path),
             };
         }
         public static List<FileData> Distinct(List<FileData> src)

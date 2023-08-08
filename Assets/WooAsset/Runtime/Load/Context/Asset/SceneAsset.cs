@@ -1,11 +1,10 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace WooAsset
 {
     public class SceneAsset : AssetHandle
     {
-        protected string sceneName { get { return Path.GetFileNameWithoutExtension(path); } }
+        protected string sceneName { get { return AssetsHelper.GetFileNameWithoutExtension(path); } }
 
         public override float progress => isDone ? 1 : bundle.progress * 0.5f + dpProgress * 0.5f;
         public override long assetLength => this.bundle.assetLength;

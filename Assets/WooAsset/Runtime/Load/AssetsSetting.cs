@@ -6,11 +6,10 @@ namespace WooAsset
     public abstract class AssetsSetting
     {
 
-        public virtual int GetReadFileBlockSize() { return 2; }
         protected virtual string GetBaseUrl() { return string.Empty; }
         public virtual string GetUrlByBundleName(string buildTarget, string bundleName)
         {
-            return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath(GetBaseUrl(), $"{buildTarget}/{bundleName}"));
+            return AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(GetBaseUrl(), $"{buildTarget}/{bundleName}"));
         }
         public virtual bool GetSaveBundlesWhenPlaying()
         {

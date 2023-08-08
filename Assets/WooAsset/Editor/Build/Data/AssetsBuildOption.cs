@@ -19,11 +19,11 @@ namespace WooAsset
             public List<string> tags = new List<string>();
             public string GetManifestFileName(string version)
             {
-                return AssetsInternal.GetStringHash("m" + path + version);
+                return AssetsHelper.GetStringHash("m" + path + version);
             }
             public string GetBundleFileName(string version)
             {
-                return AssetsInternal.GetStringHash("b" + path + version);
+                return AssetsHelper.GetStringHash("b" + path + version);
             }
 
         }

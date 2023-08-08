@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace WooAsset
 {
@@ -18,22 +17,22 @@ namespace WooAsset
             long length = 0;
             if (_type == AssetType.Directory)
             {
-                hash = AssetsInternal.GetStringHash(path);
+                hash = AssetsHelper.GetStringHash(path);
             }
             else
             {
-                hash = AssetsInternal.GetFileHash(path);
-                length = new FileInfo(path).Length;
+                hash = AssetsHelper.GetFileHash(path);
+                length = AssetsHelper.GetFileLength(path);
             }
 
             return new EditorAssetData()
             {
                 path = path,
-                name = Path.GetFileName(path),
+                name = AssetsHelper.GetFileName(path),
                 length = length,
                 hash = hash,
                 type = _type,
-                directory = AssetsEditorTool.ToAssetsPath(Path.GetDirectoryName(path))
+                directory = AssetsHelper.ToAssetsPath(AssetsHelper.GetDirectoryName(path))
             };
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using static WooAsset.Assets;
+using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -118,6 +119,8 @@ namespace WooAsset
         public static IAwaiter<AssetHandle> GetAwaiter(this AssetHandle target) => new AssetOperationAwaiter<AssetHandle>(target);
         public static IAwaiter<AssetsGroupOperation> GetAwaiter(this AssetsGroupOperation target) => new AssetOperationAwaiter<AssetsGroupOperation>(target);
         public static IAwaiter<InstantiateObjectOperation> GetAwaiter(this InstantiateObjectOperation target) => new AssetOperationAwaiter<InstantiateObjectOperation>(target);
+
+        public static IAwaiter<ReadFileOperation> GetAwaiter(this ReadFileOperation target) => new AssetOperationAwaiter<ReadFileOperation>(target);
 
         public static void WarpErr(this AssetOperation self) { }
 

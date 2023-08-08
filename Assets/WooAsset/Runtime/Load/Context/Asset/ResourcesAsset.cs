@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
@@ -35,7 +34,7 @@ namespace WooAsset
 
         public ResourcesAsset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
-            var extend = Path.GetExtension(path);
+            var extend = AssetsHelper.GetFileExtension(path);
             resPath = path.Replace(extend, "");
         }
         protected async override void LoadUnityObject()

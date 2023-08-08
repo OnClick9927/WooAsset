@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using UnityEngine;
-using static UnityEngine.Networking.UnityWebRequest;
 
 namespace WooAsset
 {
@@ -20,7 +16,7 @@ namespace WooAsset
         public static IAssetMode mode { get; set; }
         private static string localSaveDir;
 
-        private static string localRfcDir { get { return CombinePath(localSaveDir, "rfc"); } }
+        private static string localRfcDir { get { return AssetsHelper.CombinePath(localSaveDir, "rfc"); } }
 
         public static string buildTarget
         {
@@ -61,10 +57,8 @@ namespace WooAsset
         public static void SetLocalSaveDir(string path)
         {
             localSaveDir = path;
-            if (!Directory.Exists(localSaveDir))
-                Directory.CreateDirectory(localSaveDir);
-            if (!Directory.Exists(localRfcDir))
-                Directory.CreateDirectory(localRfcDir);
+            AssetsHelper.CreateDirectory(localSaveDir);
+            AssetsHelper.CreateDirectory(localRfcDir);
         }
         public static string GetLocalSaveDir()
         {
@@ -75,7 +69,7 @@ namespace WooAsset
             mode = _defaultMode;
             bundles = new BundleMap();
             assets = new AssetMap();
-            SetLocalSaveDir(CombinePath(Application.persistentDataPath, "DLC"));
+            SetLocalSaveDir(AssetsHelper.CombinePath(Application.persistentDataPath, "DLC"));
         }
 
         public static void AddAssetLife(IAssetLife life)
@@ -123,7 +117,7 @@ namespace WooAsset
         public static bool Initialized() => mode.Initialized();
         public static AssetOperation InitAsync(string version, bool again, string[] tags) => mode.InitAsync(version, again, tags);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
-        public static CopyBundleOperation CopyToSandBox() => mode.CopyToSandBox(CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir, false);
+        public static CopyBundleOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir, false);
         private static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
         public static UnzipRawFileOperation UnzipRawFile() => mode.UnzipRawFile();
 
@@ -144,20 +138,19 @@ namespace WooAsset
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
-        public static int GetReadFileBlockSize() => setting.GetReadFileBlockSize();
         private static string GetRawFileNameHash(string path)
         {
-            string name = Path.GetFileNameWithoutExtension(path);
-            string ex = Path.GetExtension(path);
-            string hash = GetStringHash(name);
+            string name = AssetsHelper.GetFileNameWithoutExtension(path);
+            string ex = AssetsHelper.GetFileExtension(path);
+            string hash = AssetsHelper.GetStringHash(name);
             if (string.IsNullOrEmpty(ex))
                 return hash;
             return $"{hash}{ex}";
         }
-        public static string GetRawFileToDlcPath(string path) => CombinePath(localRfcDir, GetRawFileNameHash(path));
+        public static string GetRawFileToDlcPath(string path) => AssetsHelper.CombinePath(localRfcDir, GetRawFileNameHash(path));
 
 
-        public static string GetBundleLocalPath(string bundleName) => CombinePath(localSaveDir, bundleName);
+        public static string GetBundleLocalPath(string bundleName) => AssetsHelper.CombinePath(localSaveDir, bundleName);
         public static void UnloadBundles() => bundles.UnloadBundles();
 
         public static Bundle LoadBundle(string bundleName, bool async)
@@ -169,9 +162,9 @@ namespace WooAsset
 
         public static string RawToRawObjectPath(string path)
         {
-            var dir = Path.GetDirectoryName(path);
-            var name = Path.GetFileNameWithoutExtension(path);
-            return ToRegularPath(Path.Combine(dir, $"{name}.asset"));
+            var dir = AssetsHelper.GetDirectoryName(path);
+            var name = AssetsHelper.GetFileNameWithoutExtension(path);
+            return AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, $"{name}.asset"));
         }
 
         public static Asset LoadFileAsset(string path, bool async)
@@ -181,12 +174,12 @@ namespace WooAsset
         public static AssetHandle LoadAsset(string path, bool async, bool tryFile)
         {
             assets.RemoveUselessAsset();
-            path = ToRegularPath(path);
+            path = AssetsHelper.ToRegularPath(path);
             if (!ContainsAsset(path))
             {
                 if (tryFile)
                     return LoadFileAsset(path, async);
-                LogError($"Not Found Asset: {path}");
+                AssetsHelper.LogError($"Not Found Asset: {path}");
                 return null;
             }
             AssetType type = GetAssetType(path);
@@ -226,23 +219,7 @@ namespace WooAsset
 
 
 
-        public static void LogWarning(string msg) => Debug.LogWarning("Assets : " + msg);
-        public static void Log(string msg) => Debug.Log("Assets : " + msg);
-        public static void LogError(string err) => Debug.LogError("Assets : " + err);
-        private static string ToHashString(byte[] bytes)
-        {
-            byte[] retVal = MD5.Create().ComputeHash(bytes);
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < retVal.Length; i++)
-            {
-                sb.Append(retVal[i].ToString("x2"));
-            }
-            return sb.ToString();
-        }
-        public static string GetStringHash(string str) => ToHashString(Encoding.Default.GetBytes(str));
-        public static string GetFileHash(string path) => File.Exists(path) ? ToHashString(File.ReadAllBytes(path)) : string.Empty;
-        public static string CombinePath(string self, string combine) => Path.Combine(self, combine);
-        public static string ToRegularPath(string path) => path.Replace('\\', '/');
+
 
     }
 }
