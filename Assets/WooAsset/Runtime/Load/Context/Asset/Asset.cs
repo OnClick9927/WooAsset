@@ -56,7 +56,6 @@ namespace WooAsset
             {
                 RawObject obj = ScriptableObject.CreateInstance<RawObject>();
                 obj.rawPath = path;
-                obj.hash = AssetsHelper.GetFileHash(path);
                 var reader = await AssetsHelper.ReadFile(path, async);
                 obj.bytes = reader.bytes;
                 SetResult(obj);

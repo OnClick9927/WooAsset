@@ -36,9 +36,6 @@ namespace WooAsset
                     string targetPath = AssetsInternal.GetRawFileToDlcPath(obj.rawPath);
 
                     bool exist = AssetsHelper.ExistsFile(targetPath);
-                    if (exist)
-                        if (AssetsHelper.GetFileHash(targetPath) != obj.hash)
-                            exist = false;
                     if (!exist)
                         await AssetsHelper.WriteFile(obj.bytes, targetPath, true);
                     AssetsInternal.Release(asset.path);

@@ -10,8 +10,29 @@ namespace WooAsset
     {
         public class VersionBuffer
         {
-            public static string localHashName { get { return AssetsHelper.GetStringHash("#########version###"); } }
-            public static string remoteHashName { get { return AssetsHelper.GetStringHash("#########version"); } }
+            private static string _localHashName, _remoteHashName;
+            public static string localHashName
+            {
+                get
+                {
+                    if (string.IsNullOrEmpty(_localHashName))
+                    {
+                        _localHashName = AssetsHelper.GetStringHash("#########version###");
+                    }
+                    return _localHashName;
+                }
+            }
+            public static string remoteHashName
+            {
+                get
+                {
+                    if (string.IsNullOrEmpty(_remoteHashName))
+                    {
+                        _remoteHashName = AssetsHelper.GetStringHash("#########version");
+                    }
+                    return _remoteHashName;
+                }
+            }
             private static Encoding encoding = Encoding.Default;
             public class WriteBufferOperation<T> : AssetOperation
             {
@@ -92,6 +113,7 @@ namespace WooAsset
                             offset += read;
                             last -= read;
                             _progress = offset / (float)len;
+                            if (last <= 0) break;
                             await new YieldOperation();
                         }
                     }
@@ -131,6 +153,8 @@ namespace WooAsset
                             offset += read;
                             last -= read;
                             _progress = offset / (float)len;
+                            if (last <= 0) break;
+
                             await new YieldOperation();
                         }
                     }
@@ -153,6 +177,8 @@ namespace WooAsset
                             offset += read;
                             last -= read;
                             _progress = offset / (float)len;
+                            if (last <= 0) break;
+
                             await new YieldOperation();
                         }
                     }
@@ -180,6 +206,8 @@ namespace WooAsset
                         offset += read;
                         last -= read;
                         _progress = offset / (float)len;
+                        if (last <= 0) break;
+
                         await new YieldOperation();
                     }
                 }

@@ -19,39 +19,23 @@ namespace WooAsset
 
         public static FileData CreateByFile(string path)
         {
-            return new FileData()
+            var data = new FileData()
             {
                 name = AssetsHelper.GetFileName(path),
                 path = path,
                 length = AssetsHelper.GetFileLength(path),
-                hash = AssetsHelper.GetFileHash(path),
             };
+#if UNITY_EDITOR
+            data.hash = AssetsHelper.GetFileHash(path);
+#else
+            if (AssetsInternal.GetFileCheckType() == FileCompareType.Hash)
+                data.hash = AssetsHelper.GetFileHash(path);
+#endif
+            return data;
         }
-        public static List<FileData> Distinct(List<FileData> src)
-        {
-            Dictionary<string, FileData> map = new Dictionary<string, FileData>();
-            for (int i = 0; i < src.Count; i++)
-            {
-                if (map.ContainsKey(src[i].name)) continue;
-                map.Add(src[i].name, src[i]);
-            }
-            return map.Values.ToList();
-        }
+     
 
-        public static bool Compare(FileData a, FileData b, FileCompareType checkType)
-        {
-            if (a == null || b == null)
-                return false;
-            if (a.name != b.name) return false;
-            if (checkType == FileCompareType.Hash)
-            {
-                return a.hash == b.hash;
-            }
-            else
-            {
-                return a.length == b.length;
-            }
-        }
+
 
         public static void Compare(List<FileData> old, List<FileData> src, FileCompareType checkType, out List<FileData> change, out List<FileData> delete, out List<FileData> add)
         {
