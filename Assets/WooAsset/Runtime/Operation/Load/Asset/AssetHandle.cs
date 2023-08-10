@@ -71,6 +71,14 @@ namespace WooAsset
             base.SetResult(value);
         }
         protected sealed override void OnUnLoad() { }
+        protected sealed override async void OnLoad()
+        {
+            if (AssetsLoop.isBusy)
+                await new WaitBusyOperation();
+            InternalLoad();
+        }
+
+        protected abstract void InternalLoad();
         protected override sealed long ProfilerAsset(Object value)
         {
             return value == null ? 0 : Profiler.GetRuntimeMemorySizeLong(value);

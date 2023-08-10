@@ -6,6 +6,7 @@ namespace WooAsset
     public abstract class AssetsSetting
     {
 
+        public virtual long GetLoadingMaxTimeSlice() { return long.MaxValue; }
         protected virtual string GetBaseUrl() { return string.Empty; }
         public virtual string GetUrlByBundleName(string buildTarget, string bundleName)
         {
@@ -24,7 +25,7 @@ namespace WooAsset
 
         public virtual IAssetLife GetAssetLife() { return new LRULife(1024 * 1024 * 1024); }
 
-        public virtual BundleDownloader GetBundleDownloader(string url,string bundleName) { return new BundleDownloader(url, bundleName); }
+        public virtual BundleDownloader GetBundleDownloader(string url, string bundleName) { return new BundleDownloader(url, bundleName); }
 
     }
 }

@@ -122,6 +122,8 @@ namespace WooAsset
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
+        public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
+
     }
     partial class AssetsInternal
     {

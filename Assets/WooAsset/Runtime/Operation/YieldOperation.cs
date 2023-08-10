@@ -8,19 +8,19 @@ namespace WooAsset
         public YieldOperation()
         {
 #if UNITY_EDITOR
-            Wait();
+            EditorWait();
 #else
             AssetsLoop.AddOperation(this);
 #endif
         }
-        private async void Wait()
+        protected virtual async void EditorWait()
         {
 #if UNITY_EDITOR
             await Task.Delay(10);
             InvokeComplete();
 #endif
         }
-        public void Update()
+        public virtual void NormalLoop()
         {
             InvokeComplete();
         }

@@ -11,7 +11,7 @@ namespace WooAsset
         public SceneAsset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
         }
-        protected async override void OnLoad()
+        protected async override void InternalLoad()
         {
             await LoadBundle();
             if (bundle.isErr)

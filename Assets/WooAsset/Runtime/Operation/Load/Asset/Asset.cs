@@ -96,7 +96,8 @@ namespace WooAsset
                 SetResult(result[0]);
             }
         }
-        protected sealed override void OnLoad()
+   
+        protected sealed override void InternalLoad()
         {
             if (!direct)
                 LoadUnityObject();

@@ -15,7 +15,7 @@ namespace WooAsset
             private long _assetLength;
 
             public override long assetLength => _assetLength;
-            protected override void OnLoad()
+            protected override void InternalLoad()
             {
                 _assetLength = FileData.CreateByFile(path).length;
                 SetResult(null);
