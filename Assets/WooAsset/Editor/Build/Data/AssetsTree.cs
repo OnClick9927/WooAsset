@@ -158,6 +158,8 @@ namespace WooAsset
 
         public bool ContainsAsset(string assetPath)
         {
+            if (string.IsNullOrEmpty(assetPath))
+                return false;
             if (rawAssets_copy.Contains(assetPath))
                 return true;
             if (rawAssets.Contains(assetPath))

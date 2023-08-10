@@ -2,7 +2,7 @@
 
 namespace WooAsset
 {
-    public abstract partial class AssetTask : AssetOperation
+    public abstract partial class AssetTask : Operation
     {
         public override float progress => 1;
         protected static AssetTask Execute(AssetTask task, AssetTaskContext context)

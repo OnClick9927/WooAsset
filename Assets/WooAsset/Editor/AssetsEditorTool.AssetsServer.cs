@@ -6,7 +6,7 @@ namespace WooAsset
     {
         public class AssetsServer
         {
-            private class GetOperation : AssetOperation
+            private class GetOperation : Operation
             {
                 public override float progress { get { return isDone ? 1 : 0; } }
                 public GetOperation(HttpListenerContext context, string folder)

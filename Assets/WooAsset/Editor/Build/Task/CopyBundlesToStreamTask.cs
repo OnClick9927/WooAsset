@@ -6,7 +6,7 @@ namespace WooAsset
 {
     public class CopyBundlesToStreamTask : AssetTask
     {
-        public class CopyToStream : CopyBundleOperation
+        public class CopyToStream : CopyDirectoryOperation
         {
             public CopyToStream(string srcPath, string destPath, bool cover) : base(srcPath, destPath, cover)
             {

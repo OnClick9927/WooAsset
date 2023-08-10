@@ -7,7 +7,7 @@ namespace WooAsset
     {
         public class FastAssetMode : IAssetMode
         {
-            private class FastCopy : CopyBundleOperation
+            private class FastCopy : CopyDirectoryOperation
             {
                 public FastCopy(string srcPath, string destPath, bool cover) : base(srcPath, destPath, cover)
                 {
@@ -49,7 +49,7 @@ namespace WooAsset
             bool IAssetMode.Initialized() => _task != null && _task.isDone;
             private AssetTask _task;
 
-            AssetOperation IAssetMode.InitAsync(string version, bool again, string[] tags)
+            Operation IAssetMode.InitAsync(string version, bool again, string[] tags)
             {
                 if (_task == null)
                     _task = AssetTaskRunner.PreviewBundles();
@@ -76,7 +76,7 @@ namespace WooAsset
 
 
 
-            CopyBundleOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new FastCopy(from, to, cover);
+            CopyDirectoryOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new FastCopy(from, to, cover);
 
 
 
@@ -84,15 +84,7 @@ namespace WooAsset
 
             bool IAssetMode.ContainsAsset(string assetPath) => cache.tree.ContainsAsset(assetPath);
 
-            public UnzipRawFileOperation UnzipRawFile()
-            {
-                if (!((IAssetMode)this).Initialized())
-                {
-                    AssetsHelper.LogError("InitAsync Filrst ");
-                    return null;
-                }
-                return new UnzipRawFileOperation(cache.tree.GetRawAssets_Copy());
-            }
+            UnzipRawFileOperation IAssetMode.UnzipRawFile() => new UnzipRawFileOperation(cache.tree.GetRawAssets_Copy());
         }
     }
 
