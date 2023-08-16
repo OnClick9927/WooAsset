@@ -9,7 +9,7 @@ namespace WooAsset
         private string targetPath;
         public override float progress => isDone ? 1 : _progress;
         private float _progress;
-        public CopyFileOperation(string targetPath, int n = 8192)
+        public CopyFileOperation(string targetPath, int n = 1024 * 1024)
         {
             this.n = n;
             this.targetPath = targetPath;

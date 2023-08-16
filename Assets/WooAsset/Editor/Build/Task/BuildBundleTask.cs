@@ -71,7 +71,7 @@ namespace WooAsset
         }
         public class BuildVersionTask : AssetTask
         {
-            private void WriteVersion(AssetTaskContext context)
+            private async void WriteVersion(AssetTaskContext context)
             {
                 var bVer = new BundlesVersion()
                 {
@@ -89,18 +89,18 @@ namespace WooAsset
                         return;
                     }
                 }
-                VersionBuffer.WriteManifest(context.manifest,
-                      AssetsHelper.CombinePath(context.outputPath,
-                      context.buildGroup.GetManifestFileName(context.version)),
-                      context.encrypt
-                      );
-                VersionBuffer.WriteBundlesVersion(bVer,
-                      AssetsHelper.CombinePath(context.outputPath,
-                      context.buildGroup.GetBundleFileName(context.version)),
-                      context.encrypt
-                      );
+                await VersionBuffer.WriteManifest(context.manifest,
+                        AssetsHelper.CombinePath(context.outputPath,
+                        context.buildGroup.GetManifestFileName(context.version)),
+                        context.encrypt
+                        );
+                await VersionBuffer.WriteBundlesVersion(bVer,
+                        AssetsHelper.CombinePath(context.outputPath,
+                        context.buildGroup.GetBundleFileName(context.version)),
+                        context.encrypt
+                        );
             }
-            protected override void OnExecute(AssetTaskContext context)
+            protected override async void OnExecute(AssetTaskContext context)
             {
                 if (context.versions.versions.Find(x => x.version == context.version) == null)
                 {
@@ -117,14 +117,14 @@ namespace WooAsset
                         })
                     });
                 }
-                VersionBuffer.WriteAssetsVersionCollection(
-                     context.versions,
-                     AssetsHelper.CombinePath(context.historyPath, context.remoteHashName),
-                     new NoneAssetStreamEncrypt());
-                VersionBuffer.WriteAssetsVersionCollection(
-                     context.versions,
-                     AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
-                     context.encrypt);
+                await VersionBuffer.WriteAssetsVersionCollection(
+                         context.versions,
+                         AssetsHelper.CombinePath(context.historyPath, context.remoteHashName),
+                         new NoneAssetStreamEncrypt());
+                await VersionBuffer.WriteAssetsVersionCollection(
+                          context.versions,
+                          AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
+                          context.encrypt);
                 WriteVersion(context);
                 InvokeComplete();
             }

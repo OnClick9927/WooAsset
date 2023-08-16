@@ -12,7 +12,7 @@ namespace WooAsset
 
         public override float progress => _progress;
         private float _progress;
-        public ReadFileOperation(string path, bool async, int n = 8192)
+        public ReadFileOperation(string path, bool async, int n = 1024 * 1024)
         {
             this.n = n;
             this.path = path;

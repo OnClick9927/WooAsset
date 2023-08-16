@@ -16,7 +16,7 @@ namespace WooAsset
         protected virtual async void EditorWait()
         {
 #if UNITY_EDITOR
-            await Task.Delay(10);
+            await Task.Delay(1);
             InvokeComplete();
 #endif
         }
