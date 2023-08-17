@@ -8,7 +8,7 @@
             "tags": []
         }
     ],
-    "version": "2023_08_17_16_39_12",
+    "version": "2023_08_17_17_23_00",
     "encrypt": "WooAsset.DefaultAssetStreamEncrypt",
     "compress": "LZ4",
     "forceRebuild": false,
@@ -16,16 +16,16 @@
     "fileChange": {
         "add": [
             {
-                "path": "DLC/Windows\\179e6903f6a8ad8c39f56a754eeece52",
-                "name": "179e6903f6a8ad8c39f56a754eeece52",
+                "path": "DLC/Windows\\8f5a640aaa4bdac885fd77d75c19ed41",
+                "name": "8f5a640aaa4bdac885fd77d75c19ed41",
                 "length": 4299,
                 "hash": "c01e2af076e9212a2d1e407717ff5a9e"
             },
             {
-                "path": "DLC/Windows\\b53306f7a6b8f996a20294ed294736b0",
-                "name": "b53306f7a6b8f996a20294ed294736b0",
+                "path": "DLC/Windows\\c37f249b26b67459c7c8851550eb3ebd",
+                "name": "c37f249b26b67459c7c8851550eb3ebd",
                 "length": 1671,
-                "hash": "9eea696d9f3b5b15d3ef0a19ba23eab2"
+                "hash": "47d7f55ff38d70a1fb40e668d7a857b6"
             }
         ],
         "delete": [],
@@ -34,31 +34,31 @@
                 "path": "DLC/Windows\\10a8d8bae0d67598c045791dad2f6599",
                 "name": "10a8d8bae0d67598c045791dad2f6599",
                 "length": 818,
-                "hash": "0111631b06db16df93b23363aa605e5c"
+                "hash": "5bc85e5b5d10b2d377f154f613d5a682"
             }
         ]
     },
     "versions": {
         "versions": [
             {
-                "version": "2023_08_17_16_30_38",
+                "version": "2023_08_17_17_19_31",
                 "groups": [
                     {
                         "name": "new",
-                        "manifestFileName": "3b32bbf3e4e4ccbc05e2fc9ddca42376",
-                        "bundleFileName": "92d175d58595f7be544f63dcd6dd1421",
+                        "manifestFileName": "d6af940b11a50c3de0bc9e2deffa2106",
+                        "bundleFileName": "736006ad02615011e7d83a72ecb261d7",
                         "description": "",
                         "tags": []
                     }
                 ]
             },
             {
-                "version": "2023_08_17_16_39_12",
+                "version": "2023_08_17_17_23_00",
                 "groups": [
                     {
                         "name": "new",
-                        "manifestFileName": "179e6903f6a8ad8c39f56a754eeece52",
-                        "bundleFileName": "b53306f7a6b8f996a20294ed294736b0",
+                        "manifestFileName": "8f5a640aaa4bdac885fd77d75c19ed41",
+                        "bundleFileName": "c37f249b26b67459c7c8851550eb3ebd",
                         "description": "",
                         "tags": []
                     }

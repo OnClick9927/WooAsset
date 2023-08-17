@@ -145,6 +145,8 @@ namespace WooAsset
         public bool ignoreTypeTreeChanges = true;
         public CompressType compress;
         public int MaxCacheVersionCount = 8;
+        public bool cleanHistory;
+
         [SerializeField] public List<BuildGroup> buildGroups = new List<BuildGroup>();
 
         [HideInInspector] public TypeSelect build = new TypeSelect();
@@ -156,6 +158,7 @@ namespace WooAsset
         public bool enableServer;
         public string serverDirectory = "DLC/Server";
         public int serverPort = 8080;
+
         public void OnEnable()
         {
             if (encrypt.baseType == null)

@@ -1,0 +1,47 @@
+{
+    "version": "2023_08_17_17_23_00",
+    "bundles": [
+        {
+            "path": "DLC/Windows\\be11b502846197081cf02818752767f0",
+            "name": "be11b502846197081cf02818752767f0",
+            "length": 43032,
+            "hash": "551aa02f1bfe72d8bfba2a3d4add697d"
+        },
+        {
+            "path": "DLC/Windows\\06eb9378864ed1a48a4289c6631be752",
+            "name": "06eb9378864ed1a48a4289c6631be752",
+            "length": 30041,
+            "hash": "1ba481a1984560f36289aaf6ff70e577"
+        },
+        {
+            "path": "DLC/Windows\\36cc224629a3213ff0837ca6c7a3785c",
+            "name": "36cc224629a3213ff0837ca6c7a3785c",
+            "length": 28898,
+            "hash": "93d91bae3b8f8b070e95fe197bb0ebf3"
+        },
+        {
+            "path": "DLC/Windows\\2cbd780ed9902f5084197f8385e4f035",
+            "name": "2cbd780ed9902f5084197f8385e4f035",
+            "length": 5259,
+            "hash": "3d5799fdade945a45f705d79b67ddfb3"
+        },
+        {
+            "path": "DLC/Windows\\553fbe73a2a295b01ac54d0a87d26856",
+            "name": "553fbe73a2a295b01ac54d0a87d26856",
+            "length": 39521,
+            "hash": "a0c1d78f40427f674edcd3d34e205d09"
+        },
+        {
+            "path": "DLC/Windows\\4b6dca83ed1ff17e4ea286808a292002",
+            "name": "4b6dca83ed1ff17e4ea286808a292002",
+            "length": 48069,
+            "hash": "19d91d9b040fad5dca2e078085fdde1b"
+        },
+        {
+            "path": "DLC/Windows\\68556ca7eb18c2598ab03cc2d2774f16",
+            "name": "68556ca7eb18c2598ab03cc2d2774f16",
+            "length": 2039,
+            "hash": "c215808e327179c2b9d1f99d785257c2"
+        }
+    ]
+}

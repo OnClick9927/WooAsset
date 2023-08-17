@@ -39,9 +39,10 @@ namespace WooAsset
             context.atlasPaths = option.atlasPaths.ToArray();
             context.serverDirectory = option.serverDirectory;
             context.buildGroups = option.buildGroups;
+            context.historyVersionFilePath = AssetsHelper.CombinePath(context.historyPath, context.historyVersionFileName);
+            context.cleanHistory = option.cleanHistory;
             if (context.MaxCacheVersionCount < 1)
                 context.MaxCacheVersionCount = 1;
-
             for (int i = 0; i < context.buildGroups.Count; i++)
             {
                 var item = context.buildGroups[i];
@@ -81,15 +82,11 @@ namespace WooAsset
                 opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
             context.BuildOption = opt;
 
-            string versionPath = AssetsHelper.CombinePath(context.historyPath, context.remoteHashName);
+            string versionPath = context.historyVersionFilePath;
             if (AssetsHelper.ExistsFile(versionPath))
             {
                 var reader = await AssetsHelper.ReadFile(versionPath, true);
                 context.versions = VersionBuffer.ReadAssetsVersionCollection(reader.bytes, new NoneAssetStreamEncrypt());
-                while (context.versions.versions.Count >= context.MaxCacheVersionCount)
-                {
-                    context.versions.versions.RemoveAt(0);
-                }
             }
             context.version = assetBuild.GetVersion(option.version, context);
             context.pipelineFinishTasks = assetBuild.GetPipelineFinishTasks(context);

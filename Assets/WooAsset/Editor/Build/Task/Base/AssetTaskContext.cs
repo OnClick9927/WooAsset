@@ -35,6 +35,8 @@ namespace WooAsset
         public List<string> useful;
         public string version;
         public AssetsVersionCollection versions;
+        public AssetsVersionCollection outputVersions;
+
         public ManifestData manifest;
         public FileChange fileChange;
 
@@ -49,6 +51,9 @@ namespace WooAsset
         public List<string> rawAssets_copy;
 
         public List<GroupExportData> exports = new List<GroupExportData>();
+        public string historyVersionFilePath;
+        public string historyVersionFileName = "Versions.json";
+        public bool cleanHistory;
     }
 
 }

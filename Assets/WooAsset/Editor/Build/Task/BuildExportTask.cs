@@ -15,10 +15,13 @@ namespace WooAsset
             List<FileData> _change; List<FileData> delete; List<FileData> add;
             FileData.Compare(old, files, FileCompareType.Hash, out _change, out delete, out add);
             context.fileChange = new FileChange() { change = _change, delete = delete, add = add };
-            AssetsHelper.GetDirectoryFiles(context.historyPath)
-                    .Where(x => !context.useful.Contains(AssetsHelper.GetFileName(x)))
-                    .ToList()
-                    .ForEach(x => AssetsHelper.DeleteFile(x));
+            if (context.cleanHistory)
+            {
+                AssetsHelper.GetDirectoryFiles(context.historyPath)
+                        .Where(x => !context.useful.Contains(AssetsHelper.GetFileName(x)))
+                        .ToList()
+                        .ForEach(x => AssetsHelper.DeleteFile(x));
+            }
             AssetsHelper.GetDirectoryFiles(context.outputPath)
                       .Where(x => !context.useful.Contains(AssetsHelper.GetFileName(x)))
                       .ToList()
@@ -33,7 +36,7 @@ namespace WooAsset
                 forceRebuild = context.forceRebuild,
                 ignoreTypeTreeChanges = context.ignoreTypeTreeChanges,
                 fileChange = context.fileChange,
-                versions = context.versions,
+                versions = context.outputVersions,
 
             }, true));
             await AssetsHelper.WriteFile(bytes,

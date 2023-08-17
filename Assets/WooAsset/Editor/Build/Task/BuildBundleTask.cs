@@ -3,6 +3,7 @@ using System.Linq;
 using static WooAsset.ManifestData;
 using UnityEditor;
 using System.Text;
+using UnityEngine;
 
 namespace WooAsset
 {
@@ -11,7 +12,7 @@ namespace WooAsset
 
         public class BuildTask : AssetTask
         {
-            protected override void OnExecute(AssetTaskContext context)
+            protected async override void OnExecute(AssetTaskContext context)
             {
                 var source = context.allBundleGroups;
 
@@ -44,17 +45,7 @@ namespace WooAsset
                 manifest.Read(_assets, context.rawAssets, context.rawAssets_copy);
                 manifest.Prepare();
                 context.manifest = manifest;
-
-                InvokeComplete();
-            }
-        }
-
-        public class EncryptTask : AssetTask
-        {
-            protected override async void OnExecute(AssetTaskContext context)
-            {
-
-                foreach (var bundleName in context.allBundleGroups.ConvertAll(x => x.hash))
+                foreach (var bundleName in source.ConvertAll(x => x.hash))
                 {
                     var reader = await AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
                     await AssetsHelper.WriteFile(
@@ -63,21 +54,12 @@ namespace WooAsset
                           true
                           );
 
-
-
                 }
-                InvokeComplete();
-            }
-        }
-        public class BuildVersionTask : AssetTask
-        {
-            private async void WriteVersion(AssetTaskContext context)
-            {
                 var bVer = new BundlesVersion()
                 {
                     version = context.version,
                 };
-                foreach (var bundle in context.manifest.allBundle)
+                foreach (var bundle in manifest.allBundle)
                 {
                     string path = AssetsHelper.CombinePath(context.outputPath, bundle);
                     if (AssetsHelper.ExistsFile(path))
@@ -89,7 +71,7 @@ namespace WooAsset
                         return;
                     }
                 }
-                await VersionBuffer.WriteManifest(context.manifest,
+                await VersionBuffer.WriteManifest(manifest,
                         AssetsHelper.CombinePath(context.outputPath,
                         context.buildGroup.GetManifestFileName(context.version)),
                         context.encrypt
@@ -99,37 +81,20 @@ namespace WooAsset
                         context.buildGroup.GetBundleFileName(context.version)),
                         context.encrypt
                         );
-            }
-            protected override async void OnExecute(AssetTaskContext context)
-            {
-                var versions = context.versions;
-                if (versions.versions.Find(x => x.version == context.version) == null)
-                {
-                    versions.versions.Add(new AssetsVersionCollection.VersionData()
-                    {
-                        version = context.version,
-                        groups = context.buildGroups.ConvertAll(x => new AssetsVersionCollection.VersionData.Group()
-                        {
-                            bundleFileName = x.GetBundleFileName(context.version),
-                            manifestFileName = x.GetManifestFileName(context.version),
-                            name = x.name,
-                            description = x.description,
-                            tags = x.tags,
-                        })
-                    });
-                }
-                await VersionBuffer.WriteAssetsVersionCollection(
-                         versions,
-                         AssetsHelper.CombinePath(context.historyPath, context.remoteHashName),
-                         new NoneAssetStreamEncrypt());
-                await VersionBuffer.WriteAssetsVersionCollection(
-                          versions,
-                          AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
-                          context.encrypt);
-                WriteVersion(context);
+                await VersionBuffer.WriteManifest(manifest,
+                        AssetsHelper.CombinePath(context.historyPath,
+                        context.buildGroup.GetManifestFileName(context.version)),
+                        new NoneAssetStreamEncrypt()
+                );
+                await VersionBuffer.WriteBundlesVersion(bVer,
+                        AssetsHelper.CombinePath(context.historyPath,
+                        context.buildGroup.GetBundleFileName(context.version)),
+                        new NoneAssetStreamEncrypt()
+                        );
                 InvokeComplete();
             }
         }
+
 
 
         private List<AssetTask> tasks = new List<AssetTask>()
@@ -137,8 +102,6 @@ namespace WooAsset
             new CollectAssetsTask(),
             new CollectHashBundleGroupTask(),
             new BuildTask(),
-            new EncryptTask(),
-            new BuildVersionTask(),
         };
 
 
@@ -170,11 +133,45 @@ namespace WooAsset
 
                 useful.AddRange(context.manifest.allBundle);
             }
+
+            var versions = context.versions;
+            if (versions.versions.Find(x => x.version == context.version) == null)
+            {
+                versions.versions.Add(new AssetsVersionCollection.VersionData()
+                {
+                    version = context.version,
+                    groups = context.buildGroups.ConvertAll(x => new AssetsVersionCollection.VersionData.Group()
+                    {
+                        bundleFileName = x.GetBundleFileName(context.version),
+                        manifestFileName = x.GetManifestFileName(context.version),
+                        name = x.name,
+                        description = x.description,
+                        tags = x.tags,
+                    })
+                });
+            }
+            await VersionBuffer.WriteAssetsVersionCollection(
+                     versions,
+                     context.historyVersionFilePath,
+                     new NoneAssetStreamEncrypt());
+            var outputVersions = JsonUtility.FromJson<AssetsVersionCollection>(JsonUtility.ToJson(versions));
+            while (outputVersions.versions.Count > context.MaxCacheVersionCount)
+                outputVersions.versions.RemoveAt(0);
+
+            context.outputVersions = outputVersions;
+            await VersionBuffer.WriteAssetsVersionCollection(
+                      outputVersions,
+                      AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
+                      context.encrypt);
+
             useful.Add(context.remoteHashName);
             var groups = context.versions.versions.Last().groups;
             useful.AddRange(groups.ConvertAll(x => x.manifestFileName));
             useful.AddRange(groups.ConvertAll(x => x.bundleFileName));
             context.useful = useful;
+
+
+
 
             InvokeComplete();
         }
