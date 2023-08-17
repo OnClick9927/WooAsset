@@ -43,6 +43,7 @@ MonoBehaviour:
   forceRebuild: 0
   ignoreTypeTreeChanges: 1
   compress: 1
+  MaxCacheVersionCount: 8
   buildGroups:
   - build: 1
     name: new
@@ -67,9 +68,11 @@ MonoBehaviour:
     types:
     - WooAsset.DefaultAssetStreamEncrypt
     - WooAsset.NoneAssetStreamEncrypt
+    - WooAsset.ReverseAssetStreamEncrypt
     shortTypes:
     - DefaultAssetStreamEncrypt
     - NoneAssetStreamEncrypt
+    - ReverseAssetStreamEncrypt
     typeIndex: 0
   enableServer: 1
   serverDirectory: DLC/Server

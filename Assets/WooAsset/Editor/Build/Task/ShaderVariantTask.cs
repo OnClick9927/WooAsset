@@ -55,8 +55,8 @@ namespace WooAsset
             }
 
         }
-        private const float WaitMilliseconds = 1000f;
-        private const float SleepMilliseconds = 100f;
+        private const float WaitMilliseconds = 2 * 1000f;
+        private const float SleepMilliseconds = 2 * 100f;
         private void CollectVariants(GameObject root, List<string> materials)
         {
             Camera camera = Camera.main;
@@ -120,7 +120,7 @@ namespace WooAsset
             await Task.Delay((int)SleepMilliseconds);
             ShaderVariantCollectionHelper.ClearCurrentShaderVariantCollection();
             await Task.Delay((int)SleepMilliseconds);
-            List<string> _allMaterials = AssetDatabase.FindAssets("t:Material", context.buildGroups.ConvertAll(x=>x.path).ToArray())
+            List<string> _allMaterials = AssetDatabase.FindAssets("t:Material", context.buildGroups.ConvertAll(x => x.path).ToArray())
                 .ToList()
                 .ConvertAll(x => AssetDatabase.GUIDToAssetPath(x));
             await Task.Delay((int)SleepMilliseconds);

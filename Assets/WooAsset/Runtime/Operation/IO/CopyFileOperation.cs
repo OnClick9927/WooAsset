@@ -24,6 +24,7 @@ namespace WooAsset
                 long last = len;
                 using (FileStream _fs = File.OpenWrite(targetPath))
                 {
+                    _fs.Seek(0, SeekOrigin.Begin);
                     while (last > 0)
                     {
                         var read = fs.Read(buffer, 0, (int)Math.Min(n, last));
@@ -48,6 +49,8 @@ namespace WooAsset
                 long last = len;
                 using (FileStream _fs = File.OpenWrite(targetPath))
                 {
+                    _fs.Seek(0, SeekOrigin.Begin);
+
                     while (last > 0)
                     {
                         var read = (int)Math.Min(n, last);
@@ -75,6 +78,8 @@ namespace WooAsset
             int offset = 0;
             using (FileStream fs = File.OpenRead(srcPath))
             {
+                target.Seek(0, SeekOrigin.Begin);
+
                 long len = fs.Length;
                 long last = len;
                 while (last > 0)

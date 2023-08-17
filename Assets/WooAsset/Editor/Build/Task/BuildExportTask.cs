@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using UnityEditor;
 using static WooAsset.FileData;
 
 namespace WooAsset
 {
     public class BuildExportTask : AssetTask
     {
-        protected override void OnExecute(AssetTaskContext context)
+        protected async override void OnExecute(AssetTaskContext context)
         {
             List<FileData> old = context.files;
             List<FileData> files = AssetsHelper.GetDirectoryFiles(context.outputPath).ToList().ConvertAll(x => FileData.CreateByFile(x));
@@ -21,6 +23,30 @@ namespace WooAsset
                       .Where(x => !context.useful.Contains(AssetsHelper.GetFileName(x)))
                       .ToList()
                       .ForEach(x => AssetsHelper.DeleteFile(x));
+
+            byte[] bytes = Encoding.UTF8.GetBytes(EditorJsonUtility.ToJson(new BuildBundleExprotData()
+            {
+                encrypt = context.encrypt.ToString(),
+                buildGroups = context.buildGroups,
+                version = context.version,
+                compress = context.compress.ToString(),
+                forceRebuild = context.forceRebuild,
+                ignoreTypeTreeChanges = context.ignoreTypeTreeChanges,
+                fileChange = context.fileChange,
+                versions = context.versions,
+
+            }, true));
+            await AssetsHelper.WriteFile(bytes,
+                 AssetsHelper.CombinePath(context.outputPath, "BundleExprot.json"),
+                 true
+                 );
+            foreach (var item in context.exports)
+            {
+                await AssetsHelper.WriteFile(Encoding.UTF8.GetBytes(EditorJsonUtility.ToJson(item, true)),
+                     AssetsHelper.CombinePath(context.outputPath, $"Export_{item.buildGroup.name}.json"),
+                     true
+                     );
+            }
             InvokeComplete();
         }
     }

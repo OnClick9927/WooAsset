@@ -63,10 +63,13 @@ namespace WooAsset
                     V("Build",
                     () =>
                     {
+                        
+
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildGroups"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("version"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("forceRebuild"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("ignoreTypeTreeChanges"));
+                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("MaxCacheVersionCount"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("compress"));
 
                         option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);

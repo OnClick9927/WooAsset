@@ -1,7 +1,6 @@
 ﻿using UnityEditor;
 using System.Collections.Generic;
 using UnityEditor.U2D;
-using System.Linq;
 using static WooAsset.AssetsBuildOption;
 
 namespace WooAsset
@@ -11,6 +10,7 @@ namespace WooAsset
         public TaskPipelineType Pipeline;
         public string outputPath;
         public string historyPath;
+        public int MaxCacheVersionCount;
         public BuildTarget buildTarget;
         public BuildAssetBundleOptions BuildOption;
         public IAssetBuild assetBuild;
@@ -19,25 +19,24 @@ namespace WooAsset
         public string localHashName;
 
         public string buildTargetName;
-        public CompressType compress;
         public string serverDirectory;
+        public List<BuildGroup> buildGroups;
+        public CompressType compress;
         public bool ignoreTypeTreeChanges;
         public bool forceRebuild;
-        public List<BuildGroup> buildGroups;
         public BuildGroup buildGroup;
 
 
         public AssetTagCollection tags;
         public AssetsTree tree;
-        public string version;
         public List<EditorAssetData> needBuildAssets;
         public List<BundleGroup> allBundleGroups;
         public List<FileData> files;
-        public ManifestData manifest;
-        public AssetsVersionCollection versions;
-        public FileChange fileChange;
-
         public List<string> useful;
+        public string version;
+        public AssetsVersionCollection versions;
+        public ManifestData manifest;
+        public FileChange fileChange;
 
 
         public string shaderVariantDirectory;
@@ -48,6 +47,8 @@ namespace WooAsset
         public List<AssetTask> pipelineFinishTasks;
         public List<string> rawAssets;
         public List<string> rawAssets_copy;
+
+        public List<GroupExportData> exports = new List<GroupExportData>();
     }
 
 }

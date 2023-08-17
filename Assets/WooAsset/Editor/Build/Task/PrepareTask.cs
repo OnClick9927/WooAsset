@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEditor;
-using static WooAsset.AssetsHelper;
 
 namespace WooAsset
 {
@@ -32,7 +31,7 @@ namespace WooAsset
             context.versions = new AssetsVersionCollection() { };
 
 
-
+            context.MaxCacheVersionCount = option.MaxCacheVersionCount;
             context.shaderVariantDirectory = option.shaderVariantDirectory;
             context.PlatformSetting = option.PlatformSetting;
             context.TextureSetting = option.GetTextureSetting();
@@ -40,6 +39,9 @@ namespace WooAsset
             context.atlasPaths = option.atlasPaths.ToArray();
             context.serverDirectory = option.serverDirectory;
             context.buildGroups = option.buildGroups;
+            if (context.MaxCacheVersionCount < 1)
+                context.MaxCacheVersionCount = 1;
+
             for (int i = 0; i < context.buildGroups.Count; i++)
             {
                 var item = context.buildGroups[i];
@@ -84,6 +86,10 @@ namespace WooAsset
             {
                 var reader = await AssetsHelper.ReadFile(versionPath, true);
                 context.versions = VersionBuffer.ReadAssetsVersionCollection(reader.bytes, new NoneAssetStreamEncrypt());
+                while (context.versions.versions.Count >= context.MaxCacheVersionCount)
+                {
+                    context.versions.versions.RemoveAt(0);
+                }
             }
             context.version = assetBuild.GetVersion(option.version, context);
             context.pipelineFinishTasks = assetBuild.GetPipelineFinishTasks(context);

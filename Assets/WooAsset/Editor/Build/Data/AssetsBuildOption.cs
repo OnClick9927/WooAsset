@@ -144,6 +144,7 @@ namespace WooAsset
 
         public bool ignoreTypeTreeChanges = true;
         public CompressType compress;
+        public int MaxCacheVersionCount = 8;
         [SerializeField] public List<BuildGroup> buildGroups = new List<BuildGroup>();
 
         [HideInInspector] public TypeSelect build = new TypeSelect();

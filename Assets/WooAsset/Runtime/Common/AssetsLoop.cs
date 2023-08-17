@@ -14,6 +14,7 @@ namespace WooAsset
             {
                 if (_instance == null)
                 {
+                    instance._watch = Stopwatch.StartNew();
                     GameObject go = new GameObject("Assets");
                     _instance = go.AddComponent<AssetsLoop>();
                     DontDestroyOnLoad(go);
@@ -22,15 +23,7 @@ namespace WooAsset
             }
         }
         private Stopwatch _watch;
-        public static bool isBusy
-        {
-            get
-            {
-                if (instance._watch == null)
-                    instance._watch = Stopwatch.StartNew();
-                return instance._watch.ElapsedMilliseconds - instance._frameTime >= AssetsInternal.GetLoadingMaxTimeSlice();
-            }
-        }
+        public static bool isBusy => instance._watch.ElapsedMilliseconds - instance._frameTime >= AssetsInternal.GetLoadingMaxTimeSlice();
         private long _frameTime;
 
         private void Update()

@@ -2,7 +2,7 @@
 using System.Linq;
 using static WooAsset.ManifestData;
 using UnityEditor;
-using static WooAsset.AssetsHelper;
+using System.Text;
 
 namespace WooAsset
 {
@@ -102,9 +102,10 @@ namespace WooAsset
             }
             protected override async void OnExecute(AssetTaskContext context)
             {
-                if (context.versions.versions.Find(x => x.version == context.version) == null)
+                var versions = context.versions;
+                if (versions.versions.Find(x => x.version == context.version) == null)
                 {
-                    context.versions.versions.Add(new AssetsVersionCollection.VersionData()
+                    versions.versions.Add(new AssetsVersionCollection.VersionData()
                     {
                         version = context.version,
                         groups = context.buildGroups.ConvertAll(x => new AssetsVersionCollection.VersionData.Group()
@@ -118,11 +119,11 @@ namespace WooAsset
                     });
                 }
                 await VersionBuffer.WriteAssetsVersionCollection(
-                         context.versions,
+                         versions,
                          AssetsHelper.CombinePath(context.historyPath, context.remoteHashName),
                          new NoneAssetStreamEncrypt());
                 await VersionBuffer.WriteAssetsVersionCollection(
-                          context.versions,
+                          versions,
                           AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
                           context.encrypt);
                 WriteVersion(context);
@@ -140,10 +141,11 @@ namespace WooAsset
             new BuildVersionTask(),
         };
 
+
         protected override async void OnExecute(AssetTaskContext context)
         {
             context.files = AssetsHelper.GetDirectoryFiles(context.outputPath).ToList().ConvertAll(x => FileData.CreateByFile(x));
-            List<string> allBundle = new List<string>();
+            List<string> useful = new List<string>();
             var builds = context.buildGroups.FindAll(x => x.build);
             if (builds.Count == 0)
             {
@@ -159,14 +161,20 @@ namespace WooAsset
                 context.buildGroup = group;
                 for (int j = 0; j < tasks.Count; j++)
                     await Execute(tasks[j], context);
-                allBundle.AddRange(context.manifest.allBundle);
+
+                context.exports.Add(new GroupExportData()
+                {
+                    buildGroup = context.buildGroup,
+                    manifest = context.manifest,
+                });
+
+                useful.AddRange(context.manifest.allBundle);
             }
-            allBundle.Add(context.remoteHashName);
-            allBundle.AddRange(context.versions.versions.Last().groups.ConvertAll(x => x.manifestFileName));
-
-            allBundle.AddRange(context.versions.versions.Last().groups.ConvertAll(x => x.bundleFileName));
-
-            context.useful = allBundle;
+            useful.Add(context.remoteHashName);
+            var groups = context.versions.versions.Last().groups;
+            useful.AddRange(groups.ConvertAll(x => x.manifestFileName));
+            useful.AddRange(groups.ConvertAll(x => x.bundleFileName));
+            context.useful = useful;
 
             InvokeComplete();
         }
