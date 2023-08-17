@@ -1,0 +1,109 @@
+{
+    "buildGroups": [
+        {
+            "build": true,
+            "name": "new",
+            "path": "Assets/Example",
+            "description": "",
+            "tags": []
+        }
+    ],
+    "version": "2023_08_17_14_28_45",
+    "encrypt": "WooAsset.DefaultAssetStreamEncrypt",
+    "compress": "LZ4",
+    "forceRebuild": false,
+    "ignoreTypeTreeChanges": true,
+    "fileChange": {
+        "add": [
+            {
+                "path": "DLC/Windows\\1e4957c3b9423577364514be88331670",
+                "name": "1e4957c3b9423577364514be88331670",
+                "length": 1135,
+                "hash": "664e3ed9caa9648f9d281cb5acb8da20"
+            },
+            {
+                "path": "DLC/Windows\\8da0e5c070c8c3eb14187471c03d60b7",
+                "name": "8da0e5c070c8c3eb14187471c03d60b7",
+                "length": 2220,
+                "hash": "2c0266297336d458ae9739369bf04dbc"
+            }
+        ],
+        "delete": [],
+        "change": [
+            {
+                "path": "DLC/Windows\\10a8d8bae0d67598c045791dad2f6599",
+                "name": "10a8d8bae0d67598c045791dad2f6599",
+                "length": 400,
+                "hash": "dc491419183f4e635ade8f6ea96a35b0"
+            }
+        ]
+    },
+    "versions": {
+        "versions": [
+            {
+                "version": "2023_08_17_14_28_45",
+                "groups": [
+                    {
+                        "name": "new",
+                        "manifestFileName": "8da0e5c070c8c3eb14187471c03d60b7",
+                        "bundleFileName": "1e4957c3b9423577364514be88331670",
+                        "description": "",
+                        "tags": []
+                    }
+                ]
+            }
+        ]
+    }
+}              "version": "2023_08_17_14_28_28",
+                "groups": [
+                    {
+                        "name": "new",
+                        "manifestFileName": "d87fb9b714db9466ba0cfec7cc18e8e7",
+                        "bundleFileName": "6d52eaf72bbd98e6c125c33567241cf8",
+                        "description": "",
+                        "tags": []
+                    }
+                ]
+            }
+        ]
+    }
+} },
+            {
+                "path": "DLC/Windows\\a88ae42c1f1914fc38d3ec1be4603e4f",
+                "name": "a88ae42c1f1914fc38d3ec1be4603e4f",
+                "length": 2220,
+                "hash": "2c0266297336d458ae9739369bf04dbc"
+            },
+            {
+                "path": "DLC/Windows\\b1d43be60107846ac67457e6aa2b40df",
+                "name": "b1d43be60107846ac67457e6aa2b40df",
+                "length": 1135,
+                "hash": "d9d4473129383a5239e32bec1876efdf"
+            },
+            {
+                "path": "DLC/Windows\\be11b502846197081cf02818752767f0",
+                "name": "be11b502846197081cf02818752767f0",
+                "length": 43032,
+                "hash": "551aa02f1bfe72d8bfba2a3d4add697d"
+            }
+        ],
+        "delete": [],
+        "change": []
+    },
+    "versions": {
+        "versions": [
+            {
+                "version": "2023_08_17_14_27_43",
+                "groups": [
+                    {
+                        "name": "new",
+                        "manifestFileName": "a88ae42c1f1914fc38d3ec1be4603e4f",
+                        "bundleFileName": "b1d43be60107846ac67457e6aa2b40df",
+                        "description": "",
+                        "tags": []
+                    }
+                ]
+            }
+        ]
+    }
+}
