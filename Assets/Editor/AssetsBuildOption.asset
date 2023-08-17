@@ -43,7 +43,7 @@ MonoBehaviour:
   forceRebuild: 0
   ignoreTypeTreeChanges: 1
   compress: 1
-  MaxCacheVersionCount: 8
+  MaxCacheVersionCount: 2
   buildGroups:
   - build: 1
     name: new

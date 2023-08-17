@@ -20,7 +20,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 72464
+      length: 73278
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 3
@@ -44,7 +44,7 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/Scene
       name: Scene
-      length: 32185
+      length: 32982
       hash: 85037ddcb1ef134e5b57635b483efafb
       dependence: []
       type: 3
@@ -52,8 +52,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2965
-      hash: c95632e7378ca424e16f24fe6a6a33ea
+      length: 2982
+      hash: 2ecf2378d69fda718a3812fe5a28bb58
       dependence: []
       type: 6
       directory: Assets/Example
@@ -164,8 +164,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/Scene/New Scene2.unity
       name: New Scene2.unity
-      length: 16467
-      hash: be88d134ea1da245511966119ac89393
+      length: 17264
+      hash: 9fce1aeb9e45a6e34abd19434962b7d5
       dependence:
       - Assets/Example/px/One.prefab
       - Assets/Example/px/1.png
@@ -213,15 +213,15 @@ MonoBehaviour:
       - Assets/Example/Scene/New Scene2.unity
     usage:
     - 2cbd780ed9902f5084197f8385e4f035
-    - 191d510fe873a75aa7057e8e5d4a9099
+    - 06eb9378864ed1a48a4289c6631be752
     dependence: []
-  - hash: 191d510fe873a75aa7057e8e5d4a9099
-    length: 16467
+  - hash: 06eb9378864ed1a48a4289c6631be752
+    length: 17264
     assets:
     - path: Assets/Example/Scene/New Scene2.unity
       name: New Scene2.unity
-      length: 16467
-      hash: be88d134ea1da245511966119ac89393
+      length: 17264
+      hash: 9fce1aeb9e45a6e34abd19434962b7d5
       dependence:
       - Assets/Example/px/One.prefab
       - Assets/Example/px/1.png
@@ -277,7 +277,7 @@ MonoBehaviour:
       directory: Assets/Example/px
       usage: []
     usage:
-    - 191d510fe873a75aa7057e8e5d4a9099
+    - 06eb9378864ed1a48a4289c6631be752
     dependence:
     - 553fbe73a2a295b01ac54d0a87d26856
     - be11b502846197081cf02818752767f0
@@ -304,13 +304,13 @@ MonoBehaviour:
     usage:
     - 2cbd780ed9902f5084197f8385e4f035
     dependence: []
-  - hash: cfb7bea9e1676bbac9eb25bbc4f9a945
-    length: 2965
+  - hash: 4b6dca83ed1ff17e4ea286808a292002
+    length: 2982
     assets:
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2965
-      hash: c95632e7378ca424e16f24fe6a6a33ea
+      length: 2982
+      hash: 2ecf2378d69fda718a3812fe5a28bb58
       dependence: []
       type: 6
       directory: Assets/Example

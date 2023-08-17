@@ -8,7 +8,7 @@
             "tags": []
         }
     ],
-    "version": "2023_08_17_14_28_45",
+    "version": "2023_08_17_16_39_12",
     "encrypt": "WooAsset.DefaultAssetStreamEncrypt",
     "compress": "LZ4",
     "forceRebuild": false,
@@ -16,16 +16,16 @@
     "fileChange": {
         "add": [
             {
-                "path": "DLC/Windows\\1e4957c3b9423577364514be88331670",
-                "name": "1e4957c3b9423577364514be88331670",
-                "length": 1135,
-                "hash": "664e3ed9caa9648f9d281cb5acb8da20"
+                "path": "DLC/Windows\\179e6903f6a8ad8c39f56a754eeece52",
+                "name": "179e6903f6a8ad8c39f56a754eeece52",
+                "length": 4299,
+                "hash": "c01e2af076e9212a2d1e407717ff5a9e"
             },
             {
-                "path": "DLC/Windows\\8da0e5c070c8c3eb14187471c03d60b7",
-                "name": "8da0e5c070c8c3eb14187471c03d60b7",
-                "length": 2220,
-                "hash": "2c0266297336d458ae9739369bf04dbc"
+                "path": "DLC/Windows\\b53306f7a6b8f996a20294ed294736b0",
+                "name": "b53306f7a6b8f996a20294ed294736b0",
+                "length": 1671,
+                "hash": "9eea696d9f3b5b15d3ef0a19ba23eab2"
             }
         ],
         "delete": [],
@@ -33,33 +33,32 @@
             {
                 "path": "DLC/Windows\\10a8d8bae0d67598c045791dad2f6599",
                 "name": "10a8d8bae0d67598c045791dad2f6599",
-                "length": 400,
-                "hash": "dc491419183f4e635ade8f6ea96a35b0"
+                "length": 818,
+                "hash": "0111631b06db16df93b23363aa605e5c"
             }
         ]
     },
     "versions": {
         "versions": [
             {
-                "version": "2023_08_17_14_28_45",
+                "version": "2023_08_17_16_30_38",
                 "groups": [
                     {
                         "name": "new",
-                        "manifestFileName": "8da0e5c070c8c3eb14187471c03d60b7",
-                        "bundleFileName": "1e4957c3b9423577364514be88331670",
+                        "manifestFileName": "3b32bbf3e4e4ccbc05e2fc9ddca42376",
+                        "bundleFileName": "92d175d58595f7be544f63dcd6dd1421",
                         "description": "",
                         "tags": []
                     }
                 ]
-            }
-        ]
-    }
-}              "version": "2023_08_17_14_28_28",
+            },
+            {
+                "version": "2023_08_17_16_39_12",
                 "groups": [
                     {
                         "name": "new",
-                        "manifestFileName": "d87fb9b714db9466ba0cfec7cc18e8e7",
-                        "bundleFileName": "6d52eaf72bbd98e6c125c33567241cf8",
+                        "manifestFileName": "179e6903f6a8ad8c39f56a754eeece52",
+                        "bundleFileName": "b53306f7a6b8f996a20294ed294736b0",
                         "description": "",
                         "tags": []
                     }
@@ -69,22 +68,22 @@
     }
 } },
             {
-                "path": "DLC/Windows\\a88ae42c1f1914fc38d3ec1be4603e4f",
-                "name": "a88ae42c1f1914fc38d3ec1be4603e4f",
-                "length": 2220,
-                "hash": "2c0266297336d458ae9739369bf04dbc"
-            },
-            {
-                "path": "DLC/Windows\\b1d43be60107846ac67457e6aa2b40df",
-                "name": "b1d43be60107846ac67457e6aa2b40df",
-                "length": 1135,
-                "hash": "d9d4473129383a5239e32bec1876efdf"
+                "path": "DLC/Windows\\68556ca7eb18c2598ab03cc2d2774f16",
+                "name": "68556ca7eb18c2598ab03cc2d2774f16",
+                "length": 2039,
+                "hash": "c215808e327179c2b9d1f99d785257c2"
             },
             {
                 "path": "DLC/Windows\\be11b502846197081cf02818752767f0",
                 "name": "be11b502846197081cf02818752767f0",
                 "length": 43032,
                 "hash": "551aa02f1bfe72d8bfba2a3d4add697d"
+            },
+            {
+                "path": "DLC/Windows\\e5a348662a90b256438abe0ea32058a5",
+                "name": "e5a348662a90b256438abe0ea32058a5",
+                "length": 4299,
+                "hash": "c01e2af076e9212a2d1e407717ff5a9e"
             }
         ],
         "delete": [],
@@ -93,12 +92,12 @@
     "versions": {
         "versions": [
             {
-                "version": "2023_08_17_14_27_43",
+                "version": "2023_08_17_16_18_20",
                 "groups": [
                     {
                         "name": "new",
-                        "manifestFileName": "a88ae42c1f1914fc38d3ec1be4603e4f",
-                        "bundleFileName": "b1d43be60107846ac67457e6aa2b40df",
+                        "manifestFileName": "e5a348662a90b256438abe0ea32058a5",
+                        "bundleFileName": "633897ccc6468ab57e05681969f308a2",
                         "description": "",
                         "tags": []
                     }

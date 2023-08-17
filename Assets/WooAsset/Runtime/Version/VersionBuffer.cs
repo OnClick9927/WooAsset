@@ -50,7 +50,7 @@ namespace WooAsset
             {
                 if (go)
                 {
-                    var bytes = encoding.GetBytes(JsonUtility.ToJson(version));
+                    var bytes = encoding.GetBytes(JsonUtility.ToJson(version,true));
                     var buffer = EncryptBuffer.Encode(remoteHashName, bytes, en);
                     op = AssetsHelper.WriteFile(buffer, path, true);
                     await op;

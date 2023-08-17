@@ -78,8 +78,6 @@ namespace WooAsset
             int offset = 0;
             using (FileStream fs = File.OpenRead(srcPath))
             {
-                target.Seek(0, SeekOrigin.Begin);
-
                 long len = fs.Length;
                 long last = len;
                 while (last > 0)
