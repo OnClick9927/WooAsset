@@ -44,6 +44,7 @@ MonoBehaviour:
   ignoreTypeTreeChanges: 1
   compress: 1
   MaxCacheVersionCount: 2
+  cleanHistory: 0
   buildGroups:
   - build: 1
     name: new

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using System.Text;
 using UnityEditor;
-using static WooAsset.AssetsHelper;
+using UnityEngine;
 
 namespace WooAsset
 {
@@ -11,6 +12,19 @@ namespace WooAsset
             public CopyToStream(string srcPath, string destPath, bool cover) : base(srcPath, destPath, cover)
             {
             }
+            protected override async void Done()
+            {
+                var list = this.files.Select(x => GetDestFileName(x)).ToArray();
+                await AssetsHelper.WriteObject(new StreamBundleList()
+                {
+                    fileNames = list,
+                },
+                      AssetsHelper.CombinePath(destPath, StreamBundleList.fileName),
+                      true
+                      );
+                base.Done();
+            }
+
             protected override string GetDestFileName(string src)
             {
                 return base.GetDestFileName(src) + ".bytes";

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WooAsset
 {
-    public class CopyFileOperation : Operation
+     class CopyFileOperation : Operation
     {
         private int n;
         private string targetPath;

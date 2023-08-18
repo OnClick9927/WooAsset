@@ -109,7 +109,7 @@ namespace WooAsset
 
 
 
-        CopyDirectoryOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new CopyToSandBox(from, to, cover);
+        CopyStreamBundlesOperation IAssetMode.CopyToSandBox(string from, string to) => new CopyStreamBundlesOperation(from, to);
 
         bool IAssetMode.ContainsAsset(string assetPath)
         {

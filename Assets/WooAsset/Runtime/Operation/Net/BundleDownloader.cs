@@ -1,6 +1,4 @@
-﻿using static WooAsset.AssetsHelper;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     public class BundleDownloader : Downloader
     {
@@ -10,7 +8,7 @@ namespace WooAsset
             this.bundleName = bundleName;
         }
 
-        public virtual CopyFileOperation SaveBundleToLocal()
+        public virtual Operation SaveBundleToLocal()
         {
             string path = AssetsInternal.GetBundleLocalPath(bundleName);
             return AssetsHelper.WriteFile(

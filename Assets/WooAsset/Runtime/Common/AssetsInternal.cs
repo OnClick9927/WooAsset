@@ -101,7 +101,7 @@ namespace WooAsset
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, string[] tags) => mode.InitAsync(version, again, tags);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
-        public static CopyDirectoryOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir, false);
+        public static CopyStreamBundlesOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir);
         private static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
         public static UnzipRawFileOperation UnzipRawFile() => mode.UnzipRawFile();
     }
@@ -123,6 +123,8 @@ namespace WooAsset
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
+        public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
+
 
     }
     partial class AssetsInternal

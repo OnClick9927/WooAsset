@@ -9,7 +9,7 @@ namespace WooAsset
         public static void SetAssetsSetting(AssetsSetting setting) => AssetsInternal.SetAssetsSetting(setting);
         public static CheckBundleVersionOperation VersionCheck() => AssetsInternal.VersionCheck();
         public static DownLoadBundleOperation DownLoadBundle(string bundleName) => new DownLoadBundleOperation(bundleName);
-        public static CopyDirectoryOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
+        public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, params string[] tags) => AssetsInternal.InitAsync(version, again, tags);
         public static UnzipRawFileOperation UnzipRawFile() => AssetsInternal.UnzipRawFile();

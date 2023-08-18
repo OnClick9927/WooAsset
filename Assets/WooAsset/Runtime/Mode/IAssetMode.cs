@@ -24,7 +24,7 @@ namespace WooAsset
 
         IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result);
 
-        CopyDirectoryOperation CopyToSandBox(string from, string to, bool cover);
+        CopyStreamBundlesOperation CopyToSandBox(string from, string to);
         AssetType GetAssetType(string assetPath);
 
         bool ContainsAsset(string assetPath);

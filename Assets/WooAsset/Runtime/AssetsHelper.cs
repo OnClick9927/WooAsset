@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -9,20 +10,25 @@ namespace WooAsset
     public static class AssetsHelper
     {
 
-   
-        public static CopyFileOperation CopyFromFile(string srcPath, string targetPath)
+
+        public static T ReadObject<T>(byte[] bytes) => JsonUtility.FromJson<T>(AssetsHelper.encoding.GetString(bytes));
+        public static Operation WriteObject<T>(T t, string path, bool async) => new WriteObjectOperation<T>(t, path, async);
+        internal static Encoding encoding = Encoding.Default;
+
+
+        public static Operation CopyFromFile(string srcPath, string targetPath)
         {
             CopyFileOperation c = new CopyFileOperation(targetPath);
             c.CopyFromFile(srcPath);
             return c;
         }
-        public static CopyFileOperation WriteFile(byte[] bytes, string targetPath, bool async)
+        public static Operation WriteFile(byte[] bytes, string targetPath, bool async)
         {
             CopyFileOperation c = new CopyFileOperation(targetPath);
             c.CopyFromBytes(bytes, async);
             return c;
         }
-        public static CopyFileOperation WriteStream(string srcPath, Stream target)
+        public static Operation WriteStream(string srcPath, Stream target)
         {
             CopyFileOperation c = new CopyFileOperation(srcPath);
             c.WriteToStream(srcPath, target);
@@ -40,7 +46,7 @@ namespace WooAsset
                 Directory.CreateDirectory(path);
         }
         public static bool IsDirectory(string path) => Directory.Exists(path);
-        public static string[] GetDirectoryFiles(string path) => Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+        public static string[] GetDirectoryFiles(string path) => Directory.GetFiles(path, "*", SearchOption.AllDirectories).Select(x => AssetsHelper.ToRegularPath(x)).ToArray();
         public static string[] GetDirectoryDirectories(string path) => Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
 
         private static string ToHashString(byte[] bytes)
@@ -53,7 +59,7 @@ namespace WooAsset
             }
             return sb.ToString();
         }
-        public static string GetStringHash(string str) => ToHashString(Encoding.Default.GetBytes(str));
+        public static string GetStringHash(string str) => ToHashString(encoding.GetBytes(str));
 
         public static string GetFileHash(string path) => ExistsFile(path) ? ToHashString(File.ReadAllBytes(path)) : string.Empty;
         public static long GetFileLength(string path) => ExistsFile(path) ? new FileInfo(path).Length : 0;

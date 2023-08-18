@@ -27,7 +27,7 @@ namespace WooAsset
                       .ToList()
                       .ForEach(x => AssetsHelper.DeleteFile(x));
 
-            byte[] bytes = Encoding.UTF8.GetBytes(EditorJsonUtility.ToJson(new BuildBundleExprotData()
+            await AssetsHelper.WriteObject(new BuildBundleExprotData()
             {
                 encrypt = context.encrypt.ToString(),
                 buildGroups = context.buildGroups,
@@ -37,15 +37,13 @@ namespace WooAsset
                 ignoreTypeTreeChanges = context.ignoreTypeTreeChanges,
                 fileChange = context.fileChange,
                 versions = context.outputVersions,
-
-            }, true));
-            await AssetsHelper.WriteFile(bytes,
+            },
                  AssetsHelper.CombinePath(context.outputPath, "BundleExprot.json"),
                  true
                  );
             foreach (var item in context.exports)
             {
-                await AssetsHelper.WriteFile(Encoding.UTF8.GetBytes(EditorJsonUtility.ToJson(item, true)),
+                await AssetsHelper.WriteObject(item,
                      AssetsHelper.CombinePath(context.outputPath, $"Export_{item.buildGroup.name}.json"),
                      true
                      );

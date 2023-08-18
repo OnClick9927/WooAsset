@@ -3,9 +3,9 @@
     public class CopyDirectoryOperation : Operation
     {
         private readonly string srcPath;
-        private readonly string destPath;
+        protected readonly string destPath;
         private bool _cover;
-        private string[] files;
+        protected string[] files;
         private int step = 0;
         public override float progress
         {
@@ -24,22 +24,22 @@
         }
         protected virtual void Copy()
         {
+
             if (!AssetsHelper.ExistsDirectory(srcPath))
             {
-                this.SetErr($"source directory not exist {srcPath}");
                 this.InvokeComplete();
             }
             else
             {
                 files = AssetsHelper.GetDirectoryFiles(srcPath);
+                AssetsHelper.CreateDirectory(destPath);
                 Done();
             }
         }
         protected virtual string GetDestFileName(string src) => AssetsHelper.GetFileName(src);
         protected virtual bool NeedCopy(string src) { return true; }
-        private async void Done()
+        protected virtual async void Done()
         {
-            AssetsHelper.CreateDirectory(destPath);
 
             foreach (var path in files)
             {

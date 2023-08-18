@@ -7,9 +7,9 @@ namespace WooAsset
     {
         public class FastAssetMode : IAssetMode
         {
-            private class FastCopy : CopyDirectoryOperation
+            private class FastCopy : CopyStreamBundlesOperation
             {
-                public FastCopy(string srcPath, string destPath, bool cover) : base(srcPath, destPath, cover)
+                public FastCopy(string srcPath, string destPath) : base(srcPath, destPath)
                 {
                 }
                 protected override void Copy()
@@ -76,7 +76,7 @@ namespace WooAsset
 
 
 
-            CopyDirectoryOperation IAssetMode.CopyToSandBox(string from, string to, bool cover) => new FastCopy(from, to, cover);
+            CopyStreamBundlesOperation IAssetMode.CopyToSandBox(string from, string to) => new FastCopy(from, to);
 
 
 
