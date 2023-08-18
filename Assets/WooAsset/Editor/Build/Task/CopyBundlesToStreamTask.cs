@@ -24,6 +24,7 @@ namespace WooAsset
                   AssetsHelper.CombinePath(destPath, StreamBundleList.fileName),
                   true
                   );
+                base.Done();
             }
 
             protected override string GetDestFileName(string src)
