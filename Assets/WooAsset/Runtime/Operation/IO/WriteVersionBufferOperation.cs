@@ -8,7 +8,6 @@
         {
             this.en = en;
             this.go = go;
-            Done();
         }
         protected override byte[] GetBytes(byte[] bytes)
         {
