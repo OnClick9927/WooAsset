@@ -6,9 +6,9 @@ namespace WooAsset
     {
         private Operation op;
         public override float progress => isDone ? 1 : (op == null ? 0 : op.progress);
-        private T t;
-        private string path;
-        public bool async;
+        protected T t;
+        protected string path;
+        protected bool async;
         public WriteObjectOperation(T t, string path, bool async)
         {
             this.t = t;

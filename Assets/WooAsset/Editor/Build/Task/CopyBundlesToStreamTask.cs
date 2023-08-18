@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using System.Text;
 using UnityEditor;
-using UnityEngine;
 
 namespace WooAsset
 {
@@ -9,20 +7,23 @@ namespace WooAsset
     {
         public class CopyToStream : CopyDirectoryOperation
         {
-            public CopyToStream(string srcPath, string destPath, bool cover) : base(srcPath, destPath, cover)
+            string add;
+            public CopyToStream(string srcPath, string destPath, bool cover, string add) : base(srcPath, destPath, cover)
             {
+                this.add = add;
             }
             protected override async void Done()
             {
-                var list = this.files.Select(x => GetDestFileName(x)).ToArray();
+                await new YieldOperation();
+                var list = this.files.Select(x => GetDestFileName(x)).ToList();
+                list.Add(GetDestFileName(add));
                 await AssetsHelper.WriteObject(new StreamBundleList()
                 {
-                    fileNames = list,
+                    fileNames = list.ToArray(),
                 },
-                      AssetsHelper.CombinePath(destPath, StreamBundleList.fileName),
-                      true
-                      );
-                base.Done();
+                  AssetsHelper.CombinePath(destPath, StreamBundleList.fileName),
+                  true
+                  );
             }
 
             protected override string GetDestFileName(string src)
@@ -33,11 +34,11 @@ namespace WooAsset
         protected async override void OnExecute(AssetTaskContext context)
         {
             string streamPath = AssetsHelper.CombinePath(UnityEngine.Application.streamingAssetsPath, context.buildTargetName);
-            await new CopyToStream(context.outputPath, streamPath, true);
-            AssetDatabase.Refresh();
-
             string local_ver_path = AssetsHelper.CombinePath(streamPath, context.localHashName + ".bytes");
             string remote_ver_path = AssetsHelper.CombinePath(streamPath, context.remoteHashName + ".bytes");
+            await new CopyToStream(context.outputPath, streamPath, true, local_ver_path);
+            AssetDatabase.Refresh();
+
 
             var reader = await AssetsHelper.ReadFile(remote_ver_path, true);
             var c = VersionBuffer.ReadAssetsVersionCollection(reader.bytes, context.encrypt);

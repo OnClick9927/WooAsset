@@ -2,10 +2,9 @@
 {
     class WriteVersionBufferOperation<T> : WriteObjectOperation<T>
     {
-        private CopyFileOperation op;
         private IAssetStreamEncrypt en;
         private bool go;
-        public WriteVersionBufferOperation(T version, string path, IAssetStreamEncrypt en, bool go) : base(version, path, true)
+        public WriteVersionBufferOperation(T t, string path, IAssetStreamEncrypt en, bool go) : base(t, path, true)
         {
             this.en = en;
             this.go = go;
@@ -15,8 +14,9 @@
         {
             return EncryptBuffer.Encode(VersionBuffer.remoteHashName, bytes, en);
         }
-        protected override void Done()
+        protected override async void Done()
         {
+            await new YieldOperation();
             if (!go)
                 InvokeComplete();
             else

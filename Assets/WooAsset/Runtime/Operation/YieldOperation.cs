@@ -2,7 +2,7 @@
 
 namespace WooAsset
 {
-    class YieldOperation : Operation
+    public class YieldOperation : Operation
     {
         public override float progress => isDone ? 1 : 0;
         public YieldOperation()
