@@ -39,7 +39,7 @@
       <div align="center">
         <image src="http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png" style="width:64px;height:64px;"></image>
         <br>
-        <a  href="http://yxwlgame.com/simplexx_home/">简单修仙</a>
+        <a  href="http://yxwlgame.com/simplexx_home/" target="_blank">简单修仙</a>
       </div>
     </td>
 </tr>
