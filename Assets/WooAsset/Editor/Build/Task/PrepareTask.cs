@@ -41,6 +41,7 @@ namespace WooAsset
             context.buildGroups = option.buildGroups;
             context.historyVersionFilePath = AssetsHelper.CombinePath(context.historyPath, context.historyVersionFileName);
             context.cleanHistory = option.cleanHistory;
+            context.buildInAssets = option.buildInAssets;
             if (context.MaxCacheVersionCount < 1)
                 context.MaxCacheVersionCount = 1;
             for (int i = 0; i < context.buildGroups.Count; i++)

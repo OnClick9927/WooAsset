@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEditor.U2D;
 using UnityEditor;
+using Object = UnityEngine.Object;
 
 namespace WooAsset
 {
@@ -152,6 +153,7 @@ namespace WooAsset
         [HideInInspector] public TypeSelect build = new TypeSelect();
         [HideInInspector] public TypeSelect mode = new TypeSelect();
         [HideInInspector] public TypeSelect encrypt = new TypeSelect();
+        public List<Object> buildInAssets = new List<Object>();
 
 
 

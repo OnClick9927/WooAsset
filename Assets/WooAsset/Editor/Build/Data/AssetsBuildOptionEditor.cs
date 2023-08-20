@@ -66,6 +66,9 @@ namespace WooAsset
                         
 
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildGroups"));
+                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildInAssets"));
+
+                        
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("version"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("MaxCacheVersionCount"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("forceRebuild"));

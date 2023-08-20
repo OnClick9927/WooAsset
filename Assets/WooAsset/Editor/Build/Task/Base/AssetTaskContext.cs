@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor.U2D;
 using static WooAsset.AssetsBuildOption;
+using UnityEngine;
 
 namespace WooAsset
 {
@@ -39,6 +40,7 @@ namespace WooAsset
 
         public ManifestData manifest;
         public FileChange fileChange;
+        public List<Object> buildInAssets;
 
 
         public string shaderVariantDirectory;
