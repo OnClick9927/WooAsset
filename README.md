@@ -38,9 +38,17 @@
 
 
 ### 成功案例,欢迎加入我们一起交流（QQ 782290296）
-|       |  |
-| ----------- | ----------- |
-| ![简单修仙](http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png)  |[官网](http://yxwlgame.com/simplexx_home/)|
 
+<table>
+<tr>
+    <td>
+      <div align="center">
+        <image src="http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png"></image>
+        <br>
+        <a  href="http://yxwlgame.com/simplexx_home/">简单修仙</a>
+      </div>
+    </td>
+</tr>
+</table>
 
 
