@@ -41,7 +41,7 @@
 ### 欢迎加入我们一起交流（QQ 782290296）
 ### 成功案例
 
-<a href="http://yxwlgame.com/" target="_blank"><img src="http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png" alt="简单修仙"></a>
+<a href="http://yxwlgame.com/" target="blank"><img src="http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png" alt="简单修仙"></a>
 
 
 
