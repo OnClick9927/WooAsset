@@ -71,16 +71,20 @@ namespace WooAsset
             List<string> dps = new List<string>();
             foreach (var item in buildInAssets)
             {
-                var _dps = manifest.GetAssetDependencies(item);
+                var _dps = context.tree.GetAssetData(item).dependence;
                 if (_dps != null)
-                {
                     dps.AddRange(_dps);
-                }
             }
             List<string> buildInBundles = new List<string>();
             buildInAssets.AddRange(dps);
             foreach (var item in buildInAssets)
             {
+                if (!manifest.ContainsAsset(item))
+                {
+                    SetErr($"the asset have not build this time {item}");
+                    InvokeComplete();
+                    return;
+                }
                 var b = manifest.GetBundle(item);
                 if (buildInBundles.Contains(b)) continue;
                 buildInBundles.Add(b);
