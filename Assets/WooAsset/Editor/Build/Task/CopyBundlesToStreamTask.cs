@@ -81,7 +81,7 @@ namespace WooAsset
             {
                 if (!manifest.ContainsAsset(item))
                 {
-                    SetErr($"the asset have not build this time {item}");
+                    SetErr($"could not find asset in this build {item}");
                     InvokeComplete();
                     return;
                 }
