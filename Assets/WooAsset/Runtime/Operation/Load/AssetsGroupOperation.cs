@@ -40,7 +40,7 @@
                 assets = new AssetHandle[paths.Length];
                 for (int i = 0; i < paths.Length; i++)
                 {
-                    assets[i] = Assets.LoadAssetAsync(paths[i]);
+                    assets[i] = AssetsInternal.LoadAsset(paths[i],true);
                 }
                 for (int i = 0; i < paths.Length; i++)
                 {
