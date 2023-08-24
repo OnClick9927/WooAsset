@@ -10,6 +10,7 @@ namespace WooAsset
             cache.tags = context.tags;
             cache.tree = context.tree;
             cache.previewBundles = context.allBundleGroups != null ? context.allBundleGroups : new List<BundleGroup>();
+            cache.manifest = context.manifest;
             cache.Save();
             InvokeComplete();
         }

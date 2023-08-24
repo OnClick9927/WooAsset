@@ -2,7 +2,6 @@
 using System.Linq;
 using static WooAsset.ManifestData;
 using UnityEditor;
-using System.Text;
 using UnityEngine;
 
 namespace WooAsset
@@ -35,7 +34,6 @@ namespace WooAsset
                             dps = context.tree.GetAssetData(assetPath).dependence,
                             tags = context.tags.GetAssetTags(assetPath).ToList(),
                             type = context.tree.GetAssetData(assetPath).type,
-
                         });
                     }
                 }

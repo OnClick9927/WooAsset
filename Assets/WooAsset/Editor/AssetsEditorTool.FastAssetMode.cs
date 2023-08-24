@@ -5,7 +5,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        public class FastAssetMode : IAssetMode
+        public class FastAssetMode : AssetMode
         {
             private class FastCopy : CopyStreamBundlesOperation
             {
@@ -46,45 +46,19 @@ namespace WooAsset
                 }
             }
 
-            bool IAssetMode.Initialized() => _task != null && _task.isDone;
             private AssetTask _task;
 
-            Operation IAssetMode.InitAsync(string version, bool again, string[] tags)
+            protected override ManifestData manifest => Initialized() ? cache.manifest : null;
+            protected override bool Initialized() => _task != null && _task.isDone;
+            protected override CopyStreamBundlesOperation CopyToSandBox(string from, string to) => new FastCopy(from, to);
+            protected override AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);
+            protected override Operation InitAsync(string version, bool again, string[] tags)
             {
                 if (_task == null)
                     _task = AssetTaskRunner.PreviewBundles();
                 return _task;
             }
-
-            CheckBundleVersionOperation IAssetMode.VersionCheck() => new FastCheck();
-
-
-            AssetHandle IAssetMode.CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);
-
-            IReadOnlyList<string> IAssetMode.GetAllAssetPaths() => cache.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory).ConvertAll(asset => asset.path);
-            IReadOnlyList<string> IAssetMode.GetAssetsByAssetName(string name, List<string> result) => ((IAssetMode)this).GetAllAssetPaths().Where(x => AssetsHelper.GetFileName(name).Contains(name)).ToList();
-
-            IReadOnlyList<string> IAssetMode.GetTagAssetPaths(string tag) => cache.tags.GetTagAssetPaths(tag);
-
-            IReadOnlyList<string> IAssetMode.GetAssetTags(string assetPath) => cache.tags.GetAssetTags(assetPath);
-
-            IReadOnlyList<string> IAssetMode.GetAllTags() => cache.tags.GetAllTags();
-
-            IReadOnlyList<string> IAssetMode.GetAssetDependencies(string assetPath) => cache.tree.GetAssetData(assetPath)?.dependence;
-
-            IReadOnlyList<string> IAssetMode.GetAllAssetPaths(string bundleName) => cache.previewBundles.Find(x => x.hash == bundleName)?.GetAssets();
-
-
-
-            CopyStreamBundlesOperation IAssetMode.CopyToSandBox(string from, string to) => new FastCopy(from, to);
-
-
-
-            AssetType IAssetMode.GetAssetType(string assetPath) => cache.tree.GetAssetType(assetPath);
-
-            bool IAssetMode.ContainsAsset(string assetPath) => cache.tree.ContainsAsset(assetPath);
-
-            UnzipRawFileOperation IAssetMode.UnzipRawFile() => new UnzipRawFileOperation(cache.tree.GetRawAssets_Copy());
+            protected override CheckBundleVersionOperation VersionCheck() => new FastCheck();
         }
     }
 

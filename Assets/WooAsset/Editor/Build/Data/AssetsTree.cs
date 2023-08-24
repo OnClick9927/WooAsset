@@ -16,15 +16,6 @@ namespace WooAsset
         public List<string> GetRawAssets() => rawAssets;
         public List<string> GetRawAssets_Copy() => rawAssets_copy;
 
-        public AssetType GetAssetType(string path)
-        {
-            if (rawAssets_copy.Contains(path))
-                return AssetType.RawCopyFile;
-            if (rawAssets.Contains(path))
-                return AssetType.Raw;
-            var data= GetAssetData(path);
-            return data == null ? AssetType.None : data.type;
-        }
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
         public EditorAssetData GetAssetData(string path) => assets.Find(x => x.path == path);
         public List<EditorAssetData> GetAllAssets() => assets;
@@ -156,15 +147,5 @@ namespace WooAsset
             return obj.path.GetHashCode();
         }
 
-        public bool ContainsAsset(string assetPath)
-        {
-            if (string.IsNullOrEmpty(assetPath))
-                return false;
-            if (rawAssets_copy.Contains(assetPath))
-                return true;
-            if (rawAssets.Contains(assetPath))
-                return true;
-            return GetAssetData(assetPath) != null;
-        }
     }
 }

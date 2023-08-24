@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 namespace WooAsset
 {
@@ -9,6 +7,8 @@ namespace WooAsset
         public AssetsTree tree = new AssetsTree();
         public List<BundleGroup> previewBundles = new List<BundleGroup>();
         public AssetTagCollection tags = new AssetTagCollection();
+
+        public ManifestData manifest;
 
         public BundleGroup GetBundleGroupByAssetPath(string assetPath)
         {

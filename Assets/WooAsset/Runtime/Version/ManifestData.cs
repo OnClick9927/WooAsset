@@ -191,7 +191,7 @@ namespace WooAsset
             for (int i = 0; i < fit.Count; i++)
             {
                 RTName bundle = null;
-                _names.TryGetValue(name, out bundle);
+                _names.TryGetValue(fit[i], out bundle);
                 var assets = bundle?.assets;
                 if (assets != null)
                 {

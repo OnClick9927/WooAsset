@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -92,116 +93,112 @@ namespace WooAsset
         public class Search
         {
 
-            private static List<string> _IntersectTag(string[] tags, List<string> searchList)
+            private static IEnumerable<string> _ITags(string[] tags)
             {
-                searchList.Clear();
-                IReadOnlyList<string> assets = AssetsInternal.GetAllAssetPaths();
-                for (int i = 0; i < assets.Count; i++)
+                IEnumerable<string> result = null;
+                for (int i = 0; i < tags.Length; i++)
                 {
-                    var assetPath = assets[i];
-                    var assetTags = AssetsInternal.GetAssetTags(assetPath);
-                    bool add = true;
-                    if (tags != null)
-                    {
-                        for (int j = 0; j < tags.Length; j++)
-                            if (!assetTags.Contains(tags[j]))
-                                add = false;
-                    }
-                    if (!add) continue;
-                    searchList.Add(assetPath);
+                    var tmp = AssetsInternal.GetTagAssetPaths(tags[i]);
+                    if (result == null)
+                        result = tmp;
+                    else
+                        result = result.Intersect(tmp);
                 }
-                return searchList;
+                if (result == null) return new List<string>();
+                return result;
             }
-            public static IReadOnlyList<string> IntersectNameAndTag(string assetName, params string[] tags)
+            public static IEnumerable<string> ITags(params string[] tags)
             {
-                var searchList = _IntersectTag(tags, new List<string>());
-                searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
-                return searchList;
+                return _ITags(tags);
             }
-            public static IReadOnlyList<string> IntersectTag(params string[] tags)
+            private static List<string> _UTags(string[] tags, List<string> result)
             {
-                return _IntersectTag(tags, new List<string>());
-            }
-
-            public static IReadOnlyList<string> IntersectTypeAndNameAndTag(AssetType type, string assetName, params string[] tags)
-            {
-                var searchList = _IntersectTag(tags, new List<string>());
-                searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
-                searchList.RemoveAll(x => AssetsInternal.GetAssetType(x) != type);
-                return searchList;
-            }
-            public static IReadOnlyList<string> IntersectTypeAndTag(AssetType type, params string[] tags)
-            {
-                var searchList = _IntersectTag(tags, new List<string>());
-                searchList.RemoveAll(x => AssetsInternal.GetAssetType(x) != type);
-                return searchList;
-            }
-
-
-
-            private static List<string> _UnionTag(string[] tags, List<string> searchList)
-            {
-                searchList.Clear();
-                if (tags == null) return searchList;
+                result.Clear();
+                if (tags == null || tags.Length == 0) return result;
                 for (int i = 0; i < tags.Length; i++)
                 {
                     var assets = AssetsInternal.GetTagAssetPaths(tags[i]);
-                    searchList.AddRange(assets);
+                    for (int j = 0; j < assets.Count; j++)
+                    {
+                        if (result.Contains(assets[j])) continue;
+                        result.Add(assets[j]);
+                    }
                 }
-                return searchList.Distinct().ToList();
+                return result;
             }
-            public static IReadOnlyList<string> Union(params string[] nameOrTags)
+            public static IReadOnlyList<string> UTags(params string[] tags)
             {
-                List<string> searchList = new List<string>();
-                List<string> searchList2 = new List<string>();
+                return _UTags(tags, new List<string>());
+            }
+            public static IReadOnlyList<string> UNames(params string[] names)
+            {
+                List<string> result = new List<string>();
+                if (names == null || names.Length == 0) return result;
+                List<string> tmp = new List<string>();
 
-                searchList.Clear();
-                if (nameOrTags == null) return searchList;
-                for (int i = 0; i < nameOrTags.Length; i++)
-                {
-                    var assets = AssetsInternal.GetTagAssetPaths(nameOrTags[i]);
-                    var assets_2 = AssetsInternal.GetAssetsByAssetName(nameOrTags[i], searchList2);
-                    searchList.AddRange(assets_2);
-                    searchList.AddRange(assets);
-                }
-                return searchList.Distinct().ToList();
-            }
-            public static IReadOnlyList<string> UnionTag(params string[] tags)
-            {
-                return _UnionTag(tags, new List<string>());
-            }
-            public static IReadOnlyList<string> UnionName(params string[] names)
-            {
-                List<string> searchList = new List<string>();
-                List<string> searchList2 = new List<string>();
-
-                searchList.Clear();
-                if (names == null) return searchList;
                 for (int i = 0; i < names.Length; i++)
                 {
-                    var assets_2 = AssetsInternal.GetAssetsByAssetName(names[i], searchList2);
-                    searchList.AddRange(assets_2);
+                    var assets_2 = AssetsInternal.GetAssetsByAssetName(names[i], tmp);
+                    for (int j = 0; j < assets_2.Count; j++)
+                    {
+                        if (result.Contains(assets_2[j])) continue;
+                        result.Add(assets_2[j]);
+                    }
                 }
-                return searchList.Distinct().ToList();
+                return result;
             }
-            public static IReadOnlyList<string> UnionNameAndTag(string assetName, params string[] tags)
+            public static IReadOnlyList<string> UNamesUTags(params string[] nameOrTags)
             {
-                var searchList = _UnionTag(tags, new List<string>());
-                searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
-                return searchList;
+                List<string> result = new List<string>();
+                var r_1 = UNames(nameOrTags);
+                var r_2 = UTags(nameOrTags);
+                foreach (var item in r_1)
+                {
+                    if (result.Contains(item)) continue;
+                    result.Add(item);
+                }
+                foreach (var item in r_2)
+                {
+                    if (result.Contains(item)) continue;
+                    result.Add(item);
+                }
+                return result;
             }
-            public static IReadOnlyList<string> UnionTypeAndNameAndTag(AssetType type, string assetName, params string[] tags)
+
+
+
+            public static IEnumerable<string> INameITags(string assetName, params string[] tags)
             {
-                var searchList = _UnionTag(tags, new List<string>());
-                searchList.RemoveAll(x => !AssetsHelper.GetFileName(x).Contains(assetName));
-                searchList.RemoveAll(x => AssetsInternal.GetAssetType(x) != type);
-                return searchList;
+                var result = _ITags(tags);
+                return result.Where(x => AssetsHelper.GetFileName(x).Contains(assetName));
             }
-            public static IReadOnlyList<string> UnionTypeAndTag(AssetType type, params string[] tags)
+            public static IEnumerable<string> ITypeITags(AssetType type, params string[] tags)
             {
-                var searchList = _UnionTag(tags, new List<string>());
-                searchList.RemoveAll(x => AssetsInternal.GetAssetType(x) != type);
-                return searchList;
+                var result = _ITags(tags);
+                return result.Where(x => AssetsInternal.GetAssetType(x) == type);
+            }
+            public static IEnumerable<string> ITypeINameITags(AssetType type, string assetName, params string[] tags)
+            {
+                return INameITags(assetName,tags).Where(x => AssetsInternal.GetAssetType(x) == type);
+            }
+
+            public static IEnumerable<string> INameUTags(string assetName, params string[] tags)
+            {
+                var result = _UTags(tags, new List<string>());
+                return result.Where(x => AssetsHelper.GetFileName(x).Contains(assetName)); ;
+            }
+            public static IEnumerable<string> ITypeUTags(AssetType type, params string[] tags)
+            {
+                var result = _UTags(tags, new List<string>());
+                return result.Where(x => AssetsInternal.GetAssetType(x) == type);
+            }
+            public static IEnumerable<string> ITypeINameUTags(AssetType type, string assetName, params string[] tags)
+            {
+                return INameUTags(assetName,tags).Where(x => AssetsInternal.GetAssetType(x) == type);
+            }
+            public static IEnumerable<string> ITypeUNameUTags(AssetType type, params string[] nameOrTags)
+            {
+                return UNamesUTags(nameOrTags).Where(x => AssetsInternal.GetAssetType(x) == type);
             }
 
 

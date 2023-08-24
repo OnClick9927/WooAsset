@@ -185,6 +185,7 @@ namespace WooAsset
             new RawAssetTask(),
             new CollectAssetsTask(),
             new CollectHashBundleGroupTask(),
+            new FastModeManifestTask(),
             new SetCacheTask(),
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
