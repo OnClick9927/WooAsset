@@ -48,11 +48,11 @@
         <image src="https://th.bing.com/th/id/R.e68d80c70ca45c44ea217a68ff86a503?rik=GkQ%2f8Xmj8aCl0g&riu=http%3a%2f%2fdl2.macupdate.com%2fimages%2ficons256%2f50935.png%3fd%3d1488812134&ehk=ydydaOKc6mymv%2besMTpLOWhduM0mMoIAg%2bv5gsgS4EI%3d&risl=&pid=ImgRaw&r=0" style="width:64px;height:64px;"></image>
         <br>
         <a  href="http://yxwlgame.com/2048/2048/" target="_blank">2048(WebGL)</a>
-       <br>
-       <a  href="https://wwqq.lanzouj.com/iMQRj169jm0d" target="_blank">源码</a>
-
+ <br>
+        <a  href="https://wwqq.lanzouj.com/iMQRj169jm0d" target="_blank">源码</a>
       </div>
-    </td>
+  </td>
+   
 </tr>
 </table>
 
