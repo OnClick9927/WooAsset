@@ -61,7 +61,7 @@ namespace WooAsset
         }
         protected async override void OnExecute(AssetTaskContext context)
         {
-            string streamPath = AssetsHelper.CombinePath(UnityEngine.Application.streamingAssetsPath, context.buildTargetName);
+            string streamPath = context.streamBundleDirectory;
             string local_ver_path = AssetsHelper.CombinePath(streamPath, context.localHashName + ".bytes");
             string remote_ver_path = AssetsHelper.CombinePath(context.outputPath, context.remoteHashName);
             var buildInAssets = context.buildInAssets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
@@ -79,13 +79,13 @@ namespace WooAsset
             buildInAssets.AddRange(dps);
             foreach (var item in buildInAssets)
             {
-                if (!manifest.ContainsAsset(item))
+                if (manifest.GetAssetData(item) == null)
                 {
                     SetErr($"could not find asset in this build {item}");
                     InvokeComplete();
                     return;
                 }
-                var b = manifest.GetBundle(item);
+                var b = manifest.GetAssetBundleName(item);
                 if (buildInBundles.Contains(b)) continue;
                 buildInBundles.Add(b);
             }

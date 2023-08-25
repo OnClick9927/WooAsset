@@ -96,7 +96,7 @@ namespace WooAsset
 
                 GUI.Label(args.GetCellRect(3), GetSizeString(asset.length));
                 GUI.Label(args.GetCellRect(4), asset.hash);
-                GUI.Label(args.GetCellRect(7), GetTagsString(cache.tags.GetAssetTags(path)));
+                GUI.Label(args.GetCellRect(7), GetTagsString(asset));
                 if (group != null)
                 {
                     EditorGUI.SelectableLabel(args.GetCellRect(5), group.hash);

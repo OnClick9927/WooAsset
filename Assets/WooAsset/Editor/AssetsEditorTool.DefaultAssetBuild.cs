@@ -13,7 +13,7 @@ namespace WooAsset
     {
         public class DefaultAssetBuild : IAssetBuild
         {
-            public void Create(AssetTagCollection tags, List<EditorAssetData> assets, List<BundleGroup> result)
+            public void Create(List<EditorAssetData> assets, List<BundleGroup> result)
             {
                 List<EditorAssetData> Shaders = assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant);
                 assets.RemoveAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant);
@@ -23,10 +23,14 @@ namespace WooAsset
                 assets.RemoveAll(x => x.type == AssetType.Scene);
                 BundleGroupTool.One2One(Scenes, result);
 
-                foreach (var tag in tags.GetAllTags())
+                var tagAssets = assets.FindAll(x => x.tags != null && x.tags.Count != 0);
+                assets.RemoveAll(x => tagAssets.Contains(x));
+                var tags = tagAssets.SelectMany(x => x.tags).Distinct().ToList();
+                tags.Sort();
+                foreach (var tag in tags)
                 {
-                    List<EditorAssetData> find = assets.FindAll(x => tags.GetAssetTags(x.path).Contains(tag));
-                    assets.RemoveAll(x => tags.GetAssetTags(x.path).Contains(tag));
+                    List<EditorAssetData> find = tagAssets.FindAll(x => x.tags.Contains(tag));
+                    tagAssets.RemoveAll(x => find.Contains(x));
                     BundleGroupTool.N2MBySize(find, result);
                 }
                 List<AssetType> _n2mSize = new List<AssetType>() {
@@ -121,7 +125,7 @@ namespace WooAsset
             public bool IsIgnorePath(string path)
             {
                 var type = GetAssetType(path);
-                if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw || type== AssetType.RawCopyFile)
+                if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw || type == AssetType.RawCopyFile)
                     return true;
                 var list = AssetsHelper.ToRegularPath(path).Split('/').ToList();
                 if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;

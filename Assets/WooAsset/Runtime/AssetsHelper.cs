@@ -9,7 +9,55 @@ namespace WooAsset
 
     public static class AssetsHelper
     {
+        public static string buildTarget
+        {
+            get
+            {
+#if UNITY_EDITOR
+                switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
+                {
+                    case UnityEditor.BuildTarget.Android:
+                        return "Android";
+                    case UnityEditor.BuildTarget.StandaloneWindows:
+                    case UnityEditor.BuildTarget.StandaloneWindows64:
+                        return "Windows";
+                    case UnityEditor.BuildTarget.iOS:
+                        return "iOS";
+                    case UnityEditor.BuildTarget.WebGL:
+                        return "WebGL";
+                    case UnityEditor.BuildTarget.StandaloneOSX:
+                        return "OSX";
+                }
+#else
+                switch (Application.platform)
+                {
+                    case RuntimePlatform.WindowsEditor:
+                    case RuntimePlatform.WindowsPlayer: return "Windows";
+                    case RuntimePlatform.Android: return "Android";
+                    case RuntimePlatform.IPhonePlayer: return "iOS";
+                    case RuntimePlatform.WebGLPlayer: return "WebGL";
+                    case RuntimePlatform.OSXPlayer:
+                    case RuntimePlatform.OSXEditor: return "OSX";
 
+                }
+#endif
+                return string.Empty;
+            }
+        }
+        public static string streamBundleDirectory => CombinePath(Application.streamingAssetsPath, buildTarget);
+        public static string RawToRawObjectPath(string path)
+        {
+            var dir = AssetsHelper.GetDirectoryName(path);
+            var name = AssetsHelper.GetFileNameWithoutExtension(path);
+            return AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, $"{name}.asset"));
+        }
+        public static string GetRawFileToDlcPath(string dir,string path)
+        {
+            string name = AssetsHelper.GetFileNameWithoutExtension(path);
+            string ex = AssetsHelper.GetFileExtension(path);
+            string hash = AssetsHelper.GetStringHash(name);
+            return AssetsHelper.CombinePath(dir, $"{hash}{ex}");
+        }
 
         public static T ReadObject<T>(byte[] bytes) => JsonUtility.FromJson<T>(AssetsHelper.encoding.GetString(bytes));
         public static Operation WriteObject<T>(T t, string path, bool async) => new WriteObjectOperation<T>(t, path, async);

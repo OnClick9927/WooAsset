@@ -30,6 +30,10 @@ namespace WooAsset
             if (sources == null || sources.Count == 0) return string.Empty;
             return string.Join(",", sources);
         }
+        private static string GetTagsString(EditorAssetData data)
+        {
+            return GetTagsString(data.tags);
+        }
         public enum TreeType
         {
             Option,

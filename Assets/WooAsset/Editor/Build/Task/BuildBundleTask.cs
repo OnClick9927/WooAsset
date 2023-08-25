@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static WooAsset.ManifestData;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,34 +13,12 @@ namespace WooAsset
             protected async override void OnExecute(AssetTaskContext context)
             {
                 var source = context.allBundleGroups;
-
                 if (source.Count != 0)
                 {
                     BuildPipeline.BuildAssetBundles(context.historyPath,
                        source.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
                 }
-
-                List<AssetData> _assets = new List<AssetData>();
-                foreach (var build in source)
-                {
-                    string bundleName = build.hash;
-                    foreach (var assetPath in build.GetAssets())
-                    {
-                        _assets.Add(new AssetData()
-                        {
-                            path = assetPath,
-                            bundleName = bundleName,
-                            dps = context.tree.GetAssetData(assetPath).dependence,
-                            tags = context.tags.GetAssetTags(assetPath).ToList(),
-                            type = context.tree.GetAssetData(assetPath).type,
-                        });
-                    }
-                }
-
-
-                ManifestData manifest = new ManifestData();
-                manifest.Read(_assets, context.rawAssets, context.rawAssets_copy);
-                manifest.Prepare();
+                var manifest = FastModeManifestTask.BuildManifest(source,context.tree);
                 context.manifest = manifest;
                 foreach (var bundleName in source.ConvertAll(x => x.hash))
                 {
@@ -51,7 +28,6 @@ namespace WooAsset
                           AssetsHelper.CombinePath(context.outputPath, bundleName),
                           true
                           );
-
                 }
                 var bVer = new BundlesVersion()
                 {

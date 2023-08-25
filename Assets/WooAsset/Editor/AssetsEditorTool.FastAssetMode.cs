@@ -48,7 +48,7 @@ namespace WooAsset
 
             private AssetTask _task;
 
-            protected override ManifestData manifest => Initialized() ? cache.manifest : null;
+            public override ManifestData manifest => Initialized() ? cache.manifest : null;
             protected override bool Initialized() => _task != null && _task.isDone;
             protected override CopyStreamBundlesOperation CopyToSandBox(string from, string to) => new FastCopy(from, to);
             protected override AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);

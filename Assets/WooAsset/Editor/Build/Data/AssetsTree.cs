@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using System;
 
 namespace WooAsset
 {
@@ -147,5 +148,12 @@ namespace WooAsset
             return obj.path.GetHashCode();
         }
 
+        public void ReadAssetTags(Dictionary<string, List<string>> tag_dic)
+        {
+            foreach (var item in tag_dic)
+            {
+                GetAssetData(item.Key).tags = item.Value;
+            }
+        }
     }
 }

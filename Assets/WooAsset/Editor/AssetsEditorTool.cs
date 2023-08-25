@@ -107,7 +107,7 @@ namespace WooAsset
         {
             get { return EditorUserBuildSettings.activeBuildTarget; }
         }
-        public static string buildTargetName => AssetsInternal.buildTarget;
+        public static string buildTargetName => AssetsHelper.buildTarget;
         public static string outputPath
         {
             get

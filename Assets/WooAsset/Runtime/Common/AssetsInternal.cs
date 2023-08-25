@@ -17,41 +17,6 @@ namespace WooAsset
 
         private static string localRfcDir { get { return AssetsHelper.CombinePath(localSaveDir, "rfc"); } }
 
-        public static string buildTarget
-        {
-            get
-            {
-#if UNITY_EDITOR
-                switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
-                {
-                    case UnityEditor.BuildTarget.Android:
-                        return "Android";
-                    case UnityEditor.BuildTarget.StandaloneWindows:
-                    case UnityEditor.BuildTarget.StandaloneWindows64:
-                        return "Windows";
-                    case UnityEditor.BuildTarget.iOS:
-                        return "iOS";
-                    case UnityEditor.BuildTarget.WebGL:
-                        return "WebGL";
-                    case UnityEditor.BuildTarget.StandaloneOSX:
-                        return "OSX";
-                }
-#else
-                switch (Application.platform)
-                {
-                    case RuntimePlatform.WindowsEditor:
-                    case RuntimePlatform.WindowsPlayer: return "Windows";
-                    case RuntimePlatform.Android: return "Android";
-                    case RuntimePlatform.IPhonePlayer: return "iOS";
-                    case RuntimePlatform.WebGLPlayer: return "WebGL";
-                    case RuntimePlatform.OSXPlayer:
-                    case RuntimePlatform.OSXEditor: return "OSX";
-
-                }
-#endif
-                return string.Empty;
-            }
-        }
 
         public static void SetLocalSaveDir(string path)
         {
@@ -89,21 +54,27 @@ namespace WooAsset
     partial class AssetsInternal
     {
         private static AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => mode.CreateAsset(assetPath, arg);
-        public static IReadOnlyList<string> GetAllAssetPaths() => mode.GetAllAssetPaths();
-        public static IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => mode.GetAssetsByAssetName(name, result);
-
-        public static IReadOnlyList<string> GetTagAssetPaths(string tag) => mode.GetTagAssetPaths(tag);
-        public static IReadOnlyList<string> GetAllTags() => mode.GetAllTags();
-        public static IReadOnlyList<string> GetAssetTags(string assetPath) => mode.GetAssetTags(assetPath);
-        public static AssetType GetAssetType(string assetPath) => mode.GetAssetType(assetPath);
-        private static IReadOnlyList<string> GetAssetDependencies(string assetPath) => mode.GetAssetDependencies(assetPath);
-        public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => mode.GetAllAssetPaths(bundleName);
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, string[] tags) => mode.InitAsync(version, again, tags);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
-        public static CopyStreamBundlesOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.CombinePath(Application.streamingAssetsPath, buildTarget), localSaveDir);
-        private static bool ContainsAsset(string assetPath) => mode.ContainsAsset(assetPath);
+        public static CopyStreamBundlesOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.streamBundleDirectory, localSaveDir);
         public static UnzipRawFileOperation UnzipRawFile() => mode.UnzipRawFile();
+
+
+
+        public static AssetType GetAssetType(string assetPath) => Initialized() ? mode.manifest.GetAssetType(assetPath) : AssetType.None;
+        public static ManifestData.AssetData GetAssetData(string assetPath) => Initialized() ? mode.manifest.GetAssetData(assetPath) : null;
+        public static IReadOnlyList<string> GetAssetTags(string assetPath) => GetAssetData(assetPath)?.tags;
+        public static string GetAssetBundleName(string assetPath) => Initialized() ? mode.manifest.GetAssetBundleName(assetPath) : string.Empty;
+
+
+        public static IReadOnlyList<string> GetAllAssetPaths() => Initialized() ? mode.manifest.allPaths : null;
+        public static IReadOnlyList<string> GetTagAssetPaths(string tag) => Initialized() ? mode.manifest.GetTagAssetPaths(tag) : null;
+        public static IReadOnlyList<string> GetAllTags() => Initialized() ? mode.manifest.allTags : null;
+        public static IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => Initialized() ? mode.manifest.GetAssetsByAssetName(name, result) : null;
+        public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => Initialized() ? mode.manifest.GetAssets(bundleName) : null;
+
+
     }
     partial class AssetsInternal
     {
@@ -118,39 +89,23 @@ namespace WooAsset
         public static int GetWebRequestTimeout() => setting.GetWebRequestTimeout();
         public static int GetWebRequestRetryCount() => setting.GetWebRequestRetryCount();
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
-        private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(buildTarget, bundleName);
+        private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, bundleName);
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
-
+        public static string OverwriteBundlePath(string bundlePath) => setting.OverwriteBundlePath(bundlePath);
 
     }
     partial class AssetsInternal
     {
-        public static string RawToRawObjectPath(string path)
-        {
-            var dir = AssetsHelper.GetDirectoryName(path);
-            var name = AssetsHelper.GetFileNameWithoutExtension(path);
-            return AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, $"{name}.asset"));
-        }
-        public static string GetRawFileToDlcPath(string path)
-        {
-            string name = AssetsHelper.GetFileNameWithoutExtension(path);
-            string ex = AssetsHelper.GetFileExtension(path);
-            string hash = AssetsHelper.GetStringHash(name);
-            return AssetsHelper.CombinePath(localRfcDir, $"{hash}{ex}");
-        }
 
-
+        public static string GetRawFileToDlcPath(string path) => AssetsHelper.GetRawFileToDlcPath(localRfcDir, path);
         public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 
 
-
-
-
-        public static string GetBundleLocalPath(string bundleName) => AssetsHelper.CombinePath(localSaveDir, bundleName);
+        public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));
         public static void UnloadBundles() => bundles.UnloadBundles();
 
         public static Bundle LoadBundle(string bundleName, bool async) => bundles.LoadAsync(new BundleLoadArgs(bundleName, async));
@@ -163,34 +118,29 @@ namespace WooAsset
         public static AssetHandle LoadAsset(string path, bool async)
         {
             assets.RemoveUselessAsset();
-            path = AssetsHelper.ToRegularPath(path);
-            if (!ContainsAsset(path))
+            var data = GetAssetData(AssetsHelper.ToRegularPath(path));
+            if (data == null)
             {
                 AssetsHelper.LogError($"Not Found Asset: {path}");
                 return null;
             }
-            AssetType type = GetAssetType(path);
-            if (type == AssetType.Raw || type == AssetType.RawCopyFile)
-                path = RawToRawObjectPath(path);
-
             List<AssetHandle> result = null;
-            IReadOnlyList<string> dps = GetAssetDependencies(path);
-            if (dps != null)
+            if (data.dps != null)
             {
-                var find = assets.Find(path);
+                var find = assets.Find(data.path);
                 if (find != null)
                     result = find.dps;
                 else
                     result = new List<AssetHandle>();
                 result.Clear();
-                foreach (var item in dps)
+                foreach (var item in data.dps)
                 {
                     AssetHandle _asset = LoadAsset(item, async);
                     if (_asset != null)
                         result.Add(_asset);
                 }
             }
-            return assets.LoadAssetAsync(new AssetLoadArgs(path, false, path.EndsWith("unity"), result, "", async));
+            return assets.LoadAssetAsync(new AssetLoadArgs(data.path, false, data.path.EndsWith("unity"), result, "", async));
         }
 
         public static bool GetIsAssetLoaded(string assetPath) => assets.Find(assetPath) != null;

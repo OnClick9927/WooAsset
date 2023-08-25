@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static WooAsset.ManifestData;
 
 namespace WooAsset
 {
@@ -9,6 +10,8 @@ namespace WooAsset
         public List<string> dependence = new List<string>();
         public AssetType type;
         public string directory;
+        public List<string> tags;
+
         public List<string> usage = new List<string>();
         public int usageCount { get { return usage.Count; } }
         public static EditorAssetData Create(string path, AssetType _type)
@@ -33,6 +36,18 @@ namespace WooAsset
                 hash = hash,
                 type = _type,
                 directory = AssetsHelper.ToAssetsPath(AssetsHelper.GetDirectoryName(path))
+            };
+        }
+
+        public AssetData CreateAssetData(string bundleName)
+        {
+            return new AssetData()
+            {
+                path = path,
+                bundleName = bundleName,
+                dps = dependence,
+                tags = tags,
+                type = type,
             };
         }
     }

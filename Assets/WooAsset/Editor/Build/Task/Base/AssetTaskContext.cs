@@ -19,6 +19,7 @@ namespace WooAsset
         public string remoteHashName;
         public string localHashName;
 
+        public string streamBundleDirectory;
         public string buildTargetName;
         public string serverDirectory;
         public List<BuildGroup> buildGroups;
@@ -28,7 +29,6 @@ namespace WooAsset
         public BuildGroup buildGroup;
 
 
-        public AssetTagCollection tags;
         public AssetsTree tree;
         public List<EditorAssetData> needBuildAssets;
         public List<BundleGroup> allBundleGroups;
@@ -49,8 +49,7 @@ namespace WooAsset
         public SpriteAtlasPackingSettings PackingSetting;
         public string[] atlasPaths;
         public List<AssetTask> pipelineFinishTasks;
-        public List<string> rawAssets;
-        public List<string> rawAssets_copy;
+
 
         public List<GroupExportData> exports = new List<GroupExportData>();
         public string historyVersionFilePath;

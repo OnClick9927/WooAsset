@@ -28,6 +28,8 @@ namespace WooAsset
             context.localHashName = VersionBuffer.localHashName;
 
             context.buildTargetName = AssetsEditorTool.buildTargetName;
+            context.streamBundleDirectory = AssetsHelper.streamBundleDirectory;
+
             context.versions = new AssetsVersionCollection() { };
 
 

@@ -30,19 +30,19 @@ namespace WooAsset
         }
 
         private static T Read<T>(byte[] bytes, IAssetStreamEncrypt en) => JsonUtility.FromJson<T>(AssetsHelper.encoding.GetString(EncryptBuffer.Decode(remoteHashName, bytes, en)));
-        private static WriteVersionBufferOperation<T> Write<T>(T version, string path, IAssetStreamEncrypt en, bool go) => new WriteVersionBufferOperation<T>(version, path, en, go);
+        private static WriteVersionBufferOperation<T> Write<T>(T version, string path, IAssetStreamEncrypt en) => new WriteVersionBufferOperation<T>(version, path, en, !(Application.isPlaying && !AssetsInternal.GetSaveBundlesWhenPlaying()));
         public static AssetsVersionCollection.VersionData ReadVersionData(byte[] bytes, IAssetStreamEncrypt en)
         {
             return Read<AssetsVersionCollection.VersionData>(bytes, en);
         }
-        public static Operation WriteVersionData(AssetsVersionCollection.VersionData version, string path, IAssetStreamEncrypt en) => Write(version, path, en, !(Application.isPlaying && !AssetsInternal.GetSaveBundlesWhenPlaying()));
+        public static Operation WriteVersionData(AssetsVersionCollection.VersionData version, string path, IAssetStreamEncrypt en) => Write(version, path, en);
         public static BundlesVersion ReadBundleVersion(byte[] bytes, IAssetStreamEncrypt en) => Read<BundlesVersion>(bytes, en);
-        public static Operation WriteBundlesVersion(BundlesVersion version, string path, IAssetStreamEncrypt en) => Write(version, path, en, !(Application.isPlaying && !AssetsInternal.GetSaveBundlesWhenPlaying()));
+        public static Operation WriteBundlesVersion(BundlesVersion version, string path, IAssetStreamEncrypt en) => Write(version, path, en);
         public static ManifestData ReadManifest(byte[] bytes, IAssetStreamEncrypt en) => Read<ManifestData>(bytes, en);
-        public static Operation WriteManifest(ManifestData version, string path, IAssetStreamEncrypt en) => Write(version, path, en, !(Application.isPlaying && !AssetsInternal.GetSaveBundlesWhenPlaying()));
+        public static Operation WriteManifest(ManifestData version, string path, IAssetStreamEncrypt en) => Write(version, path, en);
 
 
         public static AssetsVersionCollection ReadAssetsVersionCollection(byte[] bytes, IAssetStreamEncrypt en) => Read<AssetsVersionCollection>(bytes, en);
-        public static Operation WriteAssetsVersionCollection(AssetsVersionCollection version, string path, IAssetStreamEncrypt en) => Write(version, path, en, !(Application.isPlaying && !AssetsInternal.GetSaveBundlesWhenPlaying()));
+        public static Operation WriteAssetsVersionCollection(AssetsVersionCollection version, string path, IAssetStreamEncrypt en) => Write(version, path, en);
     }
 }

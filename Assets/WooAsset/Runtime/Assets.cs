@@ -36,7 +36,6 @@ namespace WooAsset
         public static IReadOnlyList<string> GetAllTags() => AssetsInternal.GetAllTags();
 
         public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => AssetsInternal.GetAllAssetPaths(bundleName);
-
     }
 
     partial class Assets
@@ -179,7 +178,7 @@ namespace WooAsset
             }
             public static IEnumerable<string> ITypeINameITags(AssetType type, string assetName, params string[] tags)
             {
-                return INameITags(assetName,tags).Where(x => AssetsInternal.GetAssetType(x) == type);
+                return INameITags(assetName, tags).Where(x => AssetsInternal.GetAssetType(x) == type);
             }
 
             public static IEnumerable<string> INameUTags(string assetName, params string[] tags)
@@ -194,7 +193,7 @@ namespace WooAsset
             }
             public static IEnumerable<string> ITypeINameUTags(AssetType type, string assetName, params string[] tags)
             {
-                return INameUTags(assetName,tags).Where(x => AssetsInternal.GetAssetType(x) == type);
+                return INameUTags(assetName, tags).Where(x => AssetsInternal.GetAssetType(x) == type);
             }
             public static IEnumerable<string> ITypeUNameUTags(AssetType type, params string[] nameOrTags)
             {

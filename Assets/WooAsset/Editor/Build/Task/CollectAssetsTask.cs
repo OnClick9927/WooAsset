@@ -13,12 +13,10 @@ namespace WooAsset
             else
                 paths.AddRange(context.buildGroups.ConvertAll(x => x.path));
 
-
-            context.tree = new AssetsTree();
-            context.tree.ReadPaths(paths, context.assetBuild);
-            List<EditorAssetData> assets = context.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
+            var tree = new AssetsTree();
+            tree.ReadPaths(paths, context.assetBuild);
+            List<EditorAssetData> assets = tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
             context.needBuildAssets = assets;
-            context.tags = new AssetTagCollection();
             Dictionary<string, List<string>> tag_dic = new Dictionary<string, List<string>>();
             foreach (var item in assets)
             {
@@ -27,10 +25,8 @@ namespace WooAsset
                 if (tags == null || tags.Count == 0) continue;
                 tag_dic.Add(item.path, tags.ToList());
             }
-            context.tags.ReadAssetTags(tag_dic);
-            context.rawAssets = context.tree.GetRawAssets();
-            context.rawAssets_copy = context.tree.GetRawAssets_Copy();
-
+            tree.ReadAssetTags(tag_dic);
+            context.tree = tree;
             InvokeComplete();
         }
     }

@@ -114,16 +114,24 @@ namespace WooAsset
             allBundle = _bundles.Keys.ToList();
             allName = _names.Keys.ToList();
         }
-        public Dictionary<string, AssetData> _assets;
-        public Dictionary<string, RTName> _names;
-        public Dictionary<string, RTTag> _tags;
-        public Dictionary<string, RTBundle> _bundles;
+        private Dictionary<string, AssetData> _assets;
+        private Dictionary<string, RTName> _names;
+        private Dictionary<string, RTTag> _tags;
+        private Dictionary<string, RTBundle> _bundles;
 
         [NonSerialized] public List<string> allPaths;
         [NonSerialized] public List<string> allTags;
         [NonSerialized] public List<string> allBundle;
         [NonSerialized] public List<string> allName;
 
+        public AssetData GetAssetData(string assetpath)
+        {
+            if (_assets.ContainsKey(assetpath))
+                return _assets[assetpath];
+            if (rawAssets.Contains(assetpath) || rawAssets_copy.Contains(assetpath))
+                return GetAssetData(AssetsHelper.RawToRawObjectPath(assetpath));
+            return null;
+        }
         public AssetType GetAssetType(string assetPath)
         {
             if (_assets.ContainsKey(assetPath))
@@ -134,56 +142,25 @@ namespace WooAsset
                 return AssetType.RawCopyFile;
             return AssetType.None;
         }
-
-        public IReadOnlyList<string> GetAssetTags(string assetPath)
-        {
-            if (_assets.ContainsKey(assetPath))
-                return _assets[assetPath].tags;
-            return null;
-        }
-
         public List<string> GetTagAssetPaths(string tag)
         {
             if (_tags.ContainsKey(tag))
                 return _tags[tag].assets;
             return null;
         }
-        public List<string> GetAssetDependencies(string assetPath)
-        {
-            if (_assets.ContainsKey(assetPath))
-                return _assets[assetPath].dps;
-            return null;
-        }
-        public string GetBundle(string assetPath)
+
+        public string GetAssetBundleName(string assetPath)
         {
             if (_assets.ContainsKey(assetPath))
                 return _assets[assetPath].bundleName;
             return null;
         }
-
-        public IReadOnlyList<string> GetBundles()
-        {
-            return allBundle;
-        }
-        public IReadOnlyList<string> GetAssets()
-        {
-            return allPaths;
-        }
-
-        public IReadOnlyList<string> GetAllTags()
-        {
-            return allTags;
-        }
-
-
         public IReadOnlyList<string> GetAssets(string bundleName)
         {
             RTBundle bundle = null;
             _bundles.TryGetValue(bundleName, out bundle);
             return bundle?.assets;
         }
-
-
         public IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result)
         {
             var fit = allName.FindAll(x => x.Contains(name));
@@ -229,13 +206,7 @@ namespace WooAsset
             return manifest;
         }
 
-        public bool ContainsAsset(string assetPath)
-        {
-            if (rawAssets_copy.Contains(assetPath))
-                return true;
-            if (rawAssets.Contains(assetPath))
-                return true;
-            return allPaths.Contains(assetPath);
-        }
+
+   
     }
 }

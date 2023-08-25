@@ -6,7 +6,6 @@ namespace WooAsset
     {
         public AssetsTree tree = new AssetsTree();
         public List<BundleGroup> previewBundles = new List<BundleGroup>();
-        public AssetTagCollection tags = new AssetTagCollection();
 
         public ManifestData manifest;
 

@@ -35,7 +35,7 @@ namespace WooAsset
                 string path = paths[i];
                 var type = context.assetBuild.GetAssetType(path);
                 if (type != AssetType.Raw && type != AssetType.RawCopyFile) continue;
-                string objPath = AssetsInternal.RawToRawObjectPath(path);
+                string objPath = AssetsHelper.RawToRawObjectPath(path);
 
                 bool create = false;
                 string hash = AssetsHelper.GetFileHash(path);

@@ -209,9 +209,7 @@ namespace WooAsset
                                 }
                                 else if (_searchType == SearchType.AssetByTag)
                                 {
-                                    var tag = cache.tags.GetAssetTags(path);
-                                    if (tag == null || tag.Count == 0) continue;
-                                    if (tag.ToList().Find(x => x.ToLower().Contains(searchString)) != null) continue;
+                                    if (!GetTagsString(cache.tree.GetAssetData(path)).Contains(searchString)) continue;
                                 }
                                 CreateItem(path, root, result);
                             }
@@ -270,7 +268,7 @@ namespace WooAsset
                     {
                         EditorGUI.SelectableLabel(args.GetCellRect(5), group.hash);
                     }
-                    GUI.Label(args.GetCellRect(6), GetTagsString(cache.tags.GetAssetTags(path)));
+                    GUI.Label(args.GetCellRect(6), GetTagsString(asset));
                     if (ping_a == asset) draw = true;
                 }
 

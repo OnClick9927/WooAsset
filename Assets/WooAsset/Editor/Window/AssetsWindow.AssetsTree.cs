@@ -180,7 +180,7 @@ namespace WooAsset
 
                     GUI.Label(args.GetCellRect(3), asset.type.ToString());
 
-                    GUI.Label(args.GetCellRect(6), GetTagsString(cache.tags.GetAssetTags(asset.path)));
+                    GUI.Label(args.GetCellRect(6), GetTagsString(asset));
                 }
                 GUI.Label(args.GetCellRect(4), GetSizeString(asset.length));
                 GUI.Label(args.GetCellRect(5), asset.hash);
@@ -219,7 +219,7 @@ namespace WooAsset
                             source = AssetsHelper.GetFileName(asset.path);
                             break;
                         case SearchType.Tag:
-                            source = GetTagsString(cache.tags.GetAssetTags(asset.path));
+                            source = GetTagsString(asset);
                             break;
                         case SearchType.Type:
                             source = asset.type.ToString();

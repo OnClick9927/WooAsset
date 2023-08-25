@@ -82,9 +82,9 @@ namespace WooAsset
   
 
                         GUI.enabled = false;
-                        EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
                         EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);
-
+                        EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
+                        EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
                         GUILayout.Space(20);
                         EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
                         EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);

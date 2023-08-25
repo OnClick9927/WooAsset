@@ -8,7 +8,7 @@ namespace WooAsset
 
         private LoadManifestOperation manifestOp;
 
-        protected override ManifestData manifest => Initialized() ? manifestOp.manifest : null;
+        public override ManifestData manifest => Initialized() ? manifestOp.manifest : null;
 
         protected override bool Initialized()
         {
@@ -22,7 +22,7 @@ namespace WooAsset
         {
             if (!arg.direct)
             {
-                string bundleName = manifestOp.manifest.GetBundle(assetPath);
+                string bundleName = AssetsInternal.GetAssetBundleName(assetPath);
                 if (string.IsNullOrEmpty(bundleName))
                     AssetsHelper.LogError($"Not Found  {assetPath}");
                 arg.bundleName = bundleName;
