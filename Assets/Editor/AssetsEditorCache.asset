@@ -20,379 +20,206 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 73278
+      length: 73746
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
-      type: 3
+      type: 2
       directory: Assets
+      tags: []
       usage: []
     - path: Assets/Example/New Folder
       name: New Folder
-      length: 31446
+      length: 31412
       hash: 24bbafb9a7a362e3a9f8fc89057304ff
       dependence: []
-      type: 3
+      type: 2
       directory: Assets/Example
+      tags: []
       usage: []
     - path: Assets/Example/px
       name: px
-      length: 5868
+      length: 5714
       hash: 2a679d0c0f30f472975d58e5b9662848
       dependence: []
-      type: 3
+      type: 2
       directory: Assets/Example
+      tags: []
       usage: []
     - path: Assets/Example/Scene
       name: Scene
-      length: 32982
+      length: 34159
       hash: 85037ddcb1ef134e5b57635b483efafb
       dependence: []
-      type: 3
+      type: 2
       directory: Assets/Example
+      tags: []
       usage: []
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2982
-      hash: 2ecf2378d69fda718a3812fe5a28bb58
+      length: 2461
+      hash: a8cd48276e57e6930d9d9b82a2b6f5a5
       dependence: []
-      type: 6
+      type: 5
       directory: Assets/Example
-      usage: []
-    - path: Assets/Example/New Folder/a.jpg
-      name: a.jpg
-      length: 23166
-      hash: 6de058942339e09666a74eccc57d7a00
-      dependence: []
-      type: 4
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/aaa.asset
-      name: aaa.asset
-      length: 519
-      hash: a61ed0a89633590835db25a0acf303e5
-      dependence: []
-      type: 21
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/Cube.prefab
-      name: Cube.prefab
-      length: 2844
-      hash: 0221ac0e5696a1f3aedad196edaac679
-      dependence:
-      - Assets/Example/New Folder/New Material.mat
-      type: 11
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/kkk.asset
-      name: kkk.asset
-      length: 523
-      hash: 6d91533c78a7a3a03ea83e44cf94a166
-      dependence: []
-      type: 21
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/New Material 1.mat
-      name: New Material 1.mat
-      length: 2198
-      hash: d882027734006859076f557c2806d379
-      dependence: []
-      type: 10
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/New Material.mat
-      name: New Material.mat
-      length: 2196
-      hash: 98a28e10526b63e2a25bbc484abcb314
-      dependence: []
-      type: 10
-      directory: Assets/Example/New Folder
-      usage:
-      - Assets/Example/New Folder/Cube.prefab
-    - path: Assets/Example/px/1.png
-      name: 1.png
-      length: 407
-      hash: e2f30f55a684a7d510149a288e134f56
-      dependence: []
-      type: 4
-      directory: Assets/Example/px
-      usage:
-      - Assets/Example/px/One.prefab
-      - Assets/Example/px/Two.prefab
-      - Assets/Example/Scene/New Scene2.unity
-    - path: Assets/Example/px/2.png
-      name: 2.png
-      length: 419
-      hash: ad6c8de70668d4a6dd34ce44ab6f815a
-      dependence: []
-      type: 4
-      directory: Assets/Example/px
-      usage: []
-    - path: Assets/Example/px/3.png
-      name: 3.png
-      length: 470
-      hash: 89774a5daaaf4992a55619ccb6660c7b
-      dependence: []
-      type: 4
-      directory: Assets/Example/px
-      usage: []
-    - path: Assets/Example/px/One.prefab
-      name: One.prefab
-      length: 2286
-      hash: 2004f30666106c93ffbbe04db5f24cdf
-      dependence:
-      - Assets/Example/px/1.png
-      type: 11
-      directory: Assets/Example/px
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-    - path: Assets/Example/px/Two.prefab
-      name: Two.prefab
-      length: 2286
-      hash: 8ec75e59358cf00908b62e5758cd92ed
-      dependence:
-      - Assets/Example/px/1.png
-      type: 11
-      directory: Assets/Example/px
-      usage: []
-    - path: Assets/Example/Scene/New Scene.unity
-      name: New Scene.unity
-      length: 15718
-      hash: 1488d2f94dc716d8697f3c0ac4b663c5
-      dependence: []
-      type: 9
-      directory: Assets/Example/Scene
-      usage: []
-    - path: Assets/Example/Scene/New Scene2.unity
-      name: New Scene2.unity
-      length: 17264
-      hash: 9fce1aeb9e45a6e34abd19434962b7d5
-      dependence:
-      - Assets/Example/px/One.prefab
-      - Assets/Example/px/1.png
-      type: 9
-      directory: Assets/Example/Scene
-      usage: []
-  previewBundles:
-  - hash: be11b502846197081cf02818752767f0
-    length: 24462
-    assets:
-    - path: Assets/Example/New Folder/a.jpg
-      name: a.jpg
-      length: 23166
-      hash: 6de058942339e09666a74eccc57d7a00
-      dependence: []
-      type: 4
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/px/3.png
-      name: 3.png
-      length: 470
-      hash: 89774a5daaaf4992a55619ccb6660c7b
-      dependence: []
-      type: 4
-      directory: Assets/Example/px
-      usage: []
-    - path: Assets/Example/px/2.png
-      name: 2.png
-      length: 419
-      hash: ad6c8de70668d4a6dd34ce44ab6f815a
-      dependence: []
-      type: 4
-      directory: Assets/Example/px
-      usage: []
-    - path: Assets/Example/px/1.png
-      name: 1.png
-      length: 407
-      hash: e2f30f55a684a7d510149a288e134f56
-      dependence: []
-      type: 4
-      directory: Assets/Example/px
-      usage:
-      - Assets/Example/px/One.prefab
-      - Assets/Example/px/Two.prefab
-      - Assets/Example/Scene/New Scene2.unity
-    usage:
-    - 2cbd780ed9902f5084197f8385e4f035
-    - 06eb9378864ed1a48a4289c6631be752
-    dependence: []
-  - hash: 06eb9378864ed1a48a4289c6631be752
-    length: 17264
-    assets:
-    - path: Assets/Example/Scene/New Scene2.unity
-      name: New Scene2.unity
-      length: 17264
-      hash: 9fce1aeb9e45a6e34abd19434962b7d5
-      dependence:
-      - Assets/Example/px/One.prefab
-      - Assets/Example/px/1.png
-      type: 9
-      directory: Assets/Example/Scene
-      usage: []
-    usage: []
-    dependence:
-    - 2cbd780ed9902f5084197f8385e4f035
-    - be11b502846197081cf02818752767f0
-  - hash: 36cc224629a3213ff0837ca6c7a3785c
-    length: 15718
-    assets:
-    - path: Assets/Example/Scene/New Scene.unity
-      name: New Scene.unity
-      length: 15718
-      hash: 1488d2f94dc716d8697f3c0ac4b663c5
-      dependence: []
-      type: 9
-      directory: Assets/Example/Scene
-      usage: []
-    usage: []
-    dependence: []
-  - hash: 2cbd780ed9902f5084197f8385e4f035
-    length: 7416
-    assets:
-    - path: Assets/Example/New Folder/Cube.prefab
-      name: Cube.prefab
-      length: 2844
-      hash: 0221ac0e5696a1f3aedad196edaac679
-      dependence:
-      - Assets/Example/New Folder/New Material.mat
-      type: 11
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/px/One.prefab
-      name: One.prefab
-      length: 2286
-      hash: 2004f30666106c93ffbbe04db5f24cdf
-      dependence:
-      - Assets/Example/px/1.png
-      type: 11
-      directory: Assets/Example/px
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-    - path: Assets/Example/px/Two.prefab
-      name: Two.prefab
-      length: 2286
-      hash: 8ec75e59358cf00908b62e5758cd92ed
-      dependence:
-      - Assets/Example/px/1.png
-      type: 11
-      directory: Assets/Example/px
-      usage: []
-    usage:
-    - 06eb9378864ed1a48a4289c6631be752
-    dependence:
-    - 553fbe73a2a295b01ac54d0a87d26856
-    - be11b502846197081cf02818752767f0
-  - hash: 553fbe73a2a295b01ac54d0a87d26856
-    length: 4394
-    assets:
-    - path: Assets/Example/New Folder/New Material 1.mat
-      name: New Material 1.mat
-      length: 2198
-      hash: d882027734006859076f557c2806d379
-      dependence: []
-      type: 10
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/New Material.mat
-      name: New Material.mat
-      length: 2196
-      hash: 98a28e10526b63e2a25bbc484abcb314
-      dependence: []
-      type: 10
-      directory: Assets/Example/New Folder
-      usage:
-      - Assets/Example/New Folder/Cube.prefab
-    usage:
-    - 2cbd780ed9902f5084197f8385e4f035
-    dependence: []
-  - hash: 4b6dca83ed1ff17e4ea286808a292002
-    length: 2982
-    assets:
-    - path: Assets/Example/shadervariants.shadervariants
-      name: shadervariants.shadervariants
-      length: 2982
-      hash: 2ecf2378d69fda718a3812fe5a28bb58
-      dependence: []
-      type: 6
-      directory: Assets/Example
-      usage: []
-    usage: []
-    dependence: []
-  - hash: 68556ca7eb18c2598ab03cc2d2774f16
-    length: 1042
-    assets:
-    - path: Assets/Example/New Folder/kkk.asset
-      name: kkk.asset
-      length: 523
-      hash: 6d91533c78a7a3a03ea83e44cf94a166
-      dependence: []
-      type: 21
-      directory: Assets/Example/New Folder
-      usage: []
-    - path: Assets/Example/New Folder/aaa.asset
-      name: aaa.asset
-      length: 519
-      hash: a61ed0a89633590835db25a0acf303e5
-      dependence: []
-      type: 21
-      directory: Assets/Example/New Folder
-      usage: []
-    usage: []
-    dependence: []
-  tags:
-    assets:
-    - path: Assets/Example/shadervariants.shadervariants
       tags:
       - ShaderVariant
       - shadervariants
+      usage: []
     - path: Assets/Example/New Folder/a.jpg
+      name: a.jpg
+      length: 23166
+      hash: 6de058942339e09666a74eccc57d7a00
+      dependence: []
+      type: 3
+      directory: Assets/Example/New Folder
       tags:
       - Texture
       - a
+      usage: []
     - path: Assets/Example/New Folder/aaa.asset
+      name: aaa.asset
+      length: 502
+      hash: c04974de365b2d9797416aa7662f07c1
+      dependence: []
+      type: 19
+      directory: Assets/Example/New Folder
       tags:
       - RawObject
       - aaa
+      usage: []
     - path: Assets/Example/New Folder/Cube.prefab
+      name: Cube.prefab
+      length: 2844
+      hash: 0221ac0e5696a1f3aedad196edaac679
+      dependence:
+      - Assets/Example/New Folder/New Material.mat
+      type: 10
+      directory: Assets/Example/New Folder
       tags:
       - Prefab
       - Cube
+      usage: []
     - path: Assets/Example/New Folder/kkk.asset
+      name: kkk.asset
+      length: 506
+      hash: 042a844b419a2535e9e2d5f5762768fc
+      dependence: []
+      type: 19
+      directory: Assets/Example/New Folder
       tags:
       - RawObject
       - kkk
+      usage: []
     - path: Assets/Example/New Folder/New Material 1.mat
+      name: New Material 1.mat
+      length: 2198
+      hash: d882027734006859076f557c2806d379
+      dependence: []
+      type: 9
+      directory: Assets/Example/New Folder
       tags:
       - Material
       - New Material 1
+      usage: []
     - path: Assets/Example/New Folder/New Material.mat
+      name: New Material.mat
+      length: 2196
+      hash: 98a28e10526b63e2a25bbc484abcb314
+      dependence: []
+      type: 9
+      directory: Assets/Example/New Folder
       tags:
       - Material
       - New Material
+      usage:
+      - Assets/Example/New Folder/Cube.prefab
     - path: Assets/Example/px/1.png
+      name: 1.png
+      length: 407
+      hash: e2f30f55a684a7d510149a288e134f56
+      dependence: []
+      type: 3
+      directory: Assets/Example/px
       tags:
       - Texture
       - 1
+      usage:
+      - Assets/Example/px/One.prefab
+      - Assets/Example/px/Two.prefab
+      - Assets/Example/Scene/New Scene2.unity
     - path: Assets/Example/px/2.png
+      name: 2.png
+      length: 419
+      hash: ad6c8de70668d4a6dd34ce44ab6f815a
+      dependence: []
+      type: 3
+      directory: Assets/Example/px
       tags:
       - Texture
       - 2
+      usage: []
     - path: Assets/Example/px/3.png
+      name: 3.png
+      length: 470
+      hash: 89774a5daaaf4992a55619ccb6660c7b
+      dependence: []
+      type: 3
+      directory: Assets/Example/px
       tags:
       - Texture
       - 3
+      usage: []
     - path: Assets/Example/px/One.prefab
+      name: One.prefab
+      length: 2209
+      hash: 779574084950a028591e28a6fd16a763
+      dependence:
+      - Assets/Example/px/1.png
+      type: 10
+      directory: Assets/Example/px
       tags:
       - Prefab
       - One
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
     - path: Assets/Example/px/Two.prefab
+      name: Two.prefab
+      length: 2209
+      hash: 76d74da6ed17581486bb93fef6951cdc
+      dependence:
+      - Assets/Example/px/1.png
+      type: 10
+      directory: Assets/Example/px
       tags:
       - Prefab
       - Two
+      usage: []
     - path: Assets/Example/Scene/New Scene.unity
+      name: New Scene.unity
+      length: 16312
+      hash: 6f2eedeca901bb152a333454fbb53fc5
+      dependence: []
+      type: 8
+      directory: Assets/Example/Scene
       tags:
       - Scene
       - New Scene
+      usage: []
     - path: Assets/Example/Scene/New Scene2.unity
+      name: New Scene2.unity
+      length: 17847
+      hash: 241e4a9d250f313989694c35bb86885d
+      dependence:
+      - Assets/Example/px/One.prefab
+      - Assets/Example/px/1.png
+      type: 8
+      directory: Assets/Example/Scene
       tags:
       - Scene
       - New Scene2
+      usage: []
+  previewBundles: []
+  manifest:
+    assets: []
+    rawAssets: []
+    rawAssets_copy: []

@@ -92,7 +92,8 @@ namespace WooAsset
                 context.versions = VersionBuffer.ReadAssetsVersionCollection(reader.bytes, new NoneAssetStreamEncrypt());
             }
             context.version = assetBuild.GetVersion(option.version, context);
-            context.pipelineFinishTasks = assetBuild.GetPipelineFinishTasks(context);
+            context.pipelineStartTasks = assetBuild.GetPipelineStartTasks(context);
+            context.pipelineEndTasks = assetBuild.GetPipelineEndTasks(context);
 
 
             InvokeComplete();

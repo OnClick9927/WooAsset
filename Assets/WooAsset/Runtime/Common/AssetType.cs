@@ -4,8 +4,7 @@
     public enum AssetType
     {
         None,
-        Meta,
-        CS,
+        Ignore,
         Directory,
         Texture,
         Shader,
@@ -19,7 +18,6 @@
         Animation,
         AnimationClip,
         AnimatorController,
-        SpriteAtlas,
         ScriptObject,
         Model,
         TextAsset,

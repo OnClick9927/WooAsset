@@ -48,7 +48,9 @@ namespace WooAsset
         public SpriteAtlasTextureSettings TextureSetting;
         public SpriteAtlasPackingSettings PackingSetting;
         public string[] atlasPaths;
-        public List<AssetTask> pipelineFinishTasks;
+        public List<AssetTask> pipelineStartTasks;
+
+        public List<AssetTask> pipelineEndTasks;
 
 
         public List<GroupExportData> exports = new List<GroupExportData>();

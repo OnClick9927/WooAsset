@@ -76,8 +76,11 @@ namespace WooAsset
             {
                 return new string[] { info.type.ToString(), AssetsHelper.GetFileNameWithoutExtension(info.path) };
             }
-
-            public List<AssetTask> GetPipelineFinishTasks(AssetTaskContext context)
+            public List<AssetTask> GetPipelineStartTasks(AssetTaskContext context)
+            {
+                throw null;
+            }
+            public List<AssetTask> GetPipelineEndTasks(AssetTaskContext context)
             {
                 return null;
             }
@@ -89,6 +92,8 @@ namespace WooAsset
 
             public AssetType GetAssetType(string path)
             {
+                var list = AssetsHelper.ToRegularPath(path).Split('/').ToList();
+                if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return AssetType.Ignore;
                 AssetType _type = AssetType.None;
                 if (AssetsHelper.IsDirectory(path))
                 {
@@ -98,8 +103,8 @@ namespace WooAsset
                 {
                     AssetImporter importer = AssetImporter.GetAtPath(path);
                     if (path.EndsWith(".rfc")) _type = AssetType.RawCopyFile;
-                    else if (path.EndsWith(".meta")) _type = AssetType.Meta;
-                    else if (path.EndsWith(".cs")) _type = AssetType.CS;
+                    else if (path.EndsWith(".meta")) _type = AssetType.Ignore;
+                    else if (path.EndsWith(".cs")) _type = AssetType.Ignore;
                     else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
                     else if (importer is ModelImporter) _type = AssetType.Model;
                     else if (AssetDatabase.LoadAssetAtPath<RawObject>(path) != null) _type = AssetType.RawObject;
@@ -108,7 +113,7 @@ namespace WooAsset
                     else if (AssetDatabase.LoadAssetAtPath<Animation>(path) != null) _type = AssetType.Animation;
                     else if (AssetDatabase.LoadAssetAtPath<AnimationClip>(path) != null) _type = AssetType.AnimationClip;
                     else if (AssetDatabase.LoadAssetAtPath<AnimatorController>(path) != null) _type = AssetType.AnimatorController;
-                    else if (AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path) != null) _type = AssetType.SpriteAtlas;
+                    else if (AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path) != null) _type = AssetType.Ignore;
                     else if (AssetDatabase.LoadAssetAtPath<Material>(path) != null) _type = AssetType.Material;
                     else if (AssetDatabase.LoadAssetAtPath<AudioClip>(path) != null) _type = AssetType.AudioClip;
                     else if (AssetDatabase.LoadAssetAtPath<VideoClip>(path) != null) _type = AssetType.VideoClip;
@@ -122,15 +127,7 @@ namespace WooAsset
                 return _type;
             }
 
-            public bool IsIgnorePath(string path)
-            {
-                var type = GetAssetType(path);
-                if (type == AssetType.Meta || type == AssetType.CS || type == AssetType.SpriteAtlas || type == AssetType.Raw || type == AssetType.RawCopyFile)
-                    return true;
-                var list = AssetsHelper.ToRegularPath(path).Split('/').ToList();
-                if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return true;
-                return false;
-            }
+
         }
 
 

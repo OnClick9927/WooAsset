@@ -7,70 +7,64 @@ namespace WooAsset
 {
     public class AssetTaskRunner : AssetTask
     {
+        class SegmentOperation : Operation
+        {
+            private List<AssetTask> tasks;
+            private AssetTaskRunner context;
+
+            public SegmentOperation(List<AssetTask> tasks, AssetTaskRunner context)
+            {
+                this.tasks = tasks;
+                this.context = context;
+                Done();
+            }
+
+            public override float progress => _progress;
+            private float _progress = 0;
+            private async void Done()
+            {
+                if (tasks != null)
+                {
+                    for (int i = 0; i < tasks.Count; i++)
+                    {
+                        _progress = (float)i / tasks.Count;
+                        await Task.Delay(100);
+                        await Execute(tasks[i], context.context);
+                        if (tasks[i].isErr)
+                        {
+                            SetErr($"{context.context.Pipeline} Err");
+                            break;
+                        }
+                    }
+                }
+                InvokeComplete();
+            }
+        }
+
         protected AssetTaskRunner(List<AssetTask> tasks)
         {
             this.tasks = tasks;
         }
         private List<AssetTask> tasks = new List<AssetTask>();
-        private static Queue<AssetTaskRunner> wait = new Queue<AssetTaskRunner>();
 
-        public override float progress => _progress;
-        private float _progress = 0;
-        private static AssetTaskRunner current;
+        public override float progress => isDone ? 1 : 0;
+
+
         protected async override void OnExecute(AssetTaskContext context)
         {
-            if (current != null)
+            Stopwatch sw = Stopwatch.StartNew();
+            await Task.Delay(100);
+            var op = await new SegmentOperation(context.pipelineStartTasks, this);
+            if (!op.isErr)
             {
-                foreach (var item in wait)
-                {
-                    if (item.context.Pipeline == context.Pipeline)
-                    {
-                        InvokeComplete();
-                        return;
-                    }
-                }
-                wait.Enqueue(this);
+                op = await new SegmentOperation(tasks, this);
+                if (!op.isErr)
+                    await new SegmentOperation(context.pipelineEndTasks, this);
             }
-            else
-            {
-                current = this;
-                Stopwatch sw = Stopwatch.StartNew();
-                await Task.Delay(100);
-                for (int i = 0; i < tasks.Count; i++)
-                {
-                    _progress = (float)i / tasks.Count;
-                    await Task.Delay(100);
-                    await Execute(tasks[i], context);
-                    if (tasks[i].isErr)
-                    {
-                        AssetsHelper.LogError($"{context.Pipeline} Err");
-                        break;
-                    }
-                }
-                if (context.pipelineFinishTasks != null)
-                {
-                    for (int i = 0; i < context.pipelineFinishTasks.Count; i++)
-                    {
-                        _progress = (float)i / context.pipelineFinishTasks.Count;
-                        await Task.Delay(100);
-                        await Execute(context.pipelineFinishTasks[i], context);
-                        if (tasks[i].isErr)
-                        {
-                            AssetsHelper.LogError($"{context.Pipeline} Err");
-                            break;
-                        }
-                    }
-                }
-                sw.Stop();
-                InvokeComplete();
-                AssetsHelper.Log($"{context.Pipeline} Finish {sw.Elapsed.ToString(@"G")}");
-                current = null;
-                if (wait.Count > 0)
-                {
-                    AssetTaskRunner ex = wait.Dequeue();
-                    ex.Execute(ex.context).WarpErr();
-                }
-            }
+
+            sw.Stop();
+            InvokeComplete();
+            AssetsHelper.Log($"{context.Pipeline} Finish {sw.Elapsed.ToString(@"G")}");
         }
 
 
