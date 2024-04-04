@@ -9,6 +9,9 @@ namespace WooAsset
     public class AssetTaskContext
     {
         public TaskPipelineType Pipeline;
+        public bool collectAllPkgs;
+
+
         public string outputPath;
         public string historyPath;
         public int MaxCacheVersionCount;
@@ -22,11 +25,11 @@ namespace WooAsset
         public string streamBundleDirectory;
         public string buildTargetName;
         public string serverDirectory;
-        public List<BuildGroup> buildGroups;
+        public List<EditorBundlePackage> buildPkgs;
         public CompressType compress;
         public bool ignoreTypeTreeChanges;
         public bool forceRebuild;
-        public BuildGroup buildGroup;
+        public EditorBundlePackage buildPkg;
 
 
         public AssetsTree tree;

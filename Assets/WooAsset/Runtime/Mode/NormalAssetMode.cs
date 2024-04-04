@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System;
+using System.Linq;
+using static WooAsset.AssetsVersionCollection.VersionData;
+using static WooAsset.AssetsVersionCollection;
 
 namespace WooAsset
 {
@@ -32,7 +36,7 @@ namespace WooAsset
             return new Asset(arg);
         }
 
-        protected override Operation InitAsync(string version, bool again, string[] tags)
+        protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
         {
             if (again)
             {
@@ -44,7 +48,7 @@ namespace WooAsset
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundles()
                     .Select(x => x.bundleName).ToList()
-                    , version, tags);
+                    , version, getPkgs);
             return manifestOp;
         }
 

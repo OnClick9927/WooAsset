@@ -73,14 +73,50 @@ namespace WooAsset
         [MenuItem(TaskPipelineMenu.PreviewBundles)]
         public static AssetTaskRunner PreviewBundles()
         {
-            AssetTaskContext context = new AssetTaskContext() { Pipeline = TaskPipelineType.PreviewBundles };
-            AssetTaskRunner task = Execute(new AssetTaskRunner(hashPreview), context) as AssetTaskRunner;
-            return task;
+            return PreviewBundles(false);
         }
         [MenuItem(TaskPipelineMenu.PreviewAssets)]
         public static AssetTask PreviewAssets()
         {
-            AssetTaskContext context = new AssetTaskContext() { Pipeline = TaskPipelineType.PreviewAssets };
+            return PreviewAssets(false);
+        }
+
+        [MenuItem(TaskPipelineMenu.PreviewAllBundles)]
+        public static AssetTaskRunner PreviewAllBundles()
+        {
+            return PreviewBundles(true);
+        }
+        [MenuItem(TaskPipelineMenu.PreviewAllAssets)]
+        public static AssetTask PreviewAllAssets()
+        {
+            return PreviewAssets(true);
+        }
+
+
+
+
+
+        private static AssetTaskRunner PreviewBundles(bool collectAllPkgs = false)
+        {
+            AssetTaskContext context = new AssetTaskContext()
+            {
+                Pipeline = TaskPipelineType.PreviewBundles
+            ,
+                collectAllPkgs = collectAllPkgs
+            };
+            AssetTaskRunner task = Execute(new AssetTaskRunner(hashPreview), context) as AssetTaskRunner;
+            return task;
+        }
+  
+        private static AssetTask PreviewAssets(bool collectAllPkgs = false)
+        {
+            AssetTaskContext context = new AssetTaskContext()
+            {
+
+
+                Pipeline = TaskPipelineType.PreviewAssets,
+                collectAllPkgs = collectAllPkgs
+            };
             AssetTask task = Execute(new AssetTaskRunner(collectAssets), context);
             return task;
         }

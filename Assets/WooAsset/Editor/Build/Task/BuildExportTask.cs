@@ -28,7 +28,7 @@ namespace WooAsset
             await AssetsHelper.WriteObject(new BuildBundleExprotData()
             {
                 encrypt = context.encrypt.ToString(),
-                buildGroups = context.buildGroups,
+                buildPkgs = context.buildPkgs,
                 version = context.version,
                 compress = context.compress.ToString(),
                 forceRebuild = context.forceRebuild,
@@ -42,7 +42,7 @@ namespace WooAsset
             foreach (var item in context.exports)
             {
                 await AssetsHelper.WriteObject(item,
-                     AssetsHelper.CombinePath(context.outputPath, $"Export_{item.buildGroup.name}.json"),
+                     AssetsHelper.CombinePath(context.outputPath, $"Export_{item.buildPkg.name}.json"),
                      true
                      );
             }

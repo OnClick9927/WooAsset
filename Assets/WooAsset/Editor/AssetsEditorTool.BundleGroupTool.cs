@@ -43,12 +43,12 @@ namespace WooAsset
                 });
                 List<EditorAssetData> tmp = new List<EditorAssetData>();
                 long len = 0;
-                foreach (var item in assets)
+                for (int i = 0; i < assets.Count; i++)
                 {
+                    var item = assets[i];
                     if (len + item.length >= size)
                     {
                         N2One(tmp, result);
-                        assets.RemoveAll(x => tmp.Contains(x));
                         tmp.Clear();
                         len = 0;
                     }

@@ -120,7 +120,7 @@ namespace WooAsset
             await Task.Delay((int)SleepMilliseconds);
             ShaderVariantCollectionHelper.ClearCurrentShaderVariantCollection();
             await Task.Delay((int)SleepMilliseconds);
-            List<string> _allMaterials = AssetDatabase.FindAssets("t:Material", context.buildGroups.ConvertAll(x => x.path).ToArray())
+            List<string> _allMaterials = AssetDatabase.FindAssets("t:Material", context.buildPkgs.SelectMany(x => x.paths).ToArray())
                 .ToList()
                 .ConvertAll(x => AssetDatabase.GUIDToAssetPath(x));
             await Task.Delay((int)SleepMilliseconds);

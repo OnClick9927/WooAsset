@@ -9,11 +9,21 @@ namespace WooAsset
         [CustomEditor(typeof(AssetsBuildOption))]
         class AssetsBuildOptionEditor : Editor
         {
+            static string key = "##AssetsBuildOptionEditor";
             enum Mode
             {
                 Runtime, Editor
             }
             private Mode mode;
+            private void OnEnable()
+            {
+
+                mode = (Mode)EditorPrefs.GetInt(key, 0);
+            }
+            private void OnDisable()
+            {
+                EditorPrefs.SetInt(key, (int)mode);
+            }
             static void V(string title, Action action)
             {
                 GUILayout.BeginVertical(EditorStyles.helpBox);
@@ -63,12 +73,12 @@ namespace WooAsset
                     V("Build",
                     () =>
                     {
-                        
 
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildGroups"));
+
+                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildPkgs"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildInAssets"));
 
-                        
+
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("version"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("MaxCacheVersionCount"));
                         EditorGUILayout.PropertyField(this.serializedObject.FindProperty("forceRebuild"));
@@ -79,7 +89,7 @@ namespace WooAsset
 
                         option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
                         option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
-  
+
 
                         GUI.enabled = false;
                         EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);

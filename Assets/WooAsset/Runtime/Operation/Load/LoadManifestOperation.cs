@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using static WooAsset.AssetsVersionCollection;
+using static WooAsset.AssetsVersionCollection.VersionData;
 
 
 namespace WooAsset
@@ -17,17 +20,17 @@ namespace WooAsset
             }
         }
         private Downloader downloader;
-        private AssetsVersionCollection.VersionData version;
+        private VersionData version;
         public ManifestData manifest;
         public List<FileData> bundles;
 
         private string _version = "";
-        private string[] tags;
+        private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
-        public LoadManifestOperation(List<string> loadedBundles, string version, string[] tags)
+        public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs)
         {
             _version = version;
-            this.tags = tags;
+            this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
             Done();
         }
@@ -63,39 +66,19 @@ namespace WooAsset
                 else
                 {
                     AssetsVersionCollection collection = VersionBuffer.ReadAssetsVersionCollection(downloader.data, en);
-                    AssetsVersionCollection.VersionData find = null;
-                    if (!string.IsNullOrEmpty(_version))
-                        find = collection.versions.Find(x => x.version == _version);
-                    if (find == null)
-                        find = collection.versions.Last();
-                    version = find;
+                    AssetsVersionCollection.VersionData find = string.IsNullOrEmpty(_version) ? collection.NewestVersion() : collection.FindVersion(_version);
+                    version = find != null ? find : collection.NewestVersion();
                     await VersionBuffer.WriteVersionData(version, localVersionPath, en);
                 }
             }
+            var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
             List<ManifestData> manifests = new List<ManifestData>();
-            for (int i = 0; i < version.groups.Count; i++)
-            {
-                var group = version.groups[i];
-                bool go = false;
-                if (tags != null && tags.Length != 0)
-                {
-                    for (int j = 0; j < tags.Length; j++)
-                    {
-                        if (group.tags.Contains(tags[j]))
-                        {
-                            go = true;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    go = true;
-                }
-                if (!go) continue;
 
+            for (int i = 0; i < pkgs.Count; i++)
+            {
+                var pkg = pkgs[i];
                 {
-                    string fileName = group.manifestFileName;
+                    string fileName = pkg.manifestFileName;
 
                     string _path = AssetsInternal.GetBundleLocalPath(fileName);
                     ManifestData v = null;
@@ -119,7 +102,6 @@ namespace WooAsset
                     manifests.Add(v);
                 }
             }
-
             manifest = ManifestData.Merge(manifests, this.loadedBundles);
             manifest.Prepare();
 

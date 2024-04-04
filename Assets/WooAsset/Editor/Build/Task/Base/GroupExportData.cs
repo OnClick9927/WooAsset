@@ -5,7 +5,7 @@ namespace WooAsset
     [System.Serializable]
     public class GroupExportData
     {
-        public BuildGroup buildGroup;
+        public EditorBundlePackage buildPkg;
         public ManifestData manifest;
     }
 }

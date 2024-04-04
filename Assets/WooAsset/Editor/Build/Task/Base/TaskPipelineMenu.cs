@@ -5,6 +5,11 @@
         public const string root = "Tools/WooAsset/";
         public const string PreviewBundles = root + "Preview/Bundle";
         public const string PreviewAssets = root + "Preview/Asset";
+
+        public const string PreviewAllBundles = root + "Preview/All Bundle";
+        public const string PreviewAllAssets = root + "Preview/All Asset";
+
+
         public const string Build = root + "Bundle/Build";
         public const string BuildToStream = root + "Bundle/BuildToStream";
         public const string ShaderVariant = root + "Help/ShaderVariant";

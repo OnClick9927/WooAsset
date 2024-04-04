@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static WooAsset.AssetsVersionCollection.VersionData;
+using static WooAsset.AssetsVersionCollection;
+using System;
 
 namespace WooAsset
 {
@@ -22,7 +25,7 @@ namespace WooAsset
             {
                 private class FastCompare : VersionCompareOperation
                 {
-                    public FastCompare(CheckBundleVersionOperation _check, int index, params string[] names) : base(_check, index, names)
+                    public FastCompare(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs) : base(_check, version, pkgs)
                     {
                     }
                     protected override void Compare()
@@ -33,17 +36,16 @@ namespace WooAsset
                         InvokeComplete();
                     }
                 }
-                List<AssetsVersionCollection.VersionData> _versions = new List<AssetsVersionCollection.VersionData>();
-                public override List<AssetsVersionCollection.VersionData> versions => _versions;
                 protected override void Done()
                 {
                     AssetsHelper.Log($"Check Version Complete");
                     InvokeComplete();
                 }
-                public override VersionCompareOperation Compare(int versionIndex, params string[] tags)
+                public override VersionCompareOperation Compare(VersionData version, List<PackageData> pkgs)
                 {
-                    return new FastCompare(null, versionIndex, tags);
+                    return new FastCompare(null, version, pkgs);
                 }
+         
             }
 
             private AssetTask _task;
@@ -52,10 +54,10 @@ namespace WooAsset
             protected override bool Initialized() => _task != null && _task.isDone;
             protected override CopyStreamBundlesOperation CopyToSandBox(string from, string to) => new FastCopy(from, to);
             protected override AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);
-            protected override Operation InitAsync(string version, bool again, string[] tags)
+            protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
             {
                 if (_task == null)
-                    _task = AssetTaskRunner.PreviewBundles();
+                    _task = AssetTaskRunner.PreviewAllBundles();
                 return _task;
             }
             protected override CheckBundleVersionOperation VersionCheck() => new FastCheck();

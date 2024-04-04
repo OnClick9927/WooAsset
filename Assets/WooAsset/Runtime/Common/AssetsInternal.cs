@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using static WooAsset.AssetsVersionCollection.VersionData;
+using static WooAsset.AssetsVersionCollection;
 
 namespace WooAsset
 {
@@ -55,7 +58,7 @@ namespace WooAsset
     {
         private static AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => mode.CreateAsset(assetPath, arg);
         public static bool Initialized() => mode.Initialized();
-        public static Operation InitAsync(string version, bool again, string[] tags) => mode.InitAsync(version, again, tags);
+        public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
         public static CopyStreamBundlesOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.streamBundleDirectory, localSaveDir);
         public static UnzipRawFileOperation UnzipRawFile() => mode.UnzipRawFile();

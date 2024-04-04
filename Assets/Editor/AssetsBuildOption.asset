@@ -45,12 +45,14 @@ MonoBehaviour:
   compress: 1
   MaxCacheVersionCount: 2
   cleanHistory: 0
-  buildGroups:
+  buildPkgs:
   - build: 1
+    collect: 0
     name: new
-    path: Assets/Example
     description: 
     tags: []
+    paths:
+    - Assets/Example
   build:
     types:
     - WooAsset.AssetsEditorTool+DefaultAssetBuild
@@ -64,7 +66,7 @@ MonoBehaviour:
     shortTypes:
     - NormalAssetMode
     - FastAssetMode
-    typeIndex: 0
+    typeIndex: 1
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt

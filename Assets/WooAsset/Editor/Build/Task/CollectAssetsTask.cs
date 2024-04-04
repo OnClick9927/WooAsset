@@ -9,9 +9,16 @@ namespace WooAsset
         {
             List<string> paths = new List<string>();
             if (context.Pipeline == TaskPipelineType.BuildBundle)
-                paths.Add(context.buildGroup.path);
+                paths.AddRange(context.buildPkg.paths);
             else
-                paths.AddRange(context.buildGroups.ConvertAll(x => x.path));
+            {
+                if (context.collectAllPkgs)
+                    paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
+                else
+                    paths.AddRange(context.buildPkgs.Where(x => x.collect == true).SelectMany(x => x.paths));
+
+
+            }
 
             var tree = new AssetsTree();
             tree.ReadPaths(paths, context.assetBuild);

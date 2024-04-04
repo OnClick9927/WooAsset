@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using static WooAsset.AssetsVersionCollection;
+using static WooAsset.AssetsVersionCollection.VersionData;
 
 
 namespace WooAsset
@@ -19,21 +20,19 @@ namespace WooAsset
         }
 
         private CheckBundleVersionOperation _check;
-        private int _index;
-        private List<AssetsVersionCollection.VersionData> versions = new List<AssetsVersionCollection.VersionData>();
-
+        private VersionData version;
+        private List<PackageData> pkgs;
         public override float progress => isDone ? 1 : _progress;
         private float _progress;
 
         public List<FileData> change;
         public List<FileData> delete;
         public List<FileData> add;
-        private string[] tags;
-        public VersionCompareOperation(CheckBundleVersionOperation _check, int index, params string[] tags)
+        public VersionCompareOperation(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs)
         {
             this._check = _check;
-            this._index = index;
-            this.tags = tags;
+            this.pkgs = pkgs;
+            this.version = version;
             Compare();
         }
 
@@ -43,35 +42,15 @@ namespace WooAsset
             if (!_check.isErr)
             {
                 IAssetStreamEncrypt en = AssetsInternal.GetEncrypt();
-                versions = _check.versions;
-                _index = Mathf.Clamp(_index, 0, versions.Count - 1);
-                var version = versions[_index];
+        
 
                 List<FileData> remoteBundles = new List<FileData>();
-
-                for (int i = 0; i < version.groups.Count; i++)
+                for (int i = 0; i < pkgs.Count; i++)
                 {
-                    var group = version.groups[i];
-                    _progress = i / (float)version.groups.Count;
-                    bool go = false;
-                    if (tags != null && tags.Length != 0)
+                    var pkg = pkgs[i];
+                    _progress = i / (float)pkgs.Count;
                     {
-                        for (int j = 0; j < tags.Length; j++)
-                        {
-                            if (group.tags.Contains(tags[j]))
-                            {
-                                go = true;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        go = true;
-                    }
-                    if (!go) continue;
-                    {
-                        string fileName = group.bundleFileName;
+                        string fileName = pkg.bundleFileName;
 
                         Downloader downloader = AssetsInternal.DownloadVersion(fileName);
                         await downloader;
@@ -87,7 +66,7 @@ namespace WooAsset
                         }
                     }
                     {
-                        string fileName = group.manifestFileName;
+                        string fileName = pkg.manifestFileName;
                         Downloader downloader = AssetsInternal.DownloadVersion(fileName);
                         await downloader;
                         if (downloader.isErr)
@@ -101,7 +80,6 @@ namespace WooAsset
                             await VersionBuffer.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName), en);
                         }
                     }
-
                 }
                 List<FileData> local = GetLocalBundles();
                 FileData.Compare(local, remoteBundles, AssetsInternal.GetFileCheckType(), out change, out delete, out add);

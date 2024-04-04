@@ -6,7 +6,7 @@ namespace WooAsset
     [System.Serializable]
     public class BuildBundleExprotData
     {
-        public List<BuildGroup> buildGroups;
+        public List<EditorBundlePackage> buildPkgs;
         public string version;
         public string encrypt;
         public string compress;

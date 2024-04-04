@@ -47,22 +47,22 @@ namespace WooAsset
                 }
                 await VersionBuffer.WriteManifest(manifest,
                         AssetsHelper.CombinePath(context.outputPath,
-                        context.buildGroup.GetManifestFileName(context.version)),
+                        context.buildPkg.GetManifestFileName(context.version)),
                         context.encrypt
                         );
                 await VersionBuffer.WriteBundlesVersion(bVer,
                         AssetsHelper.CombinePath(context.outputPath,
-                        context.buildGroup.GetBundleFileName(context.version)),
+                        context.buildPkg.GetBundleFileName(context.version)),
                         context.encrypt
                         );
                 await VersionBuffer.WriteManifest(manifest,
                         AssetsHelper.CombinePath(context.historyPath,
-                        context.buildGroup.GetManifestFileName(context.version)),
+                        context.buildPkg.GetManifestFileName(context.version)),
                         new NoneAssetStreamEncrypt()
                 );
                 await VersionBuffer.WriteBundlesVersion(bVer,
                         AssetsHelper.CombinePath(context.historyPath,
-                        context.buildGroup.GetBundleFileName(context.version)),
+                        context.buildPkg.GetBundleFileName(context.version)),
                         new NoneAssetStreamEncrypt()
                         );
                 InvokeComplete();
@@ -83,7 +83,7 @@ namespace WooAsset
         {
             context.files = AssetsHelper.GetDirectoryFiles(context.outputPath).ToList().ConvertAll(x => FileData.CreateByFile(x));
             List<string> useful = new List<string>();
-            var builds = context.buildGroups.FindAll(x => x.build);
+            var builds = context.buildPkgs.FindAll(x => x.build);
             if (builds.Count == 0)
             {
                 SetErr("Nothing To Build");
@@ -95,13 +95,13 @@ namespace WooAsset
             for (int i = 0; i < builds.Count; i++)
             {
                 var group = builds[i];
-                context.buildGroup = group;
+                context.buildPkg = group;
                 for (int j = 0; j < tasks.Count; j++)
                     await Execute(tasks[j], context);
 
                 context.exports.Add(new GroupExportData()
                 {
-                    buildGroup = context.buildGroup,
+                    buildPkg = context.buildPkg,
                     manifest = context.manifest,
                 });
 
@@ -109,28 +109,29 @@ namespace WooAsset
             }
 
             var versions = context.versions;
-            if (versions.versions.Find(x => x.version == context.version) == null)
+            if (versions.FindVersion(context.version) == null)
             {
-                versions.versions.Add(new AssetsVersionCollection.VersionData()
+                var versionData = new AssetsVersionCollection.VersionData()
                 {
                     version = context.version,
-                    groups = context.buildGroups.ConvertAll(x => new AssetsVersionCollection.VersionData.Group()
-                    {
-                        bundleFileName = x.GetBundleFileName(context.version),
-                        manifestFileName = x.GetManifestFileName(context.version),
-                        name = x.name,
-                        description = x.description,
-                        tags = x.tags,
-                    })
-                });
+                };
+                versionData.SetPkgs(context.buildPkgs.ConvertAll(x => new AssetsVersionCollection.VersionData.PackageData()
+                {
+                    bundleFileName = x.GetBundleFileName(context.version),
+                    manifestFileName = x.GetManifestFileName(context.version),
+                    name = x.name,
+                    description = x.description,
+                    tags = x.tags,
+                }));
+                versions.AddVersion(versionData);
             }
             await VersionBuffer.WriteAssetsVersionCollection(
                      versions,
                      context.historyVersionFilePath,
                      new NoneAssetStreamEncrypt());
             var outputVersions = JsonUtility.FromJson<AssetsVersionCollection>(JsonUtility.ToJson(versions));
-            while (outputVersions.versions.Count > context.MaxCacheVersionCount)
-                outputVersions.versions.RemoveAt(0);
+            outputVersions.RemoveFirstIFTooLarge(context.MaxCacheVersionCount);
+       
 
             context.outputVersions = outputVersions;
             await VersionBuffer.WriteAssetsVersionCollection(
@@ -139,7 +140,7 @@ namespace WooAsset
                       context.encrypt);
 
             useful.Add(context.remoteHashName);
-            var groups = context.versions.versions.Last().groups;
+            var groups = context.versions.NewestVersion().GetAllPkgs();
             useful.AddRange(groups.ConvertAll(x => x.manifestFileName));
             useful.AddRange(groups.ConvertAll(x => x.bundleFileName));
             context.useful = useful;

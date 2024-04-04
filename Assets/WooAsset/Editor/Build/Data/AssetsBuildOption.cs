@@ -11,21 +11,19 @@ namespace WooAsset
     public class AssetsBuildOption : AssetsScriptableObject
     {
         [System.Serializable]
-        public class BuildGroup
+        public class EditorBundlePackage
         {
             public bool build;
+            public bool collect = true;
             public string name;
-            public string path;
             public string description;
             public List<string> tags = new List<string>();
-            public string GetManifestFileName(string version)
-            {
-                return AssetsHelper.GetStringHash("m" + path + version);
-            }
-            public string GetBundleFileName(string version)
-            {
-                return AssetsHelper.GetStringHash("b" + path + version);
-            }
+            public List<string> paths = new List<string>();
+
+            public bool HasSamePath() => paths.Distinct().Count() != paths.Count();
+            public bool HasSamePath(EditorBundlePackage other) => paths.Intersect(other.paths).Count() > 0;
+            public string GetManifestFileName(string version) => AssetsHelper.GetStringHash(string.Join("m", paths) + version);
+            public string GetBundleFileName(string version) => AssetsHelper.GetStringHash(string.Join("b", paths) + version);
 
         }
 
@@ -148,7 +146,7 @@ namespace WooAsset
         public int MaxCacheVersionCount = 8;
         public bool cleanHistory;
 
-        [SerializeField] public List<BuildGroup> buildGroups = new List<BuildGroup>();
+        [SerializeField] public List<EditorBundlePackage> buildPkgs = new List<EditorBundlePackage>();
 
         [HideInInspector] public TypeSelect build = new TypeSelect();
         [HideInInspector] public TypeSelect mode = new TypeSelect();

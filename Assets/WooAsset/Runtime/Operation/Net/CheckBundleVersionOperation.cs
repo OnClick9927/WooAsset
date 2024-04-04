@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using static WooAsset.AssetsVersionCollection;
+using static WooAsset.AssetsVersionCollection.VersionData;
 
 
 namespace WooAsset
@@ -7,16 +9,18 @@ namespace WooAsset
     {
         private Downloader downloader;
         private AssetsVersionCollection remote;
-        public virtual List<AssetsVersionCollection.VersionData> versions => remote?.versions;
+        public AssetsVersionCollection Versions => remote;
         public override float progress => isDone ? 1 : downloader.progress;
         public CheckBundleVersionOperation()
         {
             Done();
         }
+  
 
-        public virtual VersionCompareOperation Compare(int versionIndex, params string[] tags)
+
+        public virtual VersionCompareOperation Compare(VersionData version, List<PackageData> pkgs)
         {
-            return new VersionCompareOperation(this, versionIndex, tags);
+            return new VersionCompareOperation(this, version, pkgs);
         }
         protected virtual async void Done()
         {

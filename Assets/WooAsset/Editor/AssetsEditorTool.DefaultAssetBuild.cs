@@ -78,7 +78,7 @@ namespace WooAsset
             }
             public List<AssetTask> GetPipelineStartTasks(AssetTaskContext context)
             {
-                throw null;
+                return null;
             }
             public List<AssetTask> GetPipelineEndTasks(AssetTaskContext context)
             {

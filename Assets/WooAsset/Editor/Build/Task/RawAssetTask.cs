@@ -7,13 +7,14 @@ namespace WooAsset
     {
         protected async override void OnExecute(AssetTaskContext context)
         {
-            var builds = context.buildGroups;
+            var builds = context.buildPkgs;
             if (builds.Count == 0)
             {
                 InvokeComplete();
                 return;
             }
-            var rawPaths = AssetDatabase.FindAssets("t:WooAsset.RawObject", builds.ConvertAll(x => x.path).ToArray())
+            var allPaths = builds.SelectMany(x => x.paths).ToArray();
+            var rawPaths = AssetDatabase.FindAssets("t:WooAsset.RawObject", allPaths)
                        .ToList()
                        .ConvertAll(x => AssetDatabase.GUIDToAssetPath(x));
             for (int i = 0; i < rawPaths.Count; i++)
@@ -27,12 +28,12 @@ namespace WooAsset
                 }
 
             }
-            var paths = AssetDatabase.FindAssets("t:DefaultAsset", builds.ConvertAll(x => x.path).ToArray())
+            var defaultPaths = AssetDatabase.FindAssets("t:DefaultAsset", allPaths)
                        .ToList()
                        .ConvertAll(x => AssetDatabase.GUIDToAssetPath(x));
-            for (int i = 0; i < paths.Count; i++)
+            for (int i = 0; i < defaultPaths.Count; i++)
             {
-                string path = paths[i];
+                string path = defaultPaths[i];
                 var type = context.assetBuild.GetAssetType(path);
                 if (type != AssetType.Raw && type != AssetType.RawCopyFile) continue;
                 string objPath = AssetsHelper.RawToRawObjectPath(path);

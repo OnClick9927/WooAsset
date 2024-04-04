@@ -91,7 +91,7 @@ namespace WooAsset
             }
             List<string> buildInConfigs = new List<string>();
 
-            foreach (var item in context.buildGroups)
+            foreach (var item in context.buildPkgs)
             {
                 buildInConfigs.Add(item.GetManifestFileName(context.version));
                 buildInConfigs.Add(item.GetBundleFileName(context.version));
@@ -104,7 +104,7 @@ namespace WooAsset
 
             var reader = await AssetsHelper.ReadFile(remote_ver_path, true);
             var c = VersionBuffer.ReadAssetsVersionCollection(reader.bytes, context.encrypt);
-            var data = c.versions.Last();
+            var data = c.NewestVersion();
             await VersionBuffer.WriteVersionData(data, local_ver_path, context.encrypt);
             AssetDatabase.Refresh();
             InvokeComplete();

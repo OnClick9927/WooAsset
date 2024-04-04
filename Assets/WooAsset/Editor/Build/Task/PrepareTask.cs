@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEditor;
 
 namespace WooAsset
@@ -40,34 +41,46 @@ namespace WooAsset
             context.PackingSetting = option.GetPackingSetting();
             context.atlasPaths = option.atlasPaths.ToArray();
             context.serverDirectory = option.serverDirectory;
-            context.buildGroups = option.buildGroups;
+            context.buildPkgs = option.buildPkgs;
             context.historyVersionFilePath = AssetsHelper.CombinePath(context.historyPath, context.historyVersionFileName);
             context.cleanHistory = option.cleanHistory;
             context.buildInAssets = option.buildInAssets;
             if (context.MaxCacheVersionCount < 1)
                 context.MaxCacheVersionCount = 1;
-            for (int i = 0; i < context.buildGroups.Count; i++)
+            for (int i = 0; i < context.buildPkgs.Count; i++)
             {
-                var item = context.buildGroups[i];
+                var item = context.buildPkgs[i];
                 if (string.IsNullOrEmpty(item.name))
                 {
                     SetErr("buildGroup name can not be null");
                     InvokeComplete();
                     return;
                 }
-                if (!AssetsHelper.ExistsDirectory(item.path))
+                if (context.buildPkgs.FindAll(x => x.name == item.name).Count > 1)
                 {
-                    SetErr("buildGroup path not exist");
-                    InvokeComplete();
-                    return;
-                }
-
-                if (context.buildGroups.FindAll(x => x.name == item.name || x.path == item.path).Count != 1)
-                {
-                    SetErr("same path or name build Group");
+                    SetErr("same name build Group");
                     InvokeComplete();
                     return;
                 };
+                if (item.HasSamePath() || context.buildPkgs.Any(x => x != item && item.HasSamePath(x)))
+                {
+                    SetErr("same path in build Group");
+                    InvokeComplete();
+                    return;
+                };
+
+                var paths = item.paths;
+
+                for (int j = 0; j < paths.Count; j++)
+                {
+                    if (!AssetsHelper.ExistsDirectory(paths[j]))
+                    {
+                        SetErr($"buildGroup path not exist {paths[j]}");
+                        InvokeComplete();
+                        return;
+                    }
+                }
+
             }
 
 

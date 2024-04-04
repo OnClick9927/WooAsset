@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static WooAsset.AssetsVersionCollection.VersionData;
+using static WooAsset.AssetsVersionCollection;
 
 namespace WooAsset
 {
@@ -12,7 +15,7 @@ namespace WooAsset
         public static DownLoadBundleOperation DownLoadBundle(string bundleName) => new DownLoadBundleOperation(bundleName);
         public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
-        public static Operation InitAsync(string version = "", bool again = false, params string[] tags) => AssetsInternal.InitAsync(version, again, tags);
+        public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
         public static UnzipRawFileOperation UnzipRawFile() => AssetsInternal.UnzipRawFile();
         public static Asset LoadAssetAsync(string path) => AssetsInternal.LoadAsset(path, true) as Asset;
         public static Asset LoadAsset(string path) => AssetsInternal.LoadAsset(path, false) as Asset;
