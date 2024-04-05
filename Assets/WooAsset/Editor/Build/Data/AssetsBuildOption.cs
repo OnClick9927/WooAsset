@@ -11,6 +11,35 @@ namespace WooAsset
     public class AssetsBuildOption : AssetsScriptableObject
     {
         [System.Serializable]
+        public class TagAssets
+        {
+            public string tag;
+            public List<string> assets;
+        }
+        public List<TagAssets> tags;
+        public void AddAssetTag(string path, string tag)
+        {
+            if (tags == null) tags = new List<TagAssets>();
+            TagAssets assets = tags.Find(x => x.tag == tag);
+            if (assets == null)
+            {
+                assets = new TagAssets();
+                tags.Add(assets);
+            }
+            if (!assets.assets.Contains(path))
+            {
+                assets.assets.Add(path);
+            }
+
+        }
+        public List<string> GetAssetTags(string path)
+        {
+            if (tags == null)
+                return null;
+            return tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag);
+        }
+
+        [System.Serializable]
         public class EditorBundlePackage
         {
             public bool build;

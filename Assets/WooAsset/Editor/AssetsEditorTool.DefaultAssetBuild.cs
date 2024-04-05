@@ -74,6 +74,7 @@ namespace WooAsset
 
             public IReadOnlyList<string> GetTags(EditorAssetData info)
             {
+                return option.GetAssetTags(info.path);
                 return new string[] { info.type.ToString(), AssetsHelper.GetFileNameWithoutExtension(info.path) };
             }
             public List<AssetTask> GetPipelineStartTasks(AssetTaskContext context)

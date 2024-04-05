@@ -10,20 +10,13 @@ namespace WooAsset
         class AssetsBuildOptionEditor : Editor
         {
             static string key = "##AssetsBuildOptionEditor";
-            enum Mode
+            enum Tab
             {
-                Runtime, Editor
+                Runtime, Tool, AssetTag, Build
             }
-            private Mode mode;
-            private void OnEnable()
-            {
-
-                mode = (Mode)EditorPrefs.GetInt(key, 0);
-            }
-            private void OnDisable()
-            {
-                EditorPrefs.SetInt(key, (int)mode);
-            }
+            private Tab tab;
+            private void OnEnable() => tab = (Tab)EditorPrefs.GetInt(key, 0);
+            private void OnDisable() => EditorPrefs.SetInt(key, (int)tab);
             static void V(string title, Action action)
             {
                 GUILayout.BeginVertical(EditorStyles.helpBox);
@@ -37,70 +30,81 @@ namespace WooAsset
             }
             public override void OnInspectorGUI()
             {
-                mode = (Mode)GUILayout.Toolbar((int)mode, Enum.GetNames(typeof(Mode)));
+                tab = (Tab)GUILayout.Toolbar((int)tab, Enum.GetNames(typeof(Tab)));
                 EditorGUI.BeginChangeCheck();
-                if (mode == Mode.Runtime)
+                switch (tab)
                 {
-                    V("Asset Mode",
-                    () =>
-                    {
-                        option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
-                    });
-                    V("Simulated Asset Server", () =>
-                    {
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("enableServer"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("serverDirectory"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("serverPort"));
+                    case Tab.Runtime:
+                        V("Asset Mode",
+                           () =>
+                           {
+                               option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
+                           });
+                        V("Simulated Asset Server", () =>
+                        {
+                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("enableServer"));
+                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("serverDirectory"));
+                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("serverPort"));
 
-                    });
-                }
-                else
-                {
-                    V("Shader Variant",
-                    () =>
-                    {
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("shaderVariantDirectory"));
-                    });
-                    V("Sprite Atlas",
-                       () =>
-                       {
-                           EditorGUILayout.PropertyField(this.serializedObject.FindProperty("packSetting"));
-                           EditorGUILayout.PropertyField(this.serializedObject.FindProperty("textureSetting"));
-                           EditorGUILayout.PropertyField(this.serializedObject.FindProperty("PlatformSetting"));
-                           EditorGUILayout.PropertyField(this.serializedObject.FindProperty("atlasPaths"));
+                        });
+                        break;
+                    case Tab.Tool:
+                        V("Shader Variant",
+                          () =>
+                          {
+                              EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantDirectory)));
+                          });
+                        V("Sprite Atlas",
+                           () =>
+                           {
+                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.packSetting)));
+                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.textureSetting)));
+                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.PlatformSetting)));
+                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.atlasPaths)));
 
-                       });
-                    V("Build",
-                    () =>
-                    {
-
-
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildPkgs"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("buildInAssets"));
-
-
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("version"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("MaxCacheVersionCount"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("forceRebuild"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("cleanHistory"));
-
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("ignoreTypeTreeChanges"));
-                        EditorGUILayout.PropertyField(this.serializedObject.FindProperty("compress"));
-
-                        option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
-                        option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
+                           });
+                        break;
+                    case Tab.AssetTag:
+                        V("Asset Tags", () =>
+                        {
+                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.tags)));
+                        });
+                        break;
+                    case Tab.Build:
+                        V("Build",
+                          () =>
+               {
 
 
-                        GUI.enabled = false;
-                        EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);
-                        EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
-                        EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
-                        GUILayout.Space(20);
-                        EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
-                        EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.buildPkgs)));
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
 
-                        GUI.enabled = true;
-                    });
+
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.version)));
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.forceRebuild)));
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
+
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.ignoreTypeTreeChanges)));
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.compress)));
+
+                   option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
+                   option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
+
+
+                   GUI.enabled = false;
+                   EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);
+                   EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
+                   EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
+                   GUILayout.Space(20);
+                   EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
+                   EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);
+
+                   GUI.enabled = true;
+               });
+                        break;
+                    default:
+                        break;
                 }
 
 
