@@ -66,8 +66,8 @@ namespace WooAsset
 
             public bool HasSamePath() => paths.Distinct().Count() != paths.Count();
             public bool HasSamePath(EditorBundlePackage other) => paths.Intersect(other.paths).Count() > 0;
-            public string GetManifestFileName(string version) => AssetsHelper.GetStringHash(string.Join("m", paths) + version);
-            public string GetBundleFileName(string version) => AssetsHelper.GetStringHash(string.Join("b", paths) + version);
+            public string GetManifestFileName(string version) => AssetsHelper.GetStringHash("m" + string.Join("m", paths) + version);
+            public string GetBundleFileName(string version) => AssetsHelper.GetStringHash("b" + string.Join("b", paths) + version);
 
         }
 
