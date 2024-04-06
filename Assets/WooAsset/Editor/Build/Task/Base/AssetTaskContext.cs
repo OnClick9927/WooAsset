@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace WooAsset
 {
+    [System.Serializable]
     public class AssetTaskContext
     {
         public TaskPipelineType Pipeline;
-        public bool collectAllPkgs;
 
 
         public string outputPath;

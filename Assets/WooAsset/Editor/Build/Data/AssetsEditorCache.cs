@@ -6,7 +6,7 @@ namespace WooAsset
     {
         public AssetsTree tree = new AssetsTree();
         public List<BundleGroup> previewBundles = new List<BundleGroup>();
-
+        public AssetTaskContext lastContext;
         public ManifestData manifest;
 
         public BundleGroup GetBundleGroupByAssetPath(string assetPath)

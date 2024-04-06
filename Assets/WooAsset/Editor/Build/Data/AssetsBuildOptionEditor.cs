@@ -6,6 +6,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
+
         [CustomEditor(typeof(AssetsBuildOption))]
         class AssetsBuildOptionEditor : Editor
         {

@@ -12,7 +12,7 @@ namespace WooAsset
                 paths.AddRange(context.buildPkg.paths);
             else
             {
-                if (context.collectAllPkgs)
+                if (context.Pipeline == TaskPipelineType.PreviewAllAssets || context.Pipeline == TaskPipelineType.PreviewAllBundles)
                     paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
                 else
                     paths.AddRange(context.buildPkgs.Where(x => x.collect == true).SelectMany(x => x.paths));

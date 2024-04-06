@@ -5,6 +5,8 @@
         BuildBundle,
         PreviewBundles,
         PreviewAssets,
+        PreviewAllBundles,
+        PreviewAllAssets,
         ShaderVariant,
         SpriteAtlas,
         OpenOutput,

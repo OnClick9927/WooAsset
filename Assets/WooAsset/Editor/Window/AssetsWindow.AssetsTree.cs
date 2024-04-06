@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using System.Runtime.Remoting.Contexts;
 
 namespace WooAsset
 {
@@ -160,7 +161,65 @@ namespace WooAsset
                 }
             }
 
+            private void CollectPath(List<string> paths, List<string> result)
+            {
+                var tree = AssetsEditorTool.cache.tree;
+                foreach (var path in paths)
+                {
+                    var data = tree.GetAssetData(path);
+                    if (data.type == AssetType.Directory)
+                    {
+                        var folders = tree.GetSubFolders(data).ConvertAll(x => x.path);
+                        var files = tree.GetSubFiles(data).ConvertAll(x => x.path);
 
+                        CollectPath(folders, result);
+                        CollectPath(files, result);
+                    }
+                    else
+                    {
+                        result.Add(path);
+                    }
+                }
+
+            }
+            protected override void ContextClicked()
+            {
+                var selection = this.GetSelection();
+                var rows = this.FindRows(selection).ToList().ConvertAll(x => x.displayName);
+                List<string> paths = new List<string>();
+                CollectPath(rows, paths);
+                var tags = AssetsEditorTool.option.GetAllTags();
+                GenericMenu menu = new GenericMenu();
+                foreach (var tag in tags)
+                {
+                    menu.AddItem(new GUIContent($"tag/add/{tag}"), false, () =>
+                    {
+                        foreach (var path in paths)
+                            AssetsEditorTool.option.AddAssetTag(path, tag);
+                        AssetsEditorTool.option.Save();
+                        var pipe = AssetsEditorTool.cache.lastContext.Pipeline;
+                        if (pipe == TaskPipelineType.PreviewAssets || pipe == TaskPipelineType.PreviewBundles)
+                            AssetTaskRunner.PreviewAssets();
+                        else
+                            AssetTaskRunner.PreviewAllAssets();
+                    });
+                    menu.AddItem(new GUIContent($"tag/remove/{tag}"), false, () =>
+                    {
+                        foreach (var path in paths)
+                            AssetsEditorTool.option.RemoveAssetTag(path, tag);
+                        AssetsEditorTool.option.Save();
+                        var pipe = AssetsEditorTool.cache.lastContext.Pipeline;
+                        if (pipe == TaskPipelineType.PreviewAssets || pipe == TaskPipelineType.PreviewBundles)
+                            AssetTaskRunner.PreviewAssets();
+                        else
+                            AssetTaskRunner.PreviewAllAssets();
+                    });
+
+                }
+
+                menu.ShowAsContext();
+
+            }
 
             protected override void RowGUI(RowGUIArgs args)
             {

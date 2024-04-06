@@ -16,7 +16,12 @@ namespace WooAsset
             public string tag;
             public List<string> assets;
         }
-        public List<TagAssets> tags;
+        public List<TagAssets> tags = new List<TagAssets>();
+
+        public List<string> GetAllTags() => tags.ConvertAll(x => x.tag);
+
+
+
         public void AddAssetTag(string path, string tag)
         {
             if (tags == null) tags = new List<TagAssets>();
@@ -32,6 +37,16 @@ namespace WooAsset
             }
 
         }
+        public void RemoveAssetTag(string path, string tag)
+        {
+            if (tags == null) return;
+            TagAssets assets = tags.Find(x => x.tag == tag);
+            if (assets == null) return;
+            assets.assets.Remove(path);
+
+        }
+
+
         public List<string> GetAssetTags(string path)
         {
             if (tags == null)
