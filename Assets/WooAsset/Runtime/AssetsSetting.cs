@@ -17,7 +17,7 @@ namespace WooAsset
         {
             return true;
         }
-
+        public virtual bool GetBundleAwalysFromWebRequest() {  return true; }
         public virtual FileCompareType GetFileCheckType() { return FileCompareType.Hash; }
         public virtual int GetWebRequestTimeout() { return 30; }
         public virtual int GetWebRequestRetryCount() { return 3; }
@@ -26,7 +26,6 @@ namespace WooAsset
 
         public virtual IAssetLife GetAssetLife() { return new LRULife(1024 * 1024 * 1024); }
 
-        public virtual BundleDownloader GetBundleDownloader(string url, string bundleName) { return new BundleDownloader(url, bundleName); }
 
     }
 }

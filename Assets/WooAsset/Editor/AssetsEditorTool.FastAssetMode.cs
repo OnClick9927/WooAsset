@@ -25,14 +25,12 @@ namespace WooAsset
             {
                 private class FastCompare : VersionCompareOperation
                 {
-                    public FastCompare(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs) : base(_check, version, pkgs)
+                    public FastCompare(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs) : base(_check, version, pkgs, null)
                     {
                     }
                     protected override void Compare()
                     {
-                        change = new List<FileData>();
-                        delete = new List<FileData>();
-                        add = new List<FileData>();
+                        add = delete = change = new List<FileData>();
                         InvokeComplete();
                     }
                 }
@@ -45,7 +43,7 @@ namespace WooAsset
                 {
                     return new FastCompare(null, version, pkgs);
                 }
-         
+
             }
 
             private AssetTask _task;

@@ -27,11 +27,13 @@ namespace WooAsset
         private string _version = "";
         private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
-        public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs)
+        private IAssetStreamEncrypt encrypt;
+        public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs, IAssetStreamEncrypt encrypt)
         {
             _version = version;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
+            this.encrypt = encrypt;
             Done();
         }
 
@@ -40,7 +42,7 @@ namespace WooAsset
 
         private async void Done()
         {
-            IAssetStreamEncrypt en = AssetsInternal.GetEncrypt();
+            IAssetStreamEncrypt en = encrypt;
             string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionBuffer.localHashName);
             bool download = false;
             if (!AssetsHelper.ExistsFile(localVersionPath))

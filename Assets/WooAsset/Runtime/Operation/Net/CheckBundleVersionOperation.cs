@@ -15,12 +15,12 @@ namespace WooAsset
         {
             Done();
         }
-  
+
 
 
         public virtual VersionCompareOperation Compare(VersionData version, List<PackageData> pkgs)
         {
-            return new VersionCompareOperation(this, version, pkgs);
+            return new VersionCompareOperation(this, version, pkgs, AssetsInternal.GetEncrypt());
         }
         protected virtual async void Done()
         {

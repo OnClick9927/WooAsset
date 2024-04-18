@@ -51,10 +51,12 @@ namespace WooAsset
         public VersionData FindVersion(string version) => versions.Find(x => x.version == version);
         public VersionData NewestVersion() => versions.Last();
         public List<VersionData> GetVersions() => versions;
-        public void AddVersion(VersionData version) =>
+        public void AddVersion(VersionData version) {
 #if UNITY_EDITOR
-            versions.Add(version);
+            versions.Add(version); 
 #endif
+        }
+
 
         public void RemoveFirstIFTooLarge(int large)
         {

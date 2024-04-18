@@ -28,11 +28,13 @@ namespace WooAsset
         public List<FileData> change;
         public List<FileData> delete;
         public List<FileData> add;
-        public VersionCompareOperation(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs)
+        IAssetStreamEncrypt en;
+        public VersionCompareOperation(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs, IAssetStreamEncrypt en)
         {
             this._check = _check;
             this.pkgs = pkgs;
             this.version = version;
+            this.en = en;
             Compare();
         }
 
@@ -41,9 +43,7 @@ namespace WooAsset
         {
             if (!_check.isErr)
             {
-                IAssetStreamEncrypt en = AssetsInternal.GetEncrypt();
-        
-
+       
                 List<FileData> remoteBundles = new List<FileData>();
                 for (int i = 0; i < pkgs.Count; i++)
                 {

@@ -1,17 +1,40 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace WooAsset
 {
+    public class BundleStream : FileStream
+    {
+
+        private readonly string bundleName;
+        private IAssetStreamEncrypt encrypt;
+        public BundleStream(string path, FileMode mode, FileAccess access, FileShare share, string bundleName, IAssetStreamEncrypt encrypt) : base(path, mode, access, share)
+        {
+            this.bundleName = bundleName;
+            this.encrypt = encrypt;
+        }
+
+        public override int Read(byte[] array, int offset, int count)
+        {
+            var index = base.Read(array, offset, count);
+            EncryptBuffer.Decode(bundleName, array, offset, count, encrypt);
+
+            return index;
+        }
+    }
+
     public struct BundleLoadArgs : IAssetArgs
     {
         public string bundleName;
         public bool async;
-        public BundleLoadArgs(string bundleName, bool async)
+        public IAssetStreamEncrypt encrypt;
+        public BundleLoadArgs(string bundleName, bool async, IAssetStreamEncrypt en)
         {
             this.bundleName = bundleName;
             this.async = async;
+            this.encrypt = en;
         }
     }
     public class Bundle : AssetOperation<AssetBundle>
@@ -24,21 +47,24 @@ namespace WooAsset
         private bool _async = false;
         private string _path;
         private BundleLoadType type;
+        private IAssetStreamEncrypt encrypt => loadArgs.encrypt;
         public override bool async => _async;
         protected BundleLoadArgs loadArgs;
         public string bundleName => loadArgs.bundleName;
 
         private AssetBundleCreateRequest loadOp;
-        private BundleDownloader downloader;
+        private Operation downloader;
         public Bundle(BundleLoadArgs loadArgs)
         {
             this.loadArgs = loadArgs;
             _async = loadArgs.async;
-            type = BundleLoadType.FromFile;
+            type = AssetsInternal.GetBundleAwalysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
             _path = AssetsInternal.GetBundleLocalPath(bundleName);
-            if (!AssetsHelper.ExistsFile(_path))
+            if (type == BundleLoadType.FromFile && !AssetsHelper.ExistsFile(_path))
+            {
                 type = BundleLoadType.FromRequest;
-            _async = type == BundleLoadType.FromRequest;
+                _async = true;
+            }
 
         }
 
@@ -64,10 +90,9 @@ namespace WooAsset
         {
             return Profiler.GetRuntimeMemorySizeLong(value);
         }
-
         private async void LoadBundle(byte[] buffer)
         {
-            buffer = EncryptBuffer.Decode(loadArgs.bundleName, buffer, AssetsInternal.GetEncrypt());
+            buffer = EncryptBuffer.Decode(loadArgs.bundleName, buffer, encrypt);
             if (async)
             {
                 loadOp = AssetBundle.LoadFromMemoryAsync(buffer);
@@ -88,29 +113,73 @@ namespace WooAsset
                 SetResult(result);
             }
         }
+        private async void LoadFromStream()
+        {
+            BundleStream bs = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName,encrypt);
+            if (async)
+            {
+                loadOp = AssetBundle.LoadFromStreamAsync(bs);
+                await this.loadOp;
+                if (loadOp.assetBundle == null)
+                {
+                    SetErr($"Can not Load Bundle {bundleName}");
+                }
+                SetResult(loadOp.assetBundle);
+            }
+            else
+            {
+                AssetBundle result = AssetBundle.LoadFromStream(bs);
+                if (result == null)
+                {
+                    SetErr($"Can not Load Bundle {bundleName}");
+                }
+                SetResult(result);
+            }
+
+        }
         protected override async void OnLoad()
         {
             if (type == BundleLoadType.FromFile)
             {
-                var reader = await AssetsHelper.ReadFile(_path, async);
-                LoadBundle(reader.bytes);
+                LoadFromStream();
+                //var reader = await AssetsHelper.ReadFile(_path, async);
+                //LoadBundle(reader.bytes);
             }
             else
             {
-                downloader = AssetsInternal.DownLoadBundle(bundleName);
-                await downloader;
-                if (!downloader.isErr)
+                if (encrypt is NoneAssetStreamEncrypt)
                 {
-                    byte[] buffer = downloader.data;
-                    if (AssetsInternal.GetSaveBundlesWhenPlaying())
-                        await downloader.SaveBundleToLocal();
-                    LoadBundle(buffer);
+                    var downloader = AssetsInternal.DownLoadBundle(bundleName);
+                    this.downloader = downloader;
+                    await downloader;
+                    if (!downloader.isErr)
+                    {
+                        SetResult(downloader.bundle);
+                    }
+                    else
+                    {
+                        SetErr(downloader.error);
+                        SetResult(null);
+                    }
                 }
                 else
                 {
-                    SetErr(downloader.error);
-                    SetResult(null);
+                    var downloader = AssetsInternal.DownLoadBundleBytes(bundleName);
+                    this.downloader = downloader;
+                    await downloader;
+                    if (!downloader.isErr)
+                    {
+                        byte[] buffer = downloader.data;
+                        await downloader.SaveBundleToLocal();
+                        LoadBundle(buffer);
+                    }
+                    else
+                    {
+                        SetErr(downloader.error);
+                        SetResult(null);
+                    }
                 }
+
             }
         }
 

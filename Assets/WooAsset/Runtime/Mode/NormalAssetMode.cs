@@ -48,7 +48,7 @@ namespace WooAsset
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundles()
                     .Select(x => x.bundleName).ToList()
-                    , version, getPkgs);
+                    , version, getPkgs,AssetsInternal.GetEncrypt());
             return manifestOp;
         }
 

@@ -1,37 +1,13 @@
 {
     "versions": [
         {
-            "version": "2023_08_17_17_18_17",
-            "groups": [
+            "version": "2024_04_18_21_59_43",
+            "pkgs": [
                 {
                     "name": "new",
-                    "manifestFileName": "d9f2ddd581870ea6f7d10d84ea5cf599",
-                    "bundleFileName": "98d9cd010e540bb4e228597105df78c9",
                     "description": "",
-                    "tags": []
-                }
-            ]
-        },
-        {
-            "version": "2023_08_17_17_19_31",
-            "groups": [
-                {
-                    "name": "new",
-                    "manifestFileName": "d6af940b11a50c3de0bc9e2deffa2106",
-                    "bundleFileName": "736006ad02615011e7d83a72ecb261d7",
-                    "description": "",
-                    "tags": []
-                }
-            ]
-        },
-        {
-            "version": "2023_08_17_17_23_00",
-            "groups": [
-                {
-                    "name": "new",
-                    "manifestFileName": "8f5a640aaa4bdac885fd77d75c19ed41",
-                    "bundleFileName": "c37f249b26b67459c7c8851550eb3ebd",
-                    "description": "",
+                    "manifestFileName": "2b37c16da556387f3277467f5abadf65",
+                    "bundleFileName": "390b6ddcd4aed54246d35738a4c4e119",
                     "tags": []
                 }
             ]

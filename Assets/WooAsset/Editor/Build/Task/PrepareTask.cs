@@ -32,8 +32,8 @@ namespace WooAsset
             context.streamBundleDirectory = AssetsHelper.streamBundleDirectory;
 
             context.versions = new AssetsVersionCollection() { };
-
-
+            context.DisableWriteTypeTree = option.DisableWriteTypeTree;
+            context.AppendHashToAssetBundleName = option.AppendHashToAssetBundleName;
             context.MaxCacheVersionCount = option.MaxCacheVersionCount;
             context.shaderVariantDirectory = option.shaderVariantDirectory;
             context.PlatformSetting = option.PlatformSetting;
@@ -83,9 +83,12 @@ namespace WooAsset
 
             }
 
-
             BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
             opt |= BuildAssetBundleOptions.StrictMode;
+            if (context.DisableWriteTypeTree)
+                opt |= BuildAssetBundleOptions.DisableWriteTypeTree;
+            if (context.AppendHashToAssetBundleName)
+                opt |= BuildAssetBundleOptions.AppendHashToAssetBundleName;
             if (context.forceRebuild)
                 opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle;
             if (context.ignoreTypeTreeChanges)

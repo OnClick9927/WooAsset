@@ -18,7 +18,7 @@ MonoBehaviour:
     - Assets/Example/shadervariants.shadervariants
   shaderVariantDirectory: Assets/Example
   atlasPaths:
-  - Assets/Example
+  - Assets/Example/px
   packSetting:
     blockOffset: 1
     enableRotation: 0
@@ -45,13 +45,15 @@ MonoBehaviour:
   version: 0.0.1
   bundleSize: 99999999999999
   forceRebuild: 0
-  ignoreTypeTreeChanges: 1
+  DisableWriteTypeTree: 1
+  AppendHashToAssetBundleName: 1
+  ignoreTypeTreeChanges: 0
   compress: 1
   MaxCacheVersionCount: 2
   cleanHistory: 0
   buildPkgs:
   - build: 1
-    collect: 0
+    collect: 1
     name: new
     description: 
     tags: []
@@ -70,16 +72,14 @@ MonoBehaviour:
     shortTypes:
     - NormalAssetMode
     - FastAssetMode
-    typeIndex: 1
+    typeIndex: 0
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt
     - WooAsset.NoneAssetStreamEncrypt
-    - WooAsset.ReverseAssetStreamEncrypt
     shortTypes:
     - DefaultAssetStreamEncrypt
     - NoneAssetStreamEncrypt
-    - ReverseAssetStreamEncrypt
     typeIndex: 0
   buildInAssets:
   - {fileID: 102900000, guid: 7623efd24e38a4e46948380b33aadb32, type: 3}

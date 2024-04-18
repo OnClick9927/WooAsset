@@ -20,7 +20,7 @@
         }
         private async void Done()
         {
-            downloader = AssetsInternal.DownLoadBundle(bundleName);
+            downloader = AssetsInternal.DownLoadBundleBytes(bundleName);
             await downloader;
             if (downloader.isErr)
             {

@@ -81,6 +81,12 @@ namespace WooAsset
     }
     partial class AssetsInternal
     {
+        private static int GetWebRequestTimeout() => setting.GetWebRequestTimeout();
+        private static int GetWebRequestRetryCount() => setting.GetWebRequestRetryCount();
+        private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, bundleName);
+        private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
+
+
         public static void SetAssetsSetting(AssetsSetting setting)
         {
             AssetsInternal.setting = setting;
@@ -88,14 +94,16 @@ namespace WooAsset
             if (life != null)
                 AddAssetLife(life);
         }
-        public static BundleDownloader DownLoadBundle(string bundleName) => setting.GetBundleDownloader(GetUrlFromBundleName(bundleName), bundleName);
-        public static int GetWebRequestTimeout() => setting.GetWebRequestTimeout();
-        public static int GetWebRequestRetryCount() => setting.GetWebRequestRetryCount();
+        public static BundleDownloader2 DownLoadBundle(string bundleName) => new BundleDownloader2(GetUrlFromBundleName(bundleName), bundleName, GetWebRequestRetryCount(), GetWebRequestTimeout());
+
+        public static BundleDownloader DownLoadBundleBytes(string bundleName) => new BundleDownloader(GetUrlFromBundleName(bundleName), bundleName, GetWebRequestRetryCount(), GetWebRequestTimeout());
+
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
-        private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, bundleName);
+
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
-        private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
-        public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying();
+        public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAwalysFromWebRequest();
+        public static bool GetBundleAwalysFromWebRequest() => setting.GetBundleAwalysFromWebRequest();
+
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
         public static string OverwriteBundlePath(string bundlePath) => setting.OverwriteBundlePath(bundlePath);
@@ -111,7 +119,7 @@ namespace WooAsset
         public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));
         public static void UnloadBundles() => bundles.UnloadBundles();
 
-        public static Bundle LoadBundle(string bundleName, bool async) => bundles.LoadAsync(new BundleLoadArgs(bundleName, async));
+        public static Bundle LoadBundle(string bundleName, bool async) => bundles.LoadAsync(new BundleLoadArgs(bundleName, async, GetEncrypt()));
 
 
 

@@ -18,6 +18,14 @@ namespace WooAsset
 {
     public class LocalSetting : AssetsSetting
     {
+        public override bool NeedCopyStreamBundles()
+        {
+            return true;
+        }
+        public override bool GetBundleAwalysFromWebRequest()
+        {
+            return false;
+        }
         protected override string GetBaseUrl()
         {
             //return "https://pic.trinityleaves.cn/images/xxx";

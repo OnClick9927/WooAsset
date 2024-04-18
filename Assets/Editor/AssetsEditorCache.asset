@@ -20,7 +20,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 73746
+      length: 74198
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 2
@@ -29,7 +29,7 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/New Folder
       name: New Folder
-      length: 31412
+      length: 31446
       hash: 24bbafb9a7a362e3a9f8fc89057304ff
       dependence: []
       type: 2
@@ -56,8 +56,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2461
-      hash: a8cd48276e57e6930d9d9b82a2b6f5a5
+      length: 2879
+      hash: 677a7e1d13b6db8c7581ddc0d29b3176
       dependence: []
       type: 5
       directory: Assets/Example
@@ -75,8 +75,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/New Folder/aaa.asset
       name: aaa.asset
-      length: 502
-      hash: c04974de365b2d9797416aa7662f07c1
+      length: 519
+      hash: a61ed0a89633590835db25a0acf303e5
       dependence: []
       type: 19
       directory: Assets/Example/New Folder
@@ -94,8 +94,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/New Folder/kkk.asset
       name: kkk.asset
-      length: 506
-      hash: 042a844b419a2535e9e2d5f5762768fc
+      length: 523
+      hash: 6d91533c78a7a3a03ea83e44cf94a166
       dependence: []
       type: 19
       directory: Assets/Example/New Folder
@@ -192,7 +192,7 @@ MonoBehaviour:
       tags: []
       usage: []
   previewBundles:
-  - hash: 2d8f4d64951abfaea7f3fe9aefb11141
+  - hash: 2d8f4d64951abfaea7f3fe9aefb11141_6a6c1100fd7ffcbe2dcf8d1ca543ee5a
     length: 23166
     assets:
     - path: Assets/Example/New Folder/a.jpg
@@ -206,7 +206,7 @@ MonoBehaviour:
       usage: []
     usage: []
     dependence: []
-  - hash: 4c22ced86546b914d9a49eb3666d0e66
+  - hash: 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
     length: 17847
     assets:
     - path: Assets/Example/Scene/New Scene2.unity
@@ -222,9 +222,9 @@ MonoBehaviour:
       usage: []
     usage: []
     dependence:
-    - dc5e76135581810c63b82b3455050484
-    - d88574feb3b5b2d20164cb2eb5964afc
-  - hash: 08e8bdd1976259ae7b8ef59fdc76d7c9
+    - d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
+    - dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
+  - hash: 08e8bdd1976259ae7b8ef59fdc76d7c9_d504ccf14d7bdacadf13424b3fce4806
     length: 16312
     assets:
     - path: Assets/Example/Scene/New Scene.unity
@@ -238,7 +238,7 @@ MonoBehaviour:
       usage: []
     usage: []
     dependence: []
-  - hash: 553fbe73a2a295b01ac54d0a87d26856
+  - hash: 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
     length: 4394
     assets:
     - path: Assets/Example/New Folder/New Material 1.mat
@@ -261,9 +261,24 @@ MonoBehaviour:
       usage:
       - Assets/Example/New Folder/Cube.prefab
     usage:
-    - 7f684d85a6ea3e13cac98df67d83d88c
+    - 7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181
     dependence: []
-  - hash: 7f684d85a6ea3e13cac98df67d83d88c
+  - hash: 51fba72a6a50309eda9460a776bef159_ad93b4475eb65c8cae3d274200a59151
+    length: 2879
+    assets:
+    - path: Assets/Example/shadervariants.shadervariants
+      name: shadervariants.shadervariants
+      length: 2879
+      hash: 677a7e1d13b6db8c7581ddc0d29b3176
+      dependence: []
+      type: 5
+      directory: Assets/Example
+      tags:
+      - shader
+      usage: []
+    usage: []
+    dependence: []
+  - hash: 7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181
     length: 2844
     assets:
     - path: Assets/Example/New Folder/Cube.prefab
@@ -278,23 +293,8 @@ MonoBehaviour:
       usage: []
     usage: []
     dependence:
-    - 553fbe73a2a295b01ac54d0a87d26856
-  - hash: 0e2cee24443ef6216cff02d7dcdca6b3
-    length: 2461
-    assets:
-    - path: Assets/Example/shadervariants.shadervariants
-      name: shadervariants.shadervariants
-      length: 2461
-      hash: a8cd48276e57e6930d9d9b82a2b6f5a5
-      dependence: []
-      type: 5
-      directory: Assets/Example
-      tags:
-      - shader
-      usage: []
-    usage: []
-    dependence: []
-  - hash: dc5e76135581810c63b82b3455050484
+    - 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
+  - hash: dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
     length: 2209
     assets:
     - path: Assets/Example/px/One.prefab
@@ -309,10 +309,10 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
     usage:
-    - 4c22ced86546b914d9a49eb3666d0e66
+    - 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
     dependence:
-    - d88574feb3b5b2d20164cb2eb5964afc
-  - hash: 8897512ab3f852758048b47c3be0d4ad
+    - d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
+  - hash: 8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8
     length: 2209
     assets:
     - path: Assets/Example/px/Two.prefab
@@ -327,8 +327,8 @@ MonoBehaviour:
       usage: []
     usage: []
     dependence:
-    - d88574feb3b5b2d20164cb2eb5964afc
-  - hash: d88574feb3b5b2d20164cb2eb5964afc
+    - d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
+  - hash: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
     length: 1296
     assets:
     - path: Assets/Example/px/3.png
@@ -362,17 +362,17 @@ MonoBehaviour:
       - Assets/Example/px/Two.prefab
       - Assets/Example/Scene/New Scene2.unity
     usage:
-    - dc5e76135581810c63b82b3455050484
-    - 8897512ab3f852758048b47c3be0d4ad
-    - 4c22ced86546b914d9a49eb3666d0e66
+    - 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
+    - dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
+    - 8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8
     dependence: []
-  - hash: 22d928061d8b46b679198d152601b8dd
-    length: 1008
+  - hash: 68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57
+    length: 1042
     assets:
     - path: Assets/Example/New Folder/kkk.asset
       name: kkk.asset
-      length: 506
-      hash: 042a844b419a2535e9e2d5f5762768fc
+      length: 523
+      hash: 6d91533c78a7a3a03ea83e44cf94a166
       dependence: []
       type: 19
       directory: Assets/Example/New Folder
@@ -380,8 +380,8 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/New Folder/aaa.asset
       name: aaa.asset
-      length: 502
-      hash: c04974de365b2d9797416aa7662f07c1
+      length: 519
+      hash: a61ed0a89633590835db25a0acf303e5
       dependence: []
       type: 19
       directory: Assets/Example/New Folder
@@ -395,7 +395,7 @@ MonoBehaviour:
     historyPath: DLC/History/Windows
     MaxCacheVersionCount: 2
     buildTarget: 19
-    BuildOption: 13120
+    BuildOption: 13248
     remoteHashName: 10a8d8bae0d67598c045791dad2f6599
     localHashName: bd3bac040cf4db3f5e88359a920f1498
     streamBundleDirectory: E:/Project/Unity/WooAsset/Assets/StreamingAssets\Windows
@@ -403,7 +403,7 @@ MonoBehaviour:
     serverDirectory: DLC/Server
     buildPkgs:
     - build: 1
-      collect: 0
+      collect: 1
       name: new
       description: 
       tags: []
@@ -412,6 +412,7 @@ MonoBehaviour:
     compress: 1
     ignoreTypeTreeChanges: 1
     forceRebuild: 0
+    AppendHashToAssetBundleName: 1
     buildPkg:
       build: 0
       collect: 1
@@ -427,7 +428,7 @@ MonoBehaviour:
       assets:
       - path: Assets/Example
         name: Example
-        length: 73746
+        length: 74198
         hash: d365b40c6946f1ec0add277791d7ea38
         dependence: []
         type: 2
@@ -436,7 +437,7 @@ MonoBehaviour:
         usage: []
       - path: Assets/Example/New Folder
         name: New Folder
-        length: 31412
+        length: 31446
         hash: 24bbafb9a7a362e3a9f8fc89057304ff
         dependence: []
         type: 2
@@ -463,8 +464,8 @@ MonoBehaviour:
         usage: []
       - path: Assets/Example/shadervariants.shadervariants
         name: shadervariants.shadervariants
-        length: 2461
-        hash: a8cd48276e57e6930d9d9b82a2b6f5a5
+        length: 2879
+        hash: 677a7e1d13b6db8c7581ddc0d29b3176
         dependence: []
         type: 5
         directory: Assets/Example
@@ -482,8 +483,8 @@ MonoBehaviour:
         usage: []
       - path: Assets/Example/New Folder/aaa.asset
         name: aaa.asset
-        length: 502
-        hash: c04974de365b2d9797416aa7662f07c1
+        length: 519
+        hash: a61ed0a89633590835db25a0acf303e5
         dependence: []
         type: 19
         directory: Assets/Example/New Folder
@@ -501,8 +502,8 @@ MonoBehaviour:
         usage: []
       - path: Assets/Example/New Folder/kkk.asset
         name: kkk.asset
-        length: 506
-        hash: 042a844b419a2535e9e2d5f5762768fc
+        length: 523
+        hash: 6d91533c78a7a3a03ea83e44cf94a166
         dependence: []
         type: 19
         directory: Assets/Example/New Folder
@@ -601,8 +602,8 @@ MonoBehaviour:
     needBuildAssets:
     - path: Assets/Example/New Folder/aaa.asset
       name: aaa.asset
-      length: 502
-      hash: c04974de365b2d9797416aa7662f07c1
+      length: 519
+      hash: a61ed0a89633590835db25a0acf303e5
       dependence: []
       type: 19
       directory: Assets/Example/New Folder
@@ -610,15 +611,15 @@ MonoBehaviour:
       usage: []
     - path: Assets/Example/New Folder/kkk.asset
       name: kkk.asset
-      length: 506
-      hash: 042a844b419a2535e9e2d5f5762768fc
+      length: 523
+      hash: 6d91533c78a7a3a03ea83e44cf94a166
       dependence: []
       type: 19
       directory: Assets/Example/New Folder
       tags: []
       usage: []
     allBundleGroups:
-    - hash: 2d8f4d64951abfaea7f3fe9aefb11141
+    - hash: 2d8f4d64951abfaea7f3fe9aefb11141_6a6c1100fd7ffcbe2dcf8d1ca543ee5a
       length: 23166
       assets:
       - path: Assets/Example/New Folder/a.jpg
@@ -632,7 +633,7 @@ MonoBehaviour:
         usage: []
       usage: []
       dependence: []
-    - hash: 4c22ced86546b914d9a49eb3666d0e66
+    - hash: 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
       length: 17847
       assets:
       - path: Assets/Example/Scene/New Scene2.unity
@@ -648,9 +649,9 @@ MonoBehaviour:
         usage: []
       usage: []
       dependence:
-      - dc5e76135581810c63b82b3455050484
-      - d88574feb3b5b2d20164cb2eb5964afc
-    - hash: 08e8bdd1976259ae7b8ef59fdc76d7c9
+      - d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
+      - dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
+    - hash: 08e8bdd1976259ae7b8ef59fdc76d7c9_d504ccf14d7bdacadf13424b3fce4806
       length: 16312
       assets:
       - path: Assets/Example/Scene/New Scene.unity
@@ -664,7 +665,7 @@ MonoBehaviour:
         usage: []
       usage: []
       dependence: []
-    - hash: 553fbe73a2a295b01ac54d0a87d26856
+    - hash: 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
       length: 4394
       assets:
       - path: Assets/Example/New Folder/New Material 1.mat
@@ -687,9 +688,24 @@ MonoBehaviour:
         usage:
         - Assets/Example/New Folder/Cube.prefab
       usage:
-      - 7f684d85a6ea3e13cac98df67d83d88c
+      - 7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181
       dependence: []
-    - hash: 7f684d85a6ea3e13cac98df67d83d88c
+    - hash: 51fba72a6a50309eda9460a776bef159_ad93b4475eb65c8cae3d274200a59151
+      length: 2879
+      assets:
+      - path: Assets/Example/shadervariants.shadervariants
+        name: shadervariants.shadervariants
+        length: 2879
+        hash: 677a7e1d13b6db8c7581ddc0d29b3176
+        dependence: []
+        type: 5
+        directory: Assets/Example
+        tags:
+        - shader
+        usage: []
+      usage: []
+      dependence: []
+    - hash: 7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181
       length: 2844
       assets:
       - path: Assets/Example/New Folder/Cube.prefab
@@ -704,23 +720,8 @@ MonoBehaviour:
         usage: []
       usage: []
       dependence:
-      - 553fbe73a2a295b01ac54d0a87d26856
-    - hash: 0e2cee24443ef6216cff02d7dcdca6b3
-      length: 2461
-      assets:
-      - path: Assets/Example/shadervariants.shadervariants
-        name: shadervariants.shadervariants
-        length: 2461
-        hash: a8cd48276e57e6930d9d9b82a2b6f5a5
-        dependence: []
-        type: 5
-        directory: Assets/Example
-        tags:
-        - shader
-        usage: []
-      usage: []
-      dependence: []
-    - hash: dc5e76135581810c63b82b3455050484
+      - 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
+    - hash: dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
       length: 2209
       assets:
       - path: Assets/Example/px/One.prefab
@@ -735,10 +736,10 @@ MonoBehaviour:
         usage:
         - Assets/Example/Scene/New Scene2.unity
       usage:
-      - 4c22ced86546b914d9a49eb3666d0e66
+      - 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
       dependence:
-      - d88574feb3b5b2d20164cb2eb5964afc
-    - hash: 8897512ab3f852758048b47c3be0d4ad
+      - d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
+    - hash: 8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8
       length: 2209
       assets:
       - path: Assets/Example/px/Two.prefab
@@ -753,8 +754,8 @@ MonoBehaviour:
         usage: []
       usage: []
       dependence:
-      - d88574feb3b5b2d20164cb2eb5964afc
-    - hash: d88574feb3b5b2d20164cb2eb5964afc
+      - d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
+    - hash: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
       length: 1296
       assets:
       - path: Assets/Example/px/3.png
@@ -788,17 +789,17 @@ MonoBehaviour:
         - Assets/Example/px/Two.prefab
         - Assets/Example/Scene/New Scene2.unity
       usage:
-      - dc5e76135581810c63b82b3455050484
-      - 8897512ab3f852758048b47c3be0d4ad
-      - 4c22ced86546b914d9a49eb3666d0e66
+      - 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
+      - dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
+      - 8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8
       dependence: []
-    - hash: 22d928061d8b46b679198d152601b8dd
-      length: 1008
+    - hash: 68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57
+      length: 1042
       assets:
       - path: Assets/Example/New Folder/kkk.asset
         name: kkk.asset
-        length: 506
-        hash: 042a844b419a2535e9e2d5f5762768fc
+        length: 523
+        hash: 6d91533c78a7a3a03ea83e44cf94a166
         dependence: []
         type: 19
         directory: Assets/Example/New Folder
@@ -806,8 +807,8 @@ MonoBehaviour:
         usage: []
       - path: Assets/Example/New Folder/aaa.asset
         name: aaa.asset
-        length: 502
-        hash: c04974de365b2d9797416aa7662f07c1
+        length: 519
+        hash: a61ed0a89633590835db25a0acf303e5
         dependence: []
         type: 19
         directory: Assets/Example/New Folder
@@ -817,92 +818,86 @@ MonoBehaviour:
       dependence: []
     files: []
     useful: []
-    version: 2024_04_06_15_47_15
+    version: 2024_04_18_20_01_31
     versions:
-      versions:
-      - version: 2023_08_17_17_18_17
-        pkgs: []
-      - version: 2023_08_17_17_19_31
-        pkgs: []
-      - version: 2023_08_17_17_23_00
-        pkgs: []
+      versions: []
     outputVersions:
       versions: []
     manifest:
       assets:
       - path: Assets/Example/New Folder/a.jpg
-        bundleName: 2d8f4d64951abfaea7f3fe9aefb11141
+        bundleName: 2d8f4d64951abfaea7f3fe9aefb11141_6a6c1100fd7ffcbe2dcf8d1ca543ee5a
         tags: []
         dps: []
         type: 3
       - path: Assets/Example/Scene/New Scene2.unity
-        bundleName: 4c22ced86546b914d9a49eb3666d0e66
+        bundleName: 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
         tags: []
         dps:
         - Assets/Example/px/One.prefab
         - Assets/Example/px/1.png
         type: 8
       - path: Assets/Example/Scene/New Scene.unity
-        bundleName: 08e8bdd1976259ae7b8ef59fdc76d7c9
+        bundleName: 08e8bdd1976259ae7b8ef59fdc76d7c9_d504ccf14d7bdacadf13424b3fce4806
         tags: []
         dps: []
         type: 8
       - path: Assets/Example/New Folder/New Material 1.mat
-        bundleName: 553fbe73a2a295b01ac54d0a87d26856
+        bundleName: 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
         tags: []
         dps: []
         type: 9
       - path: Assets/Example/New Folder/New Material.mat
-        bundleName: 553fbe73a2a295b01ac54d0a87d26856
+        bundleName: 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
         tags: []
         dps: []
         type: 9
-      - path: Assets/Example/New Folder/Cube.prefab
-        bundleName: 7f684d85a6ea3e13cac98df67d83d88c
-        tags: []
-        dps:
-        - Assets/Example/New Folder/New Material.mat
-        type: 10
       - path: Assets/Example/shadervariants.shadervariants
-        bundleName: 0e2cee24443ef6216cff02d7dcdca6b3
+        bundleName: 51fba72a6a50309eda9460a776bef159_ad93b4475eb65c8cae3d274200a59151
         tags:
         - shader
         dps: []
         type: 5
+      - path: Assets/Example/New Folder/Cube.prefab
+        bundleName: 7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181
+        tags: []
+        dps:
+        - Assets/Example/New Folder/New Material.mat
+        type: 10
       - path: Assets/Example/px/One.prefab
-        bundleName: dc5e76135581810c63b82b3455050484
+        bundleName: dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
         tags: []
         dps:
         - Assets/Example/px/1.png
         type: 10
       - path: Assets/Example/px/Two.prefab
-        bundleName: 8897512ab3f852758048b47c3be0d4ad
+        bundleName: 8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8
         tags: []
         dps:
         - Assets/Example/px/1.png
         type: 10
       - path: Assets/Example/px/3.png
-        bundleName: d88574feb3b5b2d20164cb2eb5964afc
+        bundleName: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
         tags: []
         dps: []
         type: 3
       - path: Assets/Example/px/2.png
-        bundleName: d88574feb3b5b2d20164cb2eb5964afc
+        bundleName: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
         tags: []
         dps: []
         type: 3
       - path: Assets/Example/px/1.png
-        bundleName: d88574feb3b5b2d20164cb2eb5964afc
+        bundleName: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
         tags: []
         dps: []
         type: 3
       - path: Assets/Example/New Folder/kkk.asset
-        bundleName: 22d928061d8b46b679198d152601b8dd
+        bundleName: 68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57
         tags: []
         dps: []
         type: 19
       - path: Assets/Example/New Folder/aaa.asset
-        bundleName: 22d928061d8b46b679198d152601b8dd
+        bundleName: 68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57
         tags: []
         dps: []
         type: 19
@@ -930,7 +925,7 @@ MonoBehaviour:
       m_AllowsAlphaSplitting: 0
       m_AndroidETC2FallbackOverride: 0
     atlasPaths:
-    - Assets/Example
+    - Assets/Example/px
     exports: []
     historyVersionFilePath: DLC/History/Windows\Versions.json
     historyVersionFileName: Versions.json
@@ -938,78 +933,78 @@ MonoBehaviour:
   manifest:
     assets:
     - path: Assets/Example/New Folder/a.jpg
-      bundleName: 2d8f4d64951abfaea7f3fe9aefb11141
+      bundleName: 2d8f4d64951abfaea7f3fe9aefb11141_6a6c1100fd7ffcbe2dcf8d1ca543ee5a
       tags: []
       dps: []
       type: 3
     - path: Assets/Example/Scene/New Scene2.unity
-      bundleName: 4c22ced86546b914d9a49eb3666d0e66
+      bundleName: 4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27
       tags: []
       dps:
       - Assets/Example/px/One.prefab
       - Assets/Example/px/1.png
       type: 8
     - path: Assets/Example/Scene/New Scene.unity
-      bundleName: 08e8bdd1976259ae7b8ef59fdc76d7c9
+      bundleName: 08e8bdd1976259ae7b8ef59fdc76d7c9_d504ccf14d7bdacadf13424b3fce4806
       tags: []
       dps: []
       type: 8
     - path: Assets/Example/New Folder/New Material 1.mat
-      bundleName: 553fbe73a2a295b01ac54d0a87d26856
+      bundleName: 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
       tags: []
       dps: []
       type: 9
     - path: Assets/Example/New Folder/New Material.mat
-      bundleName: 553fbe73a2a295b01ac54d0a87d26856
+      bundleName: 553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94
       tags: []
       dps: []
       type: 9
-    - path: Assets/Example/New Folder/Cube.prefab
-      bundleName: 7f684d85a6ea3e13cac98df67d83d88c
-      tags: []
-      dps:
-      - Assets/Example/New Folder/New Material.mat
-      type: 10
     - path: Assets/Example/shadervariants.shadervariants
-      bundleName: 0e2cee24443ef6216cff02d7dcdca6b3
+      bundleName: 51fba72a6a50309eda9460a776bef159_ad93b4475eb65c8cae3d274200a59151
       tags:
       - shader
       dps: []
       type: 5
+    - path: Assets/Example/New Folder/Cube.prefab
+      bundleName: 7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181
+      tags: []
+      dps:
+      - Assets/Example/New Folder/New Material.mat
+      type: 10
     - path: Assets/Example/px/One.prefab
-      bundleName: dc5e76135581810c63b82b3455050484
+      bundleName: dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
       tags: []
       dps:
       - Assets/Example/px/1.png
       type: 10
     - path: Assets/Example/px/Two.prefab
-      bundleName: 8897512ab3f852758048b47c3be0d4ad
+      bundleName: 8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8
       tags: []
       dps:
       - Assets/Example/px/1.png
       type: 10
     - path: Assets/Example/px/3.png
-      bundleName: d88574feb3b5b2d20164cb2eb5964afc
+      bundleName: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
       tags: []
       dps: []
       type: 3
     - path: Assets/Example/px/2.png
-      bundleName: d88574feb3b5b2d20164cb2eb5964afc
+      bundleName: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
       tags: []
       dps: []
       type: 3
     - path: Assets/Example/px/1.png
-      bundleName: d88574feb3b5b2d20164cb2eb5964afc
+      bundleName: d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d
       tags: []
       dps: []
       type: 3
     - path: Assets/Example/New Folder/kkk.asset
-      bundleName: 22d928061d8b46b679198d152601b8dd
+      bundleName: 68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57
       tags: []
       dps: []
       type: 19
     - path: Assets/Example/New Folder/aaa.asset
-      bundleName: 22d928061d8b46b679198d152601b8dd
+      bundleName: 68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57
       tags: []
       dps: []
       type: 19

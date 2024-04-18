@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -15,10 +16,12 @@ namespace WooAsset
                 var source = context.allBundleGroups;
                 if (source.Count != 0)
                 {
-                    BuildPipeline.BuildAssetBundles(context.historyPath,
-                       source.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
+                    AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
+                         source.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
+                    FastModeManifestTask.UpdateHash(source, _main);
                 }
-                var manifest = FastModeManifestTask.BuildManifest(source,context.tree);
+                var manifest = FastModeManifestTask.BuildManifest(source, context.tree);
+
                 context.manifest = manifest;
                 foreach (var bundleName in source.ConvertAll(x => x.hash))
                 {
@@ -131,7 +134,7 @@ namespace WooAsset
                      new NoneAssetStreamEncrypt());
             var outputVersions = JsonUtility.FromJson<AssetsVersionCollection>(JsonUtility.ToJson(versions));
             outputVersions.RemoveFirstIFTooLarge(context.MaxCacheVersionCount);
-       
+
 
             context.outputVersions = outputVersions;
             await VersionBuffer.WriteAssetsVersionCollection(
