@@ -45,9 +45,8 @@ MonoBehaviour:
   version: 0.0.1
   bundleSize: 99999999999999
   forceRebuild: 0
-  DisableWriteTypeTree: 0
+  typeTreeOption: 0
   AppendHashToAssetBundleName: 1
-  ignoreTypeTreeChanges: 1
   compress: 1
   MaxCacheVersionCount: 2
   cleanHistory: 0

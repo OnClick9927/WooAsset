@@ -80,12 +80,12 @@ namespace WooAsset
         public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => new InstantiateObjectOperation(path, parent);
         public static void Destroy(GameObject gameObject)
         {
+            Assets.ReleaseBridge(gameObject);
 #if UNITY_EDITOR
             GameObject.DestroyImmediate(gameObject);
 #else
             GameObject.Destroy(gameObject);
 #endif
-            Assets.ReleaseBridge(gameObject);
         }
     }
 

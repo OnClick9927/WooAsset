@@ -11,6 +11,28 @@ namespace WooAsset
 
         public class BuildTask : AssetTask
         {
+            private static void UpdateHash(List<BundleGroup> groups, AssetBundleManifest _main)
+            {
+                var bundles = _main.GetAllAssetBundles().ToList();
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    var group = groups[i];
+                    group.hash = bundles.First(x => x.StartsWith(group.hash));
+                }
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    var group = groups[i];
+                    var dps = _main.GetAllDependencies(group.hash);
+                    group.dependence = dps.ToList();
+                }
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    var group = groups[i];
+                    group.usage = groups.FindAll(x => x.dependence.Contains(group.hash)).ConvertAll(x => x.hash);
+
+                }
+
+            }
             protected async override void OnExecute(AssetTaskContext context)
             {
                 var source = context.allBundleGroups;
@@ -18,7 +40,7 @@ namespace WooAsset
                 {
                     AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
                          source.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
-                    FastModeManifestTask.UpdateHash(source, _main);
+                    UpdateHash(source, _main);
                 }
                 var manifest = FastModeManifestTask.BuildManifest(source, context.tree);
 
