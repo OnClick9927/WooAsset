@@ -44,9 +44,9 @@ namespace WooAsset
     {
         public Image image;
         public Image image2;
+
         private async void Start()
         {
-
             Assets.SetAssetsSetting(new LocalSetting());
             await Assets.CopyToSandBox();
             var op = await Assets.VersionCheck();
@@ -67,7 +67,9 @@ namespace WooAsset
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
             var asset = await Assets.LoadAsset("Assets/Example/New Folder/aaa");
+
             RawObject raw = asset.GetAsset<RawObject>();
+
             if (!asset.unloaded)
             {
                 Debug.Log(raw.bytes.Length);

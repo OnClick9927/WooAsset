@@ -1,11 +1,12 @@
 ﻿
 
 using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace WooAsset
 {
-    public class Downloader : Operation
+    public class Downloader : LoopOperation
     {
         public string url { get; protected set; }
         public int timeout { get; protected set; }
@@ -13,58 +14,108 @@ namespace WooAsset
 
         public override float progress { get { return _progress; } }
         private float _progress;
-        private readonly int retry;
+        protected int retry;
         private int _retry = 0;
+        private UnityWebRequest request;
         protected Downloader() { }
         public Downloader(string url, int timeout, int retry)
         {
             this.timeout = timeout;
             this.retry = retry;
             this.url = url;
-            Start();
-        }
-        protected virtual async void Start()
-        {
             AssetsHelper.Log($"Download start: {url}");
-        DownLoad:
-            var req = UnityWebRequest.Get(url);
-            req.timeout = timeout;
-            var _ = req.SendWebRequest();
-            while (!req.isDone)
+        }
+        protected virtual UnityWebRequest GetRequset()
+        {
+
+            return UnityWebRequest.Get(url);
+
+        }
+        protected virtual void OnRequestEnd(UnityWebRequest req)
+        {
+            var data = req.downloadHandler.data;
+            this.data = new byte[data.Length];
+            Array.Copy(data, this.data, data.Length);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (request == null)
             {
-                _progress = req.downloadProgress;
-                await new YieldOperation();
+                request = GetRequset();
+                request.timeout = timeout;
+                var _ = request.SendWebRequest();
             }
-#if UNITY_2020_1_OR_NEWER
-            if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
-#else
-            if (req.isHttpError || req.isNetworkError)
-#endif
+            if (request.isDone)
             {
-                if (_retry < retry)
+                bool success = true;
+#if UNITY_2020_1_OR_NEWER
+                if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+#else
+                    if (req.isHttpError || req.isNetworkError)
+#endif
                 {
-                    _retry++;
-                    req.Dispose();
-                    goto DownLoad;
+                    success = false;
+                  
+                }
+
+
+                if (!success)
+                {
+                    if (_retry < retry)
+                    {
+                        _retry++;
+                    }
+                    else
+                    {
+                        SetErr($"{request.error}:{url}");
+                        InvokeComplete();
+                    }
+                    request = null;
+                    request.Dispose();
                 }
                 else
                 {
-                    SetErr($"{req.error}:{url}");
+                    OnRequestEnd(request);
+                    request.Dispose();
+                    InvokeComplete();
                 }
             }
-            else
-            {
-                if (!isErr)
-                {
-                    var data = req.downloadHandler.data;
-                    this.data = new byte[data.Length];
-                    Array.Copy(data, this.data, data.Length);
-                }
-            }
-            req.Dispose();
-            InvokeComplete();
+        }
+    }
+    public class FileDownloader : Downloader
+    {
+        protected string path;
+        public FileDownloader(string url, string path, int timeout, int retry) : base(url, timeout, retry)
+        {
+            this.path = path;
+        }
+        protected override UnityWebRequest GetRequset()
+        {
+            return new UnityWebRequest(url, "Get", new DownloadHandlerFile(path), null);
+        }
+        protected override void OnRequestEnd(UnityWebRequest req)
+        {
+        }
+
+
+    }
+    public class BundleDownloader : Downloader
+    {
+        public BundleDownloader(string url, int timeout, int retry) : base(url, timeout, retry) { }
+
+
+        public AssetBundle bundle { get; private set; }
+
+        protected override UnityWebRequest GetRequset()
+        {
+            return new UnityWebRequest(url, "Get", new DownloadHandlerAssetBundle(url, 0), null);
+        }
+        protected override void OnRequestEnd(UnityWebRequest req)
+        {
+            this.bundle = (req.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
         }
     }
 
-
 }
+

@@ -2,7 +2,7 @@
 
 namespace WooAsset
 {
-    class WriteObjectOperation<T> : Operation
+    public class WriteObjectOperation<T> : Operation
     {
         private Operation op;
         public override float progress => isDone ? 1 : (op == null ? 0 : op.progress);

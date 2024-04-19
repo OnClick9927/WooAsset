@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -7,13 +8,25 @@ namespace WooAsset
 {
     public class BundleStream : FileStream
     {
-
+        private static Queue<BundleStream> streams = new Queue<BundleStream>();
+        public static void CloseStreams()
+        {
+#if UNITY_EDITOR
+            AssetsHelper.Log($"clear file {streams.Count} streams for editor");
+            while (streams.Count > 0) { 
+                streams
+                    .Dequeue().Dispose();
+            
+            }
+#endif
+        }
         private readonly string bundleName;
         private IAssetStreamEncrypt encrypt;
         public BundleStream(string path, FileMode mode, FileAccess access, FileShare share, string bundleName, IAssetStreamEncrypt encrypt) : base(path, mode, access, share)
         {
             this.bundleName = bundleName;
             this.encrypt = encrypt;
+            streams.Enqueue(this);
         }
 
         public override int Read(byte[] array, int offset, int count)
@@ -115,7 +128,7 @@ namespace WooAsset
         }
         private async void LoadFromStream()
         {
-            BundleStream bs = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName,encrypt);
+            BundleStream bs = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
             if (async)
             {
                 loadOp = AssetBundle.LoadFromStreamAsync(bs);
@@ -164,13 +177,13 @@ namespace WooAsset
                 }
                 else
                 {
-                    var downloader = AssetsInternal.DownLoadBundleBytes(bundleName);
+                    var downloader = AssetsInternal.DownLoadFile(bundleName);
                     this.downloader = downloader;
                     await downloader;
                     if (!downloader.isErr)
                     {
                         byte[] buffer = downloader.data;
-                        await downloader.SaveBundleToLocal();
+                        //await downloader.SaveBundleToLocal();
                         LoadBundle(buffer);
                     }
                     else

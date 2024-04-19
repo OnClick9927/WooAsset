@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 
 namespace WooAsset
 {
@@ -38,15 +38,14 @@ namespace WooAsset
         }
         public void Read(List<AssetData> assets, List<string> raw, List<string> raw_copy)
         {
-            if (Application.isEditor)
-            {
-                this.assets = assets;
-                this.rawAssets = raw;
-                this.rawAssets_copy = raw_copy;
-            }
+#if UNITY_EDITOR
+            this.assets = assets;
+            this.rawAssets = raw;
+            this.rawAssets_copy = raw_copy;
+#endif
         }
 
-        [SerializeField] public List<AssetData> assets = new List<AssetData>();
+        public List<AssetData> assets = new List<AssetData>();
         public List<string> rawAssets = new List<string>();
         public List<string> rawAssets_copy = new List<string>();
 
@@ -207,6 +206,6 @@ namespace WooAsset
         }
 
 
-   
+
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using static WooAsset.ManifestData;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     partial class AssetsInternal
     {

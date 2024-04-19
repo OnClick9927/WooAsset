@@ -47,20 +47,19 @@ namespace WooAsset
         public static string streamBundleDirectory => CombinePath(Application.streamingAssetsPath, buildTarget);
         public static string RawToRawObjectPath(string path)
         {
-            var dir = AssetsHelper.GetDirectoryName(path);
-            var name = AssetsHelper.GetFileNameWithoutExtension(path);
-            return AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, $"{name}.asset"));
+            var dir = GetDirectoryName(path);
+            var name = GetFileNameWithoutExtension(path);
+            return ToRegularPath(CombinePath(dir, $"{name}.asset"));
         }
         public static string GetRawFileToDlcPath(string dir,string path)
         {
-            string name = AssetsHelper.GetFileNameWithoutExtension(path);
-            string ex = AssetsHelper.GetFileExtension(path);
-            string hash = AssetsHelper.GetStringHash(name);
-            return AssetsHelper.CombinePath(dir, $"{hash}{ex}");
+            string name = GetFileNameWithoutExtension(path);
+            string ex = GetFileExtension(path);
+            string hash = GetStringHash(name);
+            return CombinePath(dir, $"{hash}{ex}");
         }
 
-        public static T ReadObject<T>(byte[] bytes) => JsonUtility.FromJson<T>(AssetsHelper.encoding.GetString(bytes));
-        public static Operation WriteObject<T>(T t, string path, bool async) => new WriteObjectOperation<T>(t, path, async);
+        public static T ReadObject<T>(byte[] bytes) => JsonUtility.FromJson<T>(encoding.GetString(bytes));
         internal static Encoding encoding = Encoding.Default;
 
 
@@ -94,7 +93,7 @@ namespace WooAsset
                 Directory.CreateDirectory(path);
         }
         public static bool IsDirectory(string path) => Directory.Exists(path);
-        public static string[] GetDirectoryFiles(string path) => Directory.GetFiles(path, "*", SearchOption.AllDirectories).Select(x => AssetsHelper.ToRegularPath(x)).ToArray();
+        public static string[] GetDirectoryFiles(string path) => Directory.GetFiles(path, "*", SearchOption.AllDirectories).Select(x => ToRegularPath(x)).ToArray();
         public static string[] GetDirectoryDirectories(string path) => Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
 
         private static string ToHashString(byte[] bytes)

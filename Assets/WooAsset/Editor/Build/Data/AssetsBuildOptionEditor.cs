@@ -86,9 +86,8 @@ namespace WooAsset
                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.forceRebuild)));
                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.AppendHashToAssetBundleName)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.DisableWriteTypeTree)));
+                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.typeTreeOption)));
 
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.ignoreTypeTreeChanges)));
                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.compress)));
 
                    option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);

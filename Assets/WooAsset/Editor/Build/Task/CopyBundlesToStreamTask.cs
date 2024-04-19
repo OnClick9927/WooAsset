@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 
 namespace WooAsset
@@ -20,7 +21,7 @@ namespace WooAsset
             }
             protected override async void Done()
             {
-                await new YieldOperation();
+                await Task.Delay(1);
                 if (buildInBundles != null && buildInBundles.Count > 0)
                 {
                     foreach (var bundleName in buildInBundles)
@@ -44,7 +45,7 @@ namespace WooAsset
                 var list = this.files.Select(x => GetDestFileName(x)).ToList();
                 list.Add(local_v_name);
 
-                await AssetsHelper.WriteObject(new StreamBundleList()
+                await AssetsEditorTool.WriteObject(new StreamBundleList()
                 {
                     fileNames = list.ToArray(),
                 },

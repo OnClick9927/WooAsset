@@ -25,14 +25,14 @@ namespace WooAsset
                       .ToList()
                       .ForEach(x => AssetsHelper.DeleteFile(x));
 
-            await AssetsHelper.WriteObject(new BuildBundleExprotData()
+            await AssetsEditorTool.WriteObject(new BuildBundleExprotData()
             {
                 encrypt = context.encrypt.ToString(),
                 buildPkgs = context.buildPkgs,
                 version = context.version,
                 compress = context.compress.ToString(),
                 forceRebuild = context.forceRebuild,
-                ignoreTypeTreeChanges = context.ignoreTypeTreeChanges,
+                typeTreeOption = context.typeTreeOption,
                 fileChange = context.fileChange,
                 versions = context.outputVersions,
             },
@@ -41,7 +41,7 @@ namespace WooAsset
                  );
             foreach (var item in context.exports)
             {
-                await AssetsHelper.WriteObject(item,
+                await AssetsEditorTool.WriteObject(item,
                      AssetsHelper.CombinePath(context.outputPath, $"Export_{item.buildPkg.name}.json"),
                      true
                      );

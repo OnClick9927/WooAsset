@@ -13,7 +13,7 @@ namespace WooAsset
 
             IAssetStreamEncrypt encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetStreamEncrypt;
             IAssetBuild assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetBuild;
-            context.ignoreTypeTreeChanges = option.ignoreTypeTreeChanges;
+            context.typeTreeOption = option.typeTreeOption;
             context.forceRebuild = option.forceRebuild;
             context.compress = option.compress;
 
@@ -32,7 +32,6 @@ namespace WooAsset
             context.streamBundleDirectory = AssetsHelper.streamBundleDirectory;
 
             context.versions = new AssetsVersionCollection() { };
-            context.DisableWriteTypeTree = option.DisableWriteTypeTree;
             context.AppendHashToAssetBundleName = option.AppendHashToAssetBundleName;
             context.MaxCacheVersionCount = option.MaxCacheVersionCount;
             context.shaderVariantDirectory = option.shaderVariantDirectory;
@@ -85,14 +84,15 @@ namespace WooAsset
 
             BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
             opt |= BuildAssetBundleOptions.StrictMode;
-            if (context.DisableWriteTypeTree)
+            if (context.typeTreeOption == AssetsBuildOption.TypeTreeOption.DisableWriteTypeTree)
                 opt |= BuildAssetBundleOptions.DisableWriteTypeTree;
+            if (context.typeTreeOption == AssetsBuildOption.TypeTreeOption.IgnoreTypeTreeChanges)
+                opt |= BuildAssetBundleOptions.IgnoreTypeTreeChanges;
+
             if (context.AppendHashToAssetBundleName)
                 opt |= BuildAssetBundleOptions.AppendHashToAssetBundleName;
             if (context.forceRebuild)
                 opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle;
-            if (context.ignoreTypeTreeChanges)
-                opt |= BuildAssetBundleOptions.IgnoreTypeTreeChanges;
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileName;
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension;
             if (context.compress == CompressType.LZ4)

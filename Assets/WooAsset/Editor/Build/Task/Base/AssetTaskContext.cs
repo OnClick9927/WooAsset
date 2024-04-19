@@ -27,10 +27,9 @@ namespace WooAsset
         public string serverDirectory;
         public List<EditorBundlePackage> buildPkgs;
         public CompressType compress;
-        public bool ignoreTypeTreeChanges;
+        public TypeTreeOption typeTreeOption;
         public bool forceRebuild;
         public bool AppendHashToAssetBundleName;
-        public bool DisableWriteTypeTree;
         public EditorBundlePackage buildPkg;
 
 

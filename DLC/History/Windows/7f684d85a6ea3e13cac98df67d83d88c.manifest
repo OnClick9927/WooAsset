@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3258381205
+CRC: 1077786048
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b6b086e49771776c0ba79d7da5b22d6a
+    Hash: 52bcbe53b4f294b42c75d804854b1181
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7d1e0093d0592ca7550333bbf0c8f406
@@ -27,4 +27,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Example/New Folder/Cube.prefab
 Dependencies:
-- E:/Project/Unity/WooAsset/DLC/History/Windows/553fbe73a2a295b01ac54d0a87d26856_a54e2a497607d68ef1e29cd451b76a2c
+- E:/Project/Unity/WooAsset/DLC/History/Windows/553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94

@@ -184,9 +184,16 @@ namespace WooAsset
         public string version = "0.0.1";
         public long bundleSize = 8 * 1024 * 1024;
         public bool forceRebuild = false;
-        public bool DisableWriteTypeTree = false;
+        public enum TypeTreeOption
+        {
+            None,
+            DisableWriteTypeTree,
+            IgnoreTypeTreeChanges,
+
+        }
+        public TypeTreeOption typeTreeOption;
+
         public bool AppendHashToAssetBundleName = false;
-        public bool ignoreTypeTreeChanges = true;
         public CompressType compress;
         public int MaxCacheVersionCount = 8;
         public bool cleanHistory;

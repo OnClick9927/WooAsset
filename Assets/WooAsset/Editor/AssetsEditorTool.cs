@@ -94,6 +94,7 @@ namespace WooAsset
                     break;
                 case PlayModeStateChange.ExitingPlayMode:
                     AssetsServer.Stop();
+                    BundleStream.CloseStreams();
                     break;
                 default:
                     break;
@@ -205,5 +206,8 @@ namespace WooAsset
 
             };
         }
+
+        public static Operation WriteObject<T>(T t, string path, bool async) => new WriteObjectOperation<T>(t, path, async);
+
     }
 }

@@ -5,7 +5,7 @@ namespace WooAsset
 {
     class AssetsLoop : MonoBehaviour
     {
-        private List<YieldOperation> yieldOperations = new List<YieldOperation>();
+        private List<LoopOperation> loop = new List<LoopOperation>();
 
         private static AssetsLoop _instance;
         private static AssetsLoop instance
@@ -38,19 +38,22 @@ namespace WooAsset
         {
             _frameTime = _watch.ElapsedMilliseconds;
 
-            for (int i = yieldOperations.Count - 1; i >= 0; i--)
+   
+            for (int i = loop.Count - 1; i >= 0; i--)
             {
-                var operation = yieldOperations[i];
-                operation.NormalLoop();
+                var operation = loop[i];
+                operation.Update();
                 if (operation.isDone)
                 {
-                    yieldOperations.RemoveAt(i);
+                    loop.RemoveAt(i);
                 }
             }
+
         }
-        public static void AddOperation(YieldOperation op)
+
+        public static void AddOperation(LoopOperation op)
         {
-            instance.yieldOperations.Add(op);
+            instance.loop.Add(op);
         }
     }
 

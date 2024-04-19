@@ -11,7 +11,7 @@ namespace WooAsset
         public string encrypt;
         public string compress;
         public bool forceRebuild;
-        public bool ignoreTypeTreeChanges;
+        public TypeTreeOption typeTreeOption;
         public FileChange fileChange;
         public AssetsVersionCollection versions;
     }

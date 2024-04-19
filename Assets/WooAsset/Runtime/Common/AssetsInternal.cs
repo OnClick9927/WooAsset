@@ -94,9 +94,14 @@ namespace WooAsset
             if (life != null)
                 AddAssetLife(life);
         }
-        public static BundleDownloader2 DownLoadBundle(string bundleName) => new BundleDownloader2(GetUrlFromBundleName(bundleName), bundleName, GetWebRequestRetryCount(), GetWebRequestTimeout());
+        public static BundleDownloader DownLoadBundle(string bundleName) => new BundleDownloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static FileDownloader DownLoadFile(string bundleName) => new FileDownloader(GetUrlFromBundleName(bundleName), GetBundleLocalPath(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static Downloader CopyFile(string url, string path) => new FileDownloader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static Downloader DownloadBytes(string url) => new Downloader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
 
-        public static BundleDownloader DownLoadBundleBytes(string bundleName) => new BundleDownloader(GetUrlFromBundleName(bundleName), bundleName, GetWebRequestRetryCount(), GetWebRequestTimeout());
+
+
 
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
 
@@ -113,7 +118,7 @@ namespace WooAsset
     {
 
         public static string GetRawFileToDlcPath(string path) => AssetsHelper.GetRawFileToDlcPath(localRfcDir, path);
-        public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+
 
 
         public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));

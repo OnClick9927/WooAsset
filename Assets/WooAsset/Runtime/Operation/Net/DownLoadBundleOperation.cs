@@ -11,7 +11,7 @@
             }
         }
         public string bundleName { get; private set; }
-        private BundleDownloader downloader;
+        private FileDownloader downloader;
 
         public DownLoadBundleOperation(string bundleName)
         {
@@ -20,16 +20,13 @@
         }
         private async void Done()
         {
-            downloader = AssetsInternal.DownLoadBundleBytes(bundleName);
+            downloader = AssetsInternal.DownLoadFile(bundleName);
             await downloader;
             if (downloader.isErr)
             {
                 SetErr(downloader.error);
             }
-            else
-            {
-                await downloader.SaveBundleToLocal();
-            }
+
 
             InvokeComplete();
         }

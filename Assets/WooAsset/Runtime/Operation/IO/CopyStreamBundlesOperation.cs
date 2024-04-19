@@ -1,4 +1,6 @@
-﻿namespace WooAsset
+﻿using System.Security.Cryptography;
+
+namespace WooAsset
 {
     public class CopyStreamBundlesOperation : Operation
     {
@@ -23,10 +25,10 @@
         protected virtual async void Copy()
         {
             string destlistPath = AssetsHelper.CombinePath(destPath, StreamBundleList.fileName);
-            if (AssetsInternal.NeedCopyStreamBundles() && !AssetsHelper.ExistsFile(destlistPath))
+            string srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundleList.fileName);
+            if (AssetsInternal.NeedCopyStreamBundles() && AssetsHelper.ExistsFile(srclistPath) && !AssetsHelper.ExistsFile(destlistPath))
             {
-                string srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundleList.fileName);
-                Downloader downloader = new Downloader(srclistPath, 10, 1);
+                Downloader downloader = AssetsInternal.DownloadBytes(srclistPath);
                 await downloader;
                 if (!downloader.isErr)
                 {
@@ -37,16 +39,11 @@
                         string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(".bytes", "");
                         if (AssetsHelper.ExistsFile(dest)) continue;
                         string src = AssetsHelper.CombinePath(srcPath, fileName);
-
-                        Downloader _d = new Downloader(src, 10, 1);
-                        await _d;
-                        if (_d.isErr) continue;
-                        await AssetsHelper.WriteFile(_d.data, dest, true);
+                        await AssetsInternal.CopyFile(src, dest);
                     }
-                    await AssetsHelper.WriteObject(
-                              list,
-                              destlistPath,
-                             true);
+                    await AssetsInternal.CopyFile(srclistPath, destlistPath);
+
+
                 }
             }
             InvokeComplete();

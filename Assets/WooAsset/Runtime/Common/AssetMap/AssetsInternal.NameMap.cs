@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static UnityEngine.Networking.UnityWebRequest;
 
 namespace WooAsset
 {

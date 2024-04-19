@@ -3,7 +3,7 @@ CRC: 1768191870
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5684e2c5989b54db93843a70164b14c3
+    Hash: 6d82f3560e2dcc2a24b630107b57cd27
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7fdd5725858725344cafb1770c09f141
@@ -57,4 +57,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Example/Scene/New Scene2.unity
 Dependencies:
-- E:/Project/Unity/WooAsset/DLC/History/Windows/dc5e76135581810c63b82b3455050484_370c500660ba8aef4e0e6908501c9479
+- E:/Project/Unity/WooAsset/DLC/History/Windows/dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452
