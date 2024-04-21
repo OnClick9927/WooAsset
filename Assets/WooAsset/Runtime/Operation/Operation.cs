@@ -37,11 +37,11 @@ namespace WooAsset
         }
         object IEnumerator.Current => this;
 
-        public void WaitForComplete()
+        public async void WaitForComplete()
         {
             while (!isDone)
             {
-
+                await new YieldOperation();
             }
         }
     }

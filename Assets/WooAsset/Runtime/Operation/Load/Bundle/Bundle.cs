@@ -177,7 +177,7 @@ namespace WooAsset
                 }
                 else
                 {
-                    var downloader = AssetsInternal.DownLoadFile(bundleName);
+                    var downloader = AssetsInternal.DownloadVersion(bundleName);
                     this.downloader = downloader;
                     await downloader;
                     if (!downloader.isErr)

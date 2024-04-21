@@ -71,8 +71,8 @@ namespace WooAsset
                         SetErr($"{request.error}:{url}");
                         InvokeComplete();
                     }
+                    request.Dispose(); 
                     request = null;
-                    request.Dispose();
                 }
                 else
                 {
