@@ -15,7 +15,7 @@ namespace WooAsset
         }
         private async void Done(string path, Transform parent)
         {
-            var asset = await Assets.LoadAssetAsync(path);
+            var asset = await Assets.LoadAssetAsync(path,typeof(GameObject));
             Create(asset, parent);
         }
         private void Create(Asset asset, Transform parent)

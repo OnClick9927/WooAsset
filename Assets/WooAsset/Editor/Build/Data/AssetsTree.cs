@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System;
+using UnityEditor.VersionControl;
 
 namespace WooAsset
 {
@@ -59,6 +60,7 @@ namespace WooAsset
             }
         }
 
+        private void HandleLoopDependence(List<EditorAssetData> err)=>assetBuild.HandleLoopDependence(err);
         private AssetType GetAssetType(string path) => assetBuild.GetAssetType(path);
         private bool CheckRawIsIgnorePath(string path)
         {
@@ -154,6 +156,25 @@ namespace WooAsset
                     .ConvertAll(x => AssetsHelper.ToRegularPath(x))
                     .Where(x => x != asset.path && !CheckRawIsIgnorePath(x) && !AssetsHelper.IsDirectory(x));
                 asset.dependence = result.ToList();
+            }
+            List<EditorAssetData> errs = new List<EditorAssetData>();
+            for (int i = 0; i < assets.Count; i++)
+            {
+                var asset = assets[i];
+                var dps = asset.dependence.ConvertAll(x => GetAssetData(x));
+                var find = dps.FindAll(x => x.dependence.Contains(asset.path));
+                if (find != null && find.Count != 0)
+                    errs.Add(asset);
+            }
+            HandleLoopDependence(errs);
+            for (int i = 0; i < assets.Count; i++)
+            {
+                var asset = assets[i];
+                var dps = asset.dependence.ConvertAll(x => GetAssetData(x));
+                var find = dps.FindAll(x => x.dependence.Contains(asset.path));
+                if (find != null && find.Count != 0)
+                    asset.loopDependence = true;
+
             }
         }
 

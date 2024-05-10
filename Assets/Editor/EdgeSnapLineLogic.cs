@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEditor.Experimental.SceneManagement;
+
 
 using System.IO;
 
@@ -118,7 +118,7 @@ namespace ThunderFireUITool
 
             m_Rects.Clear();
             RectTransform[] allObjects;
-            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
             if (prefabStage != null)
             {
                 allObjects = prefabStage.prefabContentsRoot.GetComponentsInChildren<RectTransform>();

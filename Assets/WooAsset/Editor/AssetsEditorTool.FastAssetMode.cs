@@ -51,7 +51,6 @@ namespace WooAsset
             public override ManifestData manifest => Initialized() ? cache.manifest : null;
             protected override bool Initialized() => _task != null && _task.isDone;
             protected override CopyStreamBundlesOperation CopyToSandBox(string from, string to) => new FastCopy(from, to);
-            protected override AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => arg.scene == true ? new EditorSceneAsset(arg) as AssetHandle : new EditorAsset(arg);
             protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
             {
                 if (_task == null)
@@ -59,6 +58,11 @@ namespace WooAsset
                 return _task;
             }
             protected override CheckBundleVersionOperation VersionCheck() => new FastCheck();
+
+            protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args)
+            {
+                return new EditorBundle(args);
+            }
         }
     }
 

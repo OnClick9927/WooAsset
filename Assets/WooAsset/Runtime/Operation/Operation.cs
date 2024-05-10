@@ -131,10 +131,11 @@ namespace WooAsset
     {
         protected async override void EditorWait()
         {
+#if UNITY_EDITOR
             while (AssetsLoop.isBusy)
                 await Task.Delay(10);
             InvokeComplete();
-
+#endif
         }
         protected override void OnUpdate()
         {

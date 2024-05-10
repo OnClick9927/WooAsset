@@ -2,6 +2,6 @@
 {
     interface IAssetArgs
     {
-
+        string uid { get;}
     }
 }

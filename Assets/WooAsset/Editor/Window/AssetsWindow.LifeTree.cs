@@ -22,7 +22,6 @@ namespace WooAsset
             public SearchType _searchType = SearchType.Bundle;
             private SearchField search;
             private long totalBundleSize = 0;
-            private long totalAssetSize = 0;
             public LifeTree(TreeViewState state, SearchType _searchType) : base(state)
             {
                 this._searchType = _searchType;
@@ -41,6 +40,7 @@ namespace WooAsset
                  TreeColumns.bundle,
              TreeColumns.tag,
 }));
+
                 this.multiColumnHeader.ResizeToFit();
                 this.Reload();
             }
@@ -48,7 +48,6 @@ namespace WooAsset
             protected override TreeViewItem BuildRoot()
             {
                 totalBundleSize = AssetsEditorTool.bundles.Values.Sum(x => x.assetLength);
-                totalAssetSize = AssetsEditorTool.assets.Values.Sum(x => x.assetLength);
                 return new TreeViewItem() { id = -10, depth = -1 };
             }
             public void BuildBundles(TreeViewItem root, IList<TreeViewItem> result)
@@ -126,7 +125,7 @@ namespace WooAsset
                 var rs = RectEx.HorizontalSplit(rect, 40);
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
                 search.OnGUI(rs1[0]);
-                GUI.Label(rs1[1], $"Total Bundle Size   {GetSizeString(totalBundleSize)} \t\tTotal Asset Size   {GetSizeString(totalAssetSize)}");
+                GUI.Label(rs1[1], $"Total Bundle Size   {GetSizeString(totalBundleSize)}");
                 base.OnGUI(rs[1]);
             }
 
@@ -160,10 +159,7 @@ namespace WooAsset
 
                     GUI.Label(args.GetCellRect(4), life.assetType.ToString());
 
-                    if (life.asset.bundle != null)
-                    {
-                        EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsHelper.GetFileName(life.asset.bundle.bundleName));
-                    }
+                    EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsHelper.GetFileName(life.asset.bundleName));
                     GUI.Label(args.GetCellRect(6), GetTagsString(life.tags));
                 }
             }

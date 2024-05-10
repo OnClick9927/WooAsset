@@ -10,8 +10,7 @@ namespace WooAsset
         public T value { get; private set; }
         public DateTime time { get; private set; }
 
-        private long _assetLength;
-        public virtual long assetLength => _assetLength;
+
         private bool _unload;
         public bool unloaded => _unload;
         private int _ref;
@@ -31,12 +30,9 @@ namespace WooAsset
 
         protected abstract void OnUnLoad();
         protected abstract void OnLoad();
-        protected abstract long ProfilerAsset(T value);
         protected virtual void SetResult(T value)
         {
             this.value = value;
-            if (value != null)
-                _assetLength = ProfilerAsset(value);
             InvokeComplete();
         }
 

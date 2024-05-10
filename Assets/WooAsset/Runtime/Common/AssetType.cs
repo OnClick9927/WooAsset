@@ -6,6 +6,7 @@
         None,
         Ignore,
         Directory,
+        LightingData,
         Texture,
         Shader,
         ShaderVariant,

@@ -20,6 +20,16 @@ namespace WooAsset
                     return _folder;
                 }
             }
+            private static Texture _err;
+
+            public static Texture err
+            {
+                get {
+                    if (_err == null)
+                        _err = EditorGUIUtility.TrIconContent("d_console.erroricon.sml").image;
+                    return _err;
+                }
+            }
             private static Dictionary<string, Texture> _textures = new Dictionary<string, Texture>();
             public static Texture GetMiniThumbnail(string path)
             {

@@ -4,31 +4,13 @@
     {
         private class AssetMap : NameMap<AssetHandle>
         {
-            protected override AssetHandle CreateNew(string name, IAssetArgs args)
-            {
-                var arg = (AssetLoadArgs)args;
-                if (!name.StartsWith("Assets") || name.Contains("Resources"))
-                {
-                    if (name.Contains("Resources"))
-                    {
-                        var index = arg.path.LastIndexOf("Resources");
-                        arg.path = arg.path.Remove(0, index + "Resources".Length + 1);
-                    }
-                    return new ResourcesAsset(arg);
-                }
-                return AssetsInternal.CreateAsset(name, arg);
-            }
-
-
-
-            public AssetHandle LoadAssetAsync(AssetLoadArgs args) => base.LoadAsync(args.path, args);
+            protected override AssetHandle CreateNew(IAssetArgs args) => CreateAsset((AssetLoadArgs)args);
             public override void Release(string path)
             {
                 AssetHandle asset = Find(path);
                 if (asset == null) return;
                 ReleaseRef(asset);
-                if (asset.bundle != null)
-                    bundles.Release(asset.bundle.bundleName);
+                bundles.Release(asset.bundleName);
                 TryRealUnload(path);
                 if (asset.dps != null)
                 {
@@ -38,7 +20,6 @@
                     }
                 }
             }
-
             internal void RemoveUselessAsset()
             {
                 var all = GetAll();
@@ -50,12 +31,11 @@
                     }
                 }
             }
-
             protected override void OnRetain(AssetHandle asset, bool old)
             {
                 RetainRef(asset);
                 if (!old) return;
-                bundles.RetainRef(asset.bundle);
+                bundles.RetainRef(asset.bundleName);
             }
         }
     }

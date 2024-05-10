@@ -31,7 +31,7 @@ namespace WooAsset
                 for (int i = 0; i < files.Count; i++)
                 {
                     string path = files[i];
-                    var asset = await AssetsInternal.LoadAsset(path, true) as Asset;
+                    var asset = await AssetsInternal.LoadAsset(path, true,typeof(RawObject)) as Asset;
                     if (asset.isErr)
                     {
                         SetErr(asset.error);

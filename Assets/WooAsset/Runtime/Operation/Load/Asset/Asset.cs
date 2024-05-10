@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
@@ -10,7 +11,7 @@ namespace WooAsset
 
         private Object[] assets;
 
-        private AssetBundleRequest loadOp;
+        private AssetRequest loadOp;
         private float directProgress;
         public Asset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
@@ -34,7 +35,38 @@ namespace WooAsset
             }
         }
 
-        public virtual T GetAsset<T>() where T : Object => isDone && !unloaded ? value as T : null;
+
+        protected Object EditorCheck<T>() where T : Object
+        {
+            if (value is Texture2D)
+            {
+                if (typeof(T) == typeof(Sprite))
+                {
+                    var sp = LoadAagain<T>();
+                    SetResult(sp);
+                }
+            }
+            return value as T;
+        }
+        protected virtual Object LoadAagain<T>()
+        {
+#if UNITY_EDITOR
+            return UnityEditor.AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+#else
+            return null;
+#endif
+        }
+        public virtual T GetAsset<T>() where T : Object
+        {
+            if (isDone)
+            {
+#if UNITY_EDITOR
+                EditorCheck<T>();
+#endif
+                return value as T;
+            }
+            return null;
+        }
         public virtual Type GetAssetType() => isDone && !isErr && !unloaded ? value.GetType() : null;
         public virtual Object[] allAssets => isDone && !isErr && !unloaded ? assets : null;
         public IReadOnlyList<T> GetSubAssets<T>() where T : Object => !isDone || isErr || unloaded
@@ -84,19 +116,19 @@ namespace WooAsset
             }
             if (async)
             {
-                loadOp = bundle.LoadAssetAsync(path, typeof(UnityEngine.Object));
+                loadOp = bundle.LoadAssetAsync(path, type);
                 await loadOp;
                 assets = loadOp.allAssets;
                 SetResult(loadOp.asset);
             }
             else
             {
-                var result = bundle.LoadAsset(path, typeof(UnityEngine.Object));
+                var result = bundle.LoadAsset(path, type);
                 assets = result;
                 SetResult(result[0]);
             }
         }
-   
+
         protected sealed override void InternalLoad()
         {
             if (!direct)

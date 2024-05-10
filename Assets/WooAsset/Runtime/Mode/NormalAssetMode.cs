@@ -22,20 +22,6 @@ namespace WooAsset
 
         protected override CopyStreamBundlesOperation CopyToSandBox(string from, string to) => new CopyStreamBundlesOperation(from, to);
 
-        protected override AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg)
-        {
-            if (!arg.direct)
-            {
-                string bundleName = AssetsInternal.GetAssetBundleName(assetPath);
-                if (string.IsNullOrEmpty(bundleName))
-                    AssetsHelper.LogError($"Not Found  {assetPath}");
-                arg.bundleName = bundleName;
-            }
-            if (arg.scene)
-                return new SceneAsset(arg);
-            return new Asset(arg);
-        }
-
         protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
         {
             if (again)
@@ -48,11 +34,16 @@ namespace WooAsset
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundles()
                     .Select(x => x.bundleName).ToList()
-                    , version, getPkgs,AssetsInternal.GetEncrypt());
+                    , version, getPkgs, AssetsInternal.GetEncrypt());
             return manifestOp;
         }
 
         protected override CheckBundleVersionOperation VersionCheck() => new CheckBundleVersionOperation();
+
+        protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args)
+        {
+            return new Bundle(args);
+        }
     }
 
 }

@@ -16,13 +16,13 @@ namespace WooAsset
 
             private Dictionary<string, T> map = new Dictionary<string, T>();
             private List<T> values = new List<T>();
-            public T Find(string name)
+            public T Find(string uid)
             {
                 T result = default;
-                map.TryGetValue(name, out result);
+                map.TryGetValue(uid, out result);
                 return result;
             }
-            protected abstract T CreateNew(string name, IAssetArgs args);
+            protected abstract T CreateNew(IAssetArgs args);
 
             public void RetainRef(T asset)
             {
@@ -30,22 +30,26 @@ namespace WooAsset
                 asset.Retain();
                 listen?.OnAssetRetain(asset, asset.refCount);
             }
-            protected T LoadAsync(string name, IAssetArgs args)
+            public void RetainRef(string uid) => RetainRef(Find(uid));
+
+
+            public T LoadAsync(IAssetArgs args)
             {
-                T result = Find(name);
+                string uid = args.uid;
+                T result = Find(uid);
                 if (result == null)
                 {
-                    result = CreateNew(name, args);
-                    map.Add(name, result);
+                    result = CreateNew(args);
+                    map.Add(uid, result);
                     values.Add(result);
                     result.LoadAsync();
-                    listen?.OnAssetCreate(name, result);
+                    listen?.OnAssetCreate(uid, result);
                 }
                 OnRetain(result, result.refCount != 0);
                 return result;
             }
             protected abstract void OnRetain(T asset, bool old);
-            public abstract void Release(string name);
+            public abstract void Release(string uid);
             protected int ReleaseRef(T t)
             {
                 var count = t.Release();
@@ -60,19 +64,19 @@ namespace WooAsset
                     if (item.Value.refCount == 0) result.Add(item.Key);
                 return result;
             }
-            protected void TryRealUnload(string path)
+            protected void TryRealUnload(string uid)
             {
-                T asset = Find(path);
+                T asset = Find(uid);
                 if (asset.refCount != 0) return;
                 asset.UnLoad();
-                Remove(path);
+                Remove(uid);
             }
-            protected void Remove(string path)
+            protected void Remove(string uid)
             {
-                T asset = Find(path);
-                map.Remove(path);
+                T asset = Find(uid);
+                map.Remove(uid);
                 values.Remove(asset);
-                listen?.OnAssetUnload(path, asset);
+                listen?.OnAssetUnload(uid, asset);
             }
             public IReadOnlyList<T> GetAll()
             {

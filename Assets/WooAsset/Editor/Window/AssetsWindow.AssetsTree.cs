@@ -49,6 +49,8 @@ namespace WooAsset
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
                     TreeColumns.emptyTitle,
+                    TreeColumns.loopDepenence,
+
                     TreeColumns.usageCount,
                     TreeColumns.depenceCount,
 
@@ -221,6 +223,19 @@ namespace WooAsset
 
             }
 
+            private bool DirectoryLoop(EditorAssetData data)
+            {
+                var tree = AssetsEditorTool.cache.tree;
+                var folds = tree.GetSubFolders(data);
+                var files = tree.GetSubFiles(data);
+                foreach (var file in files)
+                    if (file.loopDependence)
+                        return true;
+                foreach (var fold in folds)
+                    if (DirectoryLoop(fold))
+                        return true;
+                return false;
+            }
             protected override void RowGUI(RowGUIArgs args)
             {
                 var asset = cache.tree.GetAssetData(args.label);
@@ -233,16 +248,22 @@ namespace WooAsset
                     GUI.Label(first, new GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
                 if (asset.type != AssetType.Directory)
                 {
-                    GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                    GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
 
+                    if (asset.loopDependence)
+                        GUI.Label(args.GetCellRect(1), Textures.err);
 
-                    GUI.Label(args.GetCellRect(3), asset.type.ToString());
-
-                    GUI.Label(args.GetCellRect(6), GetTagsString(asset));
+                    GUI.Label(args.GetCellRect(2), asset.usageCount.ToString());
+                    GUI.Label(args.GetCellRect(3), asset.dependence.Count.ToString());
+                    GUI.Label(args.GetCellRect(4), asset.type.ToString());
+                    GUI.Label(args.GetCellRect(7), GetTagsString(asset));
                 }
-                GUI.Label(args.GetCellRect(4), GetSizeString(asset.length));
-                GUI.Label(args.GetCellRect(5), asset.hash);
+                else
+                {
+                    if (DirectoryLoop(asset))
+                        GUI.Label(args.GetCellRect(1), Textures.err);
+                }
+                GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
+                GUI.Label(args.GetCellRect(6), asset.hash);
                 if (ping_a == asset)
                     GUI.Label(RectEx.Zoom(args.rowRect, TextAnchor.MiddleCenter, -8), "", "LightmapEditorSelectedHighlight");
             }

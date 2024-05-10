@@ -56,7 +56,8 @@ namespace WooAsset
     }
     partial class AssetsInternal
     {
-        private static AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg) => mode.CreateAsset(assetPath, arg);
+        private static Bundle CreateBundle(BundleLoadArgs args) => mode.CreateBundle(args.bundleName, args);
+        private static AssetHandle CreateAsset(AssetLoadArgs arg) => mode.CreateAsset(arg);
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
@@ -130,8 +131,8 @@ namespace WooAsset
 
 
 
-        public static Asset LoadFileAsset(string path, bool async) => assets.LoadAssetAsync(new AssetLoadArgs(path, true, path.EndsWith("unity"), null, "", async)) as Asset;
-        public static AssetHandle LoadAsset(string path, bool async)
+        public static Asset LoadFileAsset(string path, bool async) => assets.LoadAsync(new AssetLoadArgs(path, true, false, null, "", async, null)) as Asset;
+        public static AssetHandle LoadAsset(string path, bool async, Type type)
         {
             assets.RemoveUselessAsset();
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
@@ -151,12 +152,12 @@ namespace WooAsset
                 result.Clear();
                 foreach (var item in data.dps)
                 {
-                    AssetHandle _asset = LoadAsset(item, async);
+                    AssetHandle _asset = LoadAsset(item, async, typeof(UnityEngine.Object));
                     if (_asset != null)
                         result.Add(_asset);
                 }
             }
-            return assets.LoadAssetAsync(new AssetLoadArgs(data.path, false, data.path.EndsWith("unity"), result, "", async));
+            return assets.LoadAsync(new AssetLoadArgs(data.path, false, data.path.EndsWith("unity"), result, "", async, type));
         }
 
         public static bool GetIsAssetLoaded(string assetPath) => assets.Find(assetPath) != null;

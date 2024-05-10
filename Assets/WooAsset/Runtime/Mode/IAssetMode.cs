@@ -11,8 +11,9 @@ namespace WooAsset
         bool Initialized();
         Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
         UnzipRawFileOperation UnzipRawFile();
-        AssetHandle CreateAsset(string assetPath, AssetLoadArgs arg);
+        AssetHandle CreateAsset(AssetLoadArgs arg);
         CheckBundleVersionOperation VersionCheck();
         CopyStreamBundlesOperation CopyToSandBox(string from, string to);
+        Bundle CreateBundle(string bundleName, BundleLoadArgs args);
     }
 }

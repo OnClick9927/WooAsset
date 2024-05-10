@@ -8,16 +8,15 @@ namespace WooAsset
     {
         private class BundleMap : NameMap<Bundle>
         {
-            public Bundle LoadAsync(BundleLoadArgs args) => base.LoadAsync(args.bundleName, args);
-            protected override Bundle CreateNew(string path, IAssetArgs args) => new Bundle((BundleLoadArgs)args);
+            protected override Bundle CreateNew(IAssetArgs args) => AssetsInternal.CreateBundle((BundleLoadArgs)args);
 
-            public override void Release(string path)
+            public override void Release(string uid)
             {
-                Bundle result = Find(path);
+                Bundle result = Find(uid);
                 if (result == null) return;
                 ReleaseRef(result);
                 if (!GetAutoUnloadBundle()) return;
-                TryRealUnload(path);
+                TryRealUnload(uid);
             }
             private List<string> useless = new List<string>();
             public void UnloadBundles()

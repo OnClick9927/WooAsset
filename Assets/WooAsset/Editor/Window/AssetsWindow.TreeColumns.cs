@@ -76,8 +76,8 @@ namespace WooAsset
             public static MultiColumnHeaderState.Column type = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Type"),
-                maxWidth = 200,
-                minWidth = 150,
+                maxWidth = 100,
+                minWidth = 100,
                 allowToggleVisibility = false,
 
             };
@@ -97,19 +97,27 @@ namespace WooAsset
                 allowToggleVisibility = false,
 
             };
+            public static MultiColumnHeaderState.Column loopDepenence = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Loop"),
+                minWidth = 40,
+                maxWidth = 40,
+                allowToggleVisibility = false,
+
+            };
             public static MultiColumnHeaderState.Column usageCount = new MultiColumnHeaderState.Column()
             {
-                headerContent = new UnityEngine.GUIContent("Usage Count"),
-                minWidth = 80,
-                maxWidth = 80,
+                headerContent = new UnityEngine.GUIContent("Usage"),
+                minWidth = 40,
+                maxWidth = 40,
                 allowToggleVisibility = false,
 
             };
             public static MultiColumnHeaderState.Column depenceCount = new MultiColumnHeaderState.Column()
             {
-                headerContent = new UnityEngine.GUIContent("Depence Count"),
-                minWidth = 100,
-                maxWidth = 100,
+                headerContent = new UnityEngine.GUIContent("Depence"),
+                minWidth = 60,
+                maxWidth = 60,
                 allowToggleVisibility = false,
 
             };

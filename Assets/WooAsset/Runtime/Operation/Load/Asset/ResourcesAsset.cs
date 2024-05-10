@@ -19,16 +19,13 @@ namespace WooAsset
         }
         public Object[] _allAssets;
         public override Object[] allAssets => _allAssets;
+        protected override Object LoadAagain<T>()
+        {
+            return Resources.Load(resPath, typeof(Sprite));
+        }
         public override T GetAsset<T>()
         {
-            if (value is Texture2D)
-            {
-                if (typeof(T) == typeof(Sprite))
-                {
-                    var sp = Resources.Load(resPath, typeof(Sprite));
-                    SetResult(sp);
-                }
-            }
+            EditorCheck<T>();
             return value as T;
         }
 
@@ -39,16 +36,16 @@ namespace WooAsset
         }
         protected async override void LoadUnityObject()
         {
-            _allAssets = Resources.LoadAll<Object>(resPath);
+            _allAssets = Resources.LoadAll(resPath, type);
             if (async)
             {
-                loadOp = Resources.LoadAsync<Object>(resPath);
+                loadOp = Resources.LoadAsync(resPath, type);
                 await loadOp;
                 SetResult(loadOp.asset);
             }
             else
             {
-                SetResult(Resources.Load<Object>(resPath));
+                SetResult(Resources.Load(resPath, type));
             }
         }
 

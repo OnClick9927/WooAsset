@@ -19,6 +19,7 @@
 
         public AssetHandle FindAsset(string path)
         {
+            path = AssetsHelper.ToRegularPath(path);
             for (int i = 0; i < paths.Length; i++)
             {
                 if (paths[i] == path)
@@ -40,7 +41,7 @@
                 assets = new AssetHandle[paths.Length];
                 for (int i = 0; i < paths.Length; i++)
                 {
-                    assets[i] = AssetsInternal.LoadAsset(paths[i],true);
+                    assets[i] = AssetsInternal.LoadAsset(paths[i], true, typeof(UnityEngine.Object));
                 }
                 for (int i = 0; i < paths.Length; i++)
                 {
@@ -52,9 +53,12 @@
         }
         public void Release()
         {
-            for (int i = 0; i < assets.Length; i++)
+            if (assets != null)
             {
-                Assets.Release(assets[i]);
+                for (int i = 0; i < assets.Length; i++)
+                {
+                    Assets.Release(assets[i]);
+                }
             }
             paths = null;
             assets = null;

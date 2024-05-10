@@ -16,10 +16,16 @@ namespace WooAsset
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
         public static UnzipRawFileOperation UnzipRawFile() => AssetsInternal.UnzipRawFile();
-        public static Asset LoadAssetAsync(string path) => AssetsInternal.LoadAsset(path, true) as Asset;
-        public static Asset LoadAsset(string path) => AssetsInternal.LoadAsset(path, false) as Asset;
-        public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, true) as SceneAsset;
-        public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false) as SceneAsset;
+        public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, true, type) as Asset;
+        public static Asset LoadAsset(string path, Type type) => AssetsInternal.LoadAsset(path, false, type) as Asset;
+        public static Asset LoadAssetAsync(string path) => LoadAssetAsync(path, typeof(UnityEngine.Object));
+        public static Asset LoadAsset(string path) => LoadAsset(path, typeof(UnityEngine.Object));
+        public static Asset LoadAssetAsync<T>(string path) where T : UnityEngine.Object => LoadAssetAsync(path, typeof(T));
+        public static Asset LoadAsset<T>(string path) where T : UnityEngine.Object => LoadAsset(path, typeof(T));
+
+
+        public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, true, null) as SceneAsset;
+        public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, null) as SceneAsset;
         public static Asset LoadFileAsset(string path) => AssetsInternal.LoadFileAsset(path, false);
         public static Asset LoadFileAssetAsync(string path) => AssetsInternal.LoadFileAsset(path, true);
 
@@ -38,6 +44,7 @@ namespace WooAsset
         public static IReadOnlyList<string> GetAllTags() => AssetsInternal.GetAllTags();
 
         public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => AssetsInternal.GetAllAssetPaths(bundleName);
+
     }
 
     partial class Assets
@@ -76,7 +83,7 @@ namespace WooAsset
 
 
         public static AssetsGroupOperation PrepareAssets(string[] paths) => new AssetsGroupOperation(paths);
-        public static AssetsGroupOperation PrepareAssetsByTag(string tag) => new AssetsGroupOperation(Assets.GetTagAssetPaths(tag).ToArray());
+        public static AssetsGroupOperation PrepareAssetsByTag(string tag) => new AssetsGroupOperation(Assets.GetTagAssetPaths(tag)?.ToArray());
         public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => new InstantiateObjectOperation(path, parent);
         public static void Destroy(GameObject gameObject)
         {

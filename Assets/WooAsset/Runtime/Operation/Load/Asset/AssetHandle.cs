@@ -1,34 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine.Profiling;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
-    public struct AssetLoadArgs : IAssetArgs
-    {
-        public string bundleName;
-        public string path;
-        public bool direct;
-        public bool scene;
-        public List<AssetHandle> dps;
-        public bool async;
-        public AssetLoadArgs(string path, bool direct, bool scene, List<AssetHandle> dps, string bundleName, bool async)
-        {
-            this.dps = dps;
-            this.path = path;
-            this.direct = direct;
-            this.scene = scene;
-            this.bundleName = bundleName;
-            this.async = async;
-        }
-    }
     public abstract class AssetHandle : AssetOperation<Object>
     {
+        protected Type type => loadArgs.type;
+
         public override bool async => loadArgs.async;
         public bool isBundleUnloaded => bundle == null ? false : bundle.unloaded;
-        public Bundle bundle { get; private set; }
+        protected Bundle bundle { get; private set; }
+
         public virtual string path => loadArgs.path;
         protected bool direct => loadArgs.direct;
-
         public string bundleName => loadArgs.bundleName;
         public List<AssetHandle> dps => loadArgs.dps;
         protected float dpProgress
@@ -79,10 +64,7 @@ namespace WooAsset
         }
 
         protected abstract void InternalLoad();
-        protected override sealed long ProfilerAsset(Object value)
-        {
-            return value == null ? 0 : Profiler.GetRuntimeMemorySizeLong(value);
-        }
+   
     }
 
 }

@@ -8,7 +8,7 @@ namespace WooAsset
 
         protected override bool CouldRelease()
         {
-            return context;
+            return context == null;
         }
     }
 }

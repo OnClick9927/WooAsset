@@ -43,53 +43,37 @@ namespace WooAsset
 
 
             context.allBundleGroups = builds;
-            //foreach (BundleGroup group in builds)
-            //{
-            //    //GetDependenceBundleGroup(context, group);
-            //    //GetUsageBundleGroup(context, group);
-            //}
+            foreach (BundleGroup group in builds)
+                GetDependenceBundleGroup(context, group);
+            foreach (BundleGroup group in builds)
+                GetUsageBundleGroup(context, group);
             InvokeComplete();
         }
-        //private BundleGroup GetBundleGroupByAssetPath(List<BundleGroup> previewBundles, string assetPath)
-        //{
-        //    return previewBundles.Find(x => x.ContainsAsset(assetPath));
-        //}
-        //private void GetDependenceBundleGroup(AssetTaskContext context, BundleGroup group)
-        //{
-        //    foreach (var assetPath in group.GetAssets())
-        //    {
-        //        EditorAssetData data = context.tree.GetAssetData(assetPath);
-        //        if (data != null)
-        //        {
-        //            var dps = data.dependence;
-        //            foreach (var dp in dps)
-        //            {
-        //                BundleGroup _group = GetBundleGroupByAssetPath(context.allBundleGroups, dp);
-        //                if (_group == null || _group == group) continue;
-        //                if (!group.dependence.Contains(_group.hash))
-        //                    group.dependence.Add(_group.hash);
-        //                GetDependenceBundleGroup(context, _group);
-        //            }
-        //        }
+        private BundleGroup GetBundleGroupByAssetPath(List<BundleGroup> previewBundles, string assetPath)
+        {
+            return previewBundles.Find(x => x.ContainsAsset(assetPath));
+        }
+        private void GetDependenceBundleGroup(AssetTaskContext context, BundleGroup group)
+        {
+            group.dependence.Clear();
+            var result = group.GetAssets()
+                   .Select(x => context.tree.GetAssetData(x))
+                   .SelectMany(x => x.dependence)
+                   .Distinct()
+                   .Select(x => GetBundleGroupByAssetPath(context.allBundleGroups, x))
+                   .Distinct()
+                   .Select(x => x.hash);
+            group.dependence.AddRange(result);
+        }
 
-        //    }
-        //}
-
-        //private void GetUsageBundleGroup(AssetTaskContext context, BundleGroup group)
-        //{
-        //    foreach (var item in group.GetAssets())
-        //    {
-        //        var asset = context.tree.GetAssetData(item);
-        //        foreach (var assetPath in asset.usage)
-        //        {
-        //            var g = GetBundleGroupByAssetPath(context.allBundleGroups, assetPath);
-        //            if (g == null) continue;
-        //            string hash = g.hash;
-        //            if (group.usage.Contains(hash)) continue;
-        //            group.usage.Add(hash);
-        //        }
-        //    }
-        //}
+        private void GetUsageBundleGroup(AssetTaskContext context, BundleGroup group)
+        {
+            group.usage.Clear();
+            var result = context.allBundleGroups
+                .FindAll(x => x.dependence.Contains(group.hash))
+                .Select(x => x.hash);
+            group.usage.AddRange(result);
+        }
 
     }
 }

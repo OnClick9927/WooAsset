@@ -17,7 +17,7 @@ namespace WooAsset
             };
             bundles.Add(asset.bundleName, life);
             await asset;
-            life.assetLength = asset.assetLength;
+            life.assetLength = asset.length;
             onAssetLifeChange?.Invoke();
         }
         void IAssetLife<Bundle>.OnAssetRetain(Bundle asset, int count) => onAssetLifeChange?.Invoke();
@@ -29,18 +29,17 @@ namespace WooAsset
         }
         async void IAssetLife<AssetHandle>.OnAssetCreate(string path, AssetHandle asset)
         {
-
+            var data = cache.tree.GetAssetData(path);
             var life = new AssetLife<AssetHandle>()
             {
                 asset = asset,
                 tags = Assets.GetAssetTags(path),
                 assetType = AssetsInternal.GetAssetType(path).ToString(),
+                assetLength = data == null ? 0 : data.length
             };
             assets.Add(path, life);
             onAssetLifeChange?.Invoke();
             await asset;
-
-            life.assetLength = asset.assetLength;
             onAssetLifeChange?.Invoke();
         }
         void IAssetLife<AssetHandle>.OnAssetRelease(AssetHandle asset, int count) => onAssetLifeChange?.Invoke();
@@ -137,7 +136,7 @@ namespace WooAsset
             {
                 string path = "Assets/Editor";
                 AssetsHelper.CreateDirectory(path);
-               
+
                 return path;
             }
         }
@@ -179,8 +178,8 @@ namespace WooAsset
             }
         }
 
- 
-     
+
+
 
         public static T CreateScriptableObject<T>(string savePath) where T : ScriptableObject
         {

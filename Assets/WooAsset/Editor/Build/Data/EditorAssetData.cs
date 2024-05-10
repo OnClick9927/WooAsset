@@ -11,7 +11,7 @@ namespace WooAsset
         public AssetType type;
         public string directory;
         public List<string> tags;
-
+        public bool loopDependence = false;
         public List<string> usage = new List<string>();
         public int usageCount { get { return usage.Count; } }
         public static EditorAssetData Create(string path, AssetType _type)

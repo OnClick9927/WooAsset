@@ -1,55 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Profiling;
+using UnityEngine.SceneManagement;
 
 namespace WooAsset
 {
-    public class BundleStream : FileStream
-    {
-        private static Queue<BundleStream> streams = new Queue<BundleStream>();
-        public static void CloseStreams()
-        {
-#if UNITY_EDITOR
-            AssetsHelper.Log($"clear file {streams.Count} streams for editor");
-            while (streams.Count > 0) { 
-                streams
-                    .Dequeue().Dispose();
-            
-            }
-#endif
-        }
-        private readonly string bundleName;
-        private IAssetStreamEncrypt encrypt;
-        public BundleStream(string path, FileMode mode, FileAccess access, FileShare share, string bundleName, IAssetStreamEncrypt encrypt) : base(path, mode, access, share)
-        {
-            this.bundleName = bundleName;
-            this.encrypt = encrypt;
-            streams.Enqueue(this);
-        }
-
-        public override int Read(byte[] array, int offset, int count)
-        {
-            var index = base.Read(array, offset, count);
-            EncryptBuffer.Decode(bundleName, array, offset, count, encrypt);
-
-            return index;
-        }
-    }
-
-    public struct BundleLoadArgs : IAssetArgs
-    {
-        public string bundleName;
-        public bool async;
-        public IAssetStreamEncrypt encrypt;
-        public BundleLoadArgs(string bundleName, bool async, IAssetStreamEncrypt en)
-        {
-            this.bundleName = bundleName;
-            this.async = async;
-            this.encrypt = en;
-        }
-    }
     public class Bundle : AssetOperation<AssetBundle>
     {
         private enum BundleLoadType
@@ -63,6 +19,7 @@ namespace WooAsset
         private IAssetStreamEncrypt encrypt => loadArgs.encrypt;
         public override bool async => _async;
         protected BundleLoadArgs loadArgs;
+
         public string bundleName => loadArgs.bundleName;
 
         private AssetBundleCreateRequest loadOp;
@@ -99,7 +56,9 @@ namespace WooAsset
             }
         }
 
-        protected override long ProfilerAsset(AssetBundle value)
+        private long _length;
+        public long length => _length;
+        protected virtual long ProfilerAsset(AssetBundle value)
         {
             return Profiler.GetRuntimeMemorySizeLong(value);
         }
@@ -125,6 +84,12 @@ namespace WooAsset
                 }
                 SetResult(result);
             }
+        }
+
+        protected override void SetResult(AssetBundle value)
+        {
+            _length = ProfilerAsset(value);
+            base.SetResult(value);
         }
         private async void LoadFromStream()
         {
@@ -202,14 +167,18 @@ namespace WooAsset
             //Resources.UnloadUnusedAssets();
         }
 
-        public AssetBundleRequest LoadAssetAsync(string name, Type type)
+        public virtual AssetRequest LoadAssetAsync(string name, Type type)
         {
-            return value.LoadAssetWithSubAssetsAsync(name, type);
+            return new RuntimeAssetRequest(value.LoadAssetWithSubAssetsAsync(name, type));
         }
-        public UnityEngine.Object[] LoadAsset(string name, Type type)
+        public virtual UnityEngine.Object[] LoadAsset(string name, Type type)
         {
             return value.LoadAssetWithSubAssets(name, type);
         }
 
+        public virtual Scene LoadScene(string path, LoadSceneParameters parameters) => SceneManager.LoadScene(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
+        public AsyncOperation UnLoadScene(string path, UnloadSceneOptions op) => SceneManager.UnloadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), op);
+        public virtual AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => SceneManager.LoadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
     }
+
 }

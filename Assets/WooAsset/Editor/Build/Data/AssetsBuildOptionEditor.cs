@@ -16,106 +16,156 @@ namespace WooAsset
                 Runtime, Tool, AssetTag, Build
             }
             private Tab tab;
-            private void OnEnable() => tab = (Tab)EditorPrefs.GetInt(key, 0);
-            private void OnDisable() => EditorPrefs.SetInt(key, (int)tab);
-            static void V(string title, Action action)
+         
+            private abstract class OptionTab
             {
-                GUILayout.BeginVertical(EditorStyles.helpBox);
-                GUILayout.Label(title, EditorStyles.whiteLargeLabel);
-                GUILayout.Label("", GUILayout.Height(0));
-                var rect = GUILayoutUtility.GetLastRect();
-                EditorGUI.LabelField(rect, "", new GUIStyle("in title"));
-                action?.Invoke();
-                GUILayout.Space(5);
-                GUILayout.EndVertical();
+                public bool change { get; private set; }
+                public abstract void OnGUI(SerializedObject serializedObject);
+                protected void BeginGUI(string title)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    GUILayout.BeginVertical(EditorStyles.helpBox);
+                    GUILayout.Label(title, EditorStyles.whiteLargeLabel);
+                    GUILayout.Label("", GUILayout.Height(0));
+                    var rect = GUILayoutUtility.GetLastRect();
+                    EditorGUI.LabelField(rect, "", (GUIStyle)"in title");
+                }
+                protected void MidGUI(string title)
+                {
+                    GUILayout.Space(5);
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical(EditorStyles.helpBox);
+                    GUILayout.Label(title, EditorStyles.whiteLargeLabel);
+                    GUILayout.Label("", GUILayout.Height(0));
+                    var rect = GUILayoutUtility.GetLastRect();
+                    EditorGUI.LabelField(rect, "", (GUIStyle)"in title");
+                }
+                protected void EndGUI()
+                {
+                    GUILayout.Space(5);
+                    GUILayout.EndVertical();
+                    change = EditorGUI.EndChangeCheck();
+                }
             }
-            public override void OnInspectorGUI()
+
+            private class RuntimeTab : OptionTab
             {
-                tab = (Tab)GUILayout.Toolbar((int)tab, Enum.GetNames(typeof(Tab)));
-                EditorGUI.BeginChangeCheck();
+                public override void OnGUI(SerializedObject serializedObject)
+                {
+                    BeginGUI("Asset Mode");
+                    option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
+                    MidGUI("Simulated Asset Server");
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("enableServer"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("serverDirectory"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("serverPort"));
+                    EndGUI();
+
+
+                }
+            }
+            private class ToolTab : OptionTab
+            {
+                public override void OnGUI(SerializedObject serializedObject)
+                {
+                    BeginGUI("Shader Variant");
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantDirectory)));
+                    MidGUI("Sprite Atlas");
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.packSetting)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.textureSetting)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.PlatformSetting)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.atlasPaths)));
+                    EndGUI();
+                }
+            }
+            private class AssetTagTab : OptionTab
+            {
+                public override void OnGUI(SerializedObject serializedObject)
+                {
+                    BeginGUI("Asset Tags");
+
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.tags)));
+                    EndGUI();
+
+                }
+            }
+            private class BuildTab : OptionTab
+            {
+                public override void OnGUI(SerializedObject serializedObject)
+                {
+                    BeginGUI("Build");
+
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildPkgs)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
+
+
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.version)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.forceRebuild)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.AppendHashToAssetBundleName)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.typeTreeOption)));
+
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.compress)));
+
+                    option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
+                    option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
+
+
+                    GUI.enabled = false;
+                    EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);
+                    EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
+                    EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
+                    GUILayout.Space(20);
+                    EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
+                    EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);
+
+                    GUI.enabled = true;
+                    EndGUI();
+                }
+            }
+
+
+            private RuntimeTab runtimeTab = new RuntimeTab();
+            private ToolTab toolTab = new ToolTab();
+            private AssetTagTab assetTagTab = new AssetTagTab();
+            private BuildTab buildTab = new BuildTab();
+
+            private OptionTab GetTab()
+            {
                 switch (tab)
                 {
                     case Tab.Runtime:
-                        V("Asset Mode",
-                           () =>
-                           {
-                               option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
-                           });
-                        V("Simulated Asset Server", () =>
-                        {
-                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("enableServer"));
-                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("serverDirectory"));
-                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("serverPort"));
-
-                        });
-                        break;
+                        return runtimeTab;
                     case Tab.Tool:
-                        V("Shader Variant",
-                          () =>
-                          {
-                              EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantDirectory)));
-                          });
-                        V("Sprite Atlas",
-                           () =>
-                           {
-                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.packSetting)));
-                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.textureSetting)));
-                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.PlatformSetting)));
-                               EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.atlasPaths)));
-
-                           });
-                        break;
+                        return toolTab;
                     case Tab.AssetTag:
-                        V("Asset Tags", () =>
-                        {
-                            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.tags)));
-                        });
-                        break;
+                        return assetTagTab;
                     case Tab.Build:
-                        V("Build",
-                          () =>
-               {
-
-
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.buildPkgs)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
-
-
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.version)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.forceRebuild)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.AppendHashToAssetBundleName)));
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.typeTreeOption)));
-
-                   EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(AssetsBuildOption.compress)));
-
-                   option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
-                   option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
-
-
-                   GUI.enabled = false;
-                   EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);
-                   EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
-                   EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
-                   GUILayout.Space(20);
-                   EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
-                   EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);
-
-                   GUI.enabled = true;
-               });
-                        break;
+                        return buildTab;
                     default:
-                        break;
+                        throw new Exception();
                 }
 
+            }
 
 
-                if (EditorGUI.EndChangeCheck())
+
+            private void OnEnable() => tab = (Tab)EditorPrefs.GetInt(key, 0);
+            private void OnDisable() => EditorPrefs.SetInt(key, (int)tab);
+            public override void OnInspectorGUI()
+            {
+                tab = (Tab)GUILayout.Toolbar((int)tab, Enum.GetNames(typeof(Tab)));
+                this.serializedObject.Update();
+                OptionTab _tab = GetTab();
+                _tab.OnGUI(this.serializedObject);
+
+                if (_tab.change)
                 {
                     this.serializedObject.ApplyModifiedProperties();
                     option.Save();
                 }
+
+               
             }
         }
 

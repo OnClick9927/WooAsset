@@ -42,7 +42,7 @@ namespace WooAsset
                 {
                     map.Add(bundleName, bundle);
                     await bundle;
-                    length += bundle.assetLength;
+                    length += bundle.length;
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace WooAsset
                     string _bundleName = list.First.Value;
                     Bundle _bundle = map[_bundleName];
                     ReleaseBundle(_bundle);
-                    length -= _bundle.assetLength;
+                    length -= _bundle.length;
                     map.Remove(_bundleName);
                     list.RemoveFirst();
                 }

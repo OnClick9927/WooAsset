@@ -26,6 +26,8 @@ namespace WooAsset
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
                     TreeColumns.dependence,
+                    TreeColumns.loopDepenence,
+
                     TreeColumns.usageCount,
                     TreeColumns.depenceCount,
                     TreeColumns.size,
@@ -80,7 +82,7 @@ namespace WooAsset
                 result.Add(_item);
                 return _item;
             }
-  
+
             protected override void RowGUI(RowGUIArgs args)
             {
                 string path = args.label;
@@ -91,16 +93,19 @@ namespace WooAsset
 
 
                 GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(path, Textures.GetMiniThumbnail(path)));
-                GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
+                if (asset.loopDependence)
+                    GUI.Label(args.GetCellRect(1), Textures.err);
 
-                GUI.Label(args.GetCellRect(3), GetSizeString(asset.length));
-                GUI.Label(args.GetCellRect(4), asset.hash);
-                GUI.Label(args.GetCellRect(7), GetTagsString(asset));
+                GUI.Label(args.GetCellRect(2), asset.usageCount.ToString());
+                GUI.Label(args.GetCellRect(3), asset.dependence.Count.ToString());
+
+                GUI.Label(args.GetCellRect(4), GetSizeString(asset.length));
+                GUI.Label(args.GetCellRect(5), asset.hash);
+                GUI.Label(args.GetCellRect(8), GetTagsString(asset));
                 if (group != null)
                 {
-                    EditorGUI.SelectableLabel(args.GetCellRect(5), group.hash);
-                    GUI.Label(args.GetCellRect(6), GetSizeString(group.length));
+                    EditorGUI.SelectableLabel(args.GetCellRect(6), group.hash);
+                    GUI.Label(args.GetCellRect(7), GetSizeString(group.length));
                 }
             }
 
