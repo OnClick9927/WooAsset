@@ -1,56 +1,27 @@
-﻿using UnityEditor;
-using UnityEditor.IMGUI.Controls;
+﻿using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace WooAsset
 {
     partial class AssetsWindow
     {
-
-        private class BundleDpTree : TreeView
+        private class BundleDpTree : BundleTreeBase
         {
-            private List<BundleGroup> groups = new List<BundleGroup>();
-            private readonly IPing<BundleGroup> bundlesTree;
-
-            public BundleDpTree(TreeViewState state, IPing<BundleGroup> bundlesTree) : base(state)
-            {
-                this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
-                {
-TreeColumns.dependence,
-                   TreeColumns.usageCount,
-                    TreeColumns.depenceCount,
-TreeColumns.size,
-
-                }));
-
-                this.multiColumnHeader.ResizeToFit();
-                this.bundlesTree = bundlesTree;
-                showAlternatingRowBackgrounds = true;
-
-                Reload();
-            }
-
-
             public void SetBundleGroup(BundleGroup group)
             {
                 if (group != null)
-                    this.groups = group.dependence.ConvertAll(x => cache.GetBundleGroupByBundleName(x));
+                    base.SetBundleGroups(group.dependence.ConvertAll(x => cache.GetBundleGroupByBundleName(x)));
                 else
-                    this.groups = null;
-                this.Reload();
+                    base.SetBundleGroups(null);
             }
 
-            protected override TreeViewItem BuildRoot()
+            public BundleDpTree(TreeViewState state, IPing<BundleGroup> ping) : base(state, ping)
             {
-                return new TreeViewItem() { id = -10, depth = -1 };
 
             }
-            protected override IList<TreeViewItem> BuildRows(TreeViewItem root)
-            {
-                var result = GetRows() ?? new List<TreeViewItem>();
-                result.Clear();
 
+            protected override void CreateRows(TreeViewItem root, IList<TreeViewItem> result)
+            {
                 if (this.groups != null && this.groups.Count > 0)
                 {
                     for (int i = 0; i < groups.Count; i++)
@@ -58,45 +29,10 @@ TreeColumns.size,
                         BuildBundle(i, root, result);
                     }
                 }
-
-                SetupParentsAndChildrenFromDepths(root, result);
-                return result;
-            }
-            private TreeViewItem BuildBundle(int i, TreeViewItem root, IList<TreeViewItem> result)
-            {
-                var bundle = groups[i];
-                var _item = new TreeViewItem()
-                {
-                    id = i,
-                    depth = 0,
-                    parent = root,
-                    displayName = bundle.hash,
-
-
-                };
-                root.AddChild(_item);
-                result.Add(_item);
-                return _item;
             }
 
-            protected override void RowGUI(RowGUIArgs args)
-            {
 
-                float indent = this.GetContentIndent(args.item);
-                var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
-                GUI.Label(first, new GUIContent(args.label, Textures.folder));
-                BundleGroup group = cache.GetBundleGroupByBundleName(args.label);
-
-                GUI.Label(args.GetCellRect(1), group.usage.Count.ToString());
-                GUI.Label(args.GetCellRect(2), groups.Count.ToString());
-                GUI.Label(args.GetCellRect(3), GetSizeString(group.length));
-
-            }
-            protected override void DoubleClickedItem(int id)
-            {
-                var group = groups[id];
-                bundlesTree.Ping(group);
-            }
+            protected override MultiColumnHeaderState.Column GetFirstColomn() => TreeColumns.dependence;
         }
     }
 }

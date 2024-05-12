@@ -6,14 +6,13 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
-using System.Runtime.Remoting.Contexts;
 
 namespace WooAsset
 {
     partial class AssetsWindow
     {
 
-        private class AssetsTree : TreeView, IPing<EditorAssetData>
+        private class AssetsTree : AssetTreeBase, IPing<EditorAssetData>
         {
             public enum SearchType
             {
@@ -37,48 +36,24 @@ namespace WooAsset
                 Usage = 4,
             }
             private DpViewType dpViewType = DpViewType.None;
-            public AssetsTree(TreeViewState state, SearchType _searchType) : base(state)
+            public AssetsTree(TreeViewState state, SearchType _searchType) : base(state, null)
             {
+                this.ping = this;
                 assetDp = new AssetDpTree(new TreeViewState(), this);
                 assetUsage = new AssetUsageTree(new TreeViewState(), this);
                 this._searchType = _searchType;
                 search = new SearchField(this.searchString, System.Enum.GetNames(typeof(SearchType)), (int)_searchType);
                 search.onValueChange += (value) => { this.searchString = value.ToLower(); };
                 search.onModeChange += (value) => { this._searchType = (SearchType)value; this.Reload(); };
-                showAlternatingRowBackgrounds = true;
-                this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
-                {
-                    TreeColumns.emptyTitle,
-                    TreeColumns.loopDepenence,
-
-                    TreeColumns.usageCount,
-                    TreeColumns.depenceCount,
-
-                    TreeColumns.type,
-                    TreeColumns.size,
-                    TreeColumns.hash,
-                    TreeColumns.tag,
-
-                }));
-                this.multiColumnHeader.ResizeToFit();
-                this.Reload();
-
             }
+            protected override MultiColumnHeaderState.Column GetFirtColumn() => TreeColumns.emptyTitle;
 
-            protected override void SearchChanged(string newSearch)
-            {
-                Reload();
-            }
-            protected override TreeViewItem BuildRoot()
-            {
-                return new TreeViewItem() { id = -10, depth = -1 };
-            }
+            protected override void SearchChanged(string newSearch) => Reload();
+
 
             private long totalSize;
-            protected override IList<TreeViewItem> BuildRows(TreeViewItem root)
+            protected override void CreateRows(TreeViewItem root, IList<TreeViewItem> result)
             {
-                var result = GetRows() ?? new List<TreeViewItem>();
-                result.Clear();
                 var no_parent = cache.tree.GetNoneParent();
                 var root_dirs = no_parent.FindAll(x => x.type == AssetType.Directory);
                 var single_files = no_parent.FindAll(x => x.type != AssetType.Directory);
@@ -93,21 +68,16 @@ namespace WooAsset
                     BuildDirsForSearch(result, root, root_dirs);
                     BuildFilesForSearch(result, root, single_files);
                 }
-                SetupParentsAndChildrenFromDepths(root, result);
-
-                return result;
             }
+
             protected override void DoubleClickedItem(int id)
             {
                 var rows = this.FindRows(new List<int>() { id });
                 if (string.IsNullOrEmpty(searchString))
-                {
                     EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
-                }
                 else
-                {
-                    Ping(cache.tree.GetAssetData(rows[0].displayName));
-                }
+                    base.DoubleClickedItem(id);
+
             }
             protected override void SingleClickedItem(int id)
             {
@@ -240,32 +210,19 @@ namespace WooAsset
             {
                 var asset = cache.tree.GetAssetData(args.label);
                 if (asset == null) return;
-                float indent = this.GetContentIndent(args.item);
-                var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
-                if (string.IsNullOrEmpty(searchString))
-                    GUI.Label(first, new GUIContent(AssetsHelper.GetFileName(args.label), Textures.GetMiniThumbnail(args.label)));
-                else
-                    GUI.Label(first, new GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
                 if (asset.type != AssetType.Directory)
-                {
-
-                    if (asset.loopDependence)
-                        GUI.Label(args.GetCellRect(1), Textures.err);
-
-                    GUI.Label(args.GetCellRect(2), asset.usageCount.ToString());
-                    GUI.Label(args.GetCellRect(3), asset.dependence.Count.ToString());
-                    GUI.Label(args.GetCellRect(4), asset.type.ToString());
-                    GUI.Label(args.GetCellRect(7), GetTagsString(asset));
-                }
+                    base.RowGUI(args);
                 else
                 {
+                    float indent = this.GetContentIndent(args.item);
+                    var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
+                    GUI.Label(first, GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
                     if (DirectoryLoop(asset))
                         GUI.Label(args.GetCellRect(1), Textures.err);
+                    GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
                 }
-                GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
-                GUI.Label(args.GetCellRect(6), asset.hash);
                 if (ping_a == asset)
-                    GUI.Label(RectEx.Zoom(args.rowRect, TextAnchor.MiddleCenter, -8), "", "LightmapEditorSelectedHighlight");
+                    DrawPing(args.rowRect);
             }
 
 
@@ -282,10 +239,7 @@ namespace WooAsset
             }
             private void BuildDirsForSearch(IList<TreeViewItem> result, TreeViewItem parent, List<EditorAssetData> dirs)
             {
-                foreach (var path in dirs)
-                {
-                    LoopCreateForSearch(result, parent, path);
-                }
+                foreach (var path in dirs) LoopCreateForSearch(result, parent, path);
             }
             private void BuildFilesForSearch(IList<TreeViewItem> result, TreeViewItem parent, List<EditorAssetData> assets)
             {
@@ -310,45 +264,22 @@ namespace WooAsset
                     bool could = source.Contains(this.searchString);
                     if (could)
                     {
-                        CreateItem(asset.path, parent, result);
+                        CreateItem(asset.path, parent, result, parent.depth + 1);
                     }
                 }
             }
 
-
-
-            private static TreeViewItem CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result)
-            {
-                Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-                if (o == null) return null;
-                var _item = new TreeViewItem()
-                {
-                    id = o.GetInstanceID(),
-                    depth = parent.depth + 1,
-                    displayName = path,
-                    parent = parent,
-                };
-                parent.AddChild(_item);
-                result.Add(_item);
-                return _item;
-            }
             private void BuildDirs(IList<TreeViewItem> result, TreeViewItem parent, List<EditorAssetData> dirs)
             {
-                foreach (var path in dirs)
-                {
-                    LoopCreate(result, parent, path);
-                }
+                foreach (var path in dirs) LoopCreate(result, parent, path);
             }
             private static void BuildFiles(IList<TreeViewItem> result, TreeViewItem parent, List<EditorAssetData> paths)
             {
-                foreach (var _path in paths)
-                {
-                    CreateItem(_path.path, parent, result);
-                }
+                foreach (var _path in paths) CreateItem(_path.path, parent, result, parent.depth + 1);
             }
             private void LoopCreate(IList<TreeViewItem> result, TreeViewItem parent, EditorAssetData info)
             {
-                var item = CreateItem(info.path, parent, result);
+                var item = CreateItem(info.path, parent, result, parent.depth + 1);
                 if (item == null) return;
                 var paths = cache.tree.GetSubFolders(info);
                 var filepaths = cache.tree.GetSubFiles(info);

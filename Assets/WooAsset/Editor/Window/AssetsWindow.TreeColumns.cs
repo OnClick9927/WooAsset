@@ -58,13 +58,7 @@ namespace WooAsset
                 allowToggleVisibility = false,
 
             };
-            public static MultiColumnHeaderState.Column hash = new MultiColumnHeaderState.Column()
-            {
-                headerContent = new UnityEngine.GUIContent("Hash"),
-                minWidth = 250,
-                maxWidth = 300,
-                allowToggleVisibility = false,
-            };
+
             public static MultiColumnHeaderState.Column tag = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Tag"),

@@ -15,7 +15,7 @@ namespace WooAsset
         {
             void Ping(T obj);
         }
-        private class BundlesTree : TreeView, IPing<BundleGroup>, IPing<EditorAssetData>
+        private class BundlesTree : BundleTreeBase, IPing<BundleGroup>, IPing<EditorAssetData>
         {
             public enum SearchType
             {
@@ -34,7 +34,7 @@ namespace WooAsset
                 BundleUsage = 8
             }
             private DpViewType dpViewType = DpViewType.None;
-            List<BundleGroup> previewBundles { get { return cache.previewBundles; } }
+            protected override List<BundleGroup> groups => cache.previewBundles;
             public SearchType _searchType;
             private SearchField search;
             private AssetDpTree assetDp;
@@ -46,8 +46,11 @@ namespace WooAsset
             private SplitView sp = new SplitView() { vertical = false, minSize = 200, split = 300 };
             private SplitView sp2 = new SplitView() { vertical = true, minSize = 200, split = 300 };
 
-            public BundlesTree(TreeViewState state, SearchType _searchType) : base(state)
+
+            protected override MultiColumnHeaderState.Column GetFirstColomn() => TreeColumns.emptyTitle;
+            public BundlesTree(TreeViewState state, SearchType _searchType) : base(state, null)
             {
+                this.ping = this;
                 assetDp = new AssetDpTree(new TreeViewState(), this);
                 bundleDp = new BundleDpTree(new TreeViewState(), this);
                 bundleUsage = new BundleUsageTree(new TreeViewState(), this);
@@ -56,30 +59,9 @@ namespace WooAsset
                 search = new SearchField(this.searchString, System.Enum.GetNames(typeof(SearchType)), (int)_searchType);
                 search.onValueChange += (value) => { this.searchString = value.ToLower(); };
                 search.onModeChange += (value) => { this._searchType = (SearchType)value; this.Reload(); };
-
-                showAlternatingRowBackgrounds = true;
-
-                this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
-                {
-                    TreeColumns.emptyTitle,
-                    TreeColumns.usageCount,
-                    TreeColumns.depenceCount,
-                    TreeColumns.size,
-                     TreeColumns.hash,
-                     TreeColumns.bundle,
-                    TreeColumns.tag,
-
-               }));
-
-                this.multiColumnHeader.ResizeToFit();
-                Reload();
-
             }
 
-            protected override void SearchChanged(string newSearch)
-            {
-                Reload();
-            }
+            protected override void SearchChanged(string newSearch) => Reload();
             public override void OnGUI(Rect rect)
             {
                 var rs = RectEx.HorizontalSplit(rect, 40);
@@ -125,12 +107,6 @@ namespace WooAsset
 
             }
 
-            protected override TreeViewItem BuildRoot()
-            {
-                return new TreeViewItem() { id = -10, depth = -1 };
-            }
-
-
 
             private void CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result)
             {
@@ -148,33 +124,17 @@ namespace WooAsset
                 return;
             }
 
-            private TreeViewItem BuildBundle(int i, TreeViewItem root, IList<TreeViewItem> result)
-            {
-                var bundle = previewBundles[i];
-                var _item = new TreeViewItem()
-                {
-                    id = i,
-                    depth = 0,
-                    parent = root,
-                    displayName = bundle.hash,
-                };
-                root.AddChild(_item);
-                result.Add(_item);
-                return _item;
-            }
+
             private void InnerBuildRows(TreeViewItem root, IList<TreeViewItem> result)
             {
-                int count = 0;
-                for (int i = 0; i < previewBundles.Count; i++)
+                for (int i = 0; i < groups.Count; i++)
                 {
-                    var bundle = previewBundles[i];
+                    var bundle = groups[i];
 
                     if (string.IsNullOrEmpty(searchString))
                     {
 
                         var _item = BuildBundle(i, root, result);
-                        count++;
-                        if (count > 100) return;
                         if (bundle.assetCount <= 0) continue;
                         if (IsExpanded(_item.id))
                         {
@@ -221,20 +181,16 @@ namespace WooAsset
 
             private long totalSize;
 
-            protected override IList<TreeViewItem> BuildRows(TreeViewItem root)
+            protected override void CreateRows(TreeViewItem root, IList<TreeViewItem> result)
             {
-                var result = GetRows() ?? new List<TreeViewItem>();
-                result.Clear();
                 totalSize = 0;
-                if (previewBundles != null)
+                if (groups != null)
                 {
-                    totalSize = previewBundles.Sum(x => x.length);
+                    totalSize = groups.Sum(x => x.length);
                     InnerBuildRows(root, result);
                 }
-
-                SetupParentsAndChildrenFromDepths(root, result);
-                return result;
             }
+
 
             protected override void RowGUI(RowGUIArgs args)
             {
@@ -242,39 +198,27 @@ namespace WooAsset
 
                 float indent = this.GetContentIndent(args.item);
                 var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
-                long length = 0;
                 if (args.item.depth == 0)
                 {
-                    GUI.Label(first, new GUIContent(args.label, Textures.folder));
                     BundleGroup group = cache.GetBundleGroupByBundleName(args.label);
-                    
-                    GUI.Label(args.GetCellRect(1), group.usage.Count.ToString());
-                    GUI.Label(args.GetCellRect(2), group.dependence.Count.ToString());
-                    if (group != null)
-                        length = group.length;
+                    base.RowGUI(args);
                     if (ping_g == group) draw = true;
                 }
                 else
                 {
                     string path = args.label;
                     EditorAssetData asset = cache.tree.GetAssetData(path);
-                    length = asset.length;
-                    GUI.Label(first, new GUIContent(path, Textures.GetMiniThumbnail(path)));
+                    long length = asset.length;
+                    GUI.Label(first, GUIContent(path, Textures.GetMiniThumbnail(path)));
                     GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
                     GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
-                    GUI.Label(args.GetCellRect(4), asset.hash);
-                    BundleGroup group = cache.GetBundleGroupByAssetPath(path);
-                    if (group != null)
-                    {
-                        EditorGUI.SelectableLabel(args.GetCellRect(5), group.hash);
-                    }
-                    GUI.Label(args.GetCellRect(6), GetTagsString(asset));
+                    GUI.Label(args.GetCellRect(3), GetSizeString(length));
                     if (ping_a == asset) draw = true;
                 }
 
-                GUI.Label(args.GetCellRect(3), GetSizeString(length));
                 if (draw)
-                    GUI.Label(RectEx.Zoom(args.rowRect, TextAnchor.MiddleCenter, -8), "", "LightmapEditorSelectedHighlight");
+                    DrawPing(args.rowRect);
+
             }
 
             protected override void DoubleClickedItem(int id)
@@ -282,13 +226,11 @@ namespace WooAsset
                 var rows = this.FindRows(new List<int>() { id });
 
                 if (string.IsNullOrEmpty(searchString))
-                {
                     EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
-                }
                 else
                 {
                     if (_searchType == SearchType.Bundle)
-                        Ping(cache.GetBundleGroupByBundleName(rows[0].displayName));
+                        base.DoubleClickedItem(id);
                     else
                         Ping(cache.tree.GetAssetData(rows[0].displayName));
                 }
@@ -343,10 +285,7 @@ namespace WooAsset
 
                 base.SingleClickedItem(id);
             }
-            protected override bool CanMultiSelect(TreeViewItem item)
-            {
-                return false;
-            }
+
             public void OnReload()
             {
                 dpViewType = DpViewType.None;
@@ -354,28 +293,28 @@ namespace WooAsset
                 Reload();
             }
 
+
+            BundleGroup ping_g;
+            EditorAssetData ping_a;
             public async void Ping(BundleGroup group)
             {
                 if (ping_g != null) return;
                 ping_g = group;
                 search.SetVelue("");
-                var index = this.previewBundles.IndexOf(group);
+                var index = this.groups.IndexOf(group);
                 this.FrameItem(index);
                 await Task.Delay(1000);
                 ping_g = null;
                 Reload();
 
             }
-            BundleGroup ping_g;
-
-            EditorAssetData ping_a;
             public async void Ping(EditorAssetData obj)
             {
                 if (ping_a != null) return;
                 search.SetVelue("");
                 var id = AssetDatabase.LoadAssetAtPath<Object>(obj.path).GetInstanceID();
                 var group = cache.GetBundleGroupByAssetPath(obj.path);
-                var index = this.previewBundles.IndexOf(group);
+                var index = this.groups.IndexOf(group);
                 this.SetExpanded(index, true);
                 Reload();
                 ping_a = obj;

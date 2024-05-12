@@ -34,6 +34,24 @@ namespace WooAsset
         {
             return GetTagsString(data.tags);
         }
+
+        private static GUIContent c = new GUIContent();
+        public static GUIContent GUIContent(string txt)
+        {
+            c.text = txt;
+            return c;
+        }
+        public static GUIContent GUIContent(string txt,Texture tx)
+        {
+            c.image = tx;
+            c.text = txt;
+            return c;
+        }
+
+        private static void DrawPing(Rect rect)
+        {
+            GUI.Label(RectEx.Zoom(rect, TextAnchor.MiddleCenter, -8), "", "LightmapEditorSelectedHighlight");
+        }
         public enum TreeType
         {
             Option,
@@ -80,7 +98,7 @@ namespace WooAsset
         }
         private void OnGUI()
         {
-            var rs = RectEx.HorizontalSplit(new Rect(Vector2.zero, position.size), 30,6,false);
+            var rs = RectEx.HorizontalSplit(new Rect(Vector2.zero, position.size), 30, 6, false);
             Tool(rs[0]);
             ContentGUI(rs[1]);
         }
@@ -129,7 +147,7 @@ namespace WooAsset
                 GUILayout.BeginHorizontal(EditorStyles.toolbar);
                 GUILayout.Label("", GUILayout.Width(100));
                 Rect rect = GUILayoutUtility.GetLastRect();
-                if (GUI.Button(rect, new GUIContent("Tools"), EditorStyles.toolbarDropDown))
+                if (GUI.Button(rect, GUIContent("Tools"), EditorStyles.toolbarDropDown))
                 {
                     EditorUtility.DisplayPopupMenu(rect, TaskPipelineMenu.root, new MenuCommand(null));
                 }

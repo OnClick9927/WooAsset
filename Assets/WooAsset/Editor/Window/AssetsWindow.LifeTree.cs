@@ -137,7 +137,7 @@ namespace WooAsset
                 if (AssetsEditorTool.bundles.TryGetValue(name, out life))
                 {
                     float indent = this.GetContentIndent(args.item);
-                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(AssetsHelper.GetFileName(name), Textures.folder));
+                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(AssetsHelper.GetFileName(name), Textures.folder));
                     GUI.Label(args.GetCellRect(1), life.asset.refCount.ToString());
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
@@ -152,7 +152,7 @@ namespace WooAsset
                 if (AssetsEditorTool.assets.TryGetValue(name, out life))
                 {
                     float indent = _searchType == SearchType.Asset ? 0 : string.IsNullOrEmpty(searchString) ? this.GetContentIndent(args.item) : 30;
-                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), new GUIContent(name, Textures.GetMiniThumbnail(args.label)));
+                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(name, Textures.GetMiniThumbnail(args.label)));
                     GUI.Label(args.GetCellRect(1), life.asset.refCount.ToString());
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
