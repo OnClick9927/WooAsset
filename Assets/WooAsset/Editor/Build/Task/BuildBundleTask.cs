@@ -36,15 +36,33 @@ namespace WooAsset
             protected async override void OnExecute(AssetTaskContext context)
             {
                 var source = context.allBundleGroups;
-                if (source.Count != 0)
+                var normal = source.FindAll(x => !x.raw);
+                var raws = source.FindAll(x => x.raw);
+
+
+                if (normal.Count != 0)
                 {
                     AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
-                         source.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
-                    UpdateHash(source, _main);
+                         normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
+                    UpdateHash(normal, _main);
                 }
-                var manifest = FastModeManifestTask.BuildManifest(source, context.tree);
 
+
+                var manifest = FastModeManifestTask.BuildManifest(source, context.tree);
                 context.manifest = manifest;
+                //把raw存到history
+                foreach (var item in raws)
+                {
+                    string src_path = item.GetAssets()[0];
+                    string bundleName = item.hash;
+                    var reader = await AssetsHelper.ReadFile(src_path, true);
+                    string dest = AssetsHelper.CombinePath(context.historyPath, bundleName);
+                    if (context.AppendHashToAssetBundleName)
+                        dest += $"_{bundleName}";
+                    await AssetsHelper.WriteFile(reader.bytes, dest, true);
+
+                }
+                //拷贝打爆出来的到输出目录
                 foreach (var bundleName in source.ConvertAll(x => x.hash))
                 {
                     var reader = await AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
@@ -54,22 +72,29 @@ namespace WooAsset
                           true
                           );
                 }
+
+
                 var bVer = new BundlesVersion()
                 {
                     version = context.version,
                 };
-                foreach (var bundle in manifest.allBundle)
+                foreach (var bundleName in manifest.allBundle)
                 {
-                    string path = AssetsHelper.CombinePath(context.outputPath, bundle);
+                    string path = AssetsHelper.CombinePath(context.outputPath, bundleName);
                     if (AssetsHelper.ExistsFile(path))
                         bVer.bundles.Add(FileData.CreateByFile(path));
                     else
                     {
-                        this.SetErr($"can't find last bundle version {bundle}");
+                        this.SetErr($"can't find last bundle version {bundleName}");
                         InvokeComplete();
                         return;
                     }
                 }
+
+
+
+
+
                 await VersionBuffer.WriteManifest(manifest,
                         AssetsHelper.CombinePath(context.outputPath,
                         context.buildPkg.GetManifestFileName(context.version)),

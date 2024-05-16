@@ -36,18 +36,14 @@ namespace WooAsset
             public List<string> dps;
             public AssetType type;
         }
-        public void Read(List<AssetData> assets, List<string> raw, List<string> raw_copy)
+        public void Read(List<AssetData> assets)
         {
 #if UNITY_EDITOR
             this.assets = assets;
-            this.rawAssets = raw;
-            this.rawAssets_copy = raw_copy;
 #endif
         }
 
         public List<AssetData> assets = new List<AssetData>();
-        public List<string> rawAssets = new List<string>();
-        public List<string> rawAssets_copy = new List<string>();
 
         public void Prepare()
         {
@@ -127,18 +123,12 @@ namespace WooAsset
         {
             if (_assets.ContainsKey(assetpath))
                 return _assets[assetpath];
-            if (rawAssets.Contains(assetpath) || rawAssets_copy.Contains(assetpath))
-                return GetAssetData(AssetsHelper.RawToRawObjectPath(assetpath));
             return null;
         }
         public AssetType GetAssetType(string assetPath)
         {
             if (_assets.ContainsKey(assetPath))
                 return _assets[assetPath].type;
-            if (rawAssets.Contains(assetPath))
-                return AssetType.Raw;
-            if (rawAssets_copy.Contains(assetPath))
-                return AssetType.RawCopyFile;
             return AssetType.None;
         }
         public List<string> GetTagAssetPaths(string tag)
@@ -183,9 +173,6 @@ namespace WooAsset
             Dictionary<string, AssetData> dic = new Dictionary<string, AssetData>();
             for (int i = 0; i < manifests.Count; i++)
             {
-                manifest.rawAssets.AddRange(manifests[i].rawAssets);
-                manifest.rawAssets_copy.AddRange(manifests[i].rawAssets_copy);
-
                 for (int j = 0; j < manifests[i].assets.Count; j++)
                 {
                     var asset = manifests[i].assets[j];
@@ -199,8 +186,6 @@ namespace WooAsset
                 }
 
             }
-            manifest.rawAssets.Distinct();
-            manifest.rawAssets_copy.Distinct();
             manifest.assets = dic.Values.ToList();
             return manifest;
         }

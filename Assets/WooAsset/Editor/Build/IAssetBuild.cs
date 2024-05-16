@@ -30,12 +30,10 @@ namespace WooAsset
             else
             {
                 AssetImporter importer = AssetImporter.GetAtPath(path);
-                if (path.EndsWith(".rfc")) _type = AssetType.RawCopyFile;
-                else if (path.EndsWith(".meta")) _type = AssetType.Ignore;
+                if (path.EndsWith(".meta")) _type = AssetType.Ignore;
                 else if (path.EndsWith(".cs")) _type = AssetType.Ignore;
                 else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
                 else if (importer is ModelImporter) _type = AssetType.Model;
-                else if (AssetDatabase.LoadAssetAtPath<RawObject>(path) != null) _type = AssetType.RawObject;
                 else if (AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(path) != null) _type = AssetType.Scene;
                 else if (AssetDatabase.LoadAssetAtPath<LightingDataAsset>(path) != null) _type = AssetType.LightingData;
                 else if (AssetDatabase.LoadAssetAtPath<ScriptableObject>(path) != null) _type = AssetType.ScriptObject;

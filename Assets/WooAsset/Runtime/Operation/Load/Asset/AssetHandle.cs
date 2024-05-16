@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.Profiling;
+using static WooAsset.ManifestData;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
@@ -11,10 +11,12 @@ namespace WooAsset
         public override bool async => loadArgs.async;
         public bool isBundleUnloaded => bundle == null ? false : bundle.unloaded;
         protected Bundle bundle { get; private set; }
+        protected AssetData data => loadArgs.data;
 
-        public virtual string path => loadArgs.path;
+        public AssetType assetType => data.type;
+        public virtual string path => data.path;
+        public string bundleName => data.bundleName;
         protected bool direct => loadArgs.direct;
-        public string bundleName => loadArgs.bundleName;
         public List<AssetHandle> dps => loadArgs.dps;
         protected float dpProgress
         {
@@ -34,7 +36,7 @@ namespace WooAsset
         {
             if (string.IsNullOrEmpty(bundleName))
                 return null;
-            bundle = AssetsInternal.LoadBundle(bundleName, async);
+            bundle = AssetsInternal.LoadBundle(bundleName, async, assetType == AssetType.Raw);
             return bundle;
         }
         public AssetHandle(AssetLoadArgs loadArgs)
@@ -64,7 +66,7 @@ namespace WooAsset
         }
 
         protected abstract void InternalLoad();
-   
+
     }
 
 }

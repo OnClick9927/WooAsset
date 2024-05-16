@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
 
 namespace WooAsset
 {
@@ -12,6 +13,7 @@ namespace WooAsset
     {
         public string hash;
         public long length = 0;
+        public bool raw { get; private set; }
         [UnityEngine.SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         public int assetCount { get { return assets.Count; } }
 
@@ -77,6 +79,17 @@ namespace WooAsset
             group.assets = new List<EditorAssetData>
             {
                 asset
+            };
+            group.CalcLength();
+            return group;
+        }
+
+        public static BundleGroup CreateRaw(EditorAssetData asset)
+        {
+            BundleGroup group = new BundleGroup() { raw = true };
+            group.assets = new List<EditorAssetData>
+            {
+                asset,
             };
             group.CalcLength();
             return group;

@@ -15,7 +15,6 @@ namespace WooAsset
         public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
-        public static UnzipRawFileOperation UnzipRawFile() => AssetsInternal.UnzipRawFile();
         public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, true, type) as Asset;
         public static Asset LoadAsset(string path, Type type) => AssetsInternal.LoadAsset(path, false, type) as Asset;
         public static Asset LoadAssetAsync(string path) => LoadAssetAsync(path, typeof(UnityEngine.Object));
@@ -34,7 +33,6 @@ namespace WooAsset
 
         public static void UnloadBundles() => AssetsInternal.UnloadBundles();
         public static bool GetIsAssetLoaded(string assetPath) => AssetsInternal.GetIsAssetLoaded(assetPath);
-        public static string GetRawFileToDlcPath(string path) => AssetsInternal.GetRawFileToDlcPath(path);
 
 
 

@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using static WooAsset.ManifestData;
 namespace WooAsset
 {
     public struct AssetLoadArgs : IAssetArgs
     {
-        public string bundleName;
-        public string path;
+        public string bundleName => data.bundleName;
+        public string path => data.path;
         public bool direct;
-        public bool scene;
+        public bool scene => data.type == AssetType.Scene;
         public List<AssetHandle> dps;
         public bool async;
         public Type type;
-
+        public AssetData data;
         public string uid => path;
 
-        public AssetLoadArgs(string path, bool direct, bool scene, List<AssetHandle> dps, string bundleName, bool async, Type type)
+        public AssetLoadArgs(AssetData data, bool direct, List<AssetHandle> dps, bool async, Type type)
         {
+            this.data = data;
             this.dps = dps;
-            this.path = path;
             this.direct = direct;
-            this.scene = scene;
-            this.bundleName = bundleName;
             this.async = async;
             this.type = type;
         }

@@ -158,7 +158,6 @@ namespace WooAsset
         private static List<AssetTask> stream_common = new List<AssetTask>
         {
             new PrepareTask(),
-            new RawAssetTask(),
             new ShaderVariantTask(),
             new SpriteAtlasTask(),
             new BuildBundleTask(),
@@ -171,7 +170,6 @@ namespace WooAsset
         private static List<AssetTask> common = new List<AssetTask>
         {
             new PrepareTask(),
-            new RawAssetTask(),
             new ShaderVariantTask(),
             new SpriteAtlasTask(),
             new BuildBundleTask(),
@@ -198,7 +196,6 @@ namespace WooAsset
         private static List<AssetTask> collectAssets = new List<AssetTask>
         {
             new PrepareTask(),
-            new RawAssetTask(),
             new CollectAssetsTask(),
             new SetCacheTask(),
             new AssetsEditorTool.CallPipelineFinishTask(),
@@ -207,7 +204,6 @@ namespace WooAsset
         private static List<AssetTask> hashPreview = new List<AssetTask>
         {
             new PrepareTask(),
-            new RawAssetTask(),
             new CollectAssetsTask(),
             new CollectHashBundleGroupTask(),
             new FastModeManifestTask(),

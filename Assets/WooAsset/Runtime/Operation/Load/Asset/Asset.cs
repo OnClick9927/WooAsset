@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
@@ -86,8 +85,7 @@ namespace WooAsset
         {
             if (AssetsHelper.ExistsFile(path))
             {
-                RawObject obj = ScriptableObject.CreateInstance<RawObject>();
-                obj.rawPath = path;
+                RawObject obj = RawObject.Create(path);
                 var reader = await AssetsHelper.ReadFile(path, async);
                 obj.bytes = reader.bytes;
                 SetResult(obj);
@@ -114,23 +112,34 @@ namespace WooAsset
                 InvokeComplete();
                 return;
             }
-            if (async)
+
+            if (assetType == AssetType.Raw)
             {
-                loadOp = bundle.LoadAssetAsync(path, type);
-                await loadOp;
-                assets = loadOp.allAssets;
-                SetResult(loadOp.asset);
+                var raw = bundle.LoadRawObject(path);
+                SetResult(raw);
             }
             else
             {
-                var result = bundle.LoadAsset(path, type);
-                assets = result;
-                SetResult(result[0]);
+
+                if (async)
+                {
+                    loadOp = bundle.LoadAssetAsync(path, type);
+                    await loadOp;
+                    assets = loadOp.allAssets;
+                    SetResult(loadOp.asset);
+                }
+                else
+                {
+                    var result = bundle.LoadAsset(path, type);
+                    assets = result;
+                    SetResult(result[0]);
+                }
             }
         }
 
         protected sealed override void InternalLoad()
         {
+
             if (!direct)
                 LoadUnityObject();
             else

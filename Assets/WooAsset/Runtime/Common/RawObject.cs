@@ -6,7 +6,14 @@ namespace WooAsset
     {
         public string rawPath;
         public byte[] bytes;
-        public string hash;
+
+
+        public static RawObject Create(string path)
+        {
+            RawObject obj = ScriptableObject.CreateInstance<RawObject>();
+            obj.rawPath = path;
+            return obj;
+        }
     }
 
 }

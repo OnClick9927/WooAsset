@@ -11,8 +11,9 @@ ShaderVariantCollection:
   - first: {fileID: 64, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SINGLE_CASCADE
-          SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
+      - keywords: SHADOWS_SINGLE_CASCADE SHADOWS_SPLIT_SPHERES
+        passType: 0
+      - keywords: SHADOWS_SPLIT_SPHERES
         passType: 0
   - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
     second:
@@ -22,23 +23,16 @@ ShaderVariantCollection:
   - first: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: BILLBOARD_FACE_CAMERA_POS DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
-          SHADOWS_SOFT SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
         passType: 4
       - keywords: 
         passType: 8
-      - keywords: SHADOWS_DEPTH SHADOWS_SOFT SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
-        passType: 8
-      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SPLIT_SPHERES
-        passType: 8
-      - keywords: BILLBOARD_FACE_CAMERA_POS SHADOWS_DEPTH SHADOWS_SPLIT_SPHERES UNITY_HDR_ON
+      - keywords: SHADOWS_DEPTH
         passType: 8
   - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: BILLBOARD_FACE_CAMERA_POS UNITY_HDR_ON _SUNDISK_SIMPLE
-        passType: 0
-      - keywords: BILLBOARD_FACE_CAMERA_POS SOFTPARTICLES_ON UNITY_HDR_ON _SUNDISK_SIMPLE
+      - keywords: _SUNDISK_SIMPLE
         passType: 0
   - first: {fileID: 9000, guid: 0000000000000000f000000000000000, type: 0}
     second:
@@ -78,9 +72,5 @@ ShaderVariantCollection:
   - first: {fileID: 9103, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: BILLBOARD_FACE_CAMERA_POS
-        passType: 0
-      - keywords: BILLBOARD_FACE_CAMERA_POS SOFTPARTICLES_ON
-        passType: 0
-      - keywords: BILLBOARD_FACE_CAMERA_POS UNITY_HDR_ON
+      - keywords: 
         passType: 0

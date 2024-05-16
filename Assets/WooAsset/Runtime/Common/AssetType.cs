@@ -23,7 +23,5 @@
         Model,
         TextAsset,
         Raw,
-        RawObject,
-        RawCopyFile,
     }
 }

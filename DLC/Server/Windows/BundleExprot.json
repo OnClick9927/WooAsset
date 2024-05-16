@@ -11,90 +11,96 @@
             ]
         }
     ],
-    "version": "2024_04_19_16_49_31",
+    "version": "2024_05_16_22_30_21",
     "encrypt": "WooAsset.DefaultAssetStreamEncrypt",
     "compress": "LZ4",
     "forceRebuild": false,
-    "ignoreTypeTreeChanges": true,
+    "typeTreeOption": 0,
     "fileChange": {
         "add": [
             {
-                "path": "DLC/Windows/08e8bdd1976259ae7b8ef59fdc76d7c9_d504ccf14d7bdacadf13424b3fce4806",
-                "name": "08e8bdd1976259ae7b8ef59fdc76d7c9_d504ccf14d7bdacadf13424b3fce4806",
-                "length": 28898,
-                "hash": "d25d8d241deaec5de384cbe4f4d6fa72"
+                "path": "DLC/Windows/08e8bdd1976259ae7b8ef59fdc76d7c9_75f188597513f0c001d5eb7181d08196",
+                "name": "08e8bdd1976259ae7b8ef59fdc76d7c9_75f188597513f0c001d5eb7181d08196",
+                "length": 112372,
+                "hash": "31d652f555c6a10d46930be9a5496e90"
             },
             {
                 "path": "DLC/Windows/10a8d8bae0d67598c045791dad2f6599",
                 "name": "10a8d8bae0d67598c045791dad2f6599",
                 "length": 420,
-                "hash": "0eb187e61d1d3a66c9e74e014ab68b6d"
+                "hash": "95507219052addfb1682608853e44877"
             },
             {
-                "path": "DLC/Windows/2d8f4d64951abfaea7f3fe9aefb11141_6a6c1100fd7ffcbe2dcf8d1ca543ee5a",
-                "name": "2d8f4d64951abfaea7f3fe9aefb11141_6a6c1100fd7ffcbe2dcf8d1ca543ee5a",
-                "length": 37621,
-                "hash": "deba4e1cafe08b58843fdb5f25e10977"
+                "path": "DLC/Windows/2d8f4d64951abfaea7f3fe9aefb11141_3fe37bce789cb0fe54f1b109cd6018f0",
+                "name": "2d8f4d64951abfaea7f3fe9aefb11141_3fe37bce789cb0fe54f1b109cd6018f0",
+                "length": 37799,
+                "hash": "c3dd02069a514aef5d780b7cf500a87c"
             },
             {
-                "path": "DLC/Windows/4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27",
-                "name": "4c22ced86546b914d9a49eb3666d0e66_6d82f3560e2dcc2a24b630107b57cd27",
-                "length": 112526,
-                "hash": "44bd014f701ce657f36d56cdefe9f2b1"
+                "path": "DLC/Windows/4c22ced86546b914d9a49eb3666d0e66_631a1451d824aa4794874ba273d24dd7",
+                "name": "4c22ced86546b914d9a49eb3666d0e66_631a1451d824aa4794874ba273d24dd7",
+                "length": 111658,
+                "hash": "d1f83c39731b0748893ea6d6ce8553b0"
             },
             {
-                "path": "DLC/Windows/51fba72a6a50309eda9460a776bef159_ad93b4475eb65c8cae3d274200a59151",
-                "name": "51fba72a6a50309eda9460a776bef159_ad93b4475eb65c8cae3d274200a59151",
-                "length": 48064,
-                "hash": "0d2161e7a686b82c4af01c5fb65313d9"
+                "path": "DLC/Windows/553fbe73a2a295b01ac54d0a87d26856_e5260c9b8f5ad207bd29903304512db6",
+                "name": "553fbe73a2a295b01ac54d0a87d26856_e5260c9b8f5ad207bd29903304512db6",
+                "length": 42043,
+                "hash": "b200bddb5ac7756fd82b9e59f1e62bd6"
             },
             {
-                "path": "DLC/Windows/553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94",
-                "name": "553fbe73a2a295b01ac54d0a87d26856_e29db0db56c1d9be75eb31a90d48df94",
-                "length": 39521,
-                "hash": "33748b7ef3f2d5bb2303a623158a5672"
+                "path": "DLC/Windows/74bdeb362c709eb0728d7fcc49065ff7",
+                "name": "74bdeb362c709eb0728d7fcc49065ff7",
+                "length": 9,
+                "hash": "b10632425397f1e9d87226990c365cad"
             },
             {
-                "path": "DLC/Windows/68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57",
-                "name": "68556ca7eb18c2598ab03cc2d2774f16_aaab83e963a458afe68fa7d2f6285f57",
-                "length": 2039,
-                "hash": "9f11da157deffd240a94020e4002e9c5"
+                "path": "DLC/Windows/7acf5e8fde907c5566f84cabc897baa0",
+                "name": "7acf5e8fde907c5566f84cabc897baa0",
+                "length": 3178,
+                "hash": "f819dfea22e0ff85f198f5e29b0a0b6e"
             },
             {
-                "path": "DLC/Windows/7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181",
-                "name": "7f684d85a6ea3e13cac98df67d83d88c_52bcbe53b4f294b42c75d804854b1181",
-                "length": 3062,
-                "hash": "5e15633f5ddb84b095833e2a9c5afe41"
+                "path": "DLC/Windows/7f684d85a6ea3e13cac98df67d83d88c_6c50aad0785463ed1f8b7d97825cc881",
+                "name": "7f684d85a6ea3e13cac98df67d83d88c_6c50aad0785463ed1f8b7d97825cc881",
+                "length": 3108,
+                "hash": "d72c2ae5fa2630a86bc0c40e7c85db19"
             },
             {
-                "path": "DLC/Windows/8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8",
-                "name": "8897512ab3f852758048b47c3be0d4ad_62be13aa2320b9eae8353d99d5af00b8",
-                "length": 3662,
-                "hash": "6644c2be8b9407b6af372eb70e46a93e"
+                "path": "DLC/Windows/8897512ab3f852758048b47c3be0d4ad_e55cc1c3443ccaf5a99aab073df9ab74",
+                "name": "8897512ab3f852758048b47c3be0d4ad_e55cc1c3443ccaf5a99aab073df9ab74",
+                "length": 3671,
+                "hash": "827ab38574a517499c532199571edf3c"
             },
             {
-                "path": "DLC/Windows/a71a965cb3106a4647be5eb9b67238bd",
-                "name": "a71a965cb3106a4647be5eb9b67238bd",
-                "length": 3887,
-                "hash": "d5919bb3aae363464dcdd02b10525eda"
+                "path": "DLC/Windows/a2424627e64e4dd54f539fb4c64c9047",
+                "name": "a2424627e64e4dd54f539fb4c64c9047",
+                "length": 9,
+                "hash": "e9a451aad0f29d734c1c871a60f23fdd"
             },
             {
-                "path": "DLC/Windows/d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d",
-                "name": "d88574feb3b5b2d20164cb2eb5964afc_b03914875e479ecc1e1a071800eeb31d",
-                "length": 12535,
-                "hash": "b311760801895c313dc1c05abd30a50a"
+                "path": "DLC/Windows/a841c422756e40fc6064f10058d67859",
+                "name": "a841c422756e40fc6064f10058d67859",
+                "length": 3674,
+                "hash": "475e008f72f7ca8d68fb18c4916f82f8"
             },
             {
-                "path": "DLC/Windows/db52ed8be5c4a0262d45cf6eb11ea769",
-                "name": "db52ed8be5c4a0262d45cf6eb11ea769",
-                "length": 3020,
-                "hash": "744953bb8cb9dfff0024e236fdeb9c2b"
+                "path": "DLC/Windows/ae7ad29bf27dffc3879f6435564144bc_3c42131ee3dc0a032b8c217cbea0105c",
+                "name": "ae7ad29bf27dffc3879f6435564144bc_3c42131ee3dc0a032b8c217cbea0105c",
+                "length": 51557,
+                "hash": "a91c732e863a8e86005a5c14efcf1918"
             },
             {
-                "path": "DLC/Windows/dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452",
-                "name": "dc5e76135581810c63b82b3455050484_eba9459029838d270f34f6761be69452",
-                "length": 3648,
-                "hash": "d849a220ef149781516bac0ba24dca3b"
+                "path": "DLC/Windows/d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+                "name": "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+                "length": 13459,
+                "hash": "961b5f75742447a54cb562da9a0df9de"
+            },
+            {
+                "path": "DLC/Windows/dc5e76135581810c63b82b3455050484_df7b259d1397a0ea0c6b3700e3cfa0d7",
+                "name": "dc5e76135581810c63b82b3455050484_df7b259d1397a0ea0c6b3700e3cfa0d7",
+                "length": 3657,
+                "hash": "fe7e3822296b6cd1ed5e0559ca66402a"
             }
         ],
         "delete": [],
@@ -103,13 +109,13 @@
     "versions": {
         "versions": [
             {
-                "version": "2024_04_19_16_49_31",
+                "version": "2024_05_16_22_30_21",
                 "pkgs": [
                     {
                         "name": "new",
                         "description": "",
-                        "manifestFileName": "a71a965cb3106a4647be5eb9b67238bd",
-                        "bundleFileName": "db52ed8be5c4a0262d45cf6eb11ea769",
+                        "manifestFileName": "a841c422756e40fc6064f10058d67859",
+                        "bundleFileName": "7acf5e8fde907c5566f84cabc897baa0",
                         "tags": []
                     }
                 ]

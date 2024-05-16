@@ -12,6 +12,8 @@ namespace WooAsset
             var hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.tree.GetAssetData(x).hash));
             var builds = new List<BundleGroup>();
 
+            var raws = context.needBuildAssets.FindAll(x => x.type == AssetType.Raw);
+            context.needBuildAssets.RemoveAll(x => raws.Contains(x));
             context.assetBuild.Create(context.needBuildAssets, builds);
 
             //List<string> rawAssets = new List<string>();
@@ -34,7 +36,8 @@ namespace WooAsset
             {
                 return a.length > b.length ? -1 : 1;
             });
-
+            foreach (var asset in raws)
+                builds.Add(BundleGroup.CreateRaw(asset));
             for (int i = 0; i < builds.Count; i++)
             {
                 BundleGroup build = builds[i];

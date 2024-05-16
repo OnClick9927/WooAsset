@@ -18,6 +18,11 @@ namespace WooAsset
 {
     public class LocalSetting : AssetsSetting
     {
+        public override IAssetStreamEncrypt GetEncrypt()
+        {
+            return new DefaultAssetStreamEncrypt();
+            return base.GetEncrypt();
+        }
         public override bool NeedCopyStreamBundles()
         {
             return true;
@@ -62,7 +67,6 @@ namespace WooAsset
                     await Assets.DownLoadBundle(compare.change[i].name);
             }
             await Assets.InitAsync();
-            await Assets.UnzipRawFile();
             var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
@@ -87,7 +91,7 @@ namespace WooAsset
                 await Task.Delay(100);
             }
             oppp.Destroy();
-            var __asset = await Assets.LoadFileAssetAsync(Assets.GetRawFileToDlcPath("Assets/Example/New Folder/kkk.rfc"));
+            var __asset = await Assets.LoadFileAssetAsync("Assets/Example/New Folder/kkk.rfc");
             var fo = __asset.GetAsset<RawObject>();
             Debug.Log(fo.bytes.Length);
         }

@@ -39,9 +39,19 @@ namespace WooAsset
                 SetResult(null);
             }
             protected override void OnUnLoad() { }
-            protected override long ProfilerAsset(AssetBundle value) {
+            protected override long ProfilerAsset(AssetBundle value)
+            {
                 return cache.GetBundleGroupByBundleName(this.bundleName).length;
             }
+
+            public override RawObject LoadRawObject(string path)
+            {
+                RawObject rawObject = RawObject.Create(path);
+                var reader = AssetsHelper.ReadFile(path, false);
+                rawObject.bytes = reader.bytes;
+                return rawObject;
+            }
+
             public override Object[] LoadAsset(string path, Type type)
             {
                 return AssetDatabase.LoadAllAssetsAtPath(path);
@@ -60,7 +70,6 @@ namespace WooAsset
             {
                 return EditorSceneManager.LoadSceneInPlayMode(path, parameters);
             }
-        
         }
 
     }

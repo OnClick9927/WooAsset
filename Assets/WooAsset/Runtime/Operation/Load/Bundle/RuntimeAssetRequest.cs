@@ -17,8 +17,8 @@ namespace WooAsset
             InvokeComplete();
         }
         public override float progress => request == null ? 0 : request.progress;
-        public override UnityEngine.Object asset => isDone ? null : request.asset;
-        public override UnityEngine.Object[] allAssets => isDone ? null : request.allAssets;
+        public override UnityEngine.Object asset => !isDone ? null : request.asset;
+        public override UnityEngine.Object[] allAssets => !isDone ? null : request.allAssets;
     }
 
 }

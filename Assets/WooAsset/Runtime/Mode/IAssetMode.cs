@@ -10,7 +10,6 @@ namespace WooAsset
         ManifestData manifest { get; }
         bool Initialized();
         Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
-        UnzipRawFileOperation UnzipRawFile();
         AssetHandle CreateAsset(AssetLoadArgs arg);
         CheckBundleVersionOperation VersionCheck();
         CopyStreamBundlesOperation CopyToSandBox(string from, string to);

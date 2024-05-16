@@ -1,8 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using UnityEditor;
-using UnityEngine;
 using static WooAsset.ManifestData;
 
 namespace WooAsset
@@ -21,7 +17,7 @@ namespace WooAsset
                 }
             }
             ManifestData manifest = new ManifestData();
-            manifest.Read(_assets, tree.GetRawAssets(), tree.GetRawAssets_Copy());
+            manifest.Read(_assets);
             manifest.Prepare();
             return manifest;
         }
