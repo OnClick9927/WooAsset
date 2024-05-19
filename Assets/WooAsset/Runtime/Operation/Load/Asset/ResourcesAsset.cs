@@ -19,16 +19,6 @@ namespace WooAsset
         }
         public Object[] _allAssets;
         public override Object[] allAssets => _allAssets;
-        protected override Object LoadAagain<T>()
-        {
-            return Resources.Load(resPath, typeof(Sprite));
-        }
-        public override T GetAsset<T>()
-        {
-            EditorCheck<T>();
-            return value as T;
-        }
-
         public ResourcesAsset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
             var extend = AssetsHelper.GetFileExtension(path);
@@ -36,16 +26,17 @@ namespace WooAsset
         }
         protected async override void LoadUnityObject()
         {
-            _allAssets = Resources.LoadAll(resPath, type);
+            var _type = GetAssetType(type);
+            _allAssets = Resources.LoadAll(resPath, _type);
             if (async)
             {
-                loadOp = Resources.LoadAsync(resPath, type);
+                loadOp = Resources.LoadAsync(resPath, _type);
                 await loadOp;
                 SetResult(loadOp.asset);
             }
             else
             {
-                SetResult(Resources.Load(resPath, type));
+                SetResult(Resources.Load(resPath, _type));
             }
         }
 

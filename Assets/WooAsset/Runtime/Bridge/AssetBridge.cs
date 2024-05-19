@@ -11,12 +11,10 @@
         protected abstract bool CouldRelease();
         bool IAssetBridge.CouldRelease()
         {
-            if (handle.unloaded) return true;
             return CouldRelease();
         }
         void IAssetBridge.Release()
         {
-            if (handle.unloaded) return;
             Assets.Release(handle);
         }
     }

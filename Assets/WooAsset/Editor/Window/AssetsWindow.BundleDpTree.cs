@@ -7,15 +7,15 @@ namespace WooAsset
     {
         private class BundleDpTree : BundleTreeBase
         {
-            public void SetBundleGroup(BundleGroup group)
+            public void SetBundleGroup(EditorBundleData group)
             {
                 if (group != null)
-                    base.SetBundleGroups(group.dependence.ConvertAll(x => cache.GetBundleGroupByBundleName(x)));
+                    base.SetBundleBuilds(group.GetDpendence(cache.previewBundles));
                 else
-                    base.SetBundleGroups(null);
+                    base.SetBundleBuilds(null);
             }
 
-            public BundleDpTree(TreeViewState state, IPing<BundleGroup> ping) : base(state, ping)
+            public BundleDpTree(TreeViewState state, IPing<EditorBundleData> ping) : base(state, ping)
             {
 
             }

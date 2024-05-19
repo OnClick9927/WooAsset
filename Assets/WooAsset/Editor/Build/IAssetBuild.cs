@@ -45,6 +45,7 @@ namespace WooAsset
                 else if (AssetDatabase.LoadAssetAtPath<Material>(path) != null) _type = AssetType.Material;
                 else if (AssetDatabase.LoadAssetAtPath<AudioClip>(path) != null) _type = AssetType.AudioClip;
                 else if (AssetDatabase.LoadAssetAtPath<VideoClip>(path) != null) _type = AssetType.VideoClip;
+                else if (AssetDatabase.LoadAssetAtPath<Sprite>(path) != null) _type = AssetType.Sprite;
                 else if (AssetDatabase.LoadAssetAtPath<Texture>(path) != null) _type = AssetType.Texture;
                 else if (AssetDatabase.LoadAssetAtPath<Shader>(path) != null) _type = AssetType.Shader;
                 else if (AssetDatabase.LoadAssetAtPath<TextAsset>(path) != null) _type = AssetType.TextAsset;
@@ -58,7 +59,7 @@ namespace WooAsset
         {
             return AssetsEditorTool.option.GetAssetTags(info.path);
         }
-        public abstract void Create(List<EditorAssetData> assets, List<BundleGroup> result);
+        public abstract void Create(List<EditorAssetData> assets, List<EditorBundleData> result);
 
         public virtual List<AssetTask> GetPipelineEndTasks(AssetTaskContext context) => null;
         public virtual List<AssetTask> GetPipelineStartTasks(AssetTaskContext context) => null;

@@ -15,7 +15,7 @@ namespace WooAsset
         {
             void Ping(T obj);
         }
-        private class BundlesTree : BundleTreeBase, IPing<BundleGroup>, IPing<EditorAssetData>
+        private class BundlesTree : BundleTreeBase, IPing<EditorBundleData>, IPing<EditorAssetData>
         {
             public enum SearchType
             {
@@ -34,7 +34,7 @@ namespace WooAsset
                 BundleUsage = 8
             }
             private DpViewType dpViewType = DpViewType.None;
-            protected override List<BundleGroup> groups => cache.previewBundles;
+            protected override List<EditorBundleData> groups => cache.previewBundles;
             public SearchType _searchType;
             private SearchField search;
             private AssetDpTree assetDp;
@@ -135,7 +135,6 @@ namespace WooAsset
                     {
 
                         var _item = BuildBundle(i, root, result);
-                        if (bundle.assetCount <= 0) continue;
                         if (IsExpanded(_item.id))
                         {
                             var assets = bundle.GetAssets();
@@ -158,7 +157,6 @@ namespace WooAsset
                         }
                         else
                         {
-                            if (bundle.assetCount <= 0) continue;
                             var assets = bundle.GetAssets();
                             for (int j = 0; j < assets.Count; j++)
                             {
@@ -200,7 +198,7 @@ namespace WooAsset
                 var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                 if (args.item.depth == 0)
                 {
-                    BundleGroup group = cache.GetBundleGroupByBundleName(args.label);
+                    EditorBundleData group = cache.GetBundleGroupByBundleName(args.label);
                     base.RowGUI(args);
                     if (ping_g == group) draw = true;
                 }
@@ -264,15 +262,15 @@ namespace WooAsset
                 }
                 else if (find.depth == 0)
                 {
-                    BundleGroup group = cache.GetBundleGroupByBundleName(path);
-                    if (group.dependence.Count != 0)
+                    EditorBundleData group = cache.GetBundleGroupByBundleName(path);
+                    if (group.dependenceCount != 0)
                     {
                         bundleDp.SetBundleGroup(group);
                         dpViewType |= DpViewType.Bundle;
                     }
                     else
                         bundleDp.SetBundleGroup(null);
-                    if (group.usage.Count != 0)
+                    if (group.usageCount != 0)
                     {
                         bundleUsage.SetBundleGroup(group);
                         dpViewType |= DpViewType.BundleUsage;
@@ -294,9 +292,9 @@ namespace WooAsset
             }
 
 
-            BundleGroup ping_g;
+            EditorBundleData ping_g;
             EditorAssetData ping_a;
-            public async void Ping(BundleGroup group)
+            public async void Ping(EditorBundleData group)
             {
                 if (ping_g != null) return;
                 ping_g = group;

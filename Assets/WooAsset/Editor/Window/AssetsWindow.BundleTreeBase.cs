@@ -11,15 +11,15 @@ namespace WooAsset
         private abstract class BundleTreeBase : TreeView
         {
 
-            protected virtual List<BundleGroup> groups { get; private set; }
-            protected IPing<BundleGroup> ping;
-            protected void SetBundleGroups(List<BundleGroup> groups)
+            protected virtual List<EditorBundleData> groups { get; private set; }
+            protected IPing<EditorBundleData> ping;
+            protected void SetBundleBuilds(List<EditorBundleData> groups)
             {
                 this.groups = groups;
                 this.Reload();
             }
 
-            public BundleTreeBase(TreeViewState state, IPing<BundleGroup> ping) : base(state)
+            public BundleTreeBase(TreeViewState state, IPing<EditorBundleData> ping) : base(state)
             {
                 var _base = new MultiColumnHeaderState.Column[]
                 {
@@ -74,9 +74,9 @@ namespace WooAsset
                 GUI.Label(rs[0], Textures.folder);
                 EditorGUI.SelectableLabel(rs[1], args.label);
 
-                BundleGroup group = cache.GetBundleGroupByBundleName(args.label);
-                GUI.Label(args.GetCellRect(1), group.usage.Count.ToString());
-                GUI.Label(args.GetCellRect(2), group.dependence.Count.ToString());
+                EditorBundleData group = cache.GetBundleGroupByBundleName(args.label);
+                GUI.Label(args.GetCellRect(1), group.usageCount.ToString());
+                GUI.Label(args.GetCellRect(2), group.dependenceCount.ToString());
                 GUI.Label(args.GetCellRect(3), GetSizeString(group.length));
             }
             protected override void DoubleClickedItem(int id)

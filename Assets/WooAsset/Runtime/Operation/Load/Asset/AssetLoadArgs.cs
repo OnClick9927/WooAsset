@@ -5,24 +5,36 @@ namespace WooAsset
 {
     public struct AssetLoadArgs : IAssetArgs
     {
-        public string bundleName => data.bundleName;
-        public string path => data.path;
         public bool direct;
-        public bool scene => data.type == AssetType.Scene;
-        public List<AssetHandle> dps;
         public bool async;
         public Type type;
         public AssetData data;
-        public string uid => path;
+        public string uid => data.path;
+        public bool isRes;
 
-        public AssetLoadArgs(AssetData data, bool direct, List<AssetHandle> dps, bool async, Type type)
+        private AssetLoadArgs(AssetData data, bool async, Type type, bool direct, bool isRes)
         {
             this.data = data;
-            this.dps = dps;
             this.direct = direct;
             this.async = async;
             this.type = type;
+            this.isRes = isRes;
         }
+
+        public static AssetLoadArgs NormalArg(AssetData data, bool async, Type type)
+        {
+            return new AssetLoadArgs(data, async, type, false, false);
+        }
+        public static AssetLoadArgs FileArg(AssetData data, bool async)
+        {
+            return new AssetLoadArgs(data, async, null, true, false);
+        }
+        public static AssetLoadArgs ResArg(AssetData data, bool async)
+        {
+            return new AssetLoadArgs(data, async, null, false, true);
+
+        }
+
     }
 
 }

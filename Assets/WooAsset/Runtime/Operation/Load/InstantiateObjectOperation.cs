@@ -20,23 +20,16 @@ namespace WooAsset
         }
         private void Create(Asset asset, Transform parent)
         {
-            if (!asset.unloaded)
+            if (!asset.isErr)
             {
-                if (!asset.isErr)
-                {
-                    GameObject prefab = asset.GetAsset<GameObject>();
-                    var gameObject = GameObject.Instantiate(prefab, parent);
-                    bridge = new GameObjectBridge(gameObject, asset);
-                    Assets.AddBridge(bridge);
-                }
-                else
-                {
-                    SetErr("The asset has broken");
-                }
+                GameObject prefab = asset.GetAsset<GameObject>();
+                var gameObject = GameObject.Instantiate(prefab, parent);
+                bridge = new GameObjectBridge(gameObject, asset);
+                Assets.AddBridge(bridge);
             }
             else
             {
-                SetErr("The asset has unloaded");
+                SetErr("The asset has broken");
             }
 
 

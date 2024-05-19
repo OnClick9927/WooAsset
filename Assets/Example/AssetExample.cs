@@ -21,7 +21,6 @@ namespace WooAsset
         public override IAssetStreamEncrypt GetEncrypt()
         {
             return new DefaultAssetStreamEncrypt();
-            return base.GetEncrypt();
         }
         public override bool NeedCopyStreamBundles()
         {
@@ -42,7 +41,6 @@ namespace WooAsset
         public override IAssetLife GetAssetLife()
         {
             return null;
-            return new LRULife(1024 * 50);
         }
     }
     public class AssetExample : UnityEngine.MonoBehaviour
@@ -73,11 +71,8 @@ namespace WooAsset
             var asset = await Assets.LoadAsset("Assets/Example/New Folder/aaa");
 
             RawObject raw = asset.GetAsset<RawObject>();
+            Debug.Log(raw.bytes.Length);
 
-            if (!asset.unloaded)
-            {
-                Debug.Log(raw.bytes.Length);
-            }
 
             var _asset = Assets.LoadAsset("Assets/Example/New Folder/a.jpg");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");

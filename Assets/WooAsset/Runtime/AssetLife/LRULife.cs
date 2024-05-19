@@ -38,16 +38,17 @@ namespace WooAsset
                 if (!Application.isPlaying) break;
                 Bundle bundle = queue.Dequeue();
                 string bundleName = bundle.bundleName;
-                if (!map.ContainsKey(bundleName))
+
+
+                var bundle_map = AssetsHelper.GetOrDefaultFromDictionary(map, bundleName);
+                if (bundle_map == null)
                 {
                     map.Add(bundleName, bundle);
                     await bundle;
                     length += bundle.length;
                 }
                 else
-                {
                     list.Remove(bundleName);
-                }
                 list.AddLast(bundleName);
 
                 if (!Application.isPlaying) break;
@@ -86,7 +87,8 @@ namespace WooAsset
         void IAssetLife<Bundle>.OnAssetRelease(Bundle asset, int count) { }
 
 
-        void IAssetLife<Bundle>.OnAssetUnload(string path, Bundle asset) {
+        void IAssetLife<Bundle>.OnAssetUnload(string path, Bundle asset)
+        {
         }
     }
 }

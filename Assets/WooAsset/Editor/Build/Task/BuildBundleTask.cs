@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -11,31 +10,24 @@ namespace WooAsset
 
         public class BuildTask : AssetTask
         {
-            private static void UpdateHash(List<BundleGroup> groups, AssetBundleManifest _main)
+            private static void UpdateHash(List<EditorBundleData> builds, AssetBundleManifest _main)
             {
                 var bundles = _main.GetAllAssetBundles().ToList();
-                for (int i = 0; i < groups.Count; i++)
+                for (int i = 0; i < builds.Count; i++)
                 {
-                    var group = groups[i];
-                    group.hash = bundles.First(x => x.StartsWith(group.hash));
-                }
-                for (int i = 0; i < groups.Count; i++)
-                {
-                    var group = groups[i];
-                    var dps = _main.GetAllDependencies(group.hash);
-                    group.dependence = dps.ToList();
-                }
-                for (int i = 0; i < groups.Count; i++)
-                {
-                    var group = groups[i];
-                    group.usage = groups.FindAll(x => x.dependence.Contains(group.hash)).ConvertAll(x => x.hash);
-
+                    var build = builds[i];
+                    build.SyncRealHash(bundles.First(x => x.StartsWith(build.hash)));
                 }
 
+
+                foreach (EditorBundleData build in builds)
+                    build.SetDependence(_main.GetAllDependencies(build.hash).ToList());
+                foreach (EditorBundleData build in builds)
+                    build.FindUsage(builds);
             }
             protected async override void OnExecute(AssetTaskContext context)
             {
-                var source = context.allBundleGroups;
+                var source = context.allBundleBuilds;
                 var normal = source.FindAll(x => !x.raw);
                 var raws = source.FindAll(x => x.raw);
 
@@ -65,7 +57,12 @@ namespace WooAsset
                 //拷贝打爆出来的到输出目录
                 foreach (var bundleName in source.ConvertAll(x => x.hash))
                 {
-                    var reader = await AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
+                    ReadFileOperation reader;
+                    if (raws.Find(x => x.hash == bundleName) != null)
+                        reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, $"{bundleName}_{bundleName}"), true);
+                    else
+                        reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
+                    await reader;
                     await AssetsHelper.WriteFile(
                           EncryptBuffer.Encode(bundleName, reader.bytes, context.encrypt),
                           AssetsHelper.CombinePath(context.outputPath, bundleName),

@@ -8,7 +8,7 @@ namespace WooAsset
     {
         public class DefaultAssetBuild : IAssetBuild
         {
-            public override void Create(List<EditorAssetData> assets, List<BundleGroup> result)
+            public override void Create(List<EditorAssetData> assets, List<EditorBundleData> result)
             {
                 List<EditorAssetData> Shaders = assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant);
                 assets.RemoveAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant);

@@ -68,7 +68,7 @@ namespace WooAsset
                 string path = args.label;
                 float indent = this.GetContentIndent(args.item);
 
-                BundleGroup group = cache.GetBundleGroupByAssetPath(path);
+                EditorBundleData group = cache.GetBundleGroupByAssetPath(path);
                 EditorAssetData asset = cache.tree.GetAssetData(path);
 
                 var rect1 = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));

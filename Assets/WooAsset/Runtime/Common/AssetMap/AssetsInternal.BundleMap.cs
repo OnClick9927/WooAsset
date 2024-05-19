@@ -14,6 +14,9 @@ namespace WooAsset
             {
                 Bundle result = Find(uid);
                 if (result == null) return;
+                if (result.dependence != null)
+                    foreach (var item in result.dependence)
+                        Release(item.bundleName);
                 ReleaseRef(result);
                 if (!GetAutoUnloadBundle()) return;
                 TryRealUnload(uid);
@@ -29,9 +32,13 @@ namespace WooAsset
                 }
             }
 
-            protected override void OnRetain(Bundle asset, bool old)
+            protected override void OnRetain(Bundle bundle, bool old)
             {
-                RetainRef(asset);
+                RetainRef(bundle);
+                if (!old) return;
+                if (bundle.dependence != null)
+                    foreach (var item in bundle.dependence)
+                        RetainRef(item);
             }
         }
     }

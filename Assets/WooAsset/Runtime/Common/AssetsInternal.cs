@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static WooAsset.AssetsVersionCollection.VersionData;
 using static WooAsset.AssetsVersionCollection;
+using static WooAsset.ManifestData;
 
 namespace WooAsset
 {
@@ -53,7 +54,6 @@ namespace WooAsset
     partial class AssetsInternal
     {
         private static Bundle CreateBundle(BundleLoadArgs args) => mode.CreateBundle(args.bundleName, args);
-        private static AssetHandle CreateAsset(AssetLoadArgs arg) => mode.CreateAsset(arg);
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
         public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
@@ -61,9 +61,11 @@ namespace WooAsset
 
 
 
-        public static AssetType GetAssetType(string assetPath) => Initialized() ? mode.manifest.GetAssetType(assetPath) : AssetType.None;
-        public static ManifestData.AssetData GetAssetData(string assetPath) => Initialized() ? mode.manifest.GetAssetData(assetPath) : null;
+        public static AssetType GetAssetType(string assetPath) => Initialized() ? GetAssetData(assetPath).type : AssetType.None;
+        public static AssetData GetAssetData(string assetPath) => Initialized() ? mode.manifest.GetAssetData(assetPath) : null;
+        public static BundleData GetBundleData(string bundleName) => Initialized() ? mode.manifest.GetBundleData(bundleName) : null;
         public static IReadOnlyList<string> GetAssetTags(string assetPath) => GetAssetData(assetPath)?.tags;
+
 
 
         public static IReadOnlyList<string> GetAllAssetPaths() => Initialized() ? mode.manifest.allPaths : null;
@@ -94,10 +96,6 @@ namespace WooAsset
         public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static Downloader CopyFile(string url, string path) => new FileDownloader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static Downloader DownloadBytes(string url) => new Downloader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
-
-
-
-
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
 
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
@@ -114,48 +112,50 @@ namespace WooAsset
         public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));
         public static void UnloadBundles() => bundles.UnloadBundles();
 
-        public static Bundle LoadBundle(string bundleName, bool async, bool raw) => bundles.LoadAsync(new BundleLoadArgs(bundleName, async, GetEncrypt(), raw));
+        public static Bundle LoadBundle(string bundleName, bool async)
+        {
+            var data = GetBundleData(bundleName);
+            var bundle = bundles.Find(bundleName);
+            Bundle[] dependence;
+            if (bundle == null)
+                dependence = new Bundle[data.dependence.Count];
+            else
+                dependence = bundle.dependence;
+            for (int i = 0; i < data.dependence.Count; i++)
+                dependence[i] = LoadBundle(data.dependence[i], async);
+            return bundles.LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(), dependence));
+        }
 
 
 
 
 
-        public static Asset LoadFileAsset(string path, bool async) => assets.LoadAsync(new AssetLoadArgs(new ManifestData.AssetData()
+        public static Asset LoadFileAsset(string path, bool async) => assets.LoadAsync(AssetLoadArgs.FileArg(new ManifestData.AssetData()
         {
             bundleName = string.Empty,
             dps = null,
             path = path,
             tags = null,
             type = AssetType.None,
-        }, true, null, async, null)) as Asset;
+        }, async)) as Asset;
+
+        public static Asset LoadResourceAsset(string path, bool async, AssetType type) => assets.LoadAsync(AssetLoadArgs.ResArg(new ManifestData.AssetData()
+        {
+            bundleName = string.Empty,
+            dps = null,
+            path = path,
+            tags = null,
+            type = type,
+        }, async)) as Asset;
         public static AssetHandle LoadAsset(string path, bool async, Type type)
         {
-            assets.RemoveUselessAsset();
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
             {
                 AssetsHelper.LogError($"Not Found Asset: {path}");
                 return null;
             }
-            List<AssetHandle> result = null;
-
-
-            if (data.dps != null)
-            {
-                var find = assets.Find(data.path);
-                if (find != null)
-                    result = find.dps;
-                else
-                    result = new List<AssetHandle>();
-                result.Clear();
-                foreach (var item in data.dps)
-                {
-                    AssetHandle _asset = LoadAsset(item, async, typeof(UnityEngine.Object));
-                    if (_asset != null)
-                        result.Add(_asset);
-                }
-            }
-            return assets.LoadAsync(new AssetLoadArgs(data, false, result, async, type));
+            return assets.LoadAsync(AssetLoadArgs.NormalArg(data, async, type));
         }
 
         public static bool GetIsAssetLoaded(string assetPath) => assets.Find(assetPath) != null;

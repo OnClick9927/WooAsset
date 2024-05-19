@@ -38,11 +38,14 @@ namespace WooAsset
         private static GUIContent c = new GUIContent();
         public static GUIContent GUIContent(string txt)
         {
+            c.image = null;
+            c.tooltip = null;
             c.text = txt;
             return c;
         }
-        public static GUIContent GUIContent(string txt,Texture tx)
+        public static GUIContent GUIContent(string txt, Texture tx)
         {
+            c.tooltip = null;
             c.image = tx;
             c.text = txt;
             return c;

@@ -10,9 +10,6 @@ namespace WooAsset
         public T value { get; private set; }
         public DateTime time { get; private set; }
 
-
-        private bool _unload;
-        public bool unloaded => _unload;
         private int _ref;
         public int refCount => _ref;
 
@@ -23,9 +20,7 @@ namespace WooAsset
         }
         void IAsset.UnLoad()
         {
-            if (unloaded) return;
             OnUnLoad();
-            _unload = true;
         }
 
         protected abstract void OnUnLoad();

@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections;
+#if UNITY_EDITOR
 using System.Threading.Tasks;
+#endif
 
 namespace WooAsset
 {
@@ -46,14 +48,6 @@ namespace WooAsset
         }
     }
 
-    public class EmptyOperation : Operation
-    {
-        public override float progress => 1;
-        public EmptyOperation()
-        {
-            InvokeComplete();
-        }
-    }
     public class GroupOperation : Operation
     {
         private readonly Operation[] ops;

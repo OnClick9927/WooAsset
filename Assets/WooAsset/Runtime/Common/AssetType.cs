@@ -7,6 +7,7 @@
         Ignore,
         Directory,
         LightingData,
+        Sprite,
         Texture,
         Shader,
         ShaderVariant,

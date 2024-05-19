@@ -8,9 +8,8 @@ namespace WooAsset
         {
             var cache = AssetsEditorTool.cache;
             cache.tree = context.tree;
-            cache.previewBundles = context.allBundleGroups != null ? context.allBundleGroups : new List<BundleGroup>();
+            cache.previewBundles = context.allBundleBuilds != null ? context.allBundleBuilds : new List<EditorBundleData>();
             cache.manifest = context.manifest;
-            cache.lastContext = context;
             cache.Save();
             InvokeComplete();
         }

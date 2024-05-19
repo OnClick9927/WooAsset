@@ -1,0 +1,215 @@
+{
+    "assets": [
+        {
+            "path": "Assets/Example/New Folder/a.jpg",
+            "bundleName": "2d8f4d64951abfaea7f3fe9aefb11141_3fe37bce789cb0fe54f1b109cd6018f0",
+            "tags": [],
+            "dps": [],
+            "type": 4
+        },
+        {
+            "path": "Assets/Example/Scene/New Scene2.unity",
+            "bundleName": "4c22ced86546b914d9a49eb3666d0e66_631a1451d824aa4794874ba273d24dd7",
+            "tags": [],
+            "dps": [
+                "Assets/Example/px/One.prefab",
+                "Assets/Example/px/1.png"
+            ],
+            "type": 10
+        },
+        {
+            "path": "Assets/Example/Scene/New Scene.unity",
+            "bundleName": "08e8bdd1976259ae7b8ef59fdc76d7c9_75f188597513f0c001d5eb7181d08196",
+            "tags": [],
+            "dps": [],
+            "type": 10
+        },
+        {
+            "path": "Assets/Example/New Folder/New Material 1.mat",
+            "bundleName": "553fbe73a2a295b01ac54d0a87d26856_e5260c9b8f5ad207bd29903304512db6",
+            "tags": [],
+            "dps": [],
+            "type": 11
+        },
+        {
+            "path": "Assets/Example/New Folder/New Material.mat",
+            "bundleName": "553fbe73a2a295b01ac54d0a87d26856_e5260c9b8f5ad207bd29903304512db6",
+            "tags": [],
+            "dps": [],
+            "type": 11
+        },
+        {
+            "path": "Assets/Example/New Folder/Cube.prefab",
+            "bundleName": "7f684d85a6ea3e13cac98df67d83d88c_6c50aad0785463ed1f8b7d97825cc881",
+            "tags": [],
+            "dps": [
+                "Assets/Example/New Folder/New Material.mat"
+            ],
+            "type": 12
+        },
+        {
+            "path": "Assets/Example/px/One.prefab",
+            "bundleName": "dc5e76135581810c63b82b3455050484_df7b259d1397a0ea0c6b3700e3cfa0d7",
+            "tags": [],
+            "dps": [
+                "Assets/Example/px/1.png"
+            ],
+            "type": 12
+        },
+        {
+            "path": "Assets/Example/px/Two.prefab",
+            "bundleName": "8897512ab3f852758048b47c3be0d4ad_e55cc1c3443ccaf5a99aab073df9ab74",
+            "tags": [],
+            "dps": [
+                "Assets/Example/px/1.png"
+            ],
+            "type": 12
+        },
+        {
+            "path": "Assets/Example/shadervariants.shadervariants",
+            "bundleName": "636bcc38fdd3d0d2640b2eec782feab8_5506a43966f86681270dac45bad11b8e",
+            "tags": [
+                "shader"
+            ],
+            "dps": [],
+            "type": 7
+        },
+        {
+            "path": "Assets/Example/px/3.png",
+            "bundleName": "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+            "tags": [],
+            "dps": [],
+            "type": 4
+        },
+        {
+            "path": "Assets/Example/px/2.png",
+            "bundleName": "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+            "tags": [],
+            "dps": [],
+            "type": 4
+        },
+        {
+            "path": "Assets/Example/px/1.png",
+            "bundleName": "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+            "tags": [],
+            "dps": [],
+            "type": 4
+        },
+        {
+            "path": "Assets/Example/New Folder/aaa",
+            "bundleName": "a2424627e64e4dd54f539fb4c64c9047",
+            "tags": [],
+            "dps": [],
+            "type": 20
+        },
+        {
+            "path": "Assets/Example/New Folder/kkk.rfc",
+            "bundleName": "74bdeb362c709eb0728d7fcc49065ff7",
+            "tags": [],
+            "dps": [],
+            "type": 20
+        }
+    ],
+    "bunles": [
+        {
+            "bundleName": "2d8f4d64951abfaea7f3fe9aefb11141_3fe37bce789cb0fe54f1b109cd6018f0",
+            "assets": [
+                "Assets/Example/New Folder/a.jpg"
+            ],
+            "dependence": [],
+            "raw": false
+        },
+        {
+            "bundleName": "4c22ced86546b914d9a49eb3666d0e66_631a1451d824aa4794874ba273d24dd7",
+            "assets": [
+                "Assets/Example/Scene/New Scene2.unity"
+            ],
+            "dependence": [
+                "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+                "dc5e76135581810c63b82b3455050484_df7b259d1397a0ea0c6b3700e3cfa0d7"
+            ],
+            "raw": false
+        },
+        {
+            "bundleName": "08e8bdd1976259ae7b8ef59fdc76d7c9_75f188597513f0c001d5eb7181d08196",
+            "assets": [
+                "Assets/Example/Scene/New Scene.unity"
+            ],
+            "dependence": [],
+            "raw": false
+        },
+        {
+            "bundleName": "553fbe73a2a295b01ac54d0a87d26856_e5260c9b8f5ad207bd29903304512db6",
+            "assets": [
+                "Assets/Example/New Folder/New Material 1.mat",
+                "Assets/Example/New Folder/New Material.mat"
+            ],
+            "dependence": [],
+            "raw": false
+        },
+        {
+            "bundleName": "7f684d85a6ea3e13cac98df67d83d88c_6c50aad0785463ed1f8b7d97825cc881",
+            "assets": [
+                "Assets/Example/New Folder/Cube.prefab"
+            ],
+            "dependence": [
+                "553fbe73a2a295b01ac54d0a87d26856_e5260c9b8f5ad207bd29903304512db6"
+            ],
+            "raw": false
+        },
+        {
+            "bundleName": "dc5e76135581810c63b82b3455050484_df7b259d1397a0ea0c6b3700e3cfa0d7",
+            "assets": [
+                "Assets/Example/px/One.prefab"
+            ],
+            "dependence": [
+                "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a"
+            ],
+            "raw": false
+        },
+        {
+            "bundleName": "8897512ab3f852758048b47c3be0d4ad_e55cc1c3443ccaf5a99aab073df9ab74",
+            "assets": [
+                "Assets/Example/px/Two.prefab"
+            ],
+            "dependence": [
+                "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a"
+            ],
+            "raw": false
+        },
+        {
+            "bundleName": "636bcc38fdd3d0d2640b2eec782feab8_5506a43966f86681270dac45bad11b8e",
+            "assets": [
+                "Assets/Example/shadervariants.shadervariants"
+            ],
+            "dependence": [],
+            "raw": false
+        },
+        {
+            "bundleName": "d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a",
+            "assets": [
+                "Assets/Example/px/3.png",
+                "Assets/Example/px/2.png",
+                "Assets/Example/px/1.png"
+            ],
+            "dependence": [],
+            "raw": false
+        },
+        {
+            "bundleName": "a2424627e64e4dd54f539fb4c64c9047",
+            "assets": [
+                "Assets/Example/New Folder/aaa"
+            ],
+            "dependence": [],
+            "raw": true
+        },
+        {
+            "bundleName": "74bdeb362c709eb0728d7fcc49065ff7",
+            "assets": [
+                "Assets/Example/New Folder/kkk.rfc"
+            ],
+            "dependence": [],
+            "raw": true
+        }
+    ]
+}

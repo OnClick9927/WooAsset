@@ -27,7 +27,7 @@ namespace WooAsset
             Dictionary<string, List<string>> tag_dic = new Dictionary<string, List<string>>();
             foreach (var item in assets)
             {
-                if (tag_dic.ContainsKey(item.path)) continue;
+                if (AssetsHelper.GetOrDefaultFromDictionary(tag_dic, item.path) != null) continue;
                 var tags = context.assetBuild.GetTags(item);
                 if (tags == null || tags.Count == 0) continue;
                 tag_dic.Add(item.path, tags.ToList());

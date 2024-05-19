@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
-using UnityEngine.XR;
 
 namespace WooAsset
 {
@@ -23,7 +21,7 @@ namespace WooAsset
         protected BundleLoadArgs loadArgs;
 
         public string bundleName => loadArgs.bundleName;
-        public bool raw => loadArgs.raw;
+        public bool raw => loadArgs.data.raw;
 
         private AssetBundleCreateRequest loadOp;
         private Operation downloader;
@@ -167,8 +165,20 @@ namespace WooAsset
             }
 
         }
+
+
+        public Bundle[] dependence => loadArgs.dependence;
         protected override async void OnLoad()
         {
+            if (dependence != null && dependence.Length > 0)
+            {
+                for (int i = 0; i < dependence.Length; i++)
+                {
+                    await dependence[i];
+                }
+            }
+
+
             if (type == BundleLoadType.FromFile)
             {
                 LoadFromStream();

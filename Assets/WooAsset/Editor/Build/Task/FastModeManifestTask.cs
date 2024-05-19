@@ -5,11 +5,14 @@ namespace WooAsset
 {
     public class FastModeManifestTask : AssetTask
     {
-        public static ManifestData BuildManifest(List<BundleGroup> groups, AssetsTree tree)
+        public static ManifestData BuildManifest(List<EditorBundleData> groups, AssetsTree tree)
         {
             List<AssetData> _assets = new List<AssetData>();
+            List<BundleData> _bundles = new List<BundleData>();
+
             foreach (var build in groups)
             {
+                _bundles.Add(build.CreateBundleData());
                 foreach (var assetPath in build.GetAssets())
                 {
                     EditorAssetData data = tree.GetAssetData(assetPath);
@@ -17,20 +20,14 @@ namespace WooAsset
                 }
             }
             ManifestData manifest = new ManifestData();
-            manifest.Read(_assets);
+            manifest.Read(_assets, _bundles);
             manifest.Prepare();
             return manifest;
         }
         protected override void OnExecute(AssetTaskContext context)
         {
-            //var source = context.allBundleGroups;
-            //if (source.Count != 0)
-            //{
-            //    AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
-            //         source.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption | BuildAssetBundleOptions.DryRunBuild, context.buildTarget);
-            //    UpdateHash(source, _main);
-            //}
-            context.manifest = BuildManifest(context.allBundleGroups, context.tree);
+
+            context.manifest = BuildManifest(context.allBundleBuilds, context.tree);
             InvokeComplete();
         }
     }

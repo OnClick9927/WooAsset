@@ -1,20 +1,24 @@
-﻿namespace WooAsset
+﻿using static WooAsset.ManifestData;
+
+namespace WooAsset
 {
     public struct BundleLoadArgs : IAssetArgs
     {
-        public string bundleName;
         public bool async;
         public IAssetStreamEncrypt encrypt;
-        public bool raw;
-        public BundleLoadArgs(string bundleName, bool async, IAssetStreamEncrypt en, bool raw)
+        public BundleData data;
+        public Bundle[] dependence;
+        public string bundleName => data.bundleName;
+        public string uid => data.bundleName;
+
+        public BundleLoadArgs(BundleData data,bool async, IAssetStreamEncrypt en, Bundle[] dependence)
         {
-            this.bundleName = bundleName;
+            this.data = data;
             this.async = async;
             this.encrypt = en;
-            this.raw = raw;
+            this.dependence = dependence;
         }
 
-        public string uid => bundleName;
     }
 
 }

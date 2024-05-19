@@ -169,22 +169,15 @@ namespace WooAsset
                         foreach (var path in paths)
                             AssetsEditorTool.option.AddAssetTag(path, tag);
                         AssetsEditorTool.option.Save();
-                        var pipe = AssetsEditorTool.cache.lastContext.Pipeline;
-                        if (pipe == TaskPipelineType.PreviewAssets || pipe == TaskPipelineType.PreviewBundles)
-                            AssetTaskRunner.PreviewAssets();
-                        else
-                            AssetTaskRunner.PreviewAllAssets();
+                        AssetTaskRunner.PreviewAllAssets();
+
                     });
                     menu.AddItem(new GUIContent($"tag/remove/{tag}"), false, () =>
                     {
                         foreach (var path in paths)
                             AssetsEditorTool.option.RemoveAssetTag(path, tag);
                         AssetsEditorTool.option.Save();
-                        var pipe = AssetsEditorTool.cache.lastContext.Pipeline;
-                        if (pipe == TaskPipelineType.PreviewAssets || pipe == TaskPipelineType.PreviewBundles)
-                            AssetTaskRunner.PreviewAssets();
-                        else
-                            AssetTaskRunner.PreviewAllAssets();
+                        AssetTaskRunner.PreviewAllAssets();
                     });
 
                 }

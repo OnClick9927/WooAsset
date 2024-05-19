@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -45,22 +46,28 @@ namespace WooAsset
             }
         }
         public static string streamBundleDirectory => CombinePath(Application.streamingAssetsPath, buildTarget);
-        public static string RawToRawObjectPath(string path)
-        {
-            var dir = GetDirectoryName(path);
-            var name = GetFileNameWithoutExtension(path);
-            return ToRegularPath(CombinePath(dir, $"{name}.asset"));
-        }
-        public static string GetRawFileToDlcPath(string dir,string path)
-        {
-            string name = GetFileNameWithoutExtension(path);
-            string ex = GetFileExtension(path);
-            string hash = GetStringHash(name);
-            return CombinePath(dir, $"{hash}{ex}");
-        }
 
         public static T ReadObject<T>(byte[] bytes) => JsonUtility.FromJson<T>(encoding.GetString(bytes));
-        internal static Encoding encoding = Encoding.Default;
+        public static Encoding encoding = Encoding.Default;
+
+        public static Value GetFromDictionary<Key, Value>(Dictionary<Key, Value> map, Key key) where Value : class, new()
+        {
+            Value t;
+            if (!map.TryGetValue(key, out t))
+            {
+                t = new Value();
+                map.Add(key, t);
+            }
+            return t;
+        }
+        public static Value GetOrDefaultFromDictionary<Key, Value>(Dictionary<Key, Value> map, Key key) where Value : class
+        {
+            Value t;
+            if (map.TryGetValue(key, out t))
+                return t;
+            return null;
+        }
+
 
 
         public static Operation CopyFromFile(string srcPath, string targetPath)

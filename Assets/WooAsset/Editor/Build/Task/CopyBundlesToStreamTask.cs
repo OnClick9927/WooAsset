@@ -78,17 +78,19 @@ namespace WooAsset
             }
             List<string> buildInBundles = new List<string>();
             buildInAssets.AddRange(dps);
-            foreach (var item in buildInAssets)
+            foreach (var assetPath in buildInAssets)
             {
-                if (manifest.GetAssetData(item) == null)
+                var assetData = manifest.GetAssetData(assetPath);
+                if (assetData == null)
                 {
-                    SetErr($"could not find asset in this build {item}");
+                    SetErr($"could not find asset in this build {assetPath}");
                     InvokeComplete();
                     return;
                 }
-                var b = manifest.GetAssetBundleName(item);
-                if (buildInBundles.Contains(b)) continue;
-                buildInBundles.Add(b);
+                
+                var bundleName = assetData.bundleName;
+                if (buildInBundles.Contains(bundleName)) continue;
+                buildInBundles.Add(bundleName);
             }
             List<string> buildInConfigs = new List<string>();
 

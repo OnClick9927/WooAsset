@@ -1,8 +1,5 @@
-﻿using UnityEditor;
-using UnityEditor.IMGUI.Controls;
+﻿using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
-using Object = UnityEngine.Object;
-using UnityEngine;
 
 namespace WooAsset
 {
@@ -12,8 +9,6 @@ namespace WooAsset
         private class AssetDpTree : AssetTreeBase
         {
             private EditorAssetData asset;
-
-            public IPing<EditorAssetData> ping;
 
             public void SetAssetInfo(EditorAssetData info)
             {

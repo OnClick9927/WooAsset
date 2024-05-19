@@ -14,18 +14,24 @@ namespace WooAsset
         {
             public string name;
             public List<string> assets;
+
+            public void AddAsset(string path)
+            {
+                if (assets == null) assets = new List<string>();
+                if (!assets.Contains(path))
+                    assets.Add(path);
+            }
         }
         public class RTTag
         {
             public string tag;
-            public List<string> bundles;
             public List<string> assets;
-        }
-        public class RTBundle
-        {
-            public string bundle;
-            public List<string> tags;
-            public List<string> assets;
+            public void AddAsset(string path)
+            {
+                if (assets == null) assets = new List<string>();
+                if (!assets.Contains(path))
+                    assets.Add(path);
+            }
         }
         [Serializable]
         public class AssetData
@@ -36,18 +42,28 @@ namespace WooAsset
             public List<string> dps;
             public AssetType type;
         }
-        public void Read(List<AssetData> assets)
+        [System.Serializable]
+        public class BundleData
+        {
+            public string bundleName;
+            public List<string> assets;
+            public List<string> dependence;
+            public bool raw;
+        }
+        public void Read(List<AssetData> assets, List<BundleData> bundles)
         {
 #if UNITY_EDITOR
             this.assets = assets;
+            this.bunles = bundles;
 #endif
         }
 
         public List<AssetData> assets = new List<AssetData>();
+        public List<BundleData> bunles = new List<BundleData>();
 
         public void Prepare()
         {
-            _bundles = new Dictionary<string, RTBundle>();
+            _bundles = bunles.ToDictionary(x => x.bundleName);
             _assets = new Dictionary<string, AssetData>();
             _tags = new Dictionary<string, RTTag>();
             _names = new Dictionary<string, RTName>();
@@ -60,48 +76,14 @@ namespace WooAsset
                 IReadOnlyList<string> tags = asset.tags;
                 string bundleName = asset.bundleName;
                 _assets.Add(path, asset);
-                if (!_names.ContainsKey(assetName))
-                {
-                    _names.Add(assetName, new RTName() { name = assetName, assets = new List<string>() });
-                }
-                RTName _name = _names[assetName];
-                if (!_name.assets.Contains(path))
-                    _name.assets.Add(path);
-
-
-
-                if (!_bundles.ContainsKey(bundleName))
-                {
-                    _bundles.Add(bundleName, new RTBundle()
-                    {
-                        bundle = bundleName,
-                        assets = new List<string>(),
-                        tags = new List<string>()
-                    });
-                }
-                RTBundle _bundle = _bundles[bundleName];
-                if (!_bundle.assets.Contains(path))
-                    _bundle.assets.Add(path);
+                AssetsHelper.GetFromDictionary(_names, assetName).AddAsset(path);
                 if (tags == null || tags.Count == 0) continue;
                 foreach (var tag in tags)
                 {
                     if (string.IsNullOrEmpty(tag)) continue;
-                    if (!_tags.ContainsKey(tag))
-                    {
-                        _tags.Add(tag, new RTTag()
-                        {
-                            tag = tag,
-                            assets = new List<string>(),
-                            bundles = new List<string>()
-                        });
-                    }
-                    RTTag _tag = _tags[tag];
-                    if (!_tag.assets.Contains(path))
-                        _tag.assets.Add(path);
-                    if (!_tag.bundles.Contains(bundleName))
-                        _tag.bundles.Add(bundleName);
-                    if (!_bundle.tags.Contains(tag))
-                        _bundle.tags.Add(tag);
+
+                    RTTag _tag = AssetsHelper.GetFromDictionary(_tags, tag);
+                    _tag.AddAsset(path);
                 }
             }
             allPaths = _assets.Keys.ToList();
@@ -112,81 +94,66 @@ namespace WooAsset
         private Dictionary<string, AssetData> _assets;
         private Dictionary<string, RTName> _names;
         private Dictionary<string, RTTag> _tags;
-        private Dictionary<string, RTBundle> _bundles;
+        private Dictionary<string, BundleData> _bundles;
 
         [NonSerialized] public List<string> allPaths;
         [NonSerialized] public List<string> allTags;
         [NonSerialized] public List<string> allBundle;
         [NonSerialized] public List<string> allName;
 
-        public AssetData GetAssetData(string assetpath)
-        {
-            if (_assets.ContainsKey(assetpath))
-                return _assets[assetpath];
-            return null;
-        }
-        public AssetType GetAssetType(string assetPath)
-        {
-            if (_assets.ContainsKey(assetPath))
-                return _assets[assetPath].type;
-            return AssetType.None;
-        }
-        public List<string> GetTagAssetPaths(string tag)
-        {
-            if (_tags.ContainsKey(tag))
-                return _tags[tag].assets;
-            return null;
-        }
+        public AssetData GetAssetData(string assetpath) => AssetsHelper.GetOrDefaultFromDictionary(_assets, assetpath);
+        public List<string> GetTagAssetPaths(string tag) => AssetsHelper.GetOrDefaultFromDictionary(_tags, tag)?.assets;
+        public IReadOnlyList<string> GetAssets(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName)?.assets;
+        public BundleData GetBundleData(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName);
 
-        public string GetAssetBundleName(string assetPath)
-        {
-            if (_assets.ContainsKey(assetPath))
-                return _assets[assetPath].bundleName;
-            return null;
-        }
-        public IReadOnlyList<string> GetAssets(string bundleName)
-        {
-            RTBundle bundle = null;
-            _bundles.TryGetValue(bundleName, out bundle);
-            return bundle?.assets;
-        }
+
         public IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result)
         {
-            var fit = allName.FindAll(x => x.Contains(name));
             result.Clear();
-            for (int i = 0; i < fit.Count; i++)
+            for (int i = 0; i < allName.Count; i++)
             {
-                RTName bundle = null;
-                _names.TryGetValue(fit[i], out bundle);
-                var assets = bundle?.assets;
+                if (!name.Contains(allName[i])) continue;
+                _names.TryGetValue(allName[i], out RTName _name);
+                var assets = _name?.assets;
                 if (assets != null)
-                {
                     result.AddRange(assets);
-                }
             }
             return result;
         }
 
-        public static ManifestData Merge(List<ManifestData> manifests, List<string> prefer)
+        public static ManifestData Merge(List<ManifestData> manifests, List<string> prefer_bundles)
         {
             ManifestData manifest = new ManifestData();
-            Dictionary<string, AssetData> dic = new Dictionary<string, AssetData>();
+            Dictionary<string, AssetData> asset_dic = new Dictionary<string, AssetData>();
+            Dictionary<string, BundleData> bundle_dic = new Dictionary<string, BundleData>();
+
             for (int i = 0; i < manifests.Count; i++)
             {
                 for (int j = 0; j < manifests[i].assets.Count; j++)
                 {
                     var asset = manifests[i].assets[j];
-                    if (dic.ContainsKey(asset.path))
-                    {
-                        if (!prefer.Contains(dic[asset.path].bundleName) && prefer.Contains(asset.bundleName))
-                            dic[asset.path] = asset;
-                    }
+                    string assetPath = asset.path;
+                    var origin = AssetsHelper.GetOrDefaultFromDictionary(asset_dic, assetPath);
+                    if (origin != null && !prefer_bundles.Contains(origin.bundleName) && prefer_bundles.Contains(asset.bundleName))
+                        asset_dic[assetPath] = asset;
                     else
-                        dic.Add(asset.path, asset);
+                        asset_dic.Add(assetPath, asset);
+                }
+
+                for (int j = 0; j < manifests[i].bunles.Count; j++)
+                {
+                    var bundle = manifests[i].bunles[j];
+                    string assetPath = bundle.bundleName;
+                    var origin = AssetsHelper.GetOrDefaultFromDictionary(bundle_dic, assetPath);
+                    if (origin != null && !prefer_bundles.Contains(origin.bundleName) && prefer_bundles.Contains(bundle.bundleName))
+                        bundle_dic[assetPath] = bundle;
+                    else
+                        bundle_dic.Add(assetPath, bundle);
                 }
 
             }
-            manifest.assets = dic.Values.ToList();
+            manifest.bunles = bundle_dic.Values.ToList();
+            manifest.assets = asset_dic.Values.ToList();
             return manifest;
         }
 

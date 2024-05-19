@@ -10,28 +10,21 @@ namespace WooAsset
             {
                 Dictionary<string, List<EditorAssetData>> dic = new Dictionary<string, List<EditorAssetData>>();
                 foreach (EditorAssetData asset in list)
-                {
-                    var dir = asset.directory;
-                    if (!dic.ContainsKey(dir))
-                    {
-                        dic.Add(dir, new List<EditorAssetData>());
-                    }
-                    dic[dir].Add(asset);
-                }
+                    AssetsHelper.GetFromDictionary(dic, asset.directory).Add(asset);
                 return dic;
             }
-            public static void One2One(List<EditorAssetData> assets, List<BundleGroup> result)
+            public static void One2One(List<EditorAssetData> assets, List<EditorBundleData> result)
             {
                 foreach (var atlas in assets)
                 {
-                    result.Add(BundleGroup.Create(atlas));
+                    result.Add(EditorBundleData.Create(atlas));
                 }
             }
-            public static void N2One(List<EditorAssetData> assets, List<BundleGroup> result)
+            public static void N2One(List<EditorAssetData> assets, List<EditorBundleData> result)
             {
-                result.Add(BundleGroup.Create(assets));
+                result.Add(EditorBundleData.Create(assets));
             }
-            public static void N2MBySize(List<EditorAssetData> assets, List<BundleGroup> result, long size = 8 * 1024 * 1024)
+            public static void N2MBySize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
             {
                 var big = assets.FindAll(x => x.length >= size);
                 assets.RemoveAll(x => x.length >= size);
@@ -60,7 +53,7 @@ namespace WooAsset
                     N2One(tmp, result);
                 }
             }
-            public static void N2MBySizeAndDir(List<EditorAssetData> assets, List<BundleGroup> result)
+            public static void N2MBySizeAndDir(List<EditorAssetData> assets, List<EditorBundleData> result)
             {
                 var path_dic = GroupByDir(assets);
                 foreach (var item in path_dic)

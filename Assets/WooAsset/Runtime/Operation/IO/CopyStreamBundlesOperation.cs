@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     public class CopyStreamBundlesOperation : Operation
     {

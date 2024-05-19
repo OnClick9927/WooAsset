@@ -10,8 +10,6 @@ namespace WooAsset
     public class AssetTaskContext
     {
         public TaskPipelineType Pipeline;
-
-
         public string outputPath;
         public string historyPath;
         public int MaxCacheVersionCount;
@@ -35,7 +33,7 @@ namespace WooAsset
 
         public AssetsTree tree;
         public List<EditorAssetData> needBuildAssets;
-        public List<BundleGroup> allBundleGroups;
+        public List<EditorBundleData> allBundleBuilds;
         public List<FileData> files;
         public List<string> useful;
         public string version;

@@ -7,16 +7,16 @@ namespace WooAsset
     {
         private class BundleUsageTree : BundleTreeBase
         {
-            public void SetBundleGroup(BundleGroup group)
+            public void SetBundleGroup(EditorBundleData group)
             {
                 if (group != null)
-                    base.SetBundleGroups(group.usage.ConvertAll(x => cache.GetBundleGroupByBundleName(x)));
+                    base.SetBundleBuilds(group.GetUsage(cache.previewBundles));
                 else
-                    base.SetBundleGroups(null);
+                    base.SetBundleBuilds(null);
                 this.Reload();
             }
 
-            public BundleUsageTree(TreeViewState state, IPing<BundleGroup> ping) : base(state, ping)
+            public BundleUsageTree(TreeViewState state, IPing<EditorBundleData> ping) : base(state, ping)
             {
 
             }

@@ -5,15 +5,14 @@ namespace WooAsset
     public class AssetsEditorCache : AssetsScriptableObject
     {
         public AssetsTree tree = new AssetsTree();
-        public List<BundleGroup> previewBundles = new List<BundleGroup>();
-        public AssetTaskContext lastContext;
+        public List<EditorBundleData> previewBundles = new List<EditorBundleData>();
         public ManifestData manifest;
 
-        public BundleGroup GetBundleGroupByAssetPath(string assetPath)
+        public EditorBundleData GetBundleGroupByAssetPath(string assetPath)
         {
             return previewBundles.Find(x => x.ContainsAsset(assetPath));
         }
-        public BundleGroup GetBundleGroupByBundleName(string bundleName)
+        public EditorBundleData GetBundleGroupByBundleName(string bundleName)
         {
             return previewBundles.Find(x => x.hash == bundleName);
         }

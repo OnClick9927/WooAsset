@@ -7,11 +7,8 @@ using System.Linq;
 
 namespace WooAsset
 {
-
-
     partial class AssetsWindow
     {
-
         private class LifeTree : TreeView
         {
             public enum SearchType
@@ -67,7 +64,7 @@ namespace WooAsset
                     Bundle bundle = AssetsEditorTool.bundles[life].asset;
                     var r = AssetsInternal.GetAllAssetPaths(bundle.bundleName);
                     if (r == null) continue;
-                    var paths = r.ToList().FindAll(x => AssetsEditorTool.assets.ContainsKey(x));
+                    var paths = r.ToList().FindAll(x => AssetsHelper.GetOrDefaultFromDictionary(AssetsEditorTool.assets, x) != null);
                     if (paths == null && paths.Count == 0) continue;
                     if (IsExpanded(item.id) || !string.IsNullOrEmpty(this.searchString))
                     {
@@ -155,10 +152,8 @@ namespace WooAsset
                     GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(name, Textures.GetMiniThumbnail(args.label)));
                     GUI.Label(args.GetCellRect(1), life.asset.refCount.ToString());
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
-                    GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
-
+                    //GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
                     GUI.Label(args.GetCellRect(4), life.assetType.ToString());
-
                     EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsHelper.GetFileName(life.asset.bundleName));
                     GUI.Label(args.GetCellRect(6), GetTagsString(life.tags));
                 }
