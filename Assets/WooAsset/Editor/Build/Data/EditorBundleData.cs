@@ -97,6 +97,7 @@ namespace WooAsset
                    .Distinct()
                    .Select(assetPath => source.Find(y => y.ContainsAsset(assetPath)))
                    .Distinct()
+                   .Where(x=>x.hash != hash)
                    .Select(x => x.hash);
             dependence.AddRange(result);
         }
