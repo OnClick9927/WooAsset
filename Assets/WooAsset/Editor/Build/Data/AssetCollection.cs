@@ -6,12 +6,8 @@ using System.Linq;
 namespace WooAsset
 {
     [System.Serializable]
-    public class AssetsTree
+    public class AssetCollection
     {
-
-        //[SerializeField] private List<string> rawAssets = new List<string>();
-        //[SerializeField] private List<string> rawAssets_copy = new List<string>();
-
         [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         private IAssetBuild assetBuild;
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
@@ -56,13 +52,6 @@ namespace WooAsset
         {
             path = AssetsHelper.ToRegularPath(path);
             var type = GetAssetType(path);
-            //if (type == AssetType.Raw)
-            //    if (!rawAssets.Contains(path))
-            //        rawAssets.Add(path);
-            //if (type == AssetType.RawCopyFile)
-            //    if (!rawAssets_copy.Contains(path))
-            //        rawAssets_copy.Add(path);
-
             return type == AssetType.Ignore;
         }
         private long GetLength(EditorAssetData data)

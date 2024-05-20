@@ -5,18 +5,25 @@ namespace WooAsset
 {
     public class BundleStream : FileStream
     {
-        private static Queue<BundleStream> streams = new Queue<BundleStream>();
+        private static List<BundleStream> streams = new List<BundleStream>();
         public static void CloseStreams()
         {
 #if UNITY_EDITOR
-            AssetsHelper.Log($"clear file {streams.Count} streams for editor");
-            while (streams.Count > 0)
+            if (streams.Count > 0)
             {
-                streams
-                    .Dequeue().Dispose();
-
+                AssetsHelper.Log($"clear file {streams.Count} streams for editor");
+                for (int i = 0; i < streams.Count; i++)
+                    streams[i].Dispose();
             }
 #endif
+        }
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                streams.Remove(this);
+            }
         }
         private readonly string bundleName;
         private IAssetStreamEncrypt encrypt;
@@ -24,7 +31,9 @@ namespace WooAsset
         {
             this.bundleName = bundleName;
             this.encrypt = encrypt;
-            streams.Enqueue(this);
+#if UNITY_EDITOR
+            streams.Add(this);
+#endif
         }
 
         public override int Read(byte[] array, int offset, int count)

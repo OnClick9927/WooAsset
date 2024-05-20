@@ -68,7 +68,6 @@ namespace WooAsset
                 string path = args.label;
                 float indent = this.GetContentIndent(args.item);
 
-                EditorBundleData group = cache.GetBundleGroupByAssetPath(path);
                 EditorAssetData asset = cache.tree.GetAssetData(path);
 
                 var rect1 = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
@@ -78,12 +77,12 @@ namespace WooAsset
 
                 if (asset.loopDependence)
                     GUI.Label(args.GetCellRect(1), Textures.err);
-                GUI.Label(args.GetCellRect(2), asset.usageCount.ToString());
-                GUI.Label(args.GetCellRect(3), asset.dependence.Count.ToString());
+                DrawCount(args.GetCellRect(2), asset.usageCount);
+                DrawCount(args.GetCellRect(3), asset.dependence.Count);
                 GUI.Label(args.GetCellRect(4), asset.type.ToString());
                 GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
                 EditorGUI.SelectableLabel(args.GetCellRect(6), GetTagsString(asset));
-       
+
             }
 
             protected override void DoubleClickedItem(int id)

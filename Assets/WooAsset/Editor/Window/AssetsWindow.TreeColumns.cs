@@ -99,6 +99,14 @@ namespace WooAsset
                 allowToggleVisibility = false,
 
             };
+            public static MultiColumnHeaderState.Column Raw = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Raw"),
+                minWidth = 40,
+                maxWidth = 40,
+                allowToggleVisibility = false,
+
+            };
             public static MultiColumnHeaderState.Column usageCount = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Usage"),

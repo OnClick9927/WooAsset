@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.VersionControl;
 
 namespace WooAsset
 {
@@ -26,7 +27,9 @@ namespace WooAsset
                     GetFirstColomn(),
                    TreeColumns.usageCount,
                     TreeColumns.depenceCount,
-                TreeColumns.size,
+                    TreeColumns.size,
+                    TreeColumns.loopDepenence,
+                    TreeColumns.Raw,
 
                 };
 
@@ -74,17 +77,22 @@ namespace WooAsset
                 GUI.Label(rs[0], Textures.folder);
                 EditorGUI.SelectableLabel(rs[1], args.label);
 
+
                 EditorBundleData group = cache.GetBundleGroupByBundleName(args.label);
-                GUI.Label(args.GetCellRect(1), group.usageCount.ToString());
-                GUI.Label(args.GetCellRect(2), group.dependenceCount.ToString());
+                DrawCount(args.GetCellRect(1), group.usageCount);
+                DrawCount(args.GetCellRect(2),  group.dependenceCount);
                 GUI.Label(args.GetCellRect(3), GetSizeString(group.length));
+                if (group.loopDependence)
+                    GUI.Label(args.GetCellRect(4), Textures.err);
+                if (group.raw)
+                    GUI.Toggle(args.GetCellRect(5), true, "");
             }
             protected override void DoubleClickedItem(int id)
             {
                 var group = groups[id];
                 ping.Ping(group);
             }
-
+    
         }
     }
 }

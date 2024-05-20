@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     public class DefaultAssetStreamEncrypt : IAssetStreamEncrypt
     {
+        public const int code = 1;
         public byte[] Decode(string bundleName, byte[] buffer)
         {
             return Decode(bundleName, buffer, 0, buffer.Length);
@@ -11,9 +10,8 @@ namespace WooAsset
 
         public byte[] Decode(string bundleName, byte[] buffer, int offset, int length)
         {
-            for (int i = 0; i < offset + length && i < buffer.Length; i++)
+            for (int i = offset; i < offset + length && i < buffer.Length; i++)
             {
-                byte key = (byte)bundleName[i % bundleName.Length];
                 buffer[i] ^= (byte)i;
             }
             return buffer;

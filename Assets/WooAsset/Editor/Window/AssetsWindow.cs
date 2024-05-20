@@ -21,6 +21,13 @@ namespace WooAsset
             }
             return $"{(length / Mathf.Pow(1024, stage)).ToString("0.00")} {stages[stage]}";
         }
+
+        private static void DrawCount(Rect rect, int count)
+        {
+            GUI.enabled = count != 0;
+            GUI.Label(rect, count == 0 ? "◌" : count.ToString());
+            GUI.enabled = true;
+        }
         private static List<string> stages = new List<string>()
         {
             "B","KB","MB","GB","TB"

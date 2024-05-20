@@ -99,6 +99,7 @@ namespace WooAsset
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
 
         public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
+        private static IAssetStreamEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAwalysFromWebRequest();
         public static bool GetBundleAwalysFromWebRequest() => setting.GetBundleAwalysFromWebRequest();
 
@@ -123,12 +124,10 @@ namespace WooAsset
                 dependence = bundle.dependence;
             for (int i = 0; i < data.dependence.Count; i++)
                 dependence[i] = LoadBundle(data.dependence[i], async);
-            return bundles.LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(), dependence));
+            return bundles.LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(data.enCode), dependence));
         }
 
-
-
-
+  
 
         public static Asset LoadFileAsset(string path, bool async) => assets.LoadAsync(AssetLoadArgs.FileArg(new ManifestData.AssetData()
         {
@@ -152,7 +151,7 @@ namespace WooAsset
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
             {
-                AssetsHelper.LogError($"Not Found Asset: {path}");
+                AssetsHelper.LogError($"Not Found Asset: {path}"); 
                 return null;
             }
             return assets.LoadAsync(AssetLoadArgs.NormalArg(data, async, type));

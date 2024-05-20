@@ -208,8 +208,8 @@ namespace WooAsset
                     EditorAssetData asset = cache.tree.GetAssetData(path);
                     long length = asset.length;
                     GUI.Label(first, GUIContent(path, Textures.GetMiniThumbnail(path)));
-                    GUI.Label(args.GetCellRect(1), asset.usageCount.ToString());
-                    GUI.Label(args.GetCellRect(2), asset.dependence.Count.ToString());
+                    DrawCount(args.GetCellRect(1), asset.usageCount);
+                    DrawCount(args.GetCellRect(2), asset.dependence.Count);
                     GUI.Label(args.GetCellRect(3), GetSizeString(length));
                     if (ping_a == asset) draw = true;
                 }

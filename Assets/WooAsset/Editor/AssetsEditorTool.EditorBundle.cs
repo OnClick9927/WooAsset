@@ -54,7 +54,18 @@ namespace WooAsset
 
             public override Object[] LoadAsset(string path, Type type)
             {
-                return AssetDatabase.LoadAllAssetsAtPath(path);
+                var _allAssets = AssetDatabase.LoadAllAssetsAtPath(path);
+                var result = AssetDatabase.LoadAssetAtPath(path, type);
+                for (int i = 0; i < _allAssets.Length; i++)
+                {
+                    if (result == _allAssets[i])
+                    {
+                        var tmp = _allAssets[i];
+                        _allAssets[i] = _allAssets[0];
+                        _allAssets[0] = tmp;
+                    }
+                }
+                return _allAssets;
             }
             public override AssetRequest LoadAssetAsync(string path, Type type)
             {

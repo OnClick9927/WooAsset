@@ -16,7 +16,8 @@ namespace WooAsset
                 for (int i = 0; i < builds.Count; i++)
                 {
                     var build = builds[i];
-                    build.SyncRealHash(bundles.First(x => x.StartsWith(build.hash)));
+                    var find = bundles.FirstOrDefault(a => a.StartsWith(build.hash));
+                    build.SyncRealHash(find);
                 }
 
 
@@ -34,8 +35,9 @@ namespace WooAsset
 
                 if (normal.Count != 0)
                 {
+                    var assetbuilds = normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray();
                     AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
-                         normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray(), context.BuildOption, context.buildTarget);
+                        assetbuilds, context.BuildOption, context.buildTarget);
                     UpdateHash(normal, _main);
                 }
 
@@ -55,16 +57,19 @@ namespace WooAsset
 
                 }
                 //拷贝打爆出来的到输出目录
-                foreach (var bundleName in source.ConvertAll(x => x.hash))
+                foreach (var bundle in source)
                 {
                     ReadFileOperation reader;
+                    var bundleName = bundle.hash;
                     if (raws.Find(x => x.hash == bundleName) != null)
                         reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, $"{bundleName}_{bundleName}"), true);
                     else
                         reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
                     await reader;
+
+
                     await AssetsHelper.WriteFile(
-                          EncryptBuffer.Encode(bundleName, reader.bytes, context.encrypt),
+                          EncryptBuffer.Encode(bundleName, reader.bytes, context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode())),
                           AssetsHelper.CombinePath(context.outputPath, bundleName),
                           true
                           );

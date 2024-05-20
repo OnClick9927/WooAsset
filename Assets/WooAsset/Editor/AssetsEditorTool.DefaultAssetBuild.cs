@@ -17,7 +17,6 @@ namespace WooAsset
                 List<EditorAssetData> Scenes = assets.FindAll(x => x.type == AssetType.Scene);
                 assets.RemoveAll(x => x.type == AssetType.Scene);
                 BundleGroupTool.One2One(Scenes, result);
-
                 var tagAssets = assets.FindAll(x => x.tags != null && x.tags.Count != 0);
                 assets.RemoveAll(x => tagAssets.Contains(x));
                 var tags = tagAssets.SelectMany(x => x.tags).Distinct().ToList();
@@ -66,11 +65,12 @@ namespace WooAsset
                 }
                 BundleGroupTool.N2MBySizeAndDir(assets, result);
             }
-   
+
             public override string GetVersion(string settingVersion, AssetTaskContext context)
             {
                 return DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
             }
+      
         }
 
 

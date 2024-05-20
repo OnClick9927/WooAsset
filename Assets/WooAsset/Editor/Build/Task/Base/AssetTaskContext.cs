@@ -31,7 +31,7 @@ namespace WooAsset
         public EditorBundlePackage buildPkg;
 
 
-        public AssetsTree tree;
+        public AssetCollection tree;
         public List<EditorAssetData> needBuildAssets;
         public List<EditorBundleData> allBundleBuilds;
         public List<FileData> files;

@@ -5,7 +5,7 @@ namespace WooAsset
 {
     public class FastModeManifestTask : AssetTask
     {
-        public static ManifestData BuildManifest(List<EditorBundleData> groups, AssetsTree tree)
+        public static ManifestData BuildManifest(List<EditorBundleData> groups, AssetCollection tree)
         {
             List<AssetData> _assets = new List<AssetData>();
             List<BundleData> _bundles = new List<BundleData>();

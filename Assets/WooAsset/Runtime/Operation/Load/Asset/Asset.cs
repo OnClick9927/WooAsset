@@ -111,7 +111,7 @@ namespace WooAsset
                     case AssetType.None:
                     case AssetType.Ignore:
                     case AssetType.Directory:
-                    case AssetType.LightingData:
+                    case AssetType.Mesh:
                     case AssetType.Texture:
                     case AssetType.TextAsset:
                     case AssetType.VideoClip:

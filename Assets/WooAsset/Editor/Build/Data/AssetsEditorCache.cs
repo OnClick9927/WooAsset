@@ -4,7 +4,7 @@ namespace WooAsset
 {
     public class AssetsEditorCache : AssetsScriptableObject
     {
-        public AssetsTree tree = new AssetsTree();
+        public AssetCollection tree = new AssetCollection();
         public List<EditorBundleData> previewBundles = new List<EditorBundleData>();
         public ManifestData manifest;
 

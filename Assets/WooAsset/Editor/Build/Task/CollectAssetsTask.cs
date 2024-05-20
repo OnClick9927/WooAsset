@@ -20,7 +20,7 @@ namespace WooAsset
 
             }
 
-            var tree = new AssetsTree();
+            var tree = new AssetCollection();
             tree.ReadPaths(paths, context.assetBuild);
             List<EditorAssetData> assets = tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
             context.needBuildAssets = assets;

@@ -20,6 +20,9 @@ git push origin src --tags
 set cur=%~dp0
 set srcPath=%cur%Assets\WooAsset
 set dstPath=%cur%WooAssetForUPM
+rd /s /q %dstPath%\Editor
+rd /s /q %dstPath%\Runtime
+
 echo off
 xcopy /S /Y %srcPath% %dstPath%
 cd WooAssetForUPM

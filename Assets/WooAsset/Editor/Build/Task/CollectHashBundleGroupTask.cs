@@ -34,8 +34,21 @@ namespace WooAsset
                 group.FindDependence(builds, context.tree.GetAllAssets());
             foreach (EditorBundleData group in builds)
                 group.FindUsage(builds);
+
+            foreach (EditorBundleData group in builds)
+                if (group.CheckLoop(builds))
+                    AssetsHelper.LogError($"Bundle Contains Loop {group.hash}");
+
+            foreach (EditorBundleData group in builds)
+            {
+                var en = context.assetBuild.GetBundleEncrypt(context.buildPkg, group, context.encrypt);
+                int code = context.assetBuild.GetEncryptCode(en);
+                group.SetEncryptCode(code);
+            }
+
             context.allBundleBuilds = builds;
             InvokeComplete();
+
         }
     }
 }

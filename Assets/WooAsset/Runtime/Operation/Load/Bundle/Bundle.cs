@@ -105,9 +105,10 @@ namespace WooAsset
         }
         private RawObject rawObject;
         private float rawProgress;
+        BundleStream bs;
         private async void LoadFromStream()
         {
-            BundleStream bs = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
+            bs = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
             long len = bs.Length;
 
             if (raw)
@@ -163,7 +164,6 @@ namespace WooAsset
                     SetResult(result);
                 }
             }
-
         }
 
 
@@ -242,7 +242,11 @@ namespace WooAsset
         {
             if (value != null)
                 value.Unload(true);
-
+            if (bs != null)
+            {
+                bs.Dispose();
+                bs = null;
+            }
             //Resources.UnloadUnusedAssets();
         }
 

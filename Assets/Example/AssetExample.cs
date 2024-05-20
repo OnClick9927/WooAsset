@@ -26,6 +26,10 @@ namespace WooAsset
         {
             return true;
         }
+        public override bool GetAutoUnloadBundle()
+        {
+            return true;
+        }
         public override bool GetBundleAwalysFromWebRequest()
         {
             return false;
@@ -65,6 +69,7 @@ namespace WooAsset
                     await Assets.DownLoadBundle(compare.change[i].name);
             }
             await Assets.InitAsync();
+
             var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);

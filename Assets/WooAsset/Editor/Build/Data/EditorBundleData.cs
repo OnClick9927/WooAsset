@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
+using static UnityEditor.ObjectChangeEventStream;
 using static WooAsset.ManifestData;
 
 namespace WooAsset
@@ -11,25 +13,25 @@ namespace WooAsset
     [Serializable]
     public class EditorBundleData
     {
-
+        [UnityEngine.SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         [UnityEngine.SerializeField] private List<string> usage = new List<string>();
         [UnityEngine.SerializeField] private List<string> dependence = new List<string>();
+        [UnityEngine.SerializeField] private bool _loop;
+        [UnityEngine.SerializeField] private string _hash;
+        [UnityEngine.SerializeField] private long _length;
+        [UnityEngine.SerializeField] private bool _raw;
+        [UnityEngine.SerializeField] private int _enCode;
 
-        public List<EditorBundleData> GetUsage(List<EditorBundleData> src)
-        {
-            return src.FindAll(x => usage.Contains(x.hash));
-        }
-        public List<EditorBundleData> GetDpendence(List<EditorBundleData> src)
-        {
-            return src.FindAll(x => dependence.Contains(x.hash));
-        }
 
+
+        public bool loopDependence { get => _loop; private set { _loop = value; } }
         public int usageCount => usage.Count;
-
         public int dependenceCount => dependence.Count;
-        public string hash { get; private set; }
-        public long length { get; private set; }
-        public bool raw { get; private set; }
+
+
+        public string hash { get => _hash; private set { _hash = value; } }
+        public long length { get => _length; private set { _length = value; } }
+        public bool raw { get => _raw; private set { _raw = value; } }
 
         public BundleData CreateBundleData()
         {
@@ -38,12 +40,20 @@ namespace WooAsset
                 bundleName = hash,
                 dependence = dependence,
                 raw = raw,
+                enCode = _enCode,
                 assets = assets.ConvertAll(x => x.path),
             };
         }
 
-
-        [UnityEngine.SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
+        public List<EditorBundleData> GetUsage(List<EditorBundleData> src) => src.FindAll(x => usage.Contains(x.hash));
+        public List<EditorBundleData> GetDpendence(List<EditorBundleData> src) => src.FindAll(x => dependence.Contains(x.hash));
+        public bool CheckLoop(List<EditorBundleData> builds)
+        {
+            var dps = GetDpendence(builds);
+            var find = dps.FindAll(x => x.dependence.Contains(hash));
+            loopDependence = find != null && find.Count != 0;
+            return loopDependence;
+        }
         public bool GetIsEmpty() => assets.Count == 0;
         public void CalcHash(Dictionary<string, List<string>> hashMap)
         {
@@ -97,7 +107,7 @@ namespace WooAsset
                    .Distinct()
                    .Select(assetPath => source.Find(y => y.ContainsAsset(assetPath)))
                    .Distinct()
-                   .Where(x=>x.hash != hash)
+                   .Where(x => x.hash != hash)
                    .Select(x => x.hash);
             dependence.AddRange(result);
         }
@@ -138,7 +148,7 @@ namespace WooAsset
             return group;
         }
 
-
-
+        public void SetEncryptCode(int code) => _enCode = code;
+        public int GetEncryptCode() => _enCode;
     }
 }

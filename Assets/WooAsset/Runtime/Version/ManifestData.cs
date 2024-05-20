@@ -49,6 +49,7 @@ namespace WooAsset
             public List<string> assets;
             public List<string> dependence;
             public bool raw;
+            public int enCode;
         }
         public void Read(List<AssetData> assets, List<BundleData> bundles)
         {
