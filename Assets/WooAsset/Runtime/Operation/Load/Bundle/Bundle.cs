@@ -49,6 +49,7 @@ namespace WooAsset
 
                     if (type == BundleLoadType.FromRequest)
                     {
+                        if (downloader == null) return 0;
                         if (raw)
                         {
                             return downloader.progress;
