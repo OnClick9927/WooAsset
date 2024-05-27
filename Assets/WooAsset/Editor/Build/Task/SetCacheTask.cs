@@ -7,7 +7,7 @@ namespace WooAsset
         protected override void OnExecute(AssetTaskContext context)
         {
             var cache = AssetsEditorTool.cache;
-            cache.tree = context.tree;
+            cache.tree = context.assetsCollection;
             cache.previewBundles = context.allBundleBuilds != null ? context.allBundleBuilds : new List<EditorBundleData>();
             cache.manifest = context.manifest;
             cache.Save();

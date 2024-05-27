@@ -1,20 +1,31 @@
-﻿namespace WooAsset
+﻿
+
+using static WooAsset.AssetsEditorTool;
+
+namespace WooAsset
 {
     public class CopyToBundlesToServerTask : AssetTask
     {
         protected async override void OnExecute(AssetTaskContext context)
         {
-            try
+            if (context.isNormalBuildMode)
             {
-                if (!string.IsNullOrEmpty(context.serverDirectory))
+                try
                 {
-                    string target = AssetsHelper.CombinePath(context.serverDirectory, context.buildTargetName);
-                    await new CopyDirectoryOperation(context.outputPath, target, true);
+                    if (!string.IsNullOrEmpty(context.serverDirectory))
+                    {
+
+                        string target = AssetsHelper.CombinePath(context.serverDirectory, context.buildTargetName, context.version);
+                        await new CopyDirectoryOperation(context.outputPath, target, true);
+                        string version = AssetsHelper.CombinePath(context.serverDirectory, context.buildTargetName, context.remoteHashName);
+                        await AssetsEditorTool.CopyFile(AssetsHelper.CombinePath(target, context.remoteHashName), version);
+
+                    }
                 }
-            }
-            catch (System.Exception e)
-            {
-                this.SetErr(e.Message);
+                catch (System.Exception e)
+                {
+                    this.SetErr(e.Message);
+                }
             }
             InvokeComplete();
         }

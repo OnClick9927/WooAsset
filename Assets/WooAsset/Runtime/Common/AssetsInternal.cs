@@ -4,6 +4,7 @@ using UnityEngine;
 using static WooAsset.AssetsVersionCollection.VersionData;
 using static WooAsset.AssetsVersionCollection;
 using static WooAsset.ManifestData;
+using UnityEngine.SceneManagement;
 
 namespace WooAsset
 {
@@ -64,6 +65,7 @@ namespace WooAsset
         public static AssetType GetAssetType(string assetPath) => Initialized() ? GetAssetData(assetPath).type : AssetType.None;
         public static AssetData GetAssetData(string assetPath) => Initialized() ? mode.manifest.GetAssetData(assetPath) : null;
         public static BundleData GetBundleData(string bundleName) => Initialized() ? mode.manifest.GetBundleData(bundleName) : null;
+        public static string GetVersion() => Initialized() ? mode.version : string.Empty;
         public static IReadOnlyList<string> GetAssetTags(string assetPath) => GetAssetData(assetPath)?.tags;
 
 
@@ -81,6 +83,10 @@ namespace WooAsset
         private static int GetWebRequestTimeout() => setting.GetWebRequestTimeout();
         private static int GetWebRequestRetryCount() => setting.GetWebRequestRetryCount();
         private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, bundleName);
+
+        private static string GetUrlFromBundleName(string version, string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, version, bundleName);
+
+
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
 
 
@@ -91,9 +97,14 @@ namespace WooAsset
             if (life != null)
                 AddAssetLife(life);
         }
-        public static BundleDownloader DownLoadBundle(string bundleName) => new BundleDownloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static FileDownloader DownLoadFile(string bundleName) => new FileDownloader(GetUrlFromBundleName(bundleName), GetBundleLocalPath(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static Downloader DownloadVersion(string bundleName) => new Downloader(GetUrlFromBundleName(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static BundleDownloader DownLoadBundle(string version, string bundleName) => new BundleDownloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static FileDownloader DownLoadFile(string version, string bundleName) => new FileDownloader(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static Downloader DownloadVersion(string version, string bundleName) => new Downloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static Downloader DownloadRemoteVersion() => new Downloader(GetUrlFromBundleName(VersionHelper.remoteHashName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+
+        public static Downloader DownloadRawBundle(string version, string bundleName) => new Downloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+
+
         public static Downloader CopyFile(string url, string path) => new FileDownloader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static Downloader DownloadBytes(string url) => new Downloader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
@@ -117,45 +128,40 @@ namespace WooAsset
         {
             var data = GetBundleData(bundleName);
             var bundle = bundles.Find(bundleName);
-            Bundle[] dependence;
+            Bundle[] dependence = null;
+
+
             if (bundle == null)
-                dependence = new Bundle[data.dependence.Count];
+            {
+                if (data.dependence != null)
+                    dependence = new Bundle[data.dependence.Count];
+            }
             else
                 dependence = bundle.dependence;
-            for (int i = 0; i < data.dependence.Count; i++)
-                dependence[i] = LoadBundle(data.dependence[i], async);
+            if (dependence != null)
+                for (int i = 0; i < data.dependence.Count; i++)
+                    dependence[i] = LoadBundle(data.dependence[i], async);
             return bundles.LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(data.enCode), dependence));
         }
-
-  
-
-        public static Asset LoadFileAsset(string path, bool async) => assets.LoadAsync(AssetLoadArgs.FileArg(new ManifestData.AssetData()
-        {
-            bundleName = string.Empty,
-            dps = null,
-            path = path,
-            tags = null,
-            type = AssetType.None,
-        }, async)) as Asset;
-
-        public static Asset LoadResourceAsset(string path, bool async, AssetType type) => assets.LoadAsync(AssetLoadArgs.ResArg(new ManifestData.AssetData()
-        {
-            bundleName = string.Empty,
-            dps = null,
-            path = path,
-            tags = null,
-            type = type,
-        }, async)) as Asset;
         public static AssetHandle LoadAsset(string path, bool async, Type type)
         {
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
             {
-                AssetsHelper.LogError($"Not Found Asset: {path}"); 
+                AssetsHelper.LogError($"Not Found Asset: {path}");
                 return null;
             }
             return assets.LoadAsync(AssetLoadArgs.NormalArg(data, async, type));
         }
+        public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op)
+        {
+            var scene = assets.Find(path) as SceneAsset;
+            var _op = scene.UnloadSceneAsync(op);
+            Release(path);
+            return _op;
+        }
+
+
 
         public static bool GetIsAssetLoaded(string assetPath) => assets.Find(assetPath) != null;
 

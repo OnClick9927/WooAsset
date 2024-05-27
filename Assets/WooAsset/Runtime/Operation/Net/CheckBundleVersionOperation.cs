@@ -24,7 +24,7 @@ namespace WooAsset
         }
         protected virtual async void Done()
         {
-            downloader = AssetsInternal.DownloadVersion(VersionBuffer.remoteHashName);
+            downloader = AssetsInternal.DownloadRemoteVersion();
             await downloader;
             if (downloader.isErr)
             {
@@ -32,7 +32,7 @@ namespace WooAsset
             }
             else
             {
-                remote = VersionBuffer.ReadAssetsVersionCollection(downloader.data, AssetsInternal.GetEncrypt());
+                remote = VersionHelper.ReadAssetsVersionCollection(downloader.data, AssetsInternal.GetEncrypt());
             }
             AssetsHelper.Log($"Check Version Complete");
             InvokeComplete();

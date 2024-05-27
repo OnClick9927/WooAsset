@@ -1,22 +1,33 @@
 ﻿using System;
 using static WooAsset.ManifestData;
-using Object = UnityEngine.Object;
 namespace WooAsset
 {
-    public abstract class AssetHandle : AssetOperation<Object>
+    public abstract class AssetHandle<T> : AssetHandle
+    {
+        protected AssetHandle(AssetLoadArgs loadArgs) : base(loadArgs)
+        {
+        }
+
+        public T value { get; private set; }
+        protected virtual void SetResult(T value)
+        {
+            this.value = value;
+            InvokeComplete();
+        }
+    }
+    public abstract class AssetHandle : AssetOperation
     {
         protected Type type => loadArgs.type;
 
         public override bool async => loadArgs.async;
         protected Bundle bundle { get; private set; }
-        protected AssetData data => loadArgs.data;
+        public AssetData data => loadArgs.data;
 
         public AssetType assetType => data.type;
         public virtual string path => data.path;
         public string bundleName => data.bundleName;
-        protected bool direct => loadArgs.direct;
         private AssetLoadArgs loadArgs;
-        protected Bundle LoadBundle()
+        private Bundle LoadBundle()
         {
             if (string.IsNullOrEmpty(bundleName))
                 return null;
@@ -32,6 +43,7 @@ namespace WooAsset
         {
             if (AssetsLoop.isBusy)
                 await new WaitBusyOperation();
+            await LoadBundle();
             InternalLoad();
         }
 

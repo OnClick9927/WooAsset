@@ -4,6 +4,6 @@
     {
         LZMA,
         LZ4,
-        None
+        Uncompressed
     }
 }

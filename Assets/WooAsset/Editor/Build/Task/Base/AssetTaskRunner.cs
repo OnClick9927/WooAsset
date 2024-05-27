@@ -119,79 +119,23 @@ namespace WooAsset
         public static AssetTask Build()
         {
             AssetTaskContext context = new AssetTaskContext() { Pipeline = TaskPipelineType.BuildBundle };
-            AssetTask task = Execute(new AssetTaskRunner(common), context);
-            return task;
-        }
-        [MenuItem(TaskPipelineMenu.BuildToStream)]
-        public static AssetTask BuildToStream()
-        {
-            AssetTaskContext context = new AssetTaskContext() { Pipeline = TaskPipelineType.BuildBundle };
             AssetTask task = Execute(new AssetTaskRunner(stream_common), context);
             return task;
         }
-        [MenuItem(TaskPipelineMenu.ShaderVariant)]
-        public static AssetTask ShaderVariant()
-        {
-            return Execute(new AssetTaskRunner(shader), new AssetTaskContext() { Pipeline = TaskPipelineType.ShaderVariant });
-        }
-        [MenuItem(TaskPipelineMenu.SpriteAtlas)]
-        public static AssetTask SpriteAtlas()
-        {
-            return Execute(new AssetTaskRunner(sprite), new AssetTaskContext() { Pipeline = TaskPipelineType.SpriteAtlas });
-        }
-        [MenuItem(TaskPipelineMenu.ClearHistory)]
-        public static AssetTask ClearHistory()
-        {
-            return Execute(new AssetTaskRunner(clearHistory), new AssetTaskContext() { Pipeline = TaskPipelineType.SpriteAtlas });
-        }
-        [MenuItem(TaskPipelineMenu.ClearOutput)]
-        public static AssetTask ClearOutput()
-        {
-            return Execute(new AssetTaskRunner(clearOutput), new AssetTaskContext() { Pipeline = TaskPipelineType.ClearOutput });
-        }
-        [MenuItem(TaskPipelineMenu.OpenOutput)]
-        public static AssetTask OpenOutput()
-        {
-            return Execute(new AssetTaskRunner(openOutput), new AssetTaskContext() { Pipeline = TaskPipelineType.OpenOutput });
-        }
-
+  
+    
         private static List<AssetTask> stream_common = new List<AssetTask>
         {
             new PrepareTask(),
-            new ShaderVariantTask(),
-            new SpriteAtlasTask(),
             new BuildBundleTask(),
-            new BuildExportTask(),
             new CopyToBundlesToServerTask(),
             new CopyBundlesToStreamTask(),
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
 
-        private static List<AssetTask> common = new List<AssetTask>
-        {
-            new PrepareTask(),
-            new ShaderVariantTask(),
-            new SpriteAtlasTask(),
-            new BuildBundleTask(),
-            new BuildExportTask(),
-            new CopyToBundlesToServerTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
-        };
 
 
 
-        private static List<AssetTask> shader = new List<AssetTask>
-        {
-            new PrepareTask(),
-            new ShaderVariantTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
-        };
-        private static List<AssetTask> sprite = new List<AssetTask>
-        {
-            new PrepareTask(),
-            new SpriteAtlasTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
-        };
 
         private static List<AssetTask> collectAssets = new List<AssetTask>
         {
@@ -211,26 +155,9 @@ namespace WooAsset
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
 
-        private static List<AssetTask> clearOutput = new List<AssetTask>
-        {
-            new PrepareTask(),
-            new ClearOutputTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
-        };
-        private static List<AssetTask> openOutput = new List<AssetTask>
-        {
-            new PrepareTask(),
-            new OpenOutputTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
-        };
-        private static List<AssetTask> clearHistory = new List<AssetTask>
-        {
-            new PrepareTask(),
 
-            new ClearHistoryTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
 
-        };
+
 
     }
 }

@@ -8,8 +8,8 @@ namespace WooAsset
         protected override void OnExecute(AssetTaskContext context)
         {
 
-            List<EditorAssetData> assets = context.tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
-            var hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.tree.GetAssetData(x).hash));
+            List<EditorAssetData> assets = context.assetsCollection.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
+            var hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x).hash));
             var builds = new List<EditorBundleData>();
 
             var raws = context.needBuildAssets.FindAll(x => x.type == AssetType.Raw);
@@ -31,7 +31,7 @@ namespace WooAsset
 
 
             foreach (EditorBundleData group in builds)
-                group.FindDependence(builds, context.tree.GetAllAssets());
+                group.FindDependence(builds, context.assetsCollection.GetAllAssets());
             foreach (EditorBundleData group in builds)
                 group.FindUsage(builds);
 

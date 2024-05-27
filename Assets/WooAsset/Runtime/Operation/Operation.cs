@@ -10,6 +10,9 @@ namespace WooAsset
 {
     public abstract class Operation : IEnumerator
     {
+        private static Operation _empty = new EmptyOperation();
+        public static Operation empty { get { return _empty; } }
+
         public bool isDone { get; private set; }
 
         public abstract float progress { get; }
@@ -45,6 +48,16 @@ namespace WooAsset
             {
                 await new YieldOperation();
             }
+        }
+    }
+
+    class EmptyOperation : Operation
+    {
+        public override float progress => 1;
+
+        public EmptyOperation()
+        {
+            InvokeComplete();
         }
     }
 

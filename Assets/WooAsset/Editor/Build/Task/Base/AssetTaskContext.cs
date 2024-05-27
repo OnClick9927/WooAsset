@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using System.Collections.Generic;
-using UnityEditor.U2D;
 using static WooAsset.AssetsBuildOption;
+using static WooAsset.AssetsEditorTool;
 using UnityEngine;
 
 namespace WooAsset
@@ -9,56 +9,50 @@ namespace WooAsset
     [System.Serializable]
     public class AssetTaskContext
     {
+
+        public int MaxCacheVersionCount => option.MaxCacheVersionCount;
+        public string outputPath => AssetsEditorTool.outputPath;
+        public string historyPath => AssetsEditorTool.historyPath;
+        public BuildTarget buildTarget => AssetsEditorTool.buildTarget;
+        public string remoteHashName => VersionHelper.remoteHashName;
+        public string localHashName => VersionHelper.localHashName;
+        public string buildTargetName => AssetsEditorTool.buildTargetName;
+
+        public string streamBundleDirectory => AssetsHelper.streamBundleDirectory;
+
+        public string serverDirectory => AssetsEditorTool.ServerDirectory;
+        public CompressType compress => option.compress;
+        public List<EditorBundlePackage> buildPkgs => option.pkgs;
+        public TypeTreeOption typeTreeOption => option.typeTreeOption;
+        public bool cleanHistory => option.cleanHistory;
+        public BundleNameType bundleNameType => option.bundleNameType;
+        public List<Object> buildInAssets => option.buildInAssets;
+        public BuildMode buildMode => option.buildMode;
+        public bool copyToStream => option.copyToStream;
+
+        
+        public bool isNormalBuildMode => buildMode != BuildMode.Dry;
+
+        public EditorBundlePackage buildPkg;
+        public AssetCollection assetsCollection;
         public TaskPipelineType Pipeline;
-        public string outputPath;
-        public string historyPath;
-        public int MaxCacheVersionCount;
-        public BuildTarget buildTarget;
         public BuildAssetBundleOptions BuildOption;
         public IAssetBuild assetBuild;
         public IAssetStreamEncrypt encrypt;
-        public string remoteHashName;
-        public string localHashName;
-
-        public string streamBundleDirectory;
-        public string buildTargetName;
-        public string serverDirectory;
-        public List<EditorBundlePackage> buildPkgs;
-        public CompressType compress;
-        public TypeTreeOption typeTreeOption;
-        public bool forceRebuild;
-        public bool AppendHashToAssetBundleName;
-        public EditorBundlePackage buildPkg;
 
 
-        public AssetCollection tree;
         public List<EditorAssetData> needBuildAssets;
         public List<EditorBundleData> allBundleBuilds;
-        public List<FileData> files;
-        public List<string> useful;
         public string version;
-        public AssetsVersionCollection versions;
+        public AssetsVersionCollection historyVersions;
         public AssetsVersionCollection outputVersions;
 
         public ManifestData manifest;
-        public FileChange fileChange;
-        public List<Object> buildInAssets;
-
-
-        public string shaderVariantDirectory;
-        public TextureImporterPlatformSettings PlatformSetting;
-        public SpriteAtlasTextureSettings TextureSetting;
-        public SpriteAtlasPackingSettings PackingSetting;
-        public string[] atlasPaths;
         public List<AssetTask> pipelineStartTasks;
-
         public List<AssetTask> pipelineEndTasks;
+        public List<PackageExportData> exports = new List<PackageExportData>();
 
-
-        public List<GroupExportData> exports = new List<GroupExportData>();
-        public string historyVersionFilePath;
-        public string historyVersionFileName = "Versions.json";
-        public bool cleanHistory;
+        public string historyVersionPath;
     }
 
 }

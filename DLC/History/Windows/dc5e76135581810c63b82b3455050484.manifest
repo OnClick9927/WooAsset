@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1514729926
+CRC: 1235195152
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: df7b259d1397a0ea0c6b3700e3cfa0d7
+    Hash: 8eed98fb636579bfc64bfd77e67dd6ee
   TypeTreeHash:
     serializedVersion: 2
     Hash: e1eabbb0981a8b7c6a58f7e8ea489078
@@ -29,4 +29,4 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/Example/px/One.prefab
 Dependencies:
-- E:/Project/Unity/WooAsset/DLC/History/Windows/d88574feb3b5b2d20164cb2eb5964afc_6f37a495937be57b1d30644b86c9512a
+- E:/Project/Unity/WooAsset/DLC/History/Windows/c4993cc8c33b53a4ff0fdc7cae49b18d_2e22706f7f1dfd6c62a1738e2f899669

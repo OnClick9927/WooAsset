@@ -14,8 +14,9 @@ namespace WooAsset
             {
                 Bundle result = Find(uid);
                 if (result == null) return;
-                if (result.dependence != null)
-                    foreach (var item in result.dependence)
+                var dp = result.dependence;
+                if (dp != null)
+                    foreach (var item in dp)
                         Release(item.bundleName);
                 ReleaseRef(result);
                 if (!GetAutoUnloadBundle()) return;
@@ -36,8 +37,9 @@ namespace WooAsset
             {
                 RetainRef(bundle);
                 if (!old) return;
-                if (bundle.dependence != null)
-                    foreach (var item in bundle.dependence)
+                var dp = bundle.dependence;
+                if (dp != null)
+                    foreach (var item in dp)
                         RetainRef(item);
             }
         }

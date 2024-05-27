@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static WooAsset.AssetsVersionCollection.VersionData;
 using static WooAsset.AssetsVersionCollection;
+using UnityEngine.SceneManagement;
 
 namespace WooAsset
 {
@@ -11,7 +12,7 @@ namespace WooAsset
     {
         public static void SetAssetsSetting(AssetsSetting setting) => AssetsInternal.SetAssetsSetting(setting);
         public static CheckBundleVersionOperation VersionCheck() => AssetsInternal.VersionCheck();
-        public static DownLoadBundleOperation DownLoadBundle(string bundleName) => new DownLoadBundleOperation(bundleName);
+        public static FileDownloader DownLoadBundle(string version, string bundleName) => AssetsInternal.DownLoadFile(version, bundleName);
         public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
@@ -25,11 +26,7 @@ namespace WooAsset
 
         public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, true, null) as SceneAsset;
         public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, null) as SceneAsset;
-        public static Asset LoadFileAsset(string path) => AssetsInternal.LoadFileAsset(path, false);
-        public static Asset LoadFileAssetAsync(string path) => AssetsInternal.LoadFileAsset(path, true);
-        public static Asset LoadResourceAsset(string path, AssetType type) => AssetsInternal.LoadResourceAsset(path, false, type);
-        public static Asset LoadResourceAssetAsync(string path, AssetType type) => AssetsInternal.LoadResourceAsset(path, true, type);
-
+        public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => AssetsInternal.UnloadSceneAsync(path, op);
 
         public static void Release(AssetHandle asset) => AssetsInternal.Release(asset.path);
         public static void Release(string assetPath) => AssetsInternal.Release(assetPath);

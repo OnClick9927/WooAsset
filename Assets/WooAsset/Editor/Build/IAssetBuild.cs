@@ -20,7 +20,7 @@ namespace WooAsset
             var list = AssetsHelper.ToRegularPath(path).Split('/').ToList();
             if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return AssetType.Ignore;
             AssetType _type = AssetType.None;
-            if (AssetsHelper.IsDirectory(path))
+            if (AssetsEditorTool.IsDirectory(path))
                 _type = AssetType.Directory;
             else
             {

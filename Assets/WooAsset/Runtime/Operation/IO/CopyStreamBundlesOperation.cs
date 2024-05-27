@@ -2,6 +2,7 @@
 {
     public class CopyStreamBundlesOperation : Operation
     {
+        public const string fileExt = ".bytes";
         private readonly string srcPath;
         private readonly string destPath;
         private string[] files;
@@ -31,17 +32,15 @@
                 if (!downloader.isErr)
                 {
 
-                    StreamBundleList list = AssetsHelper.ReadObject<StreamBundleList>(downloader.data);
+                    StreamBundleList list = AssetsHelper.ReadFromBytes<StreamBundleList>(downloader.data);
                     foreach (var fileName in list.fileNames)
                     {
-                        string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(".bytes", "");
+                        string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(fileExt, "");
                         if (AssetsHelper.ExistsFile(dest)) continue;
                         string src = AssetsHelper.CombinePath(srcPath, fileName);
                         await AssetsInternal.CopyFile(src, dest);
                     }
                     await AssetsInternal.CopyFile(srclistPath, destlistPath);
-
-
                 }
             }
             InvokeComplete();

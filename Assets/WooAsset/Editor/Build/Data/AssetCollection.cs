@@ -20,7 +20,7 @@ namespace WooAsset
         {
             this.assetBuild = assetBuild;
             assets.Clear();
-            folders.RemoveAll(x => !AssetsHelper.ExistsDirectory(x) || CheckRawIsIgnorePath(x));
+            folders.RemoveAll(x => !AssetsEditorTool.ExistsDirectory(x) || CheckRawIsIgnorePath(x));
             for (int i = 0; i < folders.Count; i++)
                 AddPath(folders[i]);
             CollectDps();
@@ -104,7 +104,7 @@ namespace WooAsset
             var root = EditorAssetData.Create(path, GetAssetType(path));
             assets.Add(root);
 
-            List<string> list = new List<string>(AssetsHelper.GetDirectoryDirectories(directory));
+            List<string> list = new List<string>(AssetsEditorTool.GetDirectoryDirectories(directory));
             list.AddRange(AssetsHelper.GetDirectoryFiles(directory));
             list.RemoveAll(x => CheckRawIsIgnorePath(x));
             foreach (var item in list)
@@ -133,7 +133,7 @@ namespace WooAsset
                 var result = AssetDatabase.GetDependencies(asset.path, true)
                     .ToList()
                     .ConvertAll(x => AssetsHelper.ToRegularPath(x))
-                    .Where(x => x != asset.path && !CheckRawIsIgnorePath(x) && !AssetsHelper.IsDirectory(x));
+                    .Where(x => x != asset.path && !CheckRawIsIgnorePath(x) && !AssetsEditorTool.IsDirectory(x));
                 asset.dependence = result.ToList();
             }
             List<EditorAssetData> errs = new List<EditorAssetData>();

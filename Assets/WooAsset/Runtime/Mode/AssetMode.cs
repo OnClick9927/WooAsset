@@ -9,10 +9,17 @@ namespace WooAsset
     {
         bool IAssetMode.Initialized() => Initialized();
         CopyStreamBundlesOperation IAssetMode.CopyToSandBox(string from, string to) => CopyToSandBox(from, to);
-        Operation IAssetMode.InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => InitAsync(version, again, getPkgs);
+        Operation IAssetMode.InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
+        {
+            this.version = version;
+            return InitAsync(version, again, getPkgs);
+        }
         CheckBundleVersionOperation IAssetMode.VersionCheck() => VersionCheck();
         Bundle IAssetMode.CreateBundle(string bundleName, BundleLoadArgs args) => CreateBundle(bundleName, args);
         public abstract ManifestData manifest { get; }
+
+        public string version { get; private set; }
+
         protected abstract bool Initialized();
         protected abstract CopyStreamBundlesOperation CopyToSandBox(string from, string to);
         protected abstract Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);

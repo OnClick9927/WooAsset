@@ -25,9 +25,9 @@ namespace WooAsset
         public override float progress => isDone ? 1 : _progress;
         private float _progress;
 
-        public List<FileData> change;
+        public List<BundleFileData> change;
         public List<FileData> delete;
-        public List<FileData> add;
+        public List<BundleFileData> add;
         IAssetStreamEncrypt en;
         public VersionCompareOperation(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs, IAssetStreamEncrypt en)
         {
@@ -43,8 +43,8 @@ namespace WooAsset
         {
             if (!_check.isErr)
             {
-       
-                List<FileData> remoteBundles = new List<FileData>();
+
+                List<BundleFileData> remoteBundles = new List<BundleFileData>();
                 for (int i = 0; i < pkgs.Count; i++)
                 {
                     var pkg = pkgs[i];
@@ -52,7 +52,7 @@ namespace WooAsset
                     {
                         string fileName = pkg.bundleFileName;
 
-                        Downloader downloader = AssetsInternal.DownloadVersion(fileName);
+                        Downloader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
                         await downloader;
                         if (downloader.isErr)
                         {
@@ -61,13 +61,13 @@ namespace WooAsset
                         }
                         else
                         {
-                            BundlesVersion v = VersionBuffer.ReadBundleVersion(downloader.data, en);
+                            BundlesVersion v = VersionHelper.ReadBundleVersion(downloader.data, en);
                             remoteBundles.AddRange(v.bundles);
                         }
                     }
                     {
                         string fileName = pkg.manifestFileName;
-                        Downloader downloader = AssetsInternal.DownloadVersion(fileName);
+                        Downloader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
                         await downloader;
                         if (downloader.isErr)
                         {
@@ -76,15 +76,15 @@ namespace WooAsset
                         }
                         else
                         {
-                            ManifestData v = VersionBuffer.ReadManifest(downloader.data, en);
-                            await VersionBuffer.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName), en);
+                            ManifestData v = VersionHelper.ReadManifest(downloader.data, en);
+                            await VersionHelper.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName), en);
                         }
                     }
                 }
                 List<FileData> local = GetLocalBundles();
                 FileData.Compare(local, remoteBundles, AssetsInternal.GetFileCheckType(), out change, out delete, out add);
-                await VersionBuffer.WriteVersionData(version,
-                      AssetsInternal.GetBundleLocalPath(VersionBuffer.localHashName),
+                await VersionHelper.WriteVersionData(version,
+                      AssetsInternal.GetBundleLocalPath(VersionHelper.localHashName),
                       en
                       );
 

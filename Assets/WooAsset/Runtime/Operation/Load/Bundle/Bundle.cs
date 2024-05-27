@@ -105,11 +105,12 @@ namespace WooAsset
         }
         private RawObject rawObject;
         private float rawProgress;
-        BundleStream bs;
+        FileStream filestream;
         private async void LoadFromStream()
         {
-            bs = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
-            long len = bs.Length;
+            filestream = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
+
+            long len = filestream.Length;
 
             if (raw)
             {
@@ -129,7 +130,7 @@ namespace WooAsset
                     long last = len;
                     while (last > 0)
                     {
-                        var read = bs.Read(bytes, offset, (int)Math.Min(n, last));
+                        var read = filestream.Read(bytes, offset, (int)Math.Min(n, last));
                         offset += read;
                         last -= read;
                         rawProgress = offset / (float)len;
@@ -140,7 +141,7 @@ namespace WooAsset
                 else
                 {
 
-                    loadOp = AssetBundle.LoadFromStreamAsync(bs);
+                    loadOp = AssetBundle.LoadFromStreamAsync(filestream);
                     await this.loadOp;
                     if (loadOp.assetBundle == null)
                     {
@@ -153,12 +154,12 @@ namespace WooAsset
             {
                 if (raw)
                 {
-                    bs.Read(rawObject.bytes, 0, (int)length);
+                    filestream.Read(rawObject.bytes, 0, (int)length);
                     SetResult(null);
                 }
                 else
                 {
-                    AssetBundle result = AssetBundle.LoadFromStream(bs);
+                    AssetBundle result = AssetBundle.LoadFromStream(filestream);
                     if (result == null)
                         SetErr($"Can not Load Bundle {bundleName}");
                     SetResult(result);
@@ -170,13 +171,10 @@ namespace WooAsset
         public Bundle[] dependence => loadArgs.dependence;
         protected override async void OnLoad()
         {
-            if (dependence != null && dependence.Length > 0)
-            {
-                for (int i = 0; i < dependence.Length; i++)
-                {
-                    await dependence[i];
-                }
-            }
+            var dp = dependence;
+            if (dp != null && dp.Length > 0)
+                for (int i = 0; i < dp.Length; i++)
+                    await dp[i];
 
 
             if (type == BundleLoadType.FromFile)
@@ -187,7 +185,7 @@ namespace WooAsset
             {
                 if (raw)
                 {
-                    var downloader = AssetsInternal.DownloadVersion(bundleName);
+                    var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
                     this.downloader = downloader;
                     await downloader;
                     rawObject = RawObject.CreateInstance<RawObject>();
@@ -201,7 +199,7 @@ namespace WooAsset
                 {
                     if (encrypt is NoneAssetStreamEncrypt)
                     {
-                        var downloader = AssetsInternal.DownLoadBundle(bundleName);
+                        var downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName);
                         this.downloader = downloader;
                         await downloader;
                         if (!downloader.isErr)
@@ -216,7 +214,7 @@ namespace WooAsset
                     }
                     else
                     {
-                        var downloader = AssetsInternal.DownloadVersion(bundleName);
+                        var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
                         this.downloader = downloader;
                         await downloader;
                         if (!downloader.isErr)
@@ -242,12 +240,19 @@ namespace WooAsset
         {
             if (value != null)
                 value.Unload(true);
-            if (bs != null)
+            if (filestream != null)
             {
-                bs.Dispose();
-                bs = null;
+                filestream.Dispose();
+                filestream = null;
             }
-            //Resources.UnloadUnusedAssets();
+            if (rawObject != null)
+            {
+#if UNITY_EDITOR
+                UnityEngine.Object.DestroyImmediate(rawObject);
+#else
+                UnityEngine.Object.Destroy(rawObject);
+#endif
+            }
         }
 
         public virtual RawObject LoadRawObject(string path)
@@ -264,7 +269,7 @@ namespace WooAsset
         }
 
         public virtual Scene LoadScene(string path, LoadSceneParameters parameters) => SceneManager.LoadScene(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
-        public AsyncOperation UnLoadScene(string path, UnloadSceneOptions op) => SceneManager.UnloadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), op);
+        public AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => SceneManager.UnloadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), op);
         public virtual AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => SceneManager.LoadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
     }
 

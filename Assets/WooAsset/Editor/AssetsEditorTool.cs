@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace WooAsset
 {
 
-    partial class AssetsEditorTool : UnityEditor.AssetModificationProcessor, IAssetLife<Bundle>, IAssetLife<AssetHandle>
+    partial class AssetsEditorTool : AssetModificationProcessor, IAssetLife<Bundle>, IAssetLife<AssetHandle>
     {
         async void IAssetLife<Bundle>.OnAssetCreate(string path, Bundle asset)
         {
@@ -29,13 +31,12 @@ namespace WooAsset
         }
         async void IAssetLife<AssetHandle>.OnAssetCreate(string path, AssetHandle asset)
         {
-            var data = cache.tree.GetAssetData(path);
+            var data = asset.data;
             var life = new AssetLife<AssetHandle>()
             {
                 asset = asset,
                 tags = Assets.GetAssetTags(path),
                 assetType = AssetsInternal.GetAssetType(path).ToString(),
-                assetLength = data == null ? 0 : data.length
             };
             assets.Add(path, life);
             onAssetLifeChange?.Invoke();
@@ -76,9 +77,9 @@ namespace WooAsset
             bundles.Clear();
             assets.Clear();
             AssetsInternal.mode = Activator.CreateInstance(option.GetAssetModeType()) as IAssetMode;
-            AssetsInternal.SetLocalSaveDir(AssetsEditorTool.outputPath);
+            AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
             if (option.enableServer && AssetsInternal.mode is NormalAssetMode)
-                AssetsServer.Run(option.serverPort, option.serverDirectory);
+                AssetsServer.Run(option.serverPort, ServerDirectory);
         }
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
@@ -108,13 +109,20 @@ namespace WooAsset
             get { return EditorUserBuildSettings.activeBuildTarget; }
         }
         public static string buildTargetName => AssetsHelper.buildTarget;
+        public static string EditorSimulatorPath
+        {
+            get
+            {
+                string path = AssetsHelper.CombinePath("DLC/Editor Simulator", buildTargetName);
+                AssetsHelper.CreateDirectory(path);
+                return path;
+            }
+        }
         public static string outputPath
         {
             get
             {
-                string path = "DLC/";
-                AssetsHelper.CreateDirectory(path);
-                path = AssetsHelper.CombinePath(path, buildTargetName);
+                string path = AssetsHelper.CombinePath("DLC/Output/", buildTargetName);
                 AssetsHelper.CreateDirectory(path);
                 return path;
             }
@@ -123,9 +131,7 @@ namespace WooAsset
         {
             get
             {
-                string path = "DLC/History/";
-                AssetsHelper.CreateDirectory(path);
-                path = AssetsHelper.CombinePath(path, buildTargetName);
+                string path = AssetsHelper.CombinePath("DLC/History/", buildTargetName);
                 AssetsHelper.CreateDirectory(path);
                 return path;
             }
@@ -140,6 +146,16 @@ namespace WooAsset
                 return path;
             }
         }
+        public static string ServerDirectory
+        {
+            get
+            {
+                string path = "DLC/Server";
+                AssetsHelper.CreateDirectory(path);
+                return path;
+            }
+        }
+
 
         private static AssetsBuildOption _option;
         private static AssetsEditorCache _cache;
@@ -206,7 +222,36 @@ namespace WooAsset
             };
         }
 
-        public static Operation WriteObject<T>(T t, string path, bool async) => new WriteObjectOperation<T>(t, path, async);
+        public static Operation WriteStream(string srcPath, Stream target) => new CopyFileStreamOperation(srcPath, target);
+        public static Operation CopyFile(string srcPath, string targetPath) => new CopyFileOperation(targetPath, srcPath);
+
+        public static Operation WriteObject<T>(T t, string path, bool async) where T : IBufferObject
+        {
+            var bytes = AssetsHelper.ObjectToBytes(t);
+            return AssetsHelper.WriteFile(bytes, path, async);
+        }
+
+        public static void DeleteFile(string path) => File.Delete(path);
+        public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
+        public static string[] GetDirectoryDirectories(string path) => Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+        public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
+
+        public static bool IsDirectory(string path) => Directory.Exists(path);
+        public static bool ExistsDirectory(string path) => Directory.Exists(path);
+        public static void DeleteDirectory(string path) => Directory.Delete(path, true);
+
+     
+
+        [MenuItem(TaskPipelineMenu.SpriteAtlas)]
+        public static async Task BuildSpriteAtlas()
+        {
+            await SpriteAtlasTool.Execute();
+        }
+        [MenuItem(TaskPipelineMenu.ShaderVariant)]
+        public static async Task SpriteShaderVariant()
+        {
+            await ShaderVariantTool.Execute();
+        }
 
     }
 }

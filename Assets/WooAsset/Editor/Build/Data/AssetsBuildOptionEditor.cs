@@ -16,7 +16,7 @@ namespace WooAsset
                 Runtime, Tool, AssetTag, Build
             }
             private Tab tab;
-         
+
             private abstract class OptionTab
             {
                 public bool change { get; private set; }
@@ -55,9 +55,27 @@ namespace WooAsset
                     BeginGUI("Asset Mode");
                     option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
                     MidGUI("Simulated Asset Server");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("enableServer"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("serverDirectory"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("serverPort"));
+                    GUI.enabled = false;
+                    {
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField(nameof(ServerDirectory), ServerDirectory);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(ServerDirectory);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(ServerDirectory);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
+                    GUI.enabled = true;
+                    if (option.GetAssetModeType() == typeof(NormalAssetMode))
+                    {
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.enableServer)));
+                        if (option.enableServer)
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.serverPort)));
+                    }
                     EndGUI();
 
 
@@ -94,15 +112,20 @@ namespace WooAsset
                 {
                     BeginGUI("Build");
 
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildPkgs)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.pkgs)));
+                    if (option.copyToStream)
+                    {
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
+                    }
 
 
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.version)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.forceRebuild)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.AppendHashToAssetBundleName)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.copyToStream)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildMode)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.bundleNameType)));
+
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.typeTreeOption)));
 
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.compress)));
@@ -113,11 +136,62 @@ namespace WooAsset
 
                     GUI.enabled = false;
                     EditorGUILayout.EnumPopup("Build Target", AssetsEditorTool.buildTarget);
-                    EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
-                    EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
+                    {
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField("Editor Simulator Path", AssetsEditorTool.EditorSimulatorPath);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(EditorSimulatorPath);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(EditorSimulatorPath);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+                    {
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField("Stream Bundle Directory", AssetsHelper.streamBundleDirectory);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(AssetsHelper.streamBundleDirectory);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(AssetsHelper.streamBundleDirectory);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
                     GUILayout.Space(20);
-                    EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
-                    EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);
+
+                    {
+                        EditorGUILayout.HelpBox("don't modify the file", MessageType.Warning);
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField("Output Path", AssetsEditorTool.outputPath);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(outputPath);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(outputPath);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
+                    {
+                        EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField("History Path", AssetsEditorTool.historyPath);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(historyPath);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(historyPath);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
+
 
                     GUI.enabled = true;
                     EndGUI();
@@ -165,7 +239,7 @@ namespace WooAsset
                     option.Save();
                 }
 
-               
+
             }
         }
 

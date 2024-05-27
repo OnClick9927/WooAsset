@@ -23,7 +23,7 @@ namespace WooAsset
                     if (AssetsHelper.ExistsFile(filePath))
                     {
                         response.StatusCode = (int)HttpStatusCode.OK;
-                        await AssetsHelper.WriteStream(filePath, OutputStream);
+                        await AssetsEditorTool.WriteStream(filePath, OutputStream);
                     }
                     else
                     {

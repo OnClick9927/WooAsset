@@ -30,7 +30,8 @@ namespace WooAsset
                     }
                     protected override void Compare()
                     {
-                        add = delete = change = new List<FileData>();
+                        delete = new List<FileData>();
+                        add = change = new List<BundleFileData>();
                         InvokeComplete();
                     }
                 }

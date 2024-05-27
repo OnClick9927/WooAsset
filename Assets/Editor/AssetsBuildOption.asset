@@ -12,10 +12,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e032500462931bd4b862324ca75e46f1, type: 3}
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
+  version: 0.0.1
+  copyToStream: 0
+  buildMode: 1
+  typeTreeOption: 1
+  bundleNameType: 1
+  compress: 1
+  MaxCacheVersionCount: 2
+  cleanHistory: 1
+  buildInAssets:
+  - {fileID: 102900000, guid: 7623efd24e38a4e46948380b33aadb32, type: 3}
+  enableServer: 1
+  serverPort: 8080
+  pkgs:
+  - build: 1
+    name: dsa
+    description: 
+    tags: []
+    paths:
+    - Assets/Example/New Folder
+  - build: 1
+    name: dsax
+    description: 
+    tags: []
+    paths:
+    - Assets/Example/px
+  - build: 1
+    name: dsaxx
+    description: 
+    tags: []
+    paths:
+    - Assets/Example/Scene
+  build:
+    types:
+    - WooAsset.AssetsEditorTool+DefaultAssetBuild
+    shortTypes:
+    - DefaultAssetBuild
+    typeIndex: 0
+  mode:
+    types:
+    - WooAsset.NormalAssetMode
+    - WooAsset.AssetsEditorTool+FastAssetMode
+    shortTypes:
+    - NormalAssetMode
+    - FastAssetMode
+    typeIndex: 0
+  encrypt:
+    types:
+    - WooAsset.DefaultAssetStreamEncrypt
+    - WooAsset.NoneAssetStreamEncrypt
+    shortTypes:
+    - DefaultAssetStreamEncrypt
+    - NoneAssetStreamEncrypt
+    typeIndex: 1
   tags:
   - tag: shader
     assets:
     - Assets/Example/shadervariants.shadervariants
+    - Assets/Example/New Folder/a.jpg
+    - Assets/Example/New Folder/aaa
+    - Assets/Example/New Folder/Cube.prefab
+    - Assets/Example/New Folder/kkk.rfc
+    - Assets/Example/New Folder/New Material 1.mat
+    - Assets/Example/New Folder/New Material.mat
   shaderVariantDirectory: Assets/Example
   atlasPaths:
   - Assets/Example/px
@@ -42,46 +101,3 @@ MonoBehaviour:
     m_CrunchedCompression: 1
     m_AllowsAlphaSplitting: 0
     m_AndroidETC2FallbackOverride: 0
-  version: 0.0.1
-  bundleSize: 99999999999999
-  forceRebuild: 0
-  typeTreeOption: 0
-  AppendHashToAssetBundleName: 1
-  compress: 1
-  MaxCacheVersionCount: 2
-  cleanHistory: 0
-  buildPkgs:
-  - build: 1
-    collect: 1
-    name: new
-    description: 
-    tags: []
-    paths:
-    - Assets/Example
-  build:
-    types:
-    - WooAsset.AssetsEditorTool+DefaultAssetBuild
-    shortTypes:
-    - DefaultAssetBuild
-    typeIndex: 0
-  mode:
-    types:
-    - WooAsset.NormalAssetMode
-    - WooAsset.AssetsEditorTool+FastAssetMode
-    shortTypes:
-    - NormalAssetMode
-    - FastAssetMode
-    typeIndex: 0
-  encrypt:
-    types:
-    - WooAsset.DefaultAssetStreamEncrypt
-    - WooAsset.NoneAssetStreamEncrypt
-    shortTypes:
-    - DefaultAssetStreamEncrypt
-    - NoneAssetStreamEncrypt
-    typeIndex: 0
-  buildInAssets:
-  - {fileID: 102900000, guid: 7623efd24e38a4e46948380b33aadb32, type: 3}
-  enableServer: 1
-  serverDirectory: DLC/Server
-  serverPort: 8080

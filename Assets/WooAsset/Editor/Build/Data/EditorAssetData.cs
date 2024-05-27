@@ -35,7 +35,7 @@ namespace WooAsset
                 length = length,
                 hash = hash,
                 type = _type,
-                directory = AssetsHelper.ToAssetsPath(AssetsHelper.GetDirectoryName(path))
+                directory = AssetsEditorTool.ToAssetsPath(AssetsEditorTool.GetDirectoryName(path))
             };
         }
 
@@ -45,7 +45,6 @@ namespace WooAsset
             {
                 path = path,
                 bundleName = bundleName,
-                dps = dependence,
                 tags = tags,
                 type = type,
             };

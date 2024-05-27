@@ -5,7 +5,6 @@ namespace WooAsset
     public class ResourcesAsset : Asset
     {
         private ResourceRequest loadOp;
-        private string resPath;
         public override float progress
         {
             get
@@ -21,22 +20,21 @@ namespace WooAsset
         public override Object[] allAssets => _allAssets;
         public ResourcesAsset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
-            var extend = AssetsHelper.GetFileExtension(path);
-            resPath = path.Replace(extend, "");
+          
         }
         protected async override void LoadUnityObject()
         {
             var _type = GetAssetType(type);
-            _allAssets = Resources.LoadAll(resPath, _type);
+            _allAssets = Resources.LoadAll(path, _type);
             if (async)
             {
-                loadOp = Resources.LoadAsync(resPath, _type);
+                loadOp = Resources.LoadAsync(path, _type);
                 await loadOp;
                 SetResult(loadOp.asset);
             }
             else
             {
-                SetResult(Resources.Load(resPath, _type));
+                SetResult(Resources.Load(path, _type));
             }
         }
 

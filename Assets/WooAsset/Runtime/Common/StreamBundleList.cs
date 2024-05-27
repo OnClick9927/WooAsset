@@ -1,18 +1,16 @@
 ﻿namespace WooAsset
 {
     [System.Serializable]
-    public class StreamBundleList
+    public class StreamBundleList : IBufferObject
     {
         public string[] fileNames;
-        private static string _fileName;
-        public static string fileName
+        public static string fileName = $"StreamBundleList.ver{CopyStreamBundlesOperation.fileExt}";
+
+        void IBufferObject.ReadData(BufferReader reader) => fileNames = reader.ReadUTF8Array();
+
+        void IBufferObject.WriteData(BufferWriter writer)
         {
-            get
-            {
-                if (string.IsNullOrEmpty(_fileName))
-                    _fileName = AssetsHelper.GetStringHash("bundles#######") + ".bytes";
-                return _fileName;
-            }
+            writer.WriteUTF8Array(fileNames);
         }
     }
 }

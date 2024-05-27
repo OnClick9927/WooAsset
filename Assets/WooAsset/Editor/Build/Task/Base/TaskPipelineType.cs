@@ -7,9 +7,5 @@
         PreviewAssets,
         PreviewAllBundles,
         PreviewAllAssets,
-        ShaderVariant,
-        SpriteAtlas,
-        OpenOutput,
-        ClearOutput
     }
 }

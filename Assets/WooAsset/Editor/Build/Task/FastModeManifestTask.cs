@@ -27,7 +27,7 @@ namespace WooAsset
         protected override void OnExecute(AssetTaskContext context)
         {
 
-            context.manifest = BuildManifest(context.allBundleBuilds, context.tree);
+            context.manifest = BuildManifest(context.allBundleBuilds, context.assetsCollection);
             InvokeComplete();
         }
     }

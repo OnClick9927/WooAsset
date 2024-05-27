@@ -8,6 +8,7 @@ namespace WooAsset
     public interface IAssetMode
     {
         ManifestData manifest { get; }
+        string version { get; }
         bool Initialized();
         Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
         CheckBundleVersionOperation VersionCheck();

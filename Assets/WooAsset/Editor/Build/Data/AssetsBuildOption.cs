@@ -16,49 +16,17 @@ namespace WooAsset
             public string tag;
             public List<string> assets;
         }
-        public List<TagAssets> tags = new List<TagAssets>();
-
-        public List<string> GetAllTags() => tags.ConvertAll(x => x.tag);
-
-
-
-        public void AddAssetTag(string path, string tag)
+        public enum TypeTreeOption
         {
-            if (tags == null) tags = new List<TagAssets>();
-            TagAssets assets = tags.Find(x => x.tag == tag);
-            if (assets == null)
-            {
-                assets = new TagAssets();
-                tags.Add(assets);
-            }
-            if (!assets.assets.Contains(path))
-            {
-                assets.assets.Add(path);
-            }
+            None,
+            IgnoreTypeTreeChanges,
+            DisableWriteTypeTree,
 
         }
-        public void RemoveAssetTag(string path, string tag)
-        {
-            if (tags == null) return;
-            TagAssets assets = tags.Find(x => x.tag == tag);
-            if (assets == null) return;
-            assets.assets.Remove(path);
-
-        }
-
-
-        public List<string> GetAssetTags(string path)
-        {
-            if (tags == null)
-                return null;
-            return tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag);
-        }
-
         [System.Serializable]
         public class EditorBundlePackage
         {
             public bool build;
-            public bool collect = true;
             public string name;
             public string description;
             public List<string> tags = new List<string>();
@@ -66,9 +34,16 @@ namespace WooAsset
 
             public bool HasSamePath() => paths.Distinct().Count() != paths.Count();
             public bool HasSamePath(EditorBundlePackage other) => paths.Intersect(other.paths).Count() > 0;
-            public string GetManifestFileName(string version) => AssetsHelper.GetStringHash("m" + string.Join("m", paths) + version);
-            public string GetBundleFileName(string version) => AssetsHelper.GetStringHash("b" + string.Join("b", paths) + version);
 
+            public AssetsVersionCollection.VersionData.PackageData ToPackageData()
+            {
+                return new AssetsVersionCollection.VersionData.PackageData()
+                {
+                    description = description,
+                    name = name,
+                    tags = tags
+                };
+            }
         }
 
         [System.Serializable]
@@ -128,32 +103,39 @@ namespace WooAsset
             public FilterMode filterMode = FilterMode.Bilinear;
             public int anisoLevel = 1;
         }
-        [Tooltip("ShaderVariant")]
-        [Space(20)]
+        public enum BuildMode
+        {
+            Dry,
+            Increase,
+            ForceRebuild,
+        }
+        public enum BundleNameType
+        {
+            Name,
+            NameWithHash
+        }
+
+        public string version = "0.0.1";
+        public bool copyToStream = false;
+        public BuildMode buildMode = BuildMode.Increase;
+
+        public TypeTreeOption typeTreeOption;
+        public BundleNameType bundleNameType;
+        public CompressType compress;
+        public int MaxCacheVersionCount = 8;
+        public bool cleanHistory;
+        public List<Object> buildInAssets = new List<Object>();
+
+        public bool enableServer;
+        public int serverPort = 8080;
+        public List<EditorBundlePackage> pkgs = new List<EditorBundlePackage>();
+
+        public TypeSelect build = new TypeSelect();
+        public TypeSelect mode = new TypeSelect();
+        public TypeSelect encrypt = new TypeSelect();
+        public List<TagAssets> tags = new List<TagAssets>();
         public string shaderVariantDirectory;
-        [Space(20)]
         public List<string> atlasPaths = new List<string>();
-        public SpriteAtlasPackingSettings GetPackingSetting()
-        {
-            return new SpriteAtlasPackingSettings()
-            {
-                blockOffset = packSetting.blockOffset,
-                enableRotation = packSetting.enableRotation,
-                enableTightPacking = packSetting.enableTightPacking,
-                padding = packSetting.padding,
-            };
-        }
-        public SpriteAtlasTextureSettings GetTextureSetting()
-        {
-            return new SpriteAtlasTextureSettings()
-            {
-                readable = textureSetting.readable,
-                generateMipMaps = textureSetting.generateMipMaps,
-                filterMode = textureSetting.filterMode,
-                anisoLevel = textureSetting.anisoLevel,
-                sRGB = textureSetting.sRGB,
-            };
-        }
         public PackingSetting packSetting = new PackingSetting();
         public TextureSetting textureSetting = new TextureSetting();
         public TextureImporterPlatformSettings PlatformSetting = new TextureImporterPlatformSettings()
@@ -166,50 +148,12 @@ namespace WooAsset
         };
 
 
-        static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
-        {
-            if (self.IsInterface)
-            {
-                return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
-                       where item.GetInterfaces().Contains(self)
-                       select item;
-            }
-
-            return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
-                   where item.IsSubclassOf(self)
-                   select item;
-        }
-
-        [Space(20)]
-        public string version = "0.0.1";
-        public long bundleSize = 8 * 1024 * 1024;
-        public bool forceRebuild = false;
-        public enum TypeTreeOption
-        {
-            None,
-            DisableWriteTypeTree,
-            IgnoreTypeTreeChanges,
-
-        }
-        public TypeTreeOption typeTreeOption;
-
-        public bool AppendHashToAssetBundleName = false;
-        public CompressType compress;
-        public int MaxCacheVersionCount = 8;
-        public bool cleanHistory;
-
-        [SerializeField] public List<EditorBundlePackage> buildPkgs = new List<EditorBundlePackage>();
-
-        [HideInInspector] public TypeSelect build = new TypeSelect();
-        [HideInInspector] public TypeSelect mode = new TypeSelect();
-        [HideInInspector] public TypeSelect encrypt = new TypeSelect();
-        public List<Object> buildInAssets = new List<Object>();
 
 
 
-        public bool enableServer;
-        public string serverDirectory = "DLC/Server";
-        public int serverPort = 8080;
+
+
+
 
         public void OnEnable()
         {
@@ -231,6 +175,19 @@ namespace WooAsset
 
         }
 
+        static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
+        {
+            if (self.IsInterface)
+            {
+                return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
+                       where item.GetInterfaces().Contains(self)
+                       select item;
+            }
+
+            return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
+                   where item.IsSubclassOf(self)
+                   select item;
+        }
 
 
         public Type GetAssetBuildType()
@@ -265,6 +222,59 @@ namespace WooAsset
             return false;
         }
 
+
+
+        public List<string> GetAllTags() => tags.ConvertAll(x => x.tag);
+        public void AddAssetTag(string path, string tag)
+        {
+            if (tags == null) tags = new List<TagAssets>();
+            TagAssets assets = tags.Find(x => x.tag == tag);
+            if (assets == null)
+            {
+                assets = new TagAssets();
+                tags.Add(assets);
+            }
+            if (!assets.assets.Contains(path))
+            {
+                assets.assets.Add(path);
+            }
+
+        }
+        public void RemoveAssetTag(string path, string tag)
+        {
+            if (tags == null) return;
+            TagAssets assets = tags.Find(x => x.tag == tag);
+            if (assets == null) return;
+            assets.assets.Remove(path);
+
+        }
+        public List<string> GetAssetTags(string path)
+        {
+            if (tags == null)
+                return null;
+            return tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag);
+        }
+        public SpriteAtlasPackingSettings GetPackingSetting()
+        {
+            return new SpriteAtlasPackingSettings()
+            {
+                blockOffset = packSetting.blockOffset,
+                enableRotation = packSetting.enableRotation,
+                enableTightPacking = packSetting.enableTightPacking,
+                padding = packSetting.padding,
+            };
+        }
+        public SpriteAtlasTextureSettings GetTextureSetting()
+        {
+            return new SpriteAtlasTextureSettings()
+            {
+                readable = textureSetting.readable,
+                generateMipMaps = textureSetting.generateMipMaps,
+                filterMode = textureSetting.filterMode,
+                anisoLevel = textureSetting.anisoLevel,
+                sRGB = textureSetting.sRGB,
+            };
+        }
 
     }
 }

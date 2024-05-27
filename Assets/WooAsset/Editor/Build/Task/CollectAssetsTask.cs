@@ -15,7 +15,7 @@ namespace WooAsset
                 if (context.Pipeline == TaskPipelineType.PreviewAllAssets || context.Pipeline == TaskPipelineType.PreviewAllBundles)
                     paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
                 else
-                    paths.AddRange(context.buildPkgs.Where(x => x.collect == true).SelectMany(x => x.paths));
+                    paths.AddRange(context.buildPkgs.Where(x => x.build == true).SelectMany(x => x.paths));
 
 
             }
@@ -33,7 +33,7 @@ namespace WooAsset
                 tag_dic.Add(item.path, tags.ToList());
             }
             tree.ReadAssetTags(tag_dic);
-            context.tree = tree;
+            context.assetsCollection = tree;
             InvokeComplete();
         }
     }

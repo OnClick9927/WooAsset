@@ -6,9 +6,6 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,7 +17,7 @@ namespace WooAsset
     {
         public override IAssetStreamEncrypt GetEncrypt()
         {
-            return new DefaultAssetStreamEncrypt();
+            return new NoneAssetStreamEncrypt();
         }
         public override bool NeedCopyStreamBundles()
         {
@@ -41,7 +38,10 @@ namespace WooAsset
             //Application.dataPath, "../DLCDownLoad"
             //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());
         }
-
+        public override string OverwriteBundlePath(string bundlePath)
+        {
+            return base.OverwriteBundlePath(bundlePath);
+        }
         public override IAssetLife GetAssetLife()
         {
             return null;
@@ -55,24 +55,30 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            await Assets.CopyToSandBox();
+            //await Assets.CopyToSandBox();
             var op = await Assets.VersionCheck();
             if (op.Versions != null)
             {
                 var version = op.Versions.NewestVersion();
                 var compare = await op.Compare(version, version.GetAllPkgs());
 
-
                 for (int i = 0; i < compare.add.Count; i++)
-                    await Assets.DownLoadBundle(compare.add[i].name);
+                    await Assets.DownLoadBundle(version.version, compare.add[i].name);
                 for (int i = 0; i < compare.change.Count; i++)
-                    await Assets.DownLoadBundle(compare.change[i].name);
+                    await Assets.DownLoadBundle(version.version, compare.change[i].name);
             }
+
+
+
             await Assets.InitAsync();
 
-            var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
+            var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
+            oppp.Destroy();
+
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
+
+
             var asset = await Assets.LoadAsset("Assets/Example/New Folder/aaa");
 
             RawObject raw = asset.GetAsset<RawObject>();
@@ -81,7 +87,6 @@ namespace WooAsset
 
             var _asset = Assets.LoadAsset("Assets/Example/New Folder/a.jpg");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");
-
             int index = 0;
             for (int i = 0; i < 20; i++)
             {
@@ -90,10 +95,7 @@ namespace WooAsset
                 image.sprite = asset_1.GetAsset<Sprite>();
                 await Task.Delay(100);
             }
-            oppp.Destroy();
-            var __asset = await Assets.LoadFileAssetAsync("Assets/Example/New Folder/kkk.rfc");
-            var fo = __asset.GetAsset<RawObject>();
-            Debug.Log(fo.bytes.Length);
+            await Assets.UnloadSceneAsync("Assets/Example/Scene/New Scene2.unity", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
         }
 
     }

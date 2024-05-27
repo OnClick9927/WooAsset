@@ -42,14 +42,15 @@ namespace WooAsset
         private async void Done()
         {
             IAssetStreamEncrypt en = encrypt;
-            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionBuffer.localHashName);
+            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.localHashName);
             bool download = false;
             if (!AssetsHelper.ExistsFile(localVersionPath))
                 download = true;
             else
             {
-                var reader = await AssetsHelper.ReadFile(localVersionPath, true);
-                version = VersionBuffer.ReadVersionData(reader.bytes, en);
+                var reader = AssetsHelper.ReadFile(localVersionPath, true);
+                await reader;
+                version = VersionHelper.ReadVersionData(reader.bytes, en);
 
                 if (!string.IsNullOrEmpty(_version))
                     if (version.version != _version)
@@ -57,7 +58,7 @@ namespace WooAsset
             }
             if (download)
             {
-                downloader = AssetsInternal.DownloadVersion(VersionBuffer.remoteHashName);
+                downloader = AssetsInternal.DownloadRemoteVersion();
 
                 await downloader;
                 if (downloader.isErr)
@@ -66,15 +67,14 @@ namespace WooAsset
                 }
                 else
                 {
-                    AssetsVersionCollection collection = VersionBuffer.ReadAssetsVersionCollection(downloader.data, en);
+                    AssetsVersionCollection collection = VersionHelper.ReadAssetsVersionCollection(downloader.data, en);
                     AssetsVersionCollection.VersionData find = string.IsNullOrEmpty(_version) ? collection.NewestVersion() : collection.FindVersion(_version);
                     version = find != null ? find : collection.NewestVersion();
-                    await VersionBuffer.WriteVersionData(version, localVersionPath, en);
+                    await VersionHelper.WriteVersionData(version, localVersionPath, en);
                 }
             }
             var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
-            List<ManifestData> manifests = new List<ManifestData>();
-
+            manifest = new ManifestData();
             for (int i = 0; i < pkgs.Count; i++)
             {
                 var pkg = pkgs[i];
@@ -82,28 +82,28 @@ namespace WooAsset
                     string fileName = pkg.manifestFileName;
 
                     string _path = AssetsInternal.GetBundleLocalPath(fileName);
-                    ManifestData v = null;
+                    ManifestData v;
                     if (AssetsHelper.ExistsFile(_path))
                     {
-                        var reader = await AssetsHelper.ReadFile(_path, true);
-                        v = VersionBuffer.ReadManifest(reader.bytes, en);
+                        var reader =  AssetsHelper.ReadFile(_path, true);
+                        await reader;
+                        v = VersionHelper.ReadManifest(reader.bytes, en);
                     }
                     else
                     {
-                        downloader = AssetsInternal.DownloadVersion(fileName);
+                        downloader = AssetsInternal.DownloadVersion(version.version, fileName);
                         await downloader;
                         if (downloader.isErr)
                         {
                             SetErr(downloader.error);
                             break;
                         }
-                        v = VersionBuffer.ReadManifest(downloader.data, en);
-                        await VersionBuffer.WriteManifest(v, _path, en);
+                        v = VersionHelper.ReadManifest(downloader.data, en);
+                        await VersionHelper.WriteManifest(v, _path, en);
                     }
-                    manifests.Add(v);
+                    ManifestData.Merge(v, manifest, this.loadedBundles);
                 }
             }
-            manifest = ManifestData.Merge(manifests, this.loadedBundles);
             manifest.Prepare();
 
             InvokeComplete();

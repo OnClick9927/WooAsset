@@ -4,13 +4,12 @@ using System.Linq;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
-    public class Asset : AssetHandle
+    public class Asset : AssetHandle<UnityEngine.Object>
     {
 
         private Object[] assets;
 
         private AssetRequest loadOp;
-        private float directProgress;
         public Asset(AssetLoadArgs loadArgs) : base(loadArgs)
         {
 
@@ -20,11 +19,8 @@ namespace WooAsset
             get
             {
                 if (isDone) return 1;
-                if (direct)
-                    return directProgress;
                 if (async)
                 {
-
                     if (loadOp == null)
                         return bundle.progress * 0.5f;
                     return 0.5f + 0.5f * loadOp.progress;
@@ -49,25 +45,10 @@ namespace WooAsset
             .FirstOrDefault() as T;
 
 
-        private async void LoadFile()
-        {
-            if (AssetsHelper.ExistsFile(path))
-            {
-                RawObject obj = RawObject.Create(path);
-                var reader = await AssetsHelper.ReadFile(path, async);
-                obj.bytes = reader.bytes;
-                SetResult(obj);
-            }
-            else
-            {
-                SetErr($"file not exist {path}");
-            }
-            InvokeComplete();
-        }
+
 
         protected virtual async void LoadUnityObject()
         {
-            await LoadBundle();
             if (bundle.isErr)
             {
                 this.SetErr(bundle.error);
@@ -133,11 +114,8 @@ namespace WooAsset
         }
         protected sealed override void InternalLoad()
         {
+            LoadUnityObject();
 
-            if (!direct)
-                LoadUnityObject();
-            else
-                LoadFile();
         }
 
     }
