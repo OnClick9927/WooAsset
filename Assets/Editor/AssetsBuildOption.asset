@@ -56,7 +56,7 @@ MonoBehaviour:
     shortTypes:
     - NormalAssetMode
     - FastAssetMode
-    typeIndex: 0
+    typeIndex: 1
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt

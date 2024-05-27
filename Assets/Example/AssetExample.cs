@@ -29,7 +29,7 @@ namespace WooAsset
         }
         public override bool GetBundleAwalysFromWebRequest()
         {
-            return false;
+            return true;
         }
         protected override string GetBaseUrl()
         {
@@ -56,17 +56,17 @@ namespace WooAsset
         {
             Assets.SetAssetsSetting(new LocalSetting());
             //await Assets.CopyToSandBox();
-            var op = await Assets.VersionCheck();
-            if (op.Versions != null)
-            {
-                var version = op.Versions.NewestVersion();
-                var compare = await op.Compare(version, version.GetAllPkgs());
+            //var op = await Assets.VersionCheck();
+            //if (op.Versions != null)
+            //{
+            //    var version = op.Versions.NewestVersion();
+            //    var compare = await op.Compare(version, version.GetAllPkgs());
 
-                for (int i = 0; i < compare.add.Count; i++)
-                    await Assets.DownLoadBundle(version.version, compare.add[i].name);
-                for (int i = 0; i < compare.change.Count; i++)
-                    await Assets.DownLoadBundle(version.version, compare.change[i].name);
-            }
+            //    for (int i = 0; i < compare.add.Count; i++)
+            //        await Assets.DownLoadBundle(version.version, compare.add[i].name);
+            //    for (int i = 0; i < compare.change.Count; i++)
+            //        await Assets.DownLoadBundle(version.version, compare.change[i].name);
+            //}
 
 
 

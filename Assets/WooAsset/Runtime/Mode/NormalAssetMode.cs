@@ -35,7 +35,13 @@ namespace WooAsset
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundles()
                     .Select(x => x.bundleName).ToList()
                     , version, getPkgs, AssetsInternal.GetEncrypt());
+            manifestOp.completed += ManifestOp_completed;
             return manifestOp;
+        }
+
+        private void ManifestOp_completed()
+        {
+            SetVersion(manifestOp.GetVersion());
         }
 
         protected override CheckBundleVersionOperation VersionCheck() => new CheckBundleVersionOperation();

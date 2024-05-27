@@ -27,6 +27,8 @@ namespace WooAsset
         private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
         private IAssetStreamEncrypt encrypt;
+
+        public string GetVersion() => version.version;
         public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs, IAssetStreamEncrypt encrypt)
         {
             _version = version;
