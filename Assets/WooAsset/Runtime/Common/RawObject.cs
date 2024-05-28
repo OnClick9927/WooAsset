@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
-    public class RawObject : ScriptableObject
+    public class RawObject 
     {
         public string rawPath;
         public byte[] bytes;
@@ -10,7 +8,7 @@ namespace WooAsset
 
         public static RawObject Create(string path)
         {
-            RawObject obj = ScriptableObject.CreateInstance<RawObject>();
+            RawObject obj = new RawObject();
             obj.rawPath = path;
             return obj;
         }

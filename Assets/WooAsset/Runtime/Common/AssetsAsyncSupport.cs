@@ -106,6 +106,7 @@ namespace WooAsset
         public static IAwaiter<CheckBundleVersionOperation> GetAwaiter(this CheckBundleVersionOperation target) => new AssetOperationAwaiter<CheckBundleVersionOperation>(target);
         public static IAwaiter<VersionCompareOperation> GetAwaiter(this VersionCompareOperation target) => new AssetOperationAwaiter<VersionCompareOperation>(target);
 
+        public static IAwaiter<RawAsset> GetAwaiter(this RawAsset target) => new AssetOperationAwaiter<RawAsset>(target);
         public static IAwaiter<Asset> GetAwaiter(this Asset target) => new AssetOperationAwaiter<Asset>(target);
         public static IAwaiter<SceneAsset> GetAwaiter(this SceneAsset target) => new AssetOperationAwaiter<SceneAsset>(target);
         public static IAwaiter<AssetsGroupOperation> GetAwaiter(this AssetsGroupOperation target) => new AssetOperationAwaiter<AssetsGroupOperation>(target);

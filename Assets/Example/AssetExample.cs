@@ -79,9 +79,9 @@ namespace WooAsset
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
 
 
-            var asset = await Assets.LoadAsset("Assets/Example/New Folder/aaa");
+            var asset = await Assets.LoadRawAssetAsync("Assets/Example/New Folder/aaa");
 
-            RawObject raw = asset.GetAsset<RawObject>();
+            RawObject raw = asset.GetAsset();
             Debug.Log(raw.bytes.Length);
 
 

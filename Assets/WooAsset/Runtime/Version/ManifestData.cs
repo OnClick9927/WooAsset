@@ -55,9 +55,11 @@ namespace WooAsset
             [UnityEngine.SerializeField] internal int bundleNameIndex;
             public string path;
             public AssetType type;
-            public int[] char_index;
+            public int[] path_segs;
+            public int[] dot_segs;
             [System.NonSerialized] public List<string> tags;
             [System.NonSerialized] public string bundleName;
+
             internal void AddTag(string tag)
             {
                 if (tags == null) tags = new List<string>();
@@ -68,16 +70,18 @@ namespace WooAsset
             {
                 bundleNameIndex = reader.ReadInt32();
                 //path = reader.ReadUTF8();
-                char_index = reader.ReadInt32Array();
                 type = (AssetType)reader.ReadUInt16();
+                path_segs = reader.ReadInt32Array();
+                dot_segs = reader.ReadInt32Array();
             }
 
             void IBufferObject.WriteData(BufferWriter writer)
             {
                 writer.WriteInt32(bundleNameIndex);
                 //writer.WriteUTF8(path);
-                writer.WriteInt32Array(char_index);
                 writer.WriteUInt16((ushort)type);
+                writer.WriteInt32Array(path_segs);
+                writer.WriteInt32Array(dot_segs);
             }
         }
         [System.Serializable]
@@ -155,55 +159,81 @@ namespace WooAsset
         [UnityEngine.SerializeField] private List<AssetData> assets = new List<AssetData>();
         [UnityEngine.SerializeField] private List<BundleData> bundles = new List<BundleData>();
 
-        private List<string> path_sps = new List<string>();
+        private List<string> segs = new List<string>();
 
         void IBufferObject.ReadData(BufferReader reader)
         {
             tags = reader.ReadObjectList<TagData>();
             assets = reader.ReadObjectList<AssetData>();
             bundles = reader.ReadObjectList<BundleData>();
-            path_sps = reader.ReadUTF8List();
+            segs = reader.ReadUTF8List();
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < assets.Count; i++)
             {
                 var asset = assets[i];
-                var path_segs = asset.char_index;
+                var path_segs = asset.path_segs;
+                var dot_segs = asset.dot_segs;
+
                 for (int j = 0; j < path_segs.Length; j++)
                 {
-                    sb.Append(path_sps[path_segs[j]]);
-                    if (j != path_segs.Length - 1)
-                        sb.Append('/');
+                    sb.Append(this.segs[path_segs[j]]);
+                    sb.Append('/');
                 }
+                for (int j = 0; j < dot_segs.Length; j++)
+                {
+                    sb.Append(this.segs[dot_segs[j]]);
+                    if (j != dot_segs.Length - 1)
+                        sb.Append('.');
+                }
+
                 asset.path = sb.ToString();
                 sb.Clear();
             }
 
 
         }
-
+        private int GetSegIndex(string seg)
+        {
+            var index = this.segs.IndexOf(seg);
+            if (index != -1)
+                return index;
+            else
+            {
+                this.segs.Add(seg);
+                return this.segs.Count - 1;
+            }
+        }
         void IBufferObject.WriteData(BufferWriter writer)
         {
-            for (int i = 0; i < assets.Count; i++)
+            for (int asset_index = 0; asset_index < assets.Count; asset_index++)
             {
-                var asset = assets[i];
+                var asset = assets[asset_index];
                 var path = asset.path;
                 var sps = path.Split('/');
-                int[] char_index = new int[sps.Length];
-                for (int j = 0; j < sps.Length; j++)
+                int[] path_segs = new int[sps.Length - 1];
+                int[] dot_segs = null;
+
+                for (int seg_index = 0; seg_index < sps.Length; seg_index++)
                 {
-                    string c = sps[j];
-                    var index = path_sps.IndexOf(c);
-                    if (index != -1)
+                    string seg = sps[seg_index];
+                    if (seg_index == sps.Length - 1)
                     {
-                        char_index[j] = index;
+                        var dot_sps = seg.Split('.');
+                        dot_segs = new int[dot_sps.Length];
+                        for (int k = 0; k < dot_sps.Length; k++)
+                        {
+                            var dot_sp = dot_sps[k];
+                            dot_segs[k] = GetSegIndex(dot_sp);
+                        }
                     }
                     else
                     {
-                        path_sps.Add(c);
-                        char_index[j] = path_sps.Count - 1;
+                        path_segs[seg_index] = GetSegIndex(seg);
                     }
                 }
-                asset.char_index = char_index;
+                asset.path_segs = path_segs;
+                asset.dot_segs = dot_segs;
+
             }
 
 
@@ -211,7 +241,7 @@ namespace WooAsset
             writer.WriteObjectList(tags);
             writer.WriteObjectList(assets);
             writer.WriteObjectList(bundles);
-            writer.WriteUTF8List(path_sps);
+            writer.WriteUTF8List(segs);
         }
 
 

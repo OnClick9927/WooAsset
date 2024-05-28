@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace WooAsset
 {
+
     public class Bundle : AssetOperation<AssetBundle>
     {
         private enum BundleLoadType
@@ -51,9 +52,7 @@ namespace WooAsset
                     {
                         if (downloader == null) return 0;
                         if (raw)
-                        {
                             return downloader.progress;
-                        }
                         else
                         {
                             if (loadOp == null) return downloader.progress * 0.5f;
@@ -189,8 +188,7 @@ namespace WooAsset
                     var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
                     this.downloader = downloader;
                     await downloader;
-                    rawObject = RawObject.CreateInstance<RawObject>();
-                    rawObject.rawPath = _path;
+                    rawObject = RawObject.Create(_path);
                     var bytes = downloader.data;
                     bytes = EncryptBuffer.Decode(bundleName, bytes, encrypt);
                     rawObject.bytes = bytes;
@@ -248,11 +246,7 @@ namespace WooAsset
             }
             if (rawObject != null)
             {
-#if UNITY_EDITOR
-                UnityEngine.Object.DestroyImmediate(rawObject);
-#else
-                UnityEngine.Object.Destroy(rawObject);
-#endif
+
             }
         }
 

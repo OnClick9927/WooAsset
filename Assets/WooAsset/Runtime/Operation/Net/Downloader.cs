@@ -23,7 +23,6 @@ namespace WooAsset
             this.timeout = timeout;
             this.retry = retry;
             this.url = url;
-            AssetsHelper.Log($"Download start: {url}");
         }
         protected virtual UnityWebRequest GetRequset()
         {

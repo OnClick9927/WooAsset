@@ -19,7 +19,6 @@
 
         public AssetHandle FindAsset(string path)
         {
-            path = AssetsHelper.ToRegularPath(path);
             for (int i = 0; i < paths.Length; i++)
             {
                 if (paths[i] == path)

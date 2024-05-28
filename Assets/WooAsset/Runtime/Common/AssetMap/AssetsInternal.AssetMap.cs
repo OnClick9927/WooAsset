@@ -7,6 +7,8 @@
             protected override AssetHandle CreateNew(IAssetArgs args) => CreateAsset((AssetLoadArgs)args);
             private AssetHandle CreateAsset(AssetLoadArgs arg)
             {
+                if (arg.data.type == AssetType.Raw)
+                    return new RawAsset(arg);
                 return arg.data.type == AssetType.Scene ? new SceneAsset(arg) : new Asset(arg);
             }
 

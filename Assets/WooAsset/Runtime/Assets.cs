@@ -23,7 +23,8 @@ namespace WooAsset
         public static Asset LoadAssetAsync<T>(string path) where T : UnityEngine.Object => LoadAssetAsync(path, typeof(T));
         public static Asset LoadAsset<T>(string path) where T : UnityEngine.Object => LoadAsset(path, typeof(T));
 
-
+        public static RawAsset LoadRawAssetAsync(string path) => AssetsInternal.LoadAsset(path, true, null) as RawAsset;
+        public static RawAsset LoadRawAsset(string path) => AssetsInternal.LoadAsset(path, false, null) as RawAsset;
         public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, true, null) as SceneAsset;
         public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, null) as SceneAsset;
         public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => AssetsInternal.UnloadSceneAsync(path, op);

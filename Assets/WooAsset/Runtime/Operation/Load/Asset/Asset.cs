@@ -4,6 +4,34 @@ using System.Linq;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
+    public class RawAsset : AssetHandle<RawObject>
+    {
+        public RawAsset(AssetLoadArgs loadArgs) : base(loadArgs)
+        {
+        }
+        public RawObject GetAsset() => isDone ? value : null;
+
+        public override float progress
+        {
+            get
+            {
+                if (isDone) return 1;
+                return bundle.progress;
+            }
+        }
+        protected override void InternalLoad()
+        {
+            if (bundle.isErr)
+            {
+                this.SetErr(bundle.error);
+                InvokeComplete();
+                return;
+            }
+
+            var raw = bundle.LoadRawObject(path);
+            SetResult(raw);
+        }
+    }
     public class Asset : AssetHandle<UnityEngine.Object>
     {
 
@@ -14,6 +42,8 @@ namespace WooAsset
         {
 
         }
+
+
         public override float progress
         {
             get
@@ -55,28 +85,18 @@ namespace WooAsset
                 InvokeComplete();
                 return;
             }
-
-            if (assetType == AssetType.Raw)
+            if (async)
             {
-                var raw = bundle.LoadRawObject(path);
-                SetResult(raw);
+                loadOp = bundle.LoadAssetAsync(path, GetAssetType(type));
+                await loadOp;
+                assets = loadOp.allAssets;
+                SetResult(loadOp.asset);
             }
             else
             {
-
-                if (async)
-                {
-                    loadOp = bundle.LoadAssetAsync(path, GetAssetType(type));
-                    await loadOp;
-                    assets = loadOp.allAssets;
-                    SetResult(loadOp.asset);
-                }
-                else
-                {
-                    var result = bundle.LoadAsset(path, GetAssetType(type));
-                    assets = result;
-                    SetResult(result[0]);
-                }
+                var result = bundle.LoadAsset(path, GetAssetType(type));
+                assets = result;
+                SetResult(result[0]);
             }
         }
         protected Type GetAssetType(Type type)
