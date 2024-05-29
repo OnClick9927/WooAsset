@@ -28,12 +28,10 @@ namespace WooAsset
             {
                 manifestOp = null;
                 AssetsInternal.UnloadBundles();
-                var all = AssetsInternal.GetLoadedBundles();
-                AssetsHelper.Log($"Still exist {all.Count} bundles when init again");
+                AssetsHelper.Log($"Still exist {AssetsInternal.GetLoadedBundleCount()} bundles when init again");
             }
             if (manifestOp == null)
-                manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundles()
-                    .Select(x => x.bundleName).ToList()
+                manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
                     , version, getPkgs, AssetsInternal.GetEncrypt());
             manifestOp.completed += ManifestOp_completed;
             return manifestOp;

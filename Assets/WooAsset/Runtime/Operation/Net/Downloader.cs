@@ -45,6 +45,7 @@ namespace WooAsset
                 request.timeout = timeout;
                 var _ = request.SendWebRequest();
             }
+
             if (request.isDone)
             {
                 bool success = true;
@@ -55,7 +56,7 @@ namespace WooAsset
 #endif
                 {
                     success = false;
-                  
+
                 }
 
 
@@ -70,7 +71,7 @@ namespace WooAsset
                         SetErr($"{request.error}:{url}");
                         InvokeComplete();
                     }
-                    request.Dispose(); 
+                    request.Dispose();
                     request = null;
                 }
                 else
@@ -78,6 +79,7 @@ namespace WooAsset
                     OnRequestEnd(request);
                     request.Dispose();
                     InvokeComplete();
+
                 }
             }
         }

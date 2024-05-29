@@ -2,7 +2,7 @@
 {
     public class RawAsset : AssetHandle<RawObject>
     {
-        public RawAsset(AssetLoadArgs loadArgs) : base(loadArgs)
+        public RawAsset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
         {
         }
         public RawObject GetAsset() => isDone ? value : null;

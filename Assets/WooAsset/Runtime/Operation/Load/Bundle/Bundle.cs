@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
+using static WooAsset.AssetsInternal;
 
 namespace WooAsset
 {
@@ -98,9 +99,10 @@ namespace WooAsset
             }
         }
 
-        protected override void SetResult(AssetBundle value)
+        protected override async void SetResult(AssetBundle value)
         {
             _length = ProfilerAsset(value);
+            await dependence;
             base.SetResult(value);
         }
         private RawObject rawObject;
@@ -168,13 +170,9 @@ namespace WooAsset
         }
 
 
-        public Bundle[] dependence => loadArgs.dependence;
+        private BundleDependenceOperation dependence => loadArgs.dependence;
         protected override async void OnLoad()
         {
-            var dp = dependence;
-            if (dp != null && dp.Length > 0)
-                for (int i = 0; i < dp.Length; i++)
-                    await dp[i];
 
 
             if (type == BundleLoadType.FromFile)
@@ -244,10 +242,7 @@ namespace WooAsset
                 filestream.Dispose();
                 filestream = null;
             }
-            if (rawObject != null)
-            {
 
-            }
         }
 
         public virtual RawObject LoadRawObject(string path)

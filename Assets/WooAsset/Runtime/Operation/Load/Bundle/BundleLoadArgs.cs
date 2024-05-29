@@ -1,4 +1,5 @@
-﻿using static WooAsset.ManifestData;
+﻿using static WooAsset.AssetsInternal;
+using static WooAsset.ManifestData;
 
 namespace WooAsset
 {
@@ -7,11 +8,11 @@ namespace WooAsset
         public bool async;
         public IAssetStreamEncrypt encrypt;
         public BundleData data;
-        public Bundle[] dependence;
+        public BundleDependenceOperation dependence;
         public string bundleName => data.bundleName;
         public string uid => data.bundleName;
 
-        public BundleLoadArgs(BundleData data,bool async, IAssetStreamEncrypt en, Bundle[] dependence)
+        public BundleLoadArgs(BundleData data,bool async, IAssetStreamEncrypt en, BundleDependenceOperation dependence)
         {
             this.data = data;
             this.async = async;

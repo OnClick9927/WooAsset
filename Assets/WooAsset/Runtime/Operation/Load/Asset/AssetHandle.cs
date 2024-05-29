@@ -4,7 +4,7 @@ namespace WooAsset
 {
     public abstract class AssetHandle<T> : AssetHandle
     {
-        protected AssetHandle(AssetLoadArgs loadArgs) : base(loadArgs)
+        protected AssetHandle(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
         {
         }
 
@@ -27,23 +27,18 @@ namespace WooAsset
         public virtual string path => data.path;
         public string bundleName => data.bundleName;
         private AssetLoadArgs loadArgs;
-        private Bundle LoadBundle()
-        {
-            if (string.IsNullOrEmpty(bundleName))
-                return null;
-            bundle = AssetsInternal.LoadBundle(bundleName, async);
-            return bundle;
-        }
-        public AssetHandle(AssetLoadArgs loadArgs)
+
+        public AssetHandle(AssetLoadArgs loadArgs, Bundle bundle)
         {
             this.loadArgs = loadArgs;
+            this.bundle = bundle;
         }
         protected sealed override void OnUnLoad() { }
         protected sealed override async void OnLoad()
         {
             if (AssetsLoop.isBusy)
                 await new WaitBusyOperation();
-            await LoadBundle();
+            await bundle;
             InternalLoad();
         }
 

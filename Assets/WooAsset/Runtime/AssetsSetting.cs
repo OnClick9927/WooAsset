@@ -10,8 +10,8 @@ namespace WooAsset
         public virtual bool NeedCopyStreamBundles() { return true; }
         public virtual long GetLoadingMaxTimeSlice() { return long.MaxValue; }
         protected virtual string GetBaseUrl() { return string.Empty; }
-        public virtual string GetUrlByBundleName(string buildTarget, string bundleName) => AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(GetBaseUrl(), $"{buildTarget}/{bundleName}"));
-        public virtual string GetUrlByBundleName(string buildTarget, string version, string bundleName) => AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(GetBaseUrl(), $"{buildTarget}/{version}/{bundleName}"));
+        public virtual string GetUrlByBundleName(string buildTarget, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{bundleName}";
+        public virtual string GetUrlByBundleName(string buildTarget, string version, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{version}/{bundleName}";
 
 
         public virtual bool GetSaveBundlesWhenPlaying() => true;

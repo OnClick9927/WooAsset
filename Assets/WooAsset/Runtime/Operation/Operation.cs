@@ -68,7 +68,7 @@ namespace WooAsset
         private int step;
         public override float progress => isDone ? 1 : step / (float)total;
 
-        public GroupOperation(params Operation[] ops)
+        public GroupOperation(Operation[] ops)
         {
             this.ops = ops;
             if (this.ops == null || this.ops.Length == 0)

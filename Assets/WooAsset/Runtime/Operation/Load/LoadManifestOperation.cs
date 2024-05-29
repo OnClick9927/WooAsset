@@ -76,6 +76,7 @@ namespace WooAsset
                 }
             }
             var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
+
             manifest = new ManifestData();
             for (int i = 0; i < pkgs.Count; i++)
             {
@@ -87,7 +88,7 @@ namespace WooAsset
                     ManifestData v;
                     if (AssetsHelper.ExistsFile(_path))
                     {
-                        var reader =  AssetsHelper.ReadFile(_path, true);
+                        var reader = AssetsHelper.ReadFile(_path, true);
                         await reader;
                         v = VersionHelper.ReadManifest(reader.bytes, en);
                     }
@@ -103,11 +104,13 @@ namespace WooAsset
                         v = VersionHelper.ReadManifest(downloader.data, en);
                         await VersionHelper.WriteManifest(v, _path, en);
                     }
+
                     ManifestData.Merge(v, manifest, this.loadedBundles);
+
                 }
             }
-            manifest.Prepare();
 
+            manifest.Prepare();
             InvokeComplete();
         }
     }

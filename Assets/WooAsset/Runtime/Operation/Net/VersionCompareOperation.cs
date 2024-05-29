@@ -13,7 +13,7 @@ namespace WooAsset
             List<FileData> result = new List<FileData>();
             for (int i = 0; i < files.Length; i++)
             {
-                FileData data = FileData.CreateByFile(AssetsHelper.ToRegularPath(files[i]));
+                FileData data = FileData.CreateByFile(files[i]);
                 result.Add(data);
             }
             return result;

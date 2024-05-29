@@ -273,8 +273,22 @@ namespace WooAsset
                 }
             }
             if (tags != null)
-                _tags = tags.ToDictionary(x => x.tag);
-            _bundles = bundles.ToDictionary(x => x.bundleName);
+            {
+                _tags = new Dictionary<string, TagData>();
+                foreach (var tag in tags)
+                {
+                    _tags.Add(tag.tag, tag);
+                }
+            }
+            _bundles=new Dictionary<string, BundleData>();
+            foreach (var bundle in bundles)
+            {
+                _bundles.Add(bundle.bundleName, bundle);
+            }
+
+
+
+
             _assets = new Dictionary<string, AssetData>();
             _names = new Dictionary<string, RTName>();
             for (int i = 0; i < assets.Count; i++)

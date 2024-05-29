@@ -4,28 +4,36 @@
     {
         private class AssetMap : NameMap<AssetHandle>
         {
-            protected override AssetHandle CreateNew(IAssetArgs args) => CreateAsset((AssetLoadArgs)args);
-            private AssetHandle CreateAsset(AssetLoadArgs arg)
+
+            protected override AssetHandle CreateNew(IAssetArgs args)
             {
+                AssetLoadArgs arg = (AssetLoadArgs)args;
+                Bundle bundle = bundles.LoadBundle(arg.data.bundleName, arg.async);
+                AssetHandle handle;
                 if (arg.data.type == AssetType.Raw)
-                    return new RawAsset(arg);
-                return arg.data.type == AssetType.Scene ? new SceneAsset(arg) : new Asset(arg);
+                    handle = new RawAsset(arg, bundle);
+                else if (arg.data.type == AssetType.Scene)
+                    handle = new SceneAsset(arg, bundle);
+                else
+                    handle = new Asset(arg, bundle);
+                return handle;
             }
+
 
             public override void Release(string path)
             {
                 AssetHandle asset = Find(path);
                 if (asset == null) return;
                 ReleaseRef(asset);
-                bundles.Release(asset.bundleName);
                 TryRealUnload(path);
+                bundles.Release(asset.bundleName);
             }
 
             protected override void OnRetain(AssetHandle asset, bool old)
             {
-                RetainRef(asset);
+                base.OnRetain(asset, old);
                 if (!old) return;
-                bundles.RetainRef(asset.bundleName);
+                bundles.LoadBundle(asset.bundleName, false);
             }
         }
     }

@@ -5,7 +5,7 @@ namespace WooAsset
     public class SceneAsset : AssetHandle
     {
         public override float progress => isDone ? 1 : bundle.progress;
-        public SceneAsset(AssetLoadArgs loadArgs) : base(loadArgs)
+        public SceneAsset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
         {
         }
 

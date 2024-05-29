@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WooAsset
 {
@@ -10,17 +8,28 @@ namespace WooAsset
         {
             protected override Bundle CreateNew(IAssetArgs args) => AssetsInternal.CreateBundle((BundleLoadArgs)args);
 
+            public Bundle LoadBundle(string bundleName, bool async)
+            {
+                var data = GetBundleData(bundleName);
+                BundleDependenceOperation dps;
+                dps = new BundleDependenceOperation(data, async);
+                return LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(data.enCode), dps));
+            }
+
+
             public override void Release(string uid)
             {
                 Bundle result = Find(uid);
                 if (result == null) return;
-                var dp = result.dependence;
+
+                ReleaseRef(result);
+                if (GetAutoUnloadBundle())
+                    TryRealUnload(uid);
+                var bundleData = GetBundleData(uid);
+                var dp = bundleData.dependence;
                 if (dp != null)
                     foreach (var item in dp)
-                        Release(item.bundleName);
-                ReleaseRef(result);
-                if (!GetAutoUnloadBundle()) return;
-                TryRealUnload(uid);
+                        Release(item);
             }
             private List<string> useless = new List<string>();
             public void UnloadBundles()
@@ -33,15 +42,8 @@ namespace WooAsset
                 }
             }
 
-            protected override void OnRetain(Bundle bundle, bool old)
-            {
-                RetainRef(bundle);
-                if (!old) return;
-                var dp = bundle.dependence;
-                if (dp != null)
-                    foreach (var item in dp)
-                        RetainRef(item);
-            }
+
+
         }
     }
 }

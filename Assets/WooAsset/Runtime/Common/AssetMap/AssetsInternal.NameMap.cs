@@ -15,7 +15,6 @@ namespace WooAsset
 
 
             private Dictionary<string, T> map = new Dictionary<string, T>();
-            private List<T> values = new List<T>();
             public T Find(string uid)
             {
                 T result = default;
@@ -30,7 +29,15 @@ namespace WooAsset
                 asset.Retain();
                 listen?.OnAssetRetain(asset, asset.refCount);
             }
-            public void RetainRef(string uid) => RetainRef(Find(uid));
+            protected int ReleaseRef(T t)
+            {
+                var count = t.Release();
+                listen?.OnAssetRelease(t, count);
+                return count;
+            }
+
+
+
 
 
             public T LoadAsync(IAssetArgs args)
@@ -41,21 +48,21 @@ namespace WooAsset
                 {
                     result = CreateNew(args);
                     map.Add(uid, result);
-                    values.Add(result);
                     result.LoadAsync();
                     listen?.OnAssetCreate(uid, result);
                 }
                 OnRetain(result, result.refCount != 0);
                 return result;
             }
-            protected abstract void OnRetain(T asset, bool old);
-            public abstract void Release(string uid);
-            protected int ReleaseRef(T t)
+            protected virtual void OnRetain(T asset, bool old)
             {
-                var count = t.Release();
-                listen?.OnAssetRelease(t, count);
-                return count;
+                RetainRef(asset);
             }
+
+
+
+
+            public abstract void Release(string uid);
 
             protected List<string> GetZeroRefKeys(List<string> result)
             {
@@ -69,19 +76,17 @@ namespace WooAsset
                 T asset = Find(uid);
                 if (asset.refCount != 0) return;
                 asset.UnLoad();
-                Remove(uid);
-            }
-            protected void Remove(string uid)
-            {
-                T asset = Find(uid);
                 map.Remove(uid);
-                values.Remove(asset);
                 listen?.OnAssetUnload(uid, asset);
             }
-            public IReadOnlyList<T> GetAll()
-            {
-                return values;
-            }
+
+
+
+
+
+
+            public int GetCount() => map.Count;
+            public IEnumerable<string> GetKeys() => map.Keys;
         }
     }
 }

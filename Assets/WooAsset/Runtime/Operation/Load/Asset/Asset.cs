@@ -10,7 +10,7 @@ namespace WooAsset
         private Object[] assets;
 
         private AssetRequest loadOp;
-        public Asset(AssetLoadArgs loadArgs) : base(loadArgs)
+        public Asset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
         {
 
         }

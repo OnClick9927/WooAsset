@@ -124,25 +124,6 @@ namespace WooAsset
         public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));
         public static void UnloadBundles() => bundles.UnloadBundles();
 
-        public static Bundle LoadBundle(string bundleName, bool async)
-        {
-            var data = GetBundleData(bundleName);
-            var bundle = bundles.Find(bundleName);
-            Bundle[] dependence = null;
-
-
-            if (bundle == null)
-            {
-                if (data.dependence != null)
-                    dependence = new Bundle[data.dependence.Count];
-            }
-            else
-                dependence = bundle.dependence;
-            if (dependence != null)
-                for (int i = 0; i < data.dependence.Count; i++)
-                    dependence[i] = LoadBundle(data.dependence[i], async);
-            return bundles.LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(data.enCode), dependence));
-        }
         public static AssetHandle LoadAsset(string path, bool async, Type type)
         {
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
@@ -171,8 +152,8 @@ namespace WooAsset
 
 
 
-        public static IReadOnlyList<AssetHandle> GetLoadedAssets() => assets.GetAll();
-        public static IReadOnlyList<Bundle> GetLoadedBundles() => bundles.GetAll();
+        public static int GetLoadedBundleCount() => bundles.GetCount();
+        public static IEnumerable<string> GetLoadedBundleNames() => bundles.GetKeys();
 
 
 
