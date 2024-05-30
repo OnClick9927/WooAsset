@@ -56,8 +56,8 @@ namespace WooAsset
                             return downloader.progress;
                         else
                         {
-                            if (loadOp == null) return downloader.progress * 0.5f;
-                            return downloader.progress * 0.5f + loadOp.progress * 0.5f;
+                            if (loadOp == null) return (downloader.progress + dependence.progress) * 0.5f;
+                            return (downloader.progress + dependence.progress) * 0.5f + loadOp.progress * 0.5f;
                         }
                     }
                     if (raw)
@@ -169,9 +169,7 @@ namespace WooAsset
                 }
             }
         }
-
-
-        private BundleDependenceOperation dependence => loadArgs.dependence;
+        private Operation dependence => loadArgs.dependence;
         protected override async void OnLoad()
         {
 
@@ -250,15 +248,22 @@ namespace WooAsset
         {
             return rawObject;
         }
-        public virtual AssetRequest LoadAssetAsync(string name, Type type)
+        public virtual AssetRequest LoadAssetWithSubAssetsAsync(string name, Type type)
         {
             return new RuntimeAssetRequest(value.LoadAssetWithSubAssetsAsync(name, type));
         }
-        public virtual UnityEngine.Object[] LoadAsset(string name, Type type)
+        public virtual UnityEngine.Object[] LoadAssetWithSubAssets(string name, Type type)
         {
             return value.LoadAssetWithSubAssets(name, type);
         }
-
+        public virtual AssetRequest LoadAssetAsync(string name, Type type)
+        {
+            return new RuntimeAssetRequest(value.LoadAssetAsync(name, type));
+        }
+        public virtual UnityEngine.Object LoadAsset(string name, Type type)
+        {
+            return value.LoadAsset(name, type);
+        }
         public virtual Scene LoadScene(string path, LoadSceneParameters parameters) => SceneManager.LoadScene(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
         public AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => SceneManager.UnloadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), op);
         public virtual AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => SceneManager.LoadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), parameters);

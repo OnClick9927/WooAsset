@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 
@@ -56,7 +55,7 @@ namespace WooAsset
                 if (bundle.dependence != null && bundle.dependence.Count > 0)
                     bundle.bundleDependence = bundle.dependence.ConvertAll(bundleName => bundles.FindIndex(y => y.bundleName == bundleName));
             }
-            this.tags = _tags.Values.ToList();
+            this.tags = AssetsHelper.ToValueList(_tags);
 #endif
         }
 
@@ -185,7 +184,7 @@ namespace WooAsset
                     _tags.Add(tag.tag, tag);
                 }
             }
-            _bundles=new Dictionary<string, BundleData>();
+            _bundles = new Dictionary<string, BundleData>();
             foreach (var bundle in bundles)
             {
                 _bundles.Add(bundle.bundleName, bundle);
@@ -206,10 +205,10 @@ namespace WooAsset
                 _assets.Add(path, asset);
                 AssetsHelper.GetFromDictionary(_names, assetName).AddAsset(path);
             }
-            allPaths = _assets.Keys.ToList();
-            allTags = _tags.Keys.ToList();
-            allBundle = _bundles.Keys.ToList();
-            allName = _names.Keys.ToList();
+            allPaths = AssetsHelper.ToKeyList(_assets);
+            allTags = AssetsHelper.ToKeyList(_tags);
+            allBundle = AssetsHelper.ToKeyList(_bundles);
+            allName = AssetsHelper.ToKeyList(_names);
         }
         private Dictionary<string, AssetData> _assets;
         private Dictionary<string, RTName> _names;

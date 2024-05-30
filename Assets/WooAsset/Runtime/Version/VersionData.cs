@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+
 namespace WooAsset
 {
     [System.Serializable]
@@ -35,8 +36,9 @@ namespace WooAsset
         }
         public List<PackageData> FindPkgs(string[] tags)
         {
-            return pkgs.FindAll(p => tags.Intersect(p.tags).Count() > 0);
+            return pkgs.FindAll(p => tags.Any(y => p.tags.Contains(y)));
         }
+
         public List<PackageData> GetAllPkgs()
         {
             return pkgs;

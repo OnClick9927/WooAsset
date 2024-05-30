@@ -40,7 +40,7 @@
                 assets = new AssetHandle[paths.Length];
                 for (int i = 0; i < paths.Length; i++)
                 {
-                    assets[i] = AssetsInternal.LoadAsset(paths[i], true, typeof(UnityEngine.Object));
+                    assets[i] = AssetsInternal.LoadAsset(paths[i], false, true, typeof(UnityEngine.Object));
                 }
                 for (int i = 0; i < paths.Length; i++)
                 {

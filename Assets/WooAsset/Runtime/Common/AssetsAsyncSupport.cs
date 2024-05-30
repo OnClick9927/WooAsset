@@ -109,6 +109,8 @@ namespace WooAsset
         public static IAwaiter<RawAsset> GetAwaiter(this RawAsset target) => new AssetOperationAwaiter<RawAsset>(target);
         public static IAwaiter<Asset> GetAwaiter(this Asset target) => new AssetOperationAwaiter<Asset>(target);
         public static IAwaiter<SceneAsset> GetAwaiter(this SceneAsset target) => new AssetOperationAwaiter<SceneAsset>(target);
+        public static IAwaiter<SubAsset> GetAwaiter(this SubAsset target) => new AssetOperationAwaiter<SubAsset>(target);
+
         public static IAwaiter<AssetsGroupOperation> GetAwaiter(this AssetsGroupOperation target) => new AssetOperationAwaiter<AssetsGroupOperation>(target);
         public static IAwaiter<InstantiateObjectOperation> GetAwaiter(this InstantiateObjectOperation target) => new AssetOperationAwaiter<InstantiateObjectOperation>(target);
         public static IAwaiter<LoadVersionDataOperation> GetAwaiter(this LoadVersionDataOperation target) => new AssetOperationAwaiter<LoadVersionDataOperation>(target);

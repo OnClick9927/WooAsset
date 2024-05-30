@@ -21,7 +21,7 @@ MonoBehaviour:
   MaxCacheVersionCount: 8
   cleanHistory: 1
   buildInAssets: []
-  enableServer: 0
+  enableServer: 1
   serverPort: 8080
   pkgs:
   - build: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     shortTypes:
     - FastAssetMode
     - NormalAssetMode
-    typeIndex: 0
+    typeIndex: 1
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt

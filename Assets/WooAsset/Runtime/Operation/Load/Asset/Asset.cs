@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Object = UnityEngine.Object;
 namespace WooAsset
 {
     public class Asset : AssetHandle<UnityEngine.Object>
     {
-
-        private Object[] assets;
-
         private AssetRequest loadOp;
         public Asset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
         {
@@ -16,7 +11,7 @@ namespace WooAsset
         }
 
 
-        public override float progress
+        public sealed override float progress
         {
             get
             {
@@ -32,24 +27,14 @@ namespace WooAsset
         }
 
         public T GetAsset<T>() where T : Object => isDone ? value as T : null;
-        public virtual Type GetAssetType() => isDone && !isErr ? value.GetType() : null;
-        public virtual Object[] allAssets => isDone && !isErr ? assets : null;
-        public IReadOnlyList<T> GetSubAssets<T>() where T : Object => !isDone || isErr
-                ? null
-                : allAssets
-                .Where(x => x is T)
-                .Select(x => x as T)
-                .ToArray();
-        public T GetSubAsset<T>(string name) where T : Object => !isDone || isErr
-            ? null :
-            allAssets
-            .Where(x => x.name == name)
-            .FirstOrDefault() as T;
+        public Type GetAssetType() => isDone && !isErr ? value.GetType() : null;
 
 
 
-
-        protected virtual async void LoadUnityObject()
+        protected virtual AssetRequest LoadAsync(string path, Type type) => bundle.LoadAssetAsync(path, type);
+        protected virtual void OnLoadAsyncEnd(AssetRequest request) { }
+        protected virtual Object LoadSync(string path, Type type) => bundle.LoadAsset(path, type);
+        protected sealed async override void InternalLoad()
         {
             if (bundle.isErr)
             {
@@ -59,54 +44,16 @@ namespace WooAsset
             }
             if (async)
             {
-                loadOp = bundle.LoadAssetAsync(path, GetAssetType(type));
+                loadOp = LoadAsync(path, AssetsHelper.GetAssetType(assetType, type));
                 await loadOp;
-                assets = loadOp.allAssets;
+                OnLoadAsyncEnd(loadOp);
                 SetResult(loadOp.asset);
             }
             else
             {
-                var result = bundle.LoadAsset(path, GetAssetType(type));
-                assets = result;
-                SetResult(result[0]);
+                var result = LoadSync(path, AssetsHelper.GetAssetType(assetType, type));
+                SetResult(result);
             }
-        }
-        protected Type GetAssetType(Type type)
-        {
-            if (type == typeof(UnityEngine.Object))
-            {
-
-                switch (assetType)
-                {
-                    case AssetType.Sprite: return typeof(UnityEngine.Sprite);
-                    case AssetType.Shader: return typeof(UnityEngine.Shader);
-                    case AssetType.ShaderVariant: return typeof(UnityEngine.ShaderVariantCollection);
-                    case AssetType.None:
-                    case AssetType.Ignore:
-                    case AssetType.Directory:
-                    case AssetType.Mesh:
-                    case AssetType.Texture:
-                    case AssetType.TextAsset:
-                    case AssetType.VideoClip:
-                    case AssetType.AudioClip:
-                    case AssetType.Scene:
-                    case AssetType.Material:
-                    case AssetType.Prefab:
-                    case AssetType.Font:
-                    case AssetType.Animation:
-                    case AssetType.AnimationClip:
-                    case AssetType.AnimatorController:
-                    case AssetType.ScriptObject:
-                    case AssetType.Model:
-                    default:
-                        return type;
-                }
-            }
-            return type;
-        }
-        protected sealed override void InternalLoad()
-        {
-            LoadUnityObject();
 
         }
 

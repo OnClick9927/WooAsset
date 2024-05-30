@@ -6,16 +6,8 @@ namespace WooAsset
 {
     public class LoadManifestOperation : Operation
     {
-        public override float progress
-        {
-            get
-            {
-                if (isDone) return 1;
-                if (downloader == null)
-                    return 0;
-                return downloader.progress;
-            }
-        }
+        public override float progress => isDone ? 1 : _progress;
+        private float _progress;
         private Downloader downloader;
         private VersionData version;
         public ManifestData manifest;
@@ -39,6 +31,7 @@ namespace WooAsset
 
         private async void Done()
         {
+            _progress = 0f;
             string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName);
             bool download = false;
             if (!AssetsHelper.ExistsFile(localVersionPath))
@@ -53,6 +46,9 @@ namespace WooAsset
                     if (version.version != _version)
                         download = true;
             }
+            _progress = 0.2f;
+
+
             if (download)
             {
                 downloader = AssetsInternal.DownloadRemoteVersion();
@@ -72,6 +68,7 @@ namespace WooAsset
                     await VersionHelper.WriteVersionData(version, localVersionPath);
                 }
             }
+            _progress = 0.5f;
             var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
 
             manifest = new ManifestData();
@@ -103,7 +100,7 @@ namespace WooAsset
                     }
 
                     ManifestData.Merge(v, manifest, this.loadedBundles);
-
+                    _progress = 0.5f + i / pkgs.Count / 2f;
                 }
             }
 

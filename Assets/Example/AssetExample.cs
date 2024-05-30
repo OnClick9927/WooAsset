@@ -17,7 +17,7 @@ namespace WooAsset
     {
         //public override string GetUrlByBundleName(string buildTarget, string bundleName)
         //{
-        //    return base.GetUrlByBundleName(buildTarget, bundleName)+".bytes";
+        //    return base.GetUrlByBundleName(buildTarget, bundleName) + ".bytes";
         //}
         //public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
         //{
@@ -89,7 +89,7 @@ namespace WooAsset
             Debug.Log(raw.bytes.Length);
 
 
-            var _asset = await Assets.LoadAsset("Assets/Example/New Folder/a.jpg");
+            var _asset = await Assets.LoadSubAsset("Assets/Example/New Folder/a.jpg");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");
 
             int index = 0;

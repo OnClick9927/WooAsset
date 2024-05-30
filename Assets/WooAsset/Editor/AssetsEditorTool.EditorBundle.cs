@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace WooAsset
     {
         public class EditorBundle : Bundle
         {
-            public class EditorAssetRequest : AssetRequest
+            private class EditorAssetRequest : AssetRequest
             {
                 private Object[] _allAssets;
                 private Object _asset;
@@ -39,10 +40,7 @@ namespace WooAsset
                 SetResult(null);
             }
             protected override void OnUnLoad() { }
-            protected override long ProfilerAsset(AssetBundle value)
-            {
-                return cache.GetBundleGroupByBundleName(this.bundleName).length;
-            }
+            protected override long ProfilerAsset(AssetBundle value) => cache.GetBundleGroupByBundleName(this.bundleName).length;
 
             public override RawObject LoadRawObject(string path)
             {
@@ -52,7 +50,7 @@ namespace WooAsset
                 return rawObject;
             }
 
-            public override Object[] LoadAsset(string path, Type type)
+            public override Object[] LoadAssetWithSubAssets(string path, Type type)
             {
                 var _allAssets = AssetDatabase.LoadAllAssetsAtPath(path);
                 var result = AssetDatabase.LoadAssetAtPath(path, type);
@@ -67,20 +65,22 @@ namespace WooAsset
                 }
                 return _allAssets;
             }
-            public override AssetRequest LoadAssetAsync(string path, Type type)
+            public override AssetRequest LoadAssetWithSubAssetsAsync(string path, Type type)
             {
                 var _allAssets = AssetDatabase.LoadAllAssetsAtPath(path);
                 var result = AssetDatabase.LoadAssetAtPath(path, type);
                 return new EditorAssetRequest(_allAssets, result);
             }
-            public override AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters)
+
+
+            public override AssetRequest LoadAssetAsync(string name, Type type)
             {
-                return EditorSceneManager.LoadSceneAsyncInPlayMode(path, parameters);
+                var result = AssetDatabase.LoadAssetAtPath(name, type);
+                return new EditorAssetRequest(null, result);
             }
-            public override Scene LoadScene(string path, LoadSceneParameters parameters)
-            {
-                return EditorSceneManager.LoadSceneInPlayMode(path, parameters);
-            }
+            public override Object LoadAsset(string name, Type type) => AssetDatabase.LoadAssetAtPath(name, type);
+            public override AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => EditorSceneManager.LoadSceneAsyncInPlayMode(path, parameters);
+            public override Scene LoadScene(string path, LoadSceneParameters parameters) => EditorSceneManager.LoadSceneInPlayMode(path, parameters);
         }
 
     }

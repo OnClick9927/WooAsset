@@ -1,5 +1,4 @@
 ﻿using System;
-using static WooAsset.ManifestData;
 namespace WooAsset
 {
     public abstract class AssetHandle<T> : AssetHandle

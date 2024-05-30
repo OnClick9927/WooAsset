@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using static WooAsset.ManifestData;
 namespace WooAsset
 {
     public struct AssetLoadArgs : IAssetArgs
@@ -8,18 +6,20 @@ namespace WooAsset
         public bool async;
         public Type type;
         public AssetData data;
+        public bool sub;
         public string uid => data.path;
 
-        private AssetLoadArgs(AssetData data, bool async, Type type)
+        private AssetLoadArgs(AssetData data, bool async, Type type, bool sub)
         {
             this.data = data;
             this.async = async;
             this.type = type;
+            this.sub = sub;
         }
 
-        public static AssetLoadArgs NormalArg(AssetData data, bool async, Type type)
+        public static AssetLoadArgs NormalArg(AssetData data, bool async, Type type, bool sub)
         {
-            return new AssetLoadArgs(data, async, type);
+            return new AssetLoadArgs(data, async, type, sub);
         }
 
 

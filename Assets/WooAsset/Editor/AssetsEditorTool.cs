@@ -231,6 +231,7 @@ namespace WooAsset
         }
 
         public static void DeleteFile(string path) => File.Delete(path);
+
         public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
         public static string[] GetDirectoryDirectories(string path) => Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
         public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
@@ -240,7 +241,7 @@ namespace WooAsset
         public static bool ExistsDirectory(string path) => Directory.Exists(path);
         public static void DeleteDirectory(string path) => Directory.Delete(path, true);
 
-     
+
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
         public static async Task BuildSpriteAtlas()

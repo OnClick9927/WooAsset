@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static WooAsset.ManifestData;
 
 namespace WooAsset
 {
@@ -16,8 +15,8 @@ namespace WooAsset
         public int usageCount { get { return usage.Count; } }
         public static EditorAssetData Create(string path, AssetType _type)
         {
-            string hash = string.Empty;
             long length = 0;
+            string hash;
             if (_type == AssetType.Directory)
             {
                 hash = AssetsHelper.GetStringHash(path);

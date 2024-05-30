@@ -122,7 +122,7 @@ namespace WooAsset
         public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));
         public static void UnloadBundles() => bundles.UnloadBundles();
 
-        public static AssetHandle LoadAsset(string path, bool async, Type type)
+        public static AssetHandle LoadAsset(string path, bool sub, bool async, Type type)
         {
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
@@ -130,7 +130,7 @@ namespace WooAsset
                 AssetsHelper.LogError($"Not Found Asset: {path}");
                 return null;
             }
-            return assets.LoadAsync(AssetLoadArgs.NormalArg(data, async, type));
+            return assets.LoadAsync(AssetLoadArgs.NormalArg(data, async, type, sub));
         }
         public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op)
         {

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace WooAsset
 {
@@ -19,7 +18,7 @@ namespace WooAsset
             writer.WriteUTF8List(versions);
         }
         public string FindVersion(string version) => versions.Find(x => x == version);
-        public string NewestVersion() => versions.Last();
+        public string NewestVersion() => versions[versions.Count - 1];
         public List<string> GetVersions() => versions;
         public void AddVersion(string version)
         {

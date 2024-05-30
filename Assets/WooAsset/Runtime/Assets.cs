@@ -17,17 +17,27 @@ namespace WooAsset
         public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
-        public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, true, type) as Asset;
-        public static Asset LoadAsset(string path, Type type) => AssetsInternal.LoadAsset(path, false, type) as Asset;
+        public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, false, true, type) as Asset;
+        public static Asset LoadAsset(string path, Type type) => AssetsInternal.LoadAsset(path, false, false, type) as Asset;
         public static Asset LoadAssetAsync(string path) => LoadAssetAsync(path, typeof(UnityEngine.Object));
         public static Asset LoadAsset(string path) => LoadAsset(path, typeof(UnityEngine.Object));
         public static Asset LoadAssetAsync<T>(string path) where T : UnityEngine.Object => LoadAssetAsync(path, typeof(T));
         public static Asset LoadAsset<T>(string path) where T : UnityEngine.Object => LoadAsset(path, typeof(T));
 
-        public static RawAsset LoadRawAssetAsync(string path) => AssetsInternal.LoadAsset(path, true, null) as RawAsset;
-        public static RawAsset LoadRawAsset(string path) => AssetsInternal.LoadAsset(path, false, null) as RawAsset;
-        public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, true, null) as SceneAsset;
-        public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, null) as SceneAsset;
+        public static SubAsset LoadSubAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, true, true, type) as SubAsset;
+        public static SubAsset LoadSubAsset(string path, Type type) => AssetsInternal.LoadAsset(path, true, false, type) as SubAsset;
+        public static SubAsset LoadSubAssetAsync(string path) => LoadSubAssetAsync(path, typeof(UnityEngine.Object));
+        public static SubAsset LoadSubAsset(string path) => LoadSubAsset(path, typeof(UnityEngine.Object));
+        public static SubAsset LoadSubAssetAsync<T>(string path) where T : UnityEngine.Object => LoadSubAssetAsync(path, typeof(T));
+        public static SubAsset LoadSubAsset<T>(string path) where T : UnityEngine.Object => LoadSubAsset(path, typeof(T));
+
+
+
+
+        public static RawAsset LoadRawAssetAsync(string path) => AssetsInternal.LoadAsset(path, false, true, null) as RawAsset;
+        public static RawAsset LoadRawAsset(string path) => AssetsInternal.LoadAsset(path, false, false, null) as RawAsset;
+        public static SceneAsset LoadSceneAssetAsync(string path) => AssetsInternal.LoadAsset(path, false, true, null) as SceneAsset;
+        public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, false, null) as SceneAsset;
         public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => AssetsInternal.UnloadSceneAsync(path, op);
 
         public static void Release(AssetHandle asset) => AssetsInternal.Release(asset.path);

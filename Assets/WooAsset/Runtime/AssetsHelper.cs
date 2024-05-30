@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -72,7 +73,24 @@ namespace WooAsset
         }
 
 
-
+        public static List<Key> ToKeyList<Key, Value>(Dictionary<Key, Value> dic)
+        {
+            List<Key> keys = new List<Key>();
+            foreach (var item in dic)
+            {
+                keys.Add(item.Key);
+            }
+            return keys;
+        }
+        public static List<Value> ToValueList<Key, Value>(Dictionary<Key, Value> dic)
+        {
+            List<Value> keys = new List<Value>();
+            foreach (var item in dic)
+            {
+                keys.Add(item.Value);
+            }
+            return keys;
+        }
         public static Value GetFromDictionary<Key, Value>(Dictionary<Key, Value> map, Key key) where Value : class, new()
         {
             Value t;
@@ -123,5 +141,40 @@ namespace WooAsset
         public static void LogWarning(string msg) => Debug.LogWarning("Assets : " + msg);
         public static void Log(string msg) => Debug.Log("Assets : " + msg);
         public static void LogError(string err) => Debug.LogError("Assets : " + err);
+
+        public static Type GetAssetType(AssetType assetType, Type type)
+        {
+            if (type == typeof(UnityEngine.Object))
+            {
+
+                switch (assetType)
+                {
+                    case AssetType.Sprite: return typeof(UnityEngine.Sprite);
+                    case AssetType.Shader: return typeof(UnityEngine.Shader);
+                    case AssetType.ShaderVariant: return typeof(UnityEngine.ShaderVariantCollection);
+                    case AssetType.None:
+                    case AssetType.Ignore:
+                    case AssetType.Directory:
+                    case AssetType.Mesh:
+                    case AssetType.Texture:
+                    case AssetType.TextAsset:
+                    case AssetType.VideoClip:
+                    case AssetType.AudioClip:
+                    case AssetType.Scene:
+                    case AssetType.Material:
+                    case AssetType.Prefab:
+                    case AssetType.Font:
+                    case AssetType.Animation:
+                    case AssetType.AnimationClip:
+                    case AssetType.AnimatorController:
+                    case AssetType.ScriptObject:
+                    case AssetType.Model:
+                    default:
+                        return type;
+                }
+            }
+            return type;
+        }
+
     }
 }

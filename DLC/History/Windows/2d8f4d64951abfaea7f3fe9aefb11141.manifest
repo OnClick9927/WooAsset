@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 4220819716
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3fe37bce789cb0fe54f1b109cd6018f0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 0d677c6dec2405a43fe6dd294cca7c3e
+HashAppended: 1
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Example/New Folder/a.jpg
+Dependencies: []

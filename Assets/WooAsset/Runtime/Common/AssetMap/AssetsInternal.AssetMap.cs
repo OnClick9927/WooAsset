@@ -14,6 +14,8 @@
                     handle = new RawAsset(arg, bundle);
                 else if (arg.data.type == AssetType.Scene)
                     handle = new SceneAsset(arg, bundle);
+                else if (arg.sub)
+                    handle = new SubAsset(arg, bundle);
                 else
                     handle = new Asset(arg, bundle);
                 return handle;
