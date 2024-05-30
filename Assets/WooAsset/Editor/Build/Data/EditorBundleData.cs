@@ -150,5 +150,13 @@ namespace WooAsset
 
         public void SetEncryptCode(int code) => _enCode = code;
         public int GetEncryptCode() => _enCode;
+
+        internal void ReplaceDpendenceHash(string from, string to)
+        {
+            if (usage.Remove(from))
+                usage.Add(to);
+            if (dependence.Remove(from))
+                dependence.Add(to);
+        }
     }
 }

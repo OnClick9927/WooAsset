@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static WooAsset.AssetsVersionCollection;
-using static WooAsset.AssetsVersionCollection.VersionData;
 
 
 namespace WooAsset
@@ -26,15 +24,13 @@ namespace WooAsset
         private string _version = "";
         private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
-        private IAssetStreamEncrypt encrypt;
 
         public string GetVersion() => version.version;
-        public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs, IAssetStreamEncrypt encrypt)
+        public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs)
         {
             _version = version;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
-            this.encrypt = encrypt;
             Done();
         }
 
@@ -43,8 +39,7 @@ namespace WooAsset
 
         private async void Done()
         {
-            IAssetStreamEncrypt en = encrypt;
-            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.localHashName);
+            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName);
             bool download = false;
             if (!AssetsHelper.ExistsFile(localVersionPath))
                 download = true;
@@ -52,7 +47,7 @@ namespace WooAsset
             {
                 var reader = AssetsHelper.ReadFile(localVersionPath, true);
                 await reader;
-                version = VersionHelper.ReadVersionData(reader.bytes, en);
+                version = VersionHelper.ReadVersionData(reader.bytes);
 
                 if (!string.IsNullOrEmpty(_version))
                     if (version.version != _version)
@@ -69,10 +64,12 @@ namespace WooAsset
                 }
                 else
                 {
-                    AssetsVersionCollection collection = VersionHelper.ReadAssetsVersionCollection(downloader.data, en);
-                    AssetsVersionCollection.VersionData find = string.IsNullOrEmpty(_version) ? collection.NewestVersion() : collection.FindVersion(_version);
-                    version = find != null ? find : collection.NewestVersion();
-                    await VersionHelper.WriteVersionData(version, localVersionPath, en);
+                    VersionCollectionData collection = VersionHelper.ReadAssetsVersionCollection(downloader.data);
+                    _version = string.IsNullOrEmpty(_version) ? collection.NewestVersion() : collection.FindVersion(_version);
+                    var _op = AssetsInternal.DonloadVersionData(_version);
+                    await _op;
+                    version = _op.GetVersion();
+                    await VersionHelper.WriteVersionData(version, localVersionPath);
                 }
             }
             var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
@@ -90,7 +87,7 @@ namespace WooAsset
                     {
                         var reader = AssetsHelper.ReadFile(_path, true);
                         await reader;
-                        v = VersionHelper.ReadManifest(reader.bytes, en);
+                        v = VersionHelper.ReadManifest(reader.bytes);
                     }
                     else
                     {
@@ -101,8 +98,8 @@ namespace WooAsset
                             SetErr(downloader.error);
                             break;
                         }
-                        v = VersionHelper.ReadManifest(downloader.data, en);
-                        await VersionHelper.WriteManifest(v, _path, en);
+                        v = VersionHelper.ReadManifest(downloader.data);
+                        await VersionHelper.WriteManifest(v, _path);
                     }
 
                     ManifestData.Merge(v, manifest, this.loadedBundles);

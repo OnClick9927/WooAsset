@@ -3,9 +3,10 @@ using System.IO;
 
 namespace WooAsset
 {
-    public partial class AssetsEditorTool
+    partial class AssetsEditorTool
     {
-        private class CopyFileStreamOperation : Operation
+
+        class CopyFileStreamOperation : Operation
         {
             private int n;
             public CopyFileStreamOperation(string srcPath, Stream target, int n = 1024 * 1024)
@@ -40,6 +41,6 @@ namespace WooAsset
             }
 
         }
-
     }
+
 }

@@ -139,6 +139,7 @@ namespace WooAsset
                         if (last <= 0) break;
                         await new YieldOperation();
                     }
+                    SetResult(null);
                 }
                 else
                 {

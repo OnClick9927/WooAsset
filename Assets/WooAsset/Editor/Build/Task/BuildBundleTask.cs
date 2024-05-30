@@ -40,7 +40,7 @@ namespace WooAsset
                         assetbuilds, context.BuildOption, context.buildTarget);
                     UpdateHash(normal, _main);
                 }
-                if (context.bundleNameType == AssetsBuildOption.BundleNameType.NameWithHash)
+                if (context.bundleNameType == BundleNameType.NameWithHash)
                 {
                     for (int i = 0; i < raws.Count; i++)
                     {
@@ -49,9 +49,25 @@ namespace WooAsset
                         bundle.SyncRealHash($"{hash}_{hash}");
                     }
                 }
+                Dictionary<string, string> needRenameFiles = new Dictionary<string, string>();
+                if (context.bundleNameType == BundleNameType.Hash)
+                {
+                    foreach (var bundle in source)
+                    {
+                        if (!bundle.raw)
+                        {
+                            var bundleName = bundle.hash;
+                            string hash = bundleName.Split('_')[1];
+                            foreach (var item in source)
+                                item.ReplaceDpendenceHash(bundleName, hash);
+                            bundle.SyncRealHash(hash);
+                            needRenameFiles.Add(bundleName, hash);
+                        }
+                    }
+                }
 
 
-                var manifest = FastModeManifestTask.BuildManifest(source, context.assetsCollection);
+                var manifest = FastModeManifestTask.BuildManifest(source, context.assetsCollection, context.assetBuild);
                 context.manifest = manifest;
                 if (context.isNormalBuildMode)
                 {
@@ -66,6 +82,18 @@ namespace WooAsset
                         await AssetsHelper.WriteFile(reader.bytes, dest, true);
 
                     }
+                    if (needRenameFiles.Count > 0)
+                    {
+                        foreach (var src in needRenameFiles.Keys)
+                        {
+                            var dest = needRenameFiles[src];
+                            //System.IO.File.Copy(AssetsHelper.CombinePath(context.historyPath, src), AssetsHelper.CombinePath(context.historyPath, dest));
+                            var reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, src), true);
+                            await reader;
+                            await AssetsHelper.WriteFile(reader.bytes, AssetsHelper.CombinePath(context.historyPath, dest), true);
+                        }
+                    }
+
                     //拷贝打爆出来的到输出目录
                     foreach (var bundle in source)
                     {
@@ -79,7 +107,7 @@ namespace WooAsset
                               );
                     }
 
-                    var bVer = new BundlesVersion()
+                    var bVer = new BundlesVersionData()
                     {
                         version = context.version,
                     };
@@ -104,13 +132,9 @@ namespace WooAsset
 
                     await VersionHelper.WriteManifest(manifest,
                             AssetsHelper.CombinePath(context.outputPath,
-                            mainfestName),
-                            context.encrypt
-                            );
+                            mainfestName));
                     await VersionHelper.WriteBundlesVersion(bVer,
-                            AssetsHelper.CombinePath(context.outputPath, bundleFileName),
-                            context.encrypt
-                            );
+                            AssetsHelper.CombinePath(context.outputPath, bundleFileName));
                 }
 
                 InvokeComplete();
@@ -126,9 +150,9 @@ namespace WooAsset
             new BuildTask(),
         };
 
-        private static AssetsVersionCollection DeepCopy(AssetsVersionCollection src)
+        private static VersionCollectionData DeepCopy(VersionCollectionData src)
         {
-            return AssetsHelper.ReadFromBytes<AssetsVersionCollection>(AssetsHelper.ObjectToBytes(src));
+            return AssetsHelper.ReadFromBytes<VersionCollectionData>(AssetsHelper.ObjectToBytes(src));
         }
         protected override async void OnExecute(AssetTaskContext context)
         {
@@ -165,19 +189,15 @@ namespace WooAsset
             if (context.isNormalBuildMode)
             {
                 var versions = context.historyVersions;
+
                 if (versions.FindVersion(context.version) == null)
-                {
-                    var versionData = new AssetsVersionCollection.VersionData()
-                    {
-                        version = context.version,
-                    };
-                    versionData.SetPkgs(context.buildPkgs.ConvertAll(x => x.ToPackageData()));
-                    versions.AddVersion(versionData);
-                }
+                    versions.AddVersion(context.version);
+
                 await VersionHelper.WriteAssetsVersionCollection(
                          versions,
-                         context.historyVersionPath,
-                         new NoneAssetStreamEncrypt());
+                         context.historyVersionPath);
+
+
                 var outputVersions = DeepCopy(versions);
                 outputVersions.RemoveFirstIFTooLarge(context.MaxCacheVersionCount);
 
@@ -185,9 +205,16 @@ namespace WooAsset
                 context.outputVersions = outputVersions;
                 await VersionHelper.WriteAssetsVersionCollection(
                           outputVersions,
-                          AssetsHelper.CombinePath(context.outputPath, context.remoteHashName),
-                          context.encrypt);
+                          AssetsHelper.CombinePath(context.outputPath, context.VersionCollectionName));
+                VersionData versionData = versionData = new VersionData()
+                {
+                    version = context.version,
+                };
+                versionData.SetPkgs(context.buildPkgs.ConvertAll(x => x.ToPackageData()));
 
+                await VersionHelper.WriteVersionData(
+                     versionData,
+                     AssetsHelper.CombinePath(context.outputPath, context.VersionDataName));
             }
 
             InvokeComplete();

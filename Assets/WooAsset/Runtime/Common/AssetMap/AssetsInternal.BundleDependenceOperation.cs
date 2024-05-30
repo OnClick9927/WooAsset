@@ -6,11 +6,11 @@
         {
             public override float progress => isDone ? 1 : _progress;
             private float _progress = 0;
-            public BundleDependenceOperation(ManifestData.BundleData bundleData, bool async)
+            public BundleDependenceOperation(BundleData bundleData, bool async)
             {
                 Done(bundleData, async);
             }
-            private async void Done(ManifestData.BundleData bundleData, bool async)
+            private async void Done(BundleData bundleData, bool async)
             {
                 var dps = bundleData.dependence;
 

@@ -222,7 +222,6 @@ namespace WooAsset
             };
         }
 
-        public static Operation WriteStream(string srcPath, Stream target) => new CopyFileStreamOperation(srcPath, target);
         public static Operation CopyFile(string srcPath, string targetPath) => new CopyFileOperation(targetPath, srcPath);
 
         public static Operation WriteObject<T>(T t, string path, bool async) where T : IBufferObject
@@ -235,6 +234,7 @@ namespace WooAsset
         public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
         public static string[] GetDirectoryDirectories(string path) => Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
         public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
+        public static Operation WriteStream(string srcPath, Stream target) => new CopyFileStreamOperation(srcPath, target);
 
         public static bool IsDirectory(string path) => Directory.Exists(path);
         public static bool ExistsDirectory(string path) => Directory.Exists(path);

@@ -5,7 +5,6 @@ using UnityEngine.U2D;
 using UnityEngine.Video;
 using UnityEngine;
 using UnityEditor.Animations;
-using static WooAsset.AssetsBuildOption;
 
 namespace WooAsset
 {
@@ -79,6 +78,11 @@ namespace WooAsset
             if (code == NoneAssetStreamEncrypt.code) return none;
             if (code == DefaultAssetStreamEncrypt.code) return def;
             return null;
+        }
+
+        public virtual bool NeedRecordAsset(EditorAssetData data)
+        {
+            return true;
         }
     }
 }

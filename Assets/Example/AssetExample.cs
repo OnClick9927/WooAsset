@@ -15,13 +15,17 @@ namespace WooAsset
 {
     public class LocalSetting : AssetsSetting
     {
-        public override IAssetStreamEncrypt GetEncrypt()
-        {
-            return new NoneAssetStreamEncrypt();
-        }
+        //public override string GetUrlByBundleName(string buildTarget, string bundleName)
+        //{
+        //    return base.GetUrlByBundleName(buildTarget, bundleName)+".bytes";
+        //}
+        //public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
+        //{
+        //    return GetUrlByBundleName(buildTarget, bundleName);
+        //}
         public override bool NeedCopyStreamBundles()
         {
-            return true;
+            return false;
         }
         public override bool GetAutoUnloadBundle()
         {
@@ -29,19 +33,17 @@ namespace WooAsset
         }
         public override bool GetBundleAwalysFromWebRequest()
         {
-            return true;
+            return false;
         }
         protected override string GetBaseUrl()
         {
+            //return Application.streamingAssetsPath;
             //return "https://pic.trinityleaves.cn/images/xxx";
             return "http://127.0.0.1:8080";
             //Application.dataPath, "../DLCDownLoad"
             //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());
         }
-        public override string OverwriteBundlePath(string bundlePath)
-        {
-            return base.OverwriteBundlePath(bundlePath);
-        }
+
         public override IAssetLife GetAssetLife()
         {
             return null;
@@ -55,18 +57,20 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            //await Assets.CopyToSandBox();
-            //var op = await Assets.VersionCheck();
-            //if (op.Versions != null)
-            //{
-            //    var version = op.Versions.NewestVersion();
-            //    var compare = await op.Compare(version, version.GetAllPkgs());
+            await Assets.CopyToSandBox();
+            var op = await Assets.LoadRemoteVersions();
+            if (op.Versions != null)
+            {
+                var version = op.Versions.NewestVersion();
+                var down = await Assets.DonloadVersionData(version);
+                var versionData = down.GetVersion();
+                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 
-            //    for (int i = 0; i < compare.add.Count; i++)
-            //        await Assets.DownLoadBundle(version.version, compare.add[i].name);
-            //    for (int i = 0; i < compare.change.Count; i++)
-            //        await Assets.DownLoadBundle(version.version, compare.change[i].name);
-            //}
+                for (int i = 0; i < compare.add.Count; i++)
+                    await Assets.DownLoadBundle(versionData.version, compare.add[i].name);
+                for (int i = 0; i < compare.change.Count; i++)
+                    await Assets.DownLoadBundle(versionData.version, compare.change[i].name);
+            }
 
 
 
@@ -85,8 +89,9 @@ namespace WooAsset
             Debug.Log(raw.bytes.Length);
 
 
-            var _asset = Assets.LoadAsset("Assets/Example/New Folder/a.jpg");
+            var _asset = await Assets.LoadAsset("Assets/Example/New Folder/a.jpg");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");
+
             int index = 0;
             for (int i = 0; i < 20; i++)
             {

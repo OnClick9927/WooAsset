@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static WooAsset.AssetsVersionCollection.VersionData;
-using static WooAsset.AssetsVersionCollection;
 using UnityEngine.SceneManagement;
 
 namespace WooAsset
@@ -11,7 +9,10 @@ namespace WooAsset
     public partial class Assets
     {
         public static void SetAssetsSetting(AssetsSetting setting) => AssetsInternal.SetAssetsSetting(setting);
-        public static CheckBundleVersionOperation VersionCheck() => AssetsInternal.VersionCheck();
+        public static CheckBundleVersionOperation LoadRemoteVersions() => AssetsInternal.LoadRemoteVersions();
+        public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs) => AssetsInternal.CompareVersion(version, pkgs);
+        public static LoadVersionDataOperation DonloadVersionData(string version) => AssetsInternal.DonloadVersionData(version);
+
         public static FileDownloader DownLoadBundle(string version, string bundleName) => AssetsInternal.DownLoadFile(version, bundleName);
         public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();

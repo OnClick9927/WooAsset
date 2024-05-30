@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static WooAsset.AssetsVersionCollection.VersionData;
-using static WooAsset.AssetsVersionCollection;
 using static WooAsset.ManifestData;
 using UnityEngine.SceneManagement;
 
@@ -57,7 +55,7 @@ namespace WooAsset
         private static Bundle CreateBundle(BundleLoadArgs args) => mode.CreateBundle(args.bundleName, args);
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
-        public static CheckBundleVersionOperation VersionCheck() => mode.VersionCheck();
+        public static CheckBundleVersionOperation LoadRemoteVersions() => mode.LoadRemoteVersions();
         public static CopyStreamBundlesOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.streamBundleDirectory, localSaveDir);
 
 
@@ -100,16 +98,16 @@ namespace WooAsset
         public static BundleDownloader DownLoadBundle(string version, string bundleName) => new BundleDownloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static FileDownloader DownLoadFile(string version, string bundleName) => new FileDownloader(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static Downloader DownloadVersion(string version, string bundleName) => new Downloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static Downloader DownloadRemoteVersion() => new Downloader(GetUrlFromBundleName(VersionHelper.remoteHashName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static Downloader DownloadRemoteVersion() => new Downloader(GetUrlFromBundleName(VersionHelper.VersionCollectionName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 
         public static Downloader DownloadRawBundle(string version, string bundleName) => new Downloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 
-
+        public static LoadVersionDataOperation DonloadVersionData(string version) => new LoadVersionDataOperation(version);
+        public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs) => mode.CompareVersion(version, pkgs);
         public static Downloader CopyFile(string url, string path) => new FileDownloader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static Downloader DownloadBytes(string url) => new Downloader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
 
-        public static IAssetStreamEncrypt GetEncrypt() => setting.GetEncrypt();
         private static IAssetStreamEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAwalysFromWebRequest();
         public static bool GetBundleAwalysFromWebRequest() => setting.GetBundleAwalysFromWebRequest();

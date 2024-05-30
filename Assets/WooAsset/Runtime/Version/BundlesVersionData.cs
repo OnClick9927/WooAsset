@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace WooAsset
 {
     [System.Serializable]
-    public class BundlesVersion : IBufferObject
+    public class BundlesVersionData : IBufferObject
     {
 
         public string version;

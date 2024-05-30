@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using static WooAsset.AssetsVersionCollection;
-using static WooAsset.AssetsVersionCollection.VersionData;
 
 
 namespace WooAsset
@@ -19,7 +17,6 @@ namespace WooAsset
             return result;
         }
 
-        private CheckBundleVersionOperation _check;
         private VersionData version;
         private List<PackageData> pkgs;
         public override float progress => isDone ? 1 : _progress;
@@ -28,67 +25,58 @@ namespace WooAsset
         public List<BundleFileData> change;
         public List<FileData> delete;
         public List<BundleFileData> add;
-        IAssetStreamEncrypt en;
-        public VersionCompareOperation(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs, IAssetStreamEncrypt en)
+        public VersionCompareOperation(VersionData version, List<PackageData> pkgs)
         {
-            this._check = _check;
             this.pkgs = pkgs;
             this.version = version;
-            this.en = en;
             Compare();
         }
 
 
         protected virtual async void Compare()
         {
-            if (!_check.isErr)
+            List<BundleFileData> remoteBundles = new List<BundleFileData>();
+            for (int i = 0; i < pkgs.Count; i++)
             {
-
-                List<BundleFileData> remoteBundles = new List<BundleFileData>();
-                for (int i = 0; i < pkgs.Count; i++)
+                var pkg = pkgs[i];
+                _progress = i / (float)pkgs.Count;
                 {
-                    var pkg = pkgs[i];
-                    _progress = i / (float)pkgs.Count;
-                    {
-                        string fileName = pkg.bundleFileName;
+                    string fileName = pkg.bundleFileName;
 
-                        Downloader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
-                        await downloader;
-                        if (downloader.isErr)
-                        {
-                            SetErr(downloader.error);
-                            break;
-                        }
-                        else
-                        {
-                            BundlesVersion v = VersionHelper.ReadBundleVersion(downloader.data, en);
-                            remoteBundles.AddRange(v.bundles);
-                        }
-                    }
+                    Downloader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
+                    await downloader;
+                    if (downloader.isErr)
                     {
-                        string fileName = pkg.manifestFileName;
-                        Downloader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
-                        await downloader;
-                        if (downloader.isErr)
-                        {
-                            SetErr(downloader.error);
-                            break;
-                        }
-                        else
-                        {
-                            ManifestData v = VersionHelper.ReadManifest(downloader.data, en);
-                            await VersionHelper.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName), en);
-                        }
+                        SetErr(downloader.error);
+                        break;
+                    }
+                    else
+                    {
+                        BundlesVersionData v = VersionHelper.ReadBundleVersion(downloader.data);
+                        remoteBundles.AddRange(v.bundles);
                     }
                 }
-                List<FileData> local = GetLocalBundles();
-                FileData.Compare(local, remoteBundles, AssetsInternal.GetFileCheckType(), out change, out delete, out add);
-                await VersionHelper.WriteVersionData(version,
-                      AssetsInternal.GetBundleLocalPath(VersionHelper.localHashName),
-                      en
-                      );
-
+                {
+                    string fileName = pkg.manifestFileName;
+                    Downloader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
+                    await downloader;
+                    if (downloader.isErr)
+                    {
+                        SetErr(downloader.error);
+                        break;
+                    }
+                    else
+                    {
+                        ManifestData v = VersionHelper.ReadManifest(downloader.data);
+                        await VersionHelper.WriteManifest(v, AssetsInternal.GetBundleLocalPath(fileName));
+                    }
+                }
             }
+            List<FileData> local = GetLocalBundles();
+            FileData.Compare(local, remoteBundles, AssetsInternal.GetFileCheckType(), out change, out delete, out add);
+            await VersionHelper.WriteVersionData(version,
+                  AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName)
+                  );
             InvokeComplete();
         }
     }

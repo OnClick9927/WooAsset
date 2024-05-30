@@ -111,8 +111,9 @@ namespace WooAsset
         public static IAwaiter<SceneAsset> GetAwaiter(this SceneAsset target) => new AssetOperationAwaiter<SceneAsset>(target);
         public static IAwaiter<AssetsGroupOperation> GetAwaiter(this AssetsGroupOperation target) => new AssetOperationAwaiter<AssetsGroupOperation>(target);
         public static IAwaiter<InstantiateObjectOperation> GetAwaiter(this InstantiateObjectOperation target) => new AssetOperationAwaiter<InstantiateObjectOperation>(target);
+        public static IAwaiter<LoadVersionDataOperation> GetAwaiter(this LoadVersionDataOperation target) => new AssetOperationAwaiter<LoadVersionDataOperation>(target);
 
-
+        
         public static void WarpErr(this Operation self) { }
 
     }

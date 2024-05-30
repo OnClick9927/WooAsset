@@ -7,7 +7,7 @@ namespace WooAsset
 {
     public class BufferWriter
     {
-        private readonly byte[] _buffer;
+        private byte[] _buffer;
         private int _index = 0;
 
         public BufferWriter(int capacity)
@@ -34,7 +34,7 @@ namespace WooAsset
         /// <summary>
         /// 将有效数据写入文件流
         /// </summary>
-        public void WriteToStream(FileStream fileStream)
+        public void WriteToStream(Stream fileStream)
         {
             fileStream.Write(_buffer, 0, _index);
         }
@@ -284,10 +284,11 @@ namespace WooAsset
 
         private void CheckWriterIndex(int length)
         {
-            if (_index + length > Capacity)
+            if (_index + length > _buffer.Length)
             {
-                AssetsHelper.LogError("IndexOutOfRangeException");
-
+                byte[] bytes = new byte[_buffer.Length * 2];
+                Buffer.BlockCopy(_buffer, 0, bytes, 0, _buffer.Length);
+                _buffer = bytes;
             }
         }
     }

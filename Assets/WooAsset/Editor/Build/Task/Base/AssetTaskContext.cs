@@ -14,8 +14,8 @@ namespace WooAsset
         public string outputPath => AssetsEditorTool.outputPath;
         public string historyPath => AssetsEditorTool.historyPath;
         public BuildTarget buildTarget => AssetsEditorTool.buildTarget;
-        public string remoteHashName => VersionHelper.remoteHashName;
-        public string localHashName => VersionHelper.localHashName;
+        public string VersionCollectionName => VersionHelper.VersionCollectionName;
+        public string VersionDataName => VersionHelper.VersionDataName;
         public string buildTargetName => AssetsEditorTool.buildTargetName;
 
         public string streamBundleDirectory => AssetsHelper.streamBundleDirectory;
@@ -44,8 +44,8 @@ namespace WooAsset
         public List<EditorAssetData> needBuildAssets;
         public List<EditorBundleData> allBundleBuilds;
         public string version;
-        public AssetsVersionCollection historyVersions;
-        public AssetsVersionCollection outputVersions;
+        public VersionCollectionData historyVersions;
+        public VersionCollectionData outputVersions;
 
         public ManifestData manifest;
         public List<AssetTask> pipelineStartTasks;

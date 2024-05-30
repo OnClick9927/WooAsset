@@ -1,5 +1,4 @@
 ﻿using static WooAsset.AssetsBuildOption;
-using static WooAsset.AssetsVersionCollection.VersionData;
 
 namespace WooAsset
 {

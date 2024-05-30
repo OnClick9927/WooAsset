@@ -19,7 +19,6 @@ namespace WooAsset
         public virtual FileCompareType GetFileCheckType() { return FileCompareType.Hash; }
         public virtual int GetWebRequestTimeout() { return 30; }
         public virtual int GetWebRequestRetryCount() { return 3; }
-        public virtual IAssetStreamEncrypt GetEncrypt() { return def; }
         public virtual bool GetAutoUnloadBundle() { return true; }
 
         public virtual IAssetLife GetAssetLife() { return new LRULife(1024 * 1024 * 1024); }

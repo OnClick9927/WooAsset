@@ -72,6 +72,7 @@ namespace WooAsset
         }
 
 
+
         public static Value GetFromDictionary<Key, Value>(Dictionary<Key, Value> map, Key key) where Value : class, new()
         {
             Value t;

@@ -11,8 +11,8 @@ namespace WooAsset
             if (context.isNormalBuildMode && context.copyToStream)
             {
                 string streamPath = context.streamBundleDirectory;
-                string local_ver_path = AssetsHelper.CombinePath(streamPath, context.localHashName + ".bytes");
-                string remote_ver_path = AssetsHelper.CombinePath(context.outputPath, context.remoteHashName);
+                string local_ver_path = AssetsHelper.CombinePath(streamPath, context.VersionDataName + ".bytes");
+                string remote_ver_path = AssetsHelper.CombinePath(context.outputPath, context.VersionCollectionName);
                 var buildInAssets = context.buildInAssets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
                 var manifests = context.exports.ConvertAll(x => x.manifest);
                 ManifestData manifest = new ManifestData();
@@ -45,8 +45,10 @@ namespace WooAsset
                     if (buildInBundles.Contains(bundleName)) continue;
                     buildInBundles.Add(bundleName);
                 }
-                List<string> buildInConfigs = new List<string>();
-
+                List<string> buildInConfigs = new List<string>
+                {
+                    VersionHelper.VersionDataName
+                };
                 foreach (var item in context.buildPkgs)
                 {
                     buildInConfigs.Add(VersionHelper.GetManifestFileName(item.name));
@@ -60,9 +62,9 @@ namespace WooAsset
 
                 var reader = AssetsHelper.ReadFile(remote_ver_path, true);
                 await reader;
-                var c = VersionHelper.ReadAssetsVersionCollection(reader.bytes, context.encrypt);
-                var data = c.NewestVersion();
-                await VersionHelper.WriteVersionData(data, local_ver_path, context.encrypt);
+                //var c = VersionHelper.ReadAssetsVersionCollection(reader.bytes);
+                //var data = c.NewestVersion();
+                //await VersionHelper.WriteVersionData(data, local_ver_path);
                 AssetDatabase.Refresh();
             }
 

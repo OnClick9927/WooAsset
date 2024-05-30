@@ -13,7 +13,7 @@ namespace WooAsset
             IAssetBuild assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetBuild;
             context.assetBuild = assetBuild;
             context.encrypt = encrypt;
-            context.historyVersions = new AssetsVersionCollection() { };
+            context.historyVersions = new VersionCollectionData() { };
             for (int i = 0; i < context.buildPkgs.Count; i++)
             {
                 var item = context.buildPkgs[i];
@@ -56,12 +56,12 @@ namespace WooAsset
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension;
 
 
-            if (context.typeTreeOption == AssetsBuildOption.TypeTreeOption.DisableWriteTypeTree)
+            if (context.typeTreeOption == TypeTreeOption.DisableWriteTypeTree)
                 opt |= BuildAssetBundleOptions.DisableWriteTypeTree;
-            if (context.typeTreeOption == AssetsBuildOption.TypeTreeOption.IgnoreTypeTreeChanges)
+            if (context.typeTreeOption == TypeTreeOption.IgnoreTypeTreeChanges)
                 opt |= BuildAssetBundleOptions.IgnoreTypeTreeChanges;
 
-            if (context.buildMode == AssetsBuildOption.BuildMode.ForceRebuild)
+            if (context.buildMode == BuildMode.ForceRebuild)
                 opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle;
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileName;
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension;
@@ -70,20 +70,20 @@ namespace WooAsset
             if (context.compress == CompressType.Uncompressed)
                 opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
 
-            if (context.buildMode == AssetsBuildOption.BuildMode.Dry)
+            if (context.buildMode == BuildMode.Dry)
                 opt = BuildAssetBundleOptions.DryRunBuild;
-            if (context.bundleNameType == AssetsBuildOption.BundleNameType.NameWithHash)
+            if (context.bundleNameType == BundleNameType.NameWithHash || context.bundleNameType == BundleNameType.Hash)
                 opt |= BuildAssetBundleOptions.AppendHashToAssetBundleName;
 
             context.BuildOption = opt;
 
-            string versionPath = AssetsHelper.CombinePath(context.historyPath, context.remoteHashName);
+            string versionPath = AssetsHelper.CombinePath(context.historyPath, context.VersionCollectionName);
             context.historyVersionPath = versionPath;
             if (AssetsHelper.ExistsFile(versionPath))
             {
                 var reader = AssetsHelper.ReadFile(versionPath, true);
                 await reader;
-                context.historyVersions = VersionHelper.ReadAssetsVersionCollection(reader.bytes, new NoneAssetStreamEncrypt());
+                context.historyVersions = VersionHelper.ReadAssetsVersionCollection(reader.bytes);
             }
             context.version = assetBuild.GetVersion(option.version, context);
             context.pipelineStartTasks = assetBuild.GetPipelineStartTasks(context);

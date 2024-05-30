@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using System;
 using UnityEditor.U2D;
 using UnityEditor;
@@ -10,120 +8,17 @@ namespace WooAsset
 {
     public class AssetsBuildOption : AssetsScriptableObject
     {
-        [System.Serializable]
-        public class TagAssets
-        {
-            public string tag;
-            public List<string> assets;
-        }
-        public enum TypeTreeOption
-        {
-            None,
-            IgnoreTypeTreeChanges,
-            DisableWriteTypeTree,
 
-        }
-        [System.Serializable]
-        public class EditorBundlePackage
-        {
-            public bool build;
-            public string name;
-            public string description;
-            public List<string> tags = new List<string>();
-            public List<string> paths = new List<string>();
-
-            public bool HasSamePath() => paths.Distinct().Count() != paths.Count();
-            public bool HasSamePath(EditorBundlePackage other) => paths.Intersect(other.paths).Count() > 0;
-
-            public AssetsVersionCollection.VersionData.PackageData ToPackageData()
-            {
-                return new AssetsVersionCollection.VersionData.PackageData()
-                {
-                    description = description,
-                    name = name,
-                    tags = tags
-                };
-            }
-        }
-
-        [System.Serializable]
-        public class TypeSelect
-        {
-            public string[] types;
-            public string[] shortTypes;
-            public int typeIndex;
-            public Type baseType;
-            public void Enable()
-            {
-                var list = GetSubTypesInAssemblies(baseType)
-               .Where(type => !type.IsAbstract);
-                types = list.Select(type => type.FullName).ToArray();
-                shortTypes = list.Select(type => type.Name).ToArray();
-            }
-            public Type GetSelectType()
-            {
-                var type_str = types[typeIndex];
-                Type type = GetSubTypesInAssemblies(baseType)
-                   .Where(type => !type.IsAbstract)
-                   .ToList()
-                   .Find(x => x.FullName == type_str);
-
-                return type;
-            }
-
-            public bool SetType(Type type)
-            {
-                string name = type.FullName;
-                if (type.IsAbstract || !baseType.IsAssignableFrom(type)) return false;
-                for (int i = 0; i < types.Length; i++)
-                {
-                    if (types[i] == name)
-                    {
-                        typeIndex = i;
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-        [System.Serializable]
-        public class PackingSetting
-        {
-            public int blockOffset = 1;
-            public bool enableRotation = false;
-            public bool enableTightPacking = false;
-            public int padding = 2;
-        }
-        [System.Serializable]
-        public class TextureSetting
-        {
-            public bool readable = true;
-            public bool generateMipMaps = false;
-            public bool sRGB = true;
-            public FilterMode filterMode = FilterMode.Bilinear;
-            public int anisoLevel = 1;
-        }
-        public enum BuildMode
-        {
-            Dry,
-            Increase,
-            ForceRebuild,
-        }
-        public enum BundleNameType
-        {
-            Name,
-            NameWithHash
-        }
 
         public string version = "0.0.1";
         public bool copyToStream = false;
         public BuildMode buildMode = BuildMode.Increase;
 
-        public TypeTreeOption typeTreeOption;
-        public BundleNameType bundleNameType;
-        public CompressType compress;
+        public TypeTreeOption typeTreeOption = TypeTreeOption.IgnoreTypeTreeChanges;
+        public BundleNameType bundleNameType = BundleNameType.Hash;
+        public CompressType compress = CompressType.LZ4;
         public int MaxCacheVersionCount = 8;
-        public bool cleanHistory;
+        public bool cleanHistory = true;
         public List<Object> buildInAssets = new List<Object>();
 
         public bool enableServer;
@@ -175,19 +70,7 @@ namespace WooAsset
 
         }
 
-        static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
-        {
-            if (self.IsInterface)
-            {
-                return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
-                       where item.GetInterfaces().Contains(self)
-                       select item;
-            }
 
-            return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
-                   where item.IsSubclassOf(self)
-                   select item;
-        }
 
 
         public Type GetAssetBuildType()

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using static WooAsset.ManifestData;
 
 namespace WooAsset
 {
     public class FastModeManifestTask : AssetTask
     {
-        public static ManifestData BuildManifest(List<EditorBundleData> groups, AssetCollection tree)
+        public static ManifestData BuildManifest(List<EditorBundleData> groups, AssetCollection tree, IAssetBuild assetBuild)
         {
             List<AssetData> _assets = new List<AssetData>();
             List<BundleData> _bundles = new List<BundleData>();
@@ -16,7 +15,8 @@ namespace WooAsset
                 foreach (var assetPath in build.GetAssets())
                 {
                     EditorAssetData data = tree.GetAssetData(assetPath);
-                    _assets.Add(data.CreateAssetData(build.hash));
+                    if (assetBuild.NeedRecordAsset(data))
+                        _assets.Add(data.CreateAssetData(build.hash));
                 }
             }
             ManifestData manifest = new ManifestData();
@@ -27,7 +27,7 @@ namespace WooAsset
         protected override void OnExecute(AssetTaskContext context)
         {
 
-            context.manifest = BuildManifest(context.allBundleBuilds, context.assetsCollection);
+            context.manifest = BuildManifest(context.allBundleBuilds, context.assetsCollection, context.assetBuild);
             InvokeComplete();
         }
     }

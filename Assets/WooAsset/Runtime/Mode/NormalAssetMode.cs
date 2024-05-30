@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
-using static WooAsset.AssetsVersionCollection.VersionData;
-using static WooAsset.AssetsVersionCollection;
 
 namespace WooAsset
 {
@@ -32,7 +30,7 @@ namespace WooAsset
             }
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
-                    , version, getPkgs, AssetsInternal.GetEncrypt());
+                    , version, getPkgs);
             manifestOp.completed += ManifestOp_completed;
             return manifestOp;
         }
@@ -42,11 +40,16 @@ namespace WooAsset
             SetVersion(manifestOp.GetVersion());
         }
 
-        protected override CheckBundleVersionOperation VersionCheck() => new CheckBundleVersionOperation();
+        protected override CheckBundleVersionOperation LoadRemoteVersions() => new CheckBundleVersionOperation();
 
         protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args)
         {
             return new Bundle(args);
+        }
+
+        protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs)
+        {
+           return new VersionCompareOperation(version, pkgs);
         }
     }
 

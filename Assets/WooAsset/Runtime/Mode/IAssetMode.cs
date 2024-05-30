@@ -1,6 +1,4 @@
-﻿using static WooAsset.AssetsVersionCollection.VersionData;
-using static WooAsset.AssetsVersionCollection;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 
 namespace WooAsset
@@ -11,8 +9,9 @@ namespace WooAsset
         string version { get; }
         bool Initialized();
         Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
-        CheckBundleVersionOperation VersionCheck();
+        CheckBundleVersionOperation LoadRemoteVersions();
         CopyStreamBundlesOperation CopyToSandBox(string from, string to);
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
+        VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs);
     }
 }

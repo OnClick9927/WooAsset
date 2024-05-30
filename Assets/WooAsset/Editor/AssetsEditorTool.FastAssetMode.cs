@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using static WooAsset.AssetsVersionCollection.VersionData;
-using static WooAsset.AssetsVersionCollection;
 using System;
 
 namespace WooAsset
@@ -12,39 +9,24 @@ namespace WooAsset
         {
             private class FastCopy : CopyStreamBundlesOperation
             {
-                public FastCopy(string srcPath, string destPath) : base(srcPath, destPath)
-                {
-                }
-                protected override void Copy()
-                {
-                    InvokeComplete();
-                }
+                public FastCopy(string srcPath, string destPath) : base(srcPath, destPath) { }
+                protected override void Copy() => InvokeComplete();
             }
 
             private class FastCheck : CheckBundleVersionOperation
             {
-                private class FastCompare : VersionCompareOperation
+                protected override void Done() => InvokeComplete();
+            }
+            private class FastCompare : VersionCompareOperation
+            {
+                public FastCompare(VersionData version, List<PackageData> pkgs) : base(version, pkgs) { }
+
+                protected override void Compare()
                 {
-                    public FastCompare(CheckBundleVersionOperation _check, VersionData version, List<PackageData> pkgs) : base(_check, version, pkgs, null)
-                    {
-                    }
-                    protected override void Compare()
-                    {
-                        delete = new List<FileData>();
-                        add = change = new List<BundleFileData>();
-                        InvokeComplete();
-                    }
-                }
-                protected override void Done()
-                {
-                    AssetsHelper.Log($"Check Version Complete");
+                    delete = new List<FileData>();
+                    add = change = new List<BundleFileData>();
                     InvokeComplete();
                 }
-                public override VersionCompareOperation Compare(VersionData version, List<PackageData> pkgs)
-                {
-                    return new FastCompare(null, version, pkgs);
-                }
-
             }
 
             private AssetTask _task;
@@ -58,12 +40,11 @@ namespace WooAsset
                     _task = AssetTaskRunner.PreviewAllBundles();
                 return _task;
             }
-            protected override CheckBundleVersionOperation VersionCheck() => new FastCheck();
+            protected override CheckBundleVersionOperation LoadRemoteVersions() => new FastCheck();
 
-            protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args)
-            {
-                return new EditorBundle(args);
-            }
+            protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args) => new EditorBundle(args);
+
+            protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs) => new FastCompare(version, pkgs);
         }
     }
 
