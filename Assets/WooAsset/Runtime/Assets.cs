@@ -10,11 +10,11 @@ namespace WooAsset
     {
         public static void SetAssetsSetting(AssetsSetting setting) => AssetsInternal.SetAssetsSetting(setting);
         public static CheckBundleVersionOperation LoadRemoteVersions() => AssetsInternal.LoadRemoteVersions();
-        public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs) => AssetsInternal.CompareVersion(version, pkgs);
+        public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType = VersionCompareType.Manifest) => AssetsInternal.CompareVersion(version, pkgs, compareType);
         public static LoadVersionDataOperation DonloadVersionData(string version) => AssetsInternal.DonloadVersionData(version);
 
         public static FileDownloader DownLoadBundle(string version, string bundleName) => AssetsInternal.DownLoadFile(version, bundleName);
-        public static CopyStreamBundlesOperation CopyToSandBox() => AssetsInternal.CopyToSandBox();
+        public static Operation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
         public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, false, true, type) as Asset;

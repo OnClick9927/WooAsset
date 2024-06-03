@@ -16,7 +16,6 @@ namespace WooAsset
 
         public virtual bool GetSaveBundlesWhenPlaying() => true;
         public virtual bool GetBundleAwalysFromWebRequest() { return true; }
-        public virtual FileCompareType GetFileCheckType() { return FileCompareType.Hash; }
         public virtual int GetWebRequestTimeout() { return 30; }
         public virtual int GetWebRequestRetryCount() { return 3; }
         public virtual bool GetAutoUnloadBundle() { return true; }

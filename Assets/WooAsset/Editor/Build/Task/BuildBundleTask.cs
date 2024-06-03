@@ -67,7 +67,9 @@ namespace WooAsset
                 }
 
 
-                var manifest = FastModeManifestTask.BuildManifest(source, context.assetsCollection, context.assetBuild);
+                var manifest = FastModeManifestTask.BuildManifest(context.version, source, context.assetsCollection, context.assetBuild);
+
+
                 context.manifest = manifest;
                 if (context.isNormalBuildMode)
                 {
@@ -107,17 +109,24 @@ namespace WooAsset
                               );
                     }
 
-                    var bVer = new BundlesVersionData()
-                    {
-                        version = context.version,
-                    };
+                    //var bVer = new BundlesVersionData()
+                    //{
+                    //    version = context.version,
+                    //};
                     foreach (var bundleName in manifest.allBundle)
                     {
                         string path = AssetsHelper.CombinePath(context.outputPath, bundleName);
+                        BundleData bundleData = manifest.GetBundleData(bundleName);
+
+
+
                         if (AssetsHelper.ExistsFile(path))
                         {
                             var data = FileData.CreateByFile(path);
-                            bVer.bundles.Add(data.ToBundleFileData());
+                            bundleData.length = data.length;
+                            bundleData.hash = data.hash;
+
+                            //bVer.bundles.Add(data.ToBundleFileData());
                         }
                         else
                         {
@@ -128,13 +137,13 @@ namespace WooAsset
                     }
 
                     var mainfestName = VersionHelper.GetManifestFileName(context.buildPkg.name);
-                    var bundleFileName = VersionHelper.GetBundleFileName(context.buildPkg.name);
+                    //var bundleFileName = VersionHelper.GetBundleFileName(context.buildPkg.name);
 
                     await VersionHelper.WriteManifest(manifest,
                             AssetsHelper.CombinePath(context.outputPath,
                             mainfestName));
-                    await VersionHelper.WriteBundlesVersion(bVer,
-                            AssetsHelper.CombinePath(context.outputPath, bundleFileName));
+                    //await VersionHelper.WriteBundlesVersion(bVer,
+                    //        AssetsHelper.CombinePath(context.outputPath, bundleFileName));
                 }
 
                 InvokeComplete();

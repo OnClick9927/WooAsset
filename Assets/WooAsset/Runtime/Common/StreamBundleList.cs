@@ -3,8 +3,10 @@
     [System.Serializable]
     public class StreamBundleList : IBufferObject
     {
+        public const string fileExt = ".bytes";
+
         public string[] fileNames;
-        public static string fileName = $"StreamBundleList.ver{CopyStreamBundlesOperation.fileExt}";
+        public static string fileName = $"StreamBundleList.ver{fileExt}";
 
         void IBufferObject.ReadData(BufferReader reader) => fileNames = reader.ReadUTF8Array();
 

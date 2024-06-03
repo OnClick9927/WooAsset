@@ -56,7 +56,7 @@ namespace WooAsset
 
             protected override string GetDestFileName(string src)
             {
-                return base.GetDestFileName(src) + CopyStreamBundlesOperation.fileExt;
+                return $"{base.GetDestFileName(src)}{StreamBundleList.fileExt}";
             }
         }
     }

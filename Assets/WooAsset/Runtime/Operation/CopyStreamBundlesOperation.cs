@@ -1,8 +1,7 @@
 ﻿namespace WooAsset
 {
-    public class CopyStreamBundlesOperation : Operation
+    class CopyStreamBundlesOperation : Operation
     {
-        public const string fileExt = ".bytes";
         private readonly string srcPath;
         private readonly string destPath;
         private string[] files;
@@ -35,7 +34,7 @@
                     StreamBundleList list = AssetsHelper.ReadFromBytes<StreamBundleList>(downloader.data);
                     foreach (var fileName in list.fileNames)
                     {
-                        string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(fileExt, "");
+                        string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(StreamBundleList.fileExt, "");
                         if (AssetsHelper.ExistsFile(dest)) continue;
                         string src = AssetsHelper.CombinePath(srcPath, fileName);
                         await AssetsInternal.CopyFile(src, dest);

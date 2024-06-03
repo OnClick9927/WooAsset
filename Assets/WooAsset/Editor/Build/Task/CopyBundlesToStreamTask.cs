@@ -52,7 +52,7 @@ namespace WooAsset
                 foreach (var item in context.buildPkgs)
                 {
                     buildInConfigs.Add(VersionHelper.GetManifestFileName(item.name));
-                    buildInConfigs.Add(VersionHelper.GetBundleFileName(item.name));
+                    //buildInConfigs.Add(VersionHelper.GetBundleFileName(item.name));
                 }
 
 

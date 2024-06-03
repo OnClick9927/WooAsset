@@ -56,7 +56,7 @@ namespace WooAsset
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
         public static CheckBundleVersionOperation LoadRemoteVersions() => mode.LoadRemoteVersions();
-        public static CopyStreamBundlesOperation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.streamBundleDirectory, localSaveDir);
+        public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.streamBundleDirectory, localSaveDir);
 
 
 
@@ -103,10 +103,9 @@ namespace WooAsset
         public static Downloader DownloadRawBundle(string version, string bundleName) => new Downloader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 
         public static LoadVersionDataOperation DonloadVersionData(string version) => new LoadVersionDataOperation(version);
-        public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs) => mode.CompareVersion(version, pkgs);
+        public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => mode.CompareVersion(version, pkgs, compareType);
         public static Downloader CopyFile(string url, string path) => new FileDownloader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static Downloader DownloadBytes(string url) => new Downloader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static FileData.FileCompareType GetFileCheckType() => setting.GetFileCheckType();
 
         private static IAssetStreamEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAwalysFromWebRequest();

@@ -42,6 +42,8 @@ namespace WooAsset
                 raw = raw,
                 enCode = _enCode,
                 assets = assets.ConvertAll(x => x.path),
+                hash = hash,
+                length = length,
             };
         }
 

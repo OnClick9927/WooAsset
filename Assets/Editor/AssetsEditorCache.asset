@@ -580,47 +580,71 @@ MonoBehaviour:
       bundleName: f15e48513624d521e55748b79c32769a
       raw: 0
       enCode: 1
+      hash: f15e48513624d521e55748b79c32769a
+      length: 133554
     - bundleDependence: 
       bundleName: 2d8f4d64951abfaea7f3fe9aefb11141
       raw: 0
       enCode: 1
+      hash: 2d8f4d64951abfaea7f3fe9aefb11141
+      length: 23166
     - bundleDependence: 060000000900000000000000
       bundleName: e0fd13cee22c27f8856ab5d845382b05
       raw: 0
       enCode: 1
+      hash: e0fd13cee22c27f8856ab5d845382b05
+      length: 19375
     - bundleDependence: 
       bundleName: 1e4d59a7acf9cc4c18c063570e90a2d9
       raw: 0
       enCode: 1
+      hash: 1e4d59a7acf9cc4c18c063570e90a2d9
+      length: 15884
     - bundleDependence: 
       bundleName: 553fbe73a2a295b01ac54d0a87d26856
       raw: 0
       enCode: 1
+      hash: 553fbe73a2a295b01ac54d0a87d26856
+      length: 4394
     - bundleDependence: 04000000
       bundleName: 7f684d85a6ea3e13cac98df67d83d88c
       raw: 0
       enCode: 1
+      hash: 7f684d85a6ea3e13cac98df67d83d88c
+      length: 2844
     - bundleDependence: 09000000
       bundleName: dc5e76135581810c63b82b3455050484
       raw: 0
       enCode: 1
+      hash: dc5e76135581810c63b82b3455050484
+      length: 2209
     - bundleDependence: 09000000
       bundleName: 8897512ab3f852758048b47c3be0d4ad
       raw: 0
       enCode: 1
+      hash: 8897512ab3f852758048b47c3be0d4ad
+      length: 2209
     - bundleDependence: 
       bundleName: ae7ad29bf27dffc3879f6435564144bc
       raw: 0
       enCode: 1
+      hash: ae7ad29bf27dffc3879f6435564144bc
+      length: 2199
     - bundleDependence: 
       bundleName: d88574feb3b5b2d20164cb2eb5964afc
       raw: 0
       enCode: 1
+      hash: d88574feb3b5b2d20164cb2eb5964afc
+      length: 1296
     - bundleDependence: 
       bundleName: a2424627e64e4dd54f539fb4c64c9047
       raw: 1
       enCode: 1
+      hash: a2424627e64e4dd54f539fb4c64c9047
+      length: 9
     - bundleDependence: 
       bundleName: 74bdeb362c709eb0728d7fcc49065ff7
       raw: 1
       enCode: 1
+      hash: 74bdeb362c709eb0728d7fcc49065ff7
+      length: 9

@@ -38,10 +38,10 @@ MonoBehaviour:
     typeIndex: 0
   mode:
     types:
-    - WooAsset.AssetsEditorTool+FastAssetMode
+    - WooAsset.AssetsEditorTool+AssetDatabaseMode
     - WooAsset.NormalAssetMode
     shortTypes:
-    - FastAssetMode
+    - AssetDatabaseMode
     - NormalAssetMode
     typeIndex: 1
   encrypt:

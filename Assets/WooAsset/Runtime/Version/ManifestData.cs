@@ -24,12 +24,12 @@ namespace WooAsset
         }
 
 
-
-        public void Read(List<AssetData> assets, List<BundleData> bundles)
+        public void Read(string version, List<AssetData> assets, List<BundleData> bundles)
         {
 #if UNITY_EDITOR
             this.assets = assets;
             this.bundles = bundles;
+            this.version = version;
             var _tags = new Dictionary<string, TagData>();
             for (int asset_index = 0; asset_index < assets.Count; asset_index++)
             {
@@ -58,6 +58,7 @@ namespace WooAsset
             this.tags = AssetsHelper.ToValueList(_tags);
 #endif
         }
+        [UnityEngine.SerializeField] private string version;
 
         [UnityEngine.SerializeField] private List<TagData> tags = new List<TagData>();
         [UnityEngine.SerializeField] private List<AssetData> assets = new List<AssetData>();
@@ -67,6 +68,7 @@ namespace WooAsset
 
         void IBufferObject.ReadData(BufferReader reader)
         {
+            version = reader.ReadUTF8();
             tags = reader.ReadObjectList<TagData>();
             assets = reader.ReadObjectList<AssetData>();
             bundles = reader.ReadObjectList<BundleData>();
@@ -141,7 +143,7 @@ namespace WooAsset
             }
 
 
-
+            writer.WriteUTF8(version);
             writer.WriteObjectList(tags);
             writer.WriteObjectList(assets);
             writer.WriteObjectList(bundles);
@@ -219,12 +221,13 @@ namespace WooAsset
         [NonSerialized] public List<string> allTags;
         [NonSerialized] public List<string> allBundle;
         [NonSerialized] public List<string> allName;
+        public string GetVersion() => version;
 
         public AssetData GetAssetData(string assetpath) => AssetsHelper.GetOrDefaultFromDictionary(_assets, assetpath);
         public List<string> GetTagAssetPaths(string tag) => AssetsHelper.GetOrDefaultFromDictionary(_tags, tag)?.assets;
         public IReadOnlyList<string> GetAssets(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName)?.assets;
         public BundleData GetBundleData(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName);
-
+        public List<BundleData> GetAllBundleData() => bundles;
 
         public IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result)
         {
@@ -330,7 +333,6 @@ namespace WooAsset
             }
 
         }
-
 
     }
 }

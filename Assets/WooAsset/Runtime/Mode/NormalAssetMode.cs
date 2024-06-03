@@ -18,7 +18,7 @@ namespace WooAsset
             return manifestOp.isDone;
         }
 
-        protected override CopyStreamBundlesOperation CopyToSandBox(string from, string to) => new CopyStreamBundlesOperation(from, to);
+        protected override Operation CopyToSandBox(string from, string to) => new CopyStreamBundlesOperation(from, to);
 
         protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
         {
@@ -31,7 +31,10 @@ namespace WooAsset
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
                     , version, getPkgs);
-            manifestOp.completed += ManifestOp_completed;
+            if (manifestOp.isDone)
+                ManifestOp_completed();
+            else
+                manifestOp.completed += ManifestOp_completed;
             return manifestOp;
         }
 
@@ -42,15 +45,9 @@ namespace WooAsset
 
         protected override CheckBundleVersionOperation LoadRemoteVersions() => new CheckBundleVersionOperation();
 
-        protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args)
-        {
-            return new Bundle(args);
-        }
+        protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args) => new Bundle(args);
 
-        protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs)
-        {
-           return new VersionCompareOperation(version, pkgs);
-        }
+        protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => new VersionCompareOperation(version, pkgs, compareType);
     }
 
 }

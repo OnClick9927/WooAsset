@@ -75,33 +75,31 @@ namespace WooAsset
             for (int i = 0; i < pkgs.Count; i++)
             {
                 var pkg = pkgs[i];
+                string fileName = pkg.manifestFileName;
+
+                string _path = AssetsInternal.GetBundleLocalPath(fileName);
+                ManifestData v;
+                if (AssetsHelper.ExistsFile(_path))
                 {
-                    string fileName = pkg.manifestFileName;
-
-                    string _path = AssetsInternal.GetBundleLocalPath(fileName);
-                    ManifestData v;
-                    if (AssetsHelper.ExistsFile(_path))
-                    {
-                        var reader = AssetsHelper.ReadFile(_path, true);
-                        await reader;
-                        v = VersionHelper.ReadManifest(reader.bytes);
-                    }
-                    else
-                    {
-                        downloader = AssetsInternal.DownloadVersion(version.version, fileName);
-                        await downloader;
-                        if (downloader.isErr)
-                        {
-                            SetErr(downloader.error);
-                            break;
-                        }
-                        v = VersionHelper.ReadManifest(downloader.data);
-                        await VersionHelper.WriteManifest(v, _path);
-                    }
-
-                    ManifestData.Merge(v, manifest, this.loadedBundles);
-                    _progress = 0.5f + i / pkgs.Count / 2f;
+                    var reader = AssetsHelper.ReadFile(_path, true);
+                    await reader;
+                    v = VersionHelper.ReadManifest(reader.bytes);
                 }
+                else
+                {
+                    downloader = AssetsInternal.DownloadVersion(version.version, fileName);
+                    await downloader;
+                    if (downloader.isErr)
+                    {
+                        SetErr(downloader.error);
+                        break;
+                    }
+                    v = VersionHelper.ReadManifest(downloader.data);
+                    await VersionHelper.WriteManifest(v, _path);
+                }
+
+                ManifestData.Merge(v, manifest, this.loadedBundles);
+                _progress = 0.5f + i / pkgs.Count / 2f;
             }
 
             manifest.Prepare();

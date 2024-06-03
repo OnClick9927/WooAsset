@@ -57,7 +57,7 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            await Assets.CopyToSandBox();
+            //await Assets.CopyToSandBox();
             var op = await Assets.LoadRemoteVersions();
             if (op.Versions != null)
             {
@@ -67,11 +67,10 @@ namespace WooAsset
                 var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 
                 for (int i = 0; i < compare.add.Count; i++)
-                    await Assets.DownLoadBundle(versionData.version, compare.add[i].name);
+                    await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
                 for (int i = 0; i < compare.change.Count; i++)
-                    await Assets.DownLoadBundle(versionData.version, compare.change[i].name);
+                    await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
             }
-
 
 
             await Assets.InitAsync();

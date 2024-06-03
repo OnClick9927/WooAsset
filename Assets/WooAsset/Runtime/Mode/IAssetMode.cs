@@ -10,8 +10,8 @@ namespace WooAsset
         bool Initialized();
         Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
         CheckBundleVersionOperation LoadRemoteVersions();
-        CopyStreamBundlesOperation CopyToSandBox(string from, string to);
+        Operation CopyToSandBox(string from, string to);
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
-        VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs);
+        VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType);
     }
 }
