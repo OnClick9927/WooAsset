@@ -40,7 +40,6 @@ namespace WooAsset
                 SetResult(null);
             }
             protected override void OnUnLoad() { }
-            protected override long ProfilerAsset(AssetBundle value) => cache.GetBundleGroupByBundleName(this.bundleName).length;
 
             public override RawObject LoadRawObject(string path)
             {

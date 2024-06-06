@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace WooAsset
 {
@@ -164,7 +165,7 @@ namespace WooAsset
                 GenericMenu menu = new GenericMenu();
                 foreach (var tag in tags)
                 {
-                    menu.AddItem(new GUIContent($"tag/add/{tag}"), false, () =>
+                    menu.AddItem(new GUIContent($"Tag/Add/{tag}"), false, () =>
                     {
                         foreach (var path in paths)
                             AssetsEditorTool.option.AddAssetTag(path, tag);
@@ -172,7 +173,7 @@ namespace WooAsset
                         AssetTaskRunner.PreviewAllAssets();
 
                     });
-                    menu.AddItem(new GUIContent($"tag/remove/{tag}"), false, () =>
+                    menu.AddItem(new GUIContent($"Tag/Remove/{tag}"), false, () =>
                     {
                         foreach (var path in paths)
                             AssetsEditorTool.option.RemoveAssetTag(path, tag);
@@ -181,7 +182,20 @@ namespace WooAsset
                     });
 
                 }
-
+                menu.AddItem(new UnityEngine.GUIContent("Record/AddToIgnore"), false, () =>
+                {
+                    foreach (var path in rows)
+                        AssetsEditorTool.option.AddToRecordIgnore(path);
+                    AssetsEditorTool.option.Save();
+                    AssetTaskRunner.PreviewAllAssets();
+                });
+                menu.AddItem(new UnityEngine.GUIContent("Record/RemoveFromIgnore"), false, () =>
+                {
+                    foreach (var path in rows)
+                        AssetsEditorTool.option.RemoveFromRecordIgnore(path);
+                    AssetsEditorTool.option.Save();
+                    AssetTaskRunner.PreviewAllAssets();
+                });
                 menu.ShowAsContext();
 
             }
@@ -210,9 +224,10 @@ namespace WooAsset
                     float indent = this.GetContentIndent(args.item);
                     var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                     GUI.Label(first, GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
+                    EditorGUI.Toggle(args.GetCellRect(2), asset.record);
                     if (DirectoryLoop(asset))
                         GUI.Label(args.GetCellRect(1), Textures.err);
-                    GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
+                    GUI.Label(args.GetCellRect(6), GetSizeString(asset.length));
                 }
                 if (ping_a == asset)
                     DrawPing(args.rowRect);

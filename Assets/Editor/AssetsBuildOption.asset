@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
   version: 0.0.1
-  copyToStream: 0
-  buildMode: 1
+  copyToStream: 1
+  buildMode: 0
   typeTreeOption: 1
   bundleNameType: 2
   compress: 1
@@ -30,6 +30,32 @@ MonoBehaviour:
     tags: []
     paths:
     - Assets/Example
+    builds:
+    - param:
+        type: 9
+        path: 
+        tag: 
+        userData: 
+      typeIndex: 3
+      packType: 0
+      size: 2097152
+    - param:
+        type: 0
+        path: 
+        tag: test
+        userData: 
+      typeIndex: 12
+      packType: 2
+      size: 2097152
+    - param:
+        type: 0
+        path: 
+        tag: 
+        userData: 
+      typeIndex: 0
+      packType: 2
+      size: 2097152
+  recordIgnore: []
   build:
     types:
     - WooAsset.AssetsEditorTool+DefaultAssetBuild
@@ -51,8 +77,15 @@ MonoBehaviour:
     shortTypes:
     - DefaultAssetStreamEncrypt
     - NoneAssetStreamEncrypt
-    typeIndex: 0
-  tags: []
+    typeIndex: 1
+  tags:
+  - tag: test
+    assets:
+    - Assets/Example/px/1.png
+    - Assets/Example/px/2.png
+    - Assets/Example/px/3.png
+    - Assets/Example/px/One.prefab
+    - Assets/Example/px/Two.prefab
   shaderVariantDirectory: Assets/Example
   atlasPaths:
   - Assets/Example

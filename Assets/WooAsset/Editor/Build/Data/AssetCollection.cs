@@ -45,6 +45,13 @@ namespace WooAsset
                 GetAssetData(item.Key).tags = item.Value;
             }
         }
+        public void ReadRecord(Dictionary<string, bool> record_dic)
+        {
+            foreach (var item in record_dic)
+            {
+                GetAssetData(item.Key).record = item.Value;
+            }
+        }
 
         private void HandleLoopDependence(List<EditorAssetData> err) => assetBuild.HandleLoopDependence(err);
         private AssetType GetAssetType(string path) => assetBuild.GetAssetType(path);
@@ -157,5 +164,6 @@ namespace WooAsset
             }
         }
 
+    
     }
 }

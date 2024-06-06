@@ -20,12 +20,15 @@ namespace WooAsset
                             .ForEach(x => AssetsEditorTool.DeleteFile(x));
                 }
             }
-            foreach (var item in context.exports)
+            if (context.Pipeline != TaskPipelineType.EditorSimulate)
             {
-                await AssetsEditorTool.WriteObject(item,
-                     AssetsHelper.CombinePath(context.outputPath, $"Export_{item.pkg.name}.json"),
-                     true
-                     );
+
+                foreach (var item in context.exports)
+                {
+                    await AssetsEditorTool.WriteObject(item,
+                         AssetsHelper.CombinePath(context.outputPath, $"Export_{item.pkg.name}{VersionHelper.versionExt}"));
+                }
+
             }
             InvokeComplete();
         }

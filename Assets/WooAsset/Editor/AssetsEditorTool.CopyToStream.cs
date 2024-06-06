@@ -8,13 +8,11 @@ namespace WooAsset
     {
         internal class CopyToStream : CopyDirectoryOperation
         {
-            string local_v_name;
             private readonly List<string> buildInBundles;
             private readonly List<string> buildInConfigs;
 
-            public CopyToStream(string srcPath, string destPath, bool cover, string local_v_name, List<string> buildInBundles, List<string> buildInConfigs) : base(srcPath, destPath, cover)
+            public CopyToStream(string srcPath, string destPath, List<string> buildInBundles, List<string> buildInConfigs) : base(srcPath, destPath, true)
             {
-                this.local_v_name = local_v_name;
                 this.buildInBundles = buildInBundles;
                 this.buildInConfigs = buildInConfigs;
             }
@@ -42,14 +40,11 @@ namespace WooAsset
                         .ToArray();
                 }
                 var list = this.files.Select(x => GetDestFileName(x)).ToList();
-                list.Add(local_v_name);
-
                 await WriteObject(new StreamBundleList()
                 {
                     fileNames = list.ToArray(),
                 },
-                  AssetsHelper.CombinePath(destPath, StreamBundleList.fileName),
-                  true
+                  AssetsHelper.CombinePath(destPath, StreamBundleList.fileName)
                   );
                 base.Done();
             }

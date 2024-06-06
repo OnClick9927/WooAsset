@@ -65,11 +65,11 @@ namespace WooAsset
             t.ReadData(reader);
             return t;
         }
-        public static byte[] ObjectToBytes<T>(T obj) where T : IBufferObject
+        public static BufferWriter ObjectToBytes<T>(T obj) where T : IBufferObject
         {
             BufferWriter writer = new BufferWriter(104857600);
             obj.WriteData(writer);
-            return writer.GetRealBytes();
+            return writer;
         }
 
 
@@ -113,7 +113,7 @@ namespace WooAsset
 
 
 
-        public static Operation WriteFile(byte[] bytes, string targetPath, bool async) => new WriteFileOperation(targetPath, bytes, async);
+        public static Operation WriteFile(byte[] bytes, string targetPath, int start, int len) => new WriteFileOperation(targetPath, bytes, start, len);
         public static ReadFileOperation ReadFile(string srcPath, bool async) => new ReadFileOperation(srcPath, async);
         public static bool ExistsFile(string path) => File.Exists(path);
 

@@ -26,6 +26,27 @@ namespace WooAsset
                 foreach (EditorBundleData build in builds)
                     build.FindUsage(builds);
             }
+            public static ManifestData BuildManifest(string version, List<EditorBundleData> groups, AssetCollection tree)
+            {
+                List<AssetData> _assets = new List<AssetData>();
+                List<BundleData> _bundles = new List<BundleData>();
+
+                foreach (var build in groups)
+                {
+                    _bundles.Add(build.CreateBundleData());
+                    foreach (var assetPath in build.GetAssets())
+                    {
+                        EditorAssetData data = tree.GetAssetData(assetPath);
+                        if (data.record)
+                            _assets.Add(data.CreateAssetData(build.hash));
+                    }
+                }
+                ManifestData manifest = new ManifestData();
+                manifest.Read(version, _assets, _bundles);
+                manifest.Prepare();
+                return manifest;
+            }
+
             protected async override void OnExecute(AssetTaskContext context)
             {
                 var source = context.allBundleBuilds;
@@ -33,41 +54,47 @@ namespace WooAsset
                 var raws = source.FindAll(x => x.raw);
 
 
-                if (normal.Count != 0)
-                {
-                    var assetbuilds = normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray();
-                    AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
-                        assetbuilds, context.BuildOption, context.buildTarget);
-                    UpdateHash(normal, _main);
-                }
-                if (context.bundleNameType == BundleNameType.NameWithHash)
-                {
-                    for (int i = 0; i < raws.Count; i++)
-                    {
-                        var bundle = raws[i];
-                        var hash = bundle.hash;
-                        bundle.SyncRealHash($"{hash}_{hash}");
-                    }
-                }
+
                 Dictionary<string, string> needRenameFiles = new Dictionary<string, string>();
-                if (context.bundleNameType == BundleNameType.Hash)
+                if (context.Pipeline != TaskPipelineType.EditorSimulate)
                 {
-                    foreach (var bundle in source)
+                    if (normal.Count != 0 && context.Pipeline != TaskPipelineType.EditorSimulate)
                     {
-                        if (!bundle.raw)
+                        var assetbuilds = normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray();
+                        AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
+                            assetbuilds, context.BuildOption, context.buildTarget);
+                        UpdateHash(normal, _main);
+                    }
+
+                    if (context.bundleNameType == BundleNameType.NameWithHash)
+                    {
+                        for (int i = 0; i < raws.Count; i++)
                         {
-                            var bundleName = bundle.hash;
-                            string hash = bundleName.Split('_')[1];
-                            foreach (var item in source)
-                                item.ReplaceDpendenceHash(bundleName, hash);
-                            bundle.SyncRealHash(hash);
-                            needRenameFiles.Add(bundleName, hash);
+                            var bundle = raws[i];
+                            var hash = bundle.hash;
+                            bundle.SyncRealHash($"{hash}_{hash}");
+                        }
+                    }
+                    if (context.bundleNameType == BundleNameType.Hash)
+                    {
+                        foreach (var bundle in source)
+                        {
+                            if (!bundle.raw)
+                            {
+                                var bundleName = bundle.hash;
+                                string hash = bundleName.Split('_')[1];
+                                foreach (var item in source)
+                                    item.ReplaceDpendenceHash(bundleName, hash);
+                                bundle.SyncRealHash(hash);
+                                needRenameFiles.Add(bundleName, hash);
+                            }
                         }
                     }
                 }
 
 
-                var manifest = FastModeManifestTask.BuildManifest(context.version, source, context.assetsCollection, context.assetBuild);
+
+                var manifest = BuildManifest(context.version, source, context.assetsCollection);
 
 
                 context.manifest = manifest;
@@ -81,7 +108,7 @@ namespace WooAsset
                         var reader = AssetsHelper.ReadFile(src_path, true);
                         await reader;
                         string dest = AssetsHelper.CombinePath(context.historyPath, bundleName);
-                        await AssetsHelper.WriteFile(reader.bytes, dest, true);
+                        await AssetsHelper.WriteFile(reader.bytes, dest, 0, reader.bytes.Length);
 
                     }
                     if (needRenameFiles.Count > 0)
@@ -92,7 +119,7 @@ namespace WooAsset
                             //System.IO.File.Copy(AssetsHelper.CombinePath(context.historyPath, src), AssetsHelper.CombinePath(context.historyPath, dest));
                             var reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, src), true);
                             await reader;
-                            await AssetsHelper.WriteFile(reader.bytes, AssetsHelper.CombinePath(context.historyPath, dest), true);
+                            await AssetsHelper.WriteFile(reader.bytes, AssetsHelper.CombinePath(context.historyPath, dest), 0, reader.bytes.Length);
                         }
                     }
 
@@ -102,17 +129,15 @@ namespace WooAsset
                         var bundleName = bundle.hash;
                         var reader = AssetsHelper.ReadFile(AssetsHelper.CombinePath(context.historyPath, bundleName), true);
                         await reader;
+                        var bytes = EncryptBuffer.Encode(bundleName, reader.bytes, context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode()));
                         await AssetsHelper.WriteFile(
-                              EncryptBuffer.Encode(bundleName, reader.bytes, context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode())),
+                              bytes,
                               AssetsHelper.CombinePath(context.outputPath, bundleName),
-                              true
+                              0, bytes.Length
                               );
                     }
 
-                    //var bVer = new BundlesVersionData()
-                    //{
-                    //    version = context.version,
-                    //};
+
                     foreach (var bundleName in manifest.allBundle)
                     {
                         string path = AssetsHelper.CombinePath(context.outputPath, bundleName);
@@ -125,8 +150,6 @@ namespace WooAsset
                             var data = FileData.CreateByFile(path);
                             bundleData.length = data.length;
                             bundleData.hash = data.hash;
-
-                            //bVer.bundles.Add(data.ToBundleFileData());
                         }
                         else
                         {
@@ -137,13 +160,10 @@ namespace WooAsset
                     }
 
                     var mainfestName = VersionHelper.GetManifestFileName(context.buildPkg.name);
-                    //var bundleFileName = VersionHelper.GetBundleFileName(context.buildPkg.name);
 
                     await VersionHelper.WriteManifest(manifest,
                             AssetsHelper.CombinePath(context.outputPath,
                             mainfestName));
-                    //await VersionHelper.WriteBundlesVersion(bVer,
-                    //        AssetsHelper.CombinePath(context.outputPath, bundleFileName));
                 }
 
                 InvokeComplete();
@@ -159,23 +179,22 @@ namespace WooAsset
             new BuildTask(),
         };
 
-        private static VersionCollectionData DeepCopy(VersionCollectionData src)
-        {
-            return AssetsHelper.ReadFromBytes<VersionCollectionData>(AssetsHelper.ObjectToBytes(src));
-        }
+
         protected override async void OnExecute(AssetTaskContext context)
         {
             AssetsEditorTool.DeleteDirectory(context.outputPath);
             AssetsHelper.CreateDirectory(context.outputPath);
 
             var builds = context.buildPkgs.FindAll(x => x.build);
+            if (context.Pipeline == TaskPipelineType.EditorSimulate)
+                builds = context.buildPkgs;
             if (builds.Count == 0)
             {
                 SetErr("Nothing To Build");
                 InvokeComplete();
                 return;
             }
-
+            List<PackageExportData> exports = new List<PackageExportData>();
 
             for (int i = 0; i < builds.Count; i++)
             {
@@ -184,7 +203,7 @@ namespace WooAsset
                 for (int j = 0; j < tasks.Count; j++)
                     await Execute(tasks[j], context);
 
-                context.exports.Add(new PackageExportData()
+                exports.Add(new PackageExportData()
                 {
                     pkg = context.buildPkg.ToPackageData(),
                     manifest = context.manifest,
@@ -194,7 +213,13 @@ namespace WooAsset
                     typeTreeOption = context.typeTreeOption,
                 });
             }
-
+            var manifests = exports.ConvertAll(x => x.manifest);
+            ManifestData manifest = new ManifestData();
+            foreach (var item in manifests)
+                ManifestData.Merge(item, manifest, null);
+            manifest.Prepare();
+            context.mergedManifest = manifest;
+            context.exports = exports;
             if (context.isNormalBuildMode)
             {
                 var versions = context.historyVersions;
@@ -207,11 +232,10 @@ namespace WooAsset
                          context.historyVersionPath);
 
 
-                var outputVersions = DeepCopy(versions);
+                var outputVersions = versions.DeepCopy();
                 outputVersions.RemoveFirstIFTooLarge(context.MaxCacheVersionCount);
 
 
-                context.outputVersions = outputVersions;
                 await VersionHelper.WriteAssetsVersionCollection(
                           outputVersions,
                           AssetsHelper.CombinePath(context.outputPath, context.VersionCollectionName));

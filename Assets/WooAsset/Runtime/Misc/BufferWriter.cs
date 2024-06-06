@@ -9,7 +9,8 @@ namespace WooAsset
     {
         private byte[] _buffer;
         private int _index = 0;
-
+        public int length => _index;
+        public byte[] buffer => _buffer;
         public BufferWriter(int capacity)
         {
             _buffer = new byte[capacity];
@@ -38,12 +39,7 @@ namespace WooAsset
         {
             fileStream.Write(_buffer, 0, _index);
         }
-        public byte[] GetRealBytes()
-        {
-            byte[] bytes = new byte[_index];
-            Buffer.BlockCopy(_buffer, 0, bytes, 0, _index);
-            return bytes;
-        }
+   
 
         public void WriteBytes(byte[] data)
         {

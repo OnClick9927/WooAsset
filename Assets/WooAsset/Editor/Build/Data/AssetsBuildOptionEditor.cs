@@ -10,10 +10,10 @@ namespace WooAsset
         [CustomEditor(typeof(AssetsBuildOption))]
         class AssetsBuildOptionEditor : Editor
         {
-            static string key = "##AssetsBuildOptionEditor";
+            static string key = "###AssetsBuildOptionEditor";
             enum Tab
             {
-                Runtime, Tool, AssetTag, Build
+                Tool, Build,
             }
             private Tab tab;
 
@@ -48,7 +48,7 @@ namespace WooAsset
                 }
             }
 
-            private class RuntimeTab : OptionTab
+            private class ToolTab : OptionTab
             {
                 public override void OnGUI(SerializedObject serializedObject)
                 {
@@ -76,36 +76,26 @@ namespace WooAsset
                         if (option.enableServer)
                             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.serverPort)));
                     }
-                    EndGUI();
-
-
-                }
-            }
-            private class ToolTab : OptionTab
-            {
-                public override void OnGUI(SerializedObject serializedObject)
-                {
-                    BeginGUI("Shader Variant");
+                    MidGUI("Shader Variant");
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantDirectory)));
                     MidGUI("Sprite Atlas");
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.packSetting)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.textureSetting)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.PlatformSetting)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.atlasPaths)));
-                    EndGUI();
-                }
-            }
-            private class AssetTagTab : OptionTab
-            {
-                public override void OnGUI(SerializedObject serializedObject)
-                {
-                    BeginGUI("Asset Tags");
+
+
+                    MidGUI("Asset Tags");
 
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.tags)));
+                    MidGUI("Record Ignore");
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.recordIgnore)));
                     EndGUI();
+
 
                 }
             }
+
             private class BuildTab : OptionTab
             {
                 public override void OnGUI(SerializedObject serializedObject)
@@ -199,21 +189,15 @@ namespace WooAsset
             }
 
 
-            private RuntimeTab runtimeTab = new RuntimeTab();
             private ToolTab toolTab = new ToolTab();
-            private AssetTagTab assetTagTab = new AssetTagTab();
             private BuildTab buildTab = new BuildTab();
 
             private OptionTab GetTab()
             {
                 switch (tab)
                 {
-                    case Tab.Runtime:
-                        return runtimeTab;
                     case Tab.Tool:
                         return toolTab;
-                    case Tab.AssetTag:
-                        return assetTagTab;
                     case Tab.Build:
                         return buildTab;
                     default:

@@ -1,6 +1,4 @@
-﻿using static WooAsset.AssetsBuildOption;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     [System.Serializable]
     public class PackageExportData : IBufferObject

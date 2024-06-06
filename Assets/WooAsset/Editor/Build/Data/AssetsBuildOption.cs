@@ -23,8 +23,8 @@ namespace WooAsset
 
         public bool enableServer;
         public int serverPort = 8080;
-        public List<EditorBundlePackage> pkgs = new List<EditorBundlePackage>();
-
+        public List<EditorPackageData> pkgs = new List<EditorPackageData>();
+        public List<string> recordIgnore = new List<string>();
         public TypeSelect build = new TypeSelect();
         public TypeSelect mode = new TypeSelect();
         public TypeSelect encrypt = new TypeSelect();
@@ -67,7 +67,8 @@ namespace WooAsset
                 mode.baseType = typeof(IAssetMode);
                 mode.Enable();
             }
-
+            recordIgnore.RemoveAll(x => !AssetsHelper.ExistsFile(x) && !AssetsEditorTool.ExistsDirectory(x));
+            tags.ForEach(x => x.assets.RemoveAll(y => !AssetsHelper.ExistsFile(y)));
         }
 
 
@@ -105,8 +106,12 @@ namespace WooAsset
             return false;
         }
 
-
-
+        public void AddToRecordIgnore(string path)
+        {
+            if (recordIgnore.Contains(path)) return;
+            recordIgnore.Add(path);
+        }
+        public void RemoveFromRecordIgnore(string path) => recordIgnore.Remove(path);
         public List<string> GetAllTags() => tags.ConvertAll(x => x.tag);
         public void AddAssetTag(string path, string tag)
         {
@@ -131,12 +136,7 @@ namespace WooAsset
             assets.assets.Remove(path);
 
         }
-        public List<string> GetAssetTags(string path)
-        {
-            if (tags == null)
-                return null;
-            return tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag);
-        }
+
         public SpriteAtlasPackingSettings GetPackingSetting()
         {
             return new SpriteAtlasPackingSettings()

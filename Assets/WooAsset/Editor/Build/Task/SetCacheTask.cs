@@ -6,11 +6,15 @@ namespace WooAsset
     {
         protected override void OnExecute(AssetTaskContext context)
         {
-            var cache = AssetsEditorTool.cache;
-            cache.tree = context.assetsCollection;
-            cache.previewBundles = context.allBundleBuilds != null ? context.allBundleBuilds : new List<EditorBundleData>();
-            cache.manifest = context.manifest;
-            cache.Save();
+            if (context.Pipeline != TaskPipelineType.BuildBundle)
+            {
+                var cache = AssetsEditorTool.cache;
+                cache.tree = context.assetsCollection;
+                cache.previewBundles = context.allBundleBuilds != null ? context.allBundleBuilds : new List<EditorBundleData>();
+                cache.manifest = context.mergedManifest;
+                cache.Save();
+
+            }
             InvokeComplete();
         }
     }

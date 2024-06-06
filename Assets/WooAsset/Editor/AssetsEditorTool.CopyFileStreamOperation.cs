@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace WooAsset
 {
@@ -34,7 +35,7 @@ namespace WooAsset
                         _progress = offset / (float)len;
                         if (last <= 0) break;
 
-                        await new YieldOperation();
+                        await Task.Delay(1);
                     }
                 }
                 InvokeComplete();

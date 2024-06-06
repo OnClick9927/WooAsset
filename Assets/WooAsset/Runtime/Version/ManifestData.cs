@@ -247,6 +247,7 @@ namespace WooAsset
 
         public static void Merge(ManifestData src, ManifestData dest, List<string> prefer_bundles)
         {
+            dest.version = src.version;
             var assets_src = src.assets;
             var bundles_src = src.bundles;
             var assets_dest = dest.assets;

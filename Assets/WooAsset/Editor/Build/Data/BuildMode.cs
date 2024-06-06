@@ -2,7 +2,6 @@
 {
     public enum BuildMode
     {
-        Dry,
         Increase,
         ForceRebuild,
     }

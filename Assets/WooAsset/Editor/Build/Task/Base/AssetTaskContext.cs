@@ -1,16 +1,13 @@
 ﻿using UnityEditor;
 using System.Collections.Generic;
-using static WooAsset.AssetsBuildOption;
-using static WooAsset.AssetsEditorTool;
-using UnityEngine;
 
 namespace WooAsset
 {
-    [System.Serializable]
+
     public class AssetTaskContext
     {
-
-        public int MaxCacheVersionCount => option.MaxCacheVersionCount;
+        public readonly AssetTaskParams Params;
+        public int MaxCacheVersionCount => Params.MaxCacheVersionCount;
         public string outputPath => AssetsEditorTool.outputPath;
         public string historyPath => AssetsEditorTool.historyPath;
         public BuildTarget buildTarget => AssetsEditorTool.buildTarget;
@@ -21,38 +18,39 @@ namespace WooAsset
         public string streamBundleDirectory => AssetsHelper.streamBundleDirectory;
 
         public string serverDirectory => AssetsEditorTool.ServerDirectory;
-        public CompressType compress => option.compress;
-        public List<EditorBundlePackage> buildPkgs => option.pkgs;
-        public TypeTreeOption typeTreeOption => option.typeTreeOption;
-        public bool cleanHistory => option.cleanHistory;
-        public BundleNameType bundleNameType => option.bundleNameType;
-        public List<Object> buildInAssets => option.buildInAssets;
-        public BuildMode buildMode => option.buildMode;
-        public bool copyToStream => option.copyToStream;
+        public CompressType compress => Params.compress;
+        public List<EditorPackageData> buildPkgs => Params.buildPkgs;
+        public TypeTreeOption typeTreeOption => Params.typeTreeOption;
+        public bool cleanHistory => Params.cleanHistory;
+        public BundleNameType bundleNameType => Params.bundleNameType;
+        public List<string> buildInAssets => Params.buildInAssets;
+        public BuildMode buildMode => Params.buildMode;
+        public bool copyToStream => Params.copyToStream;
+        public bool isNormalBuildMode => Pipeline != TaskPipelineType.DryBuild && Pipeline != TaskPipelineType.EditorSimulate;
+        public TaskPipelineType Pipeline => Params.Pipeline;
+        public IAssetBuild assetBuild => Params.assetBuild;
+        public IAssetStreamEncrypt encrypt => Params.encrypt;
+        public List<AssetTask> pipelineStartTasks => Params.pipelineStartTasks;
+        public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
 
-        
-        public bool isNormalBuildMode => buildMode != BuildMode.Dry;
 
-        public EditorBundlePackage buildPkg;
-        public AssetCollection assetsCollection;
-        public TaskPipelineType Pipeline;
+
+        public string version;
         public BuildAssetBundleOptions BuildOption;
-        public IAssetBuild assetBuild;
-        public IAssetStreamEncrypt encrypt;
-
-
+        public AssetCollection assetsCollection;
+        public EditorPackageData buildPkg;
         public List<EditorAssetData> needBuildAssets;
         public List<EditorBundleData> allBundleBuilds;
-        public string version;
         public VersionCollectionData historyVersions;
-        public VersionCollectionData outputVersions;
-
         public ManifestData manifest;
-        public List<AssetTask> pipelineStartTasks;
-        public List<AssetTask> pipelineEndTasks;
-        public List<PackageExportData> exports = new List<PackageExportData>();
-
+        public List<PackageExportData> exports;
         public string historyVersionPath;
+        public ManifestData mergedManifest;
+
+        public AssetTaskContext(AssetTaskParams @params)
+        {
+            Params = @params;
+        }
     }
 
 }

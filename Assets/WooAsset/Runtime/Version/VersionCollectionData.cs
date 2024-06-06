@@ -9,6 +9,16 @@ namespace WooAsset
 
         [UnityEngine.SerializeField] private List<string> versions = new List<string>();
 
+        public VersionCollectionData DeepCopy()
+        {
+
+
+            return new VersionCollectionData()
+            {
+                versions = new List<string>(versions)
+            };
+        }
+
         void IBufferObject.ReadData(BufferReader reader)
         {
             versions = reader.ReadUTF8List();

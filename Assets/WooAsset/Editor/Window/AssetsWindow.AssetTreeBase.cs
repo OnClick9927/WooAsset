@@ -21,6 +21,8 @@ namespace WooAsset
                 {
                     GetFirtColumn(),
                     TreeColumns.loopDepenence,
+                    TreeColumns.record,
+
                     TreeColumns.usageCount,
                     TreeColumns.depenceCount,
                     TreeColumns.type,
@@ -77,11 +79,12 @@ namespace WooAsset
 
                 if (asset.loopDependence)
                     GUI.Label(args.GetCellRect(1), Textures.err);
-                DrawCount(args.GetCellRect(2), asset.usageCount);
-                DrawCount(args.GetCellRect(3), asset.dependence.Count);
-                GUI.Label(args.GetCellRect(4), asset.type.ToString());
-                GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
-                EditorGUI.SelectableLabel(args.GetCellRect(6), GetTagsString(asset));
+                EditorGUI.Toggle(args.GetCellRect(2), asset.record);
+                DrawCount(args.GetCellRect(3), asset.usageCount);
+                DrawCount(args.GetCellRect(4), asset.dependence.Count);
+                GUI.Label(args.GetCellRect(5), asset.type.ToString());
+                GUI.Label(args.GetCellRect(6), GetSizeString(asset.length));
+                EditorGUI.SelectableLabel(args.GetCellRect(7), GetTagsString(asset));
 
             }
 

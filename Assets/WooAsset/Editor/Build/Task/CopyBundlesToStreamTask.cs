@@ -11,17 +11,9 @@ namespace WooAsset
             if (context.isNormalBuildMode && context.copyToStream)
             {
                 string streamPath = context.streamBundleDirectory;
-                string local_ver_path = AssetsHelper.CombinePath(streamPath, context.VersionDataName + ".bytes");
-                string remote_ver_path = AssetsHelper.CombinePath(context.outputPath, context.VersionCollectionName);
-                var buildInAssets = context.buildInAssets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
-                var manifests = context.exports.ConvertAll(x => x.manifest);
-                ManifestData manifest = new ManifestData();
-                foreach (var item in manifests)
-                    ManifestData.Merge(item, manifest, null);
+                var buildInAssets = context.buildInAssets;
+                ManifestData manifest = context.mergedManifest;
 
-
-
-                manifest.Prepare();
                 List<string> dps = new List<string>();
                 foreach (var item in buildInAssets)
                 {
@@ -47,24 +39,20 @@ namespace WooAsset
                 }
                 List<string> buildInConfigs = new List<string>
                 {
-                    VersionHelper.VersionDataName
+                    VersionHelper.VersionDataName,
+                    VersionHelper.VersionCollectionName,
                 };
                 foreach (var item in context.buildPkgs)
                 {
                     buildInConfigs.Add(VersionHelper.GetManifestFileName(item.name));
-                    //buildInConfigs.Add(VersionHelper.GetBundleFileName(item.name));
                 }
+                if (AssetsEditorTool.ExistsDirectory(streamPath))
+                    AssetsEditorTool.DeleteDirectory(streamPath);
 
-
-                await new CopyToStream(context.outputPath, streamPath, true, AssetsHelper.GetFileName(local_ver_path), buildInBundles, buildInConfigs);
+                await new CopyToStream(context.outputPath, streamPath, buildInBundles, buildInConfigs);
                 AssetDatabase.Refresh();
 
 
-                var reader = AssetsHelper.ReadFile(remote_ver_path, true);
-                await reader;
-                //var c = VersionHelper.ReadAssetsVersionCollection(reader.bytes);
-                //var data = c.NewestVersion();
-                //await VersionHelper.WriteVersionData(data, local_ver_path);
                 AssetDatabase.Refresh();
             }
 

@@ -1,4 +1,6 @@
-﻿namespace WooAsset
+﻿using System.Threading.Tasks;
+
+namespace WooAsset
 {
     partial class AssetsEditorTool
     {
@@ -43,13 +45,13 @@
             protected virtual bool NeedCopy(string src) { return true; }
             protected virtual async void Done()
             {
-
                 foreach (var path in files)
                 {
                     if (!NeedCopy(path)) continue;
                     string _destPath = AssetsHelper.CombinePath(destPath, GetDestFileName(path));
                     if (AssetsHelper.ExistsFile(_destPath) && !_cover) continue;
-                    await AssetsEditorTool.CopyFile(path, _destPath);
+                    AssetsEditorTool.CopyFile(path, _destPath);
+                    await Task.Delay(1);
                     step++;
                 }
                 this.InvokeComplete();

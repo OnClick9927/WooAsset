@@ -14,7 +14,7 @@ namespace WooAsset
 
             var raws = context.needBuildAssets.FindAll(x => x.type == AssetType.Raw);
             context.needBuildAssets.RemoveAll(x => raws.Contains(x));
-            context.assetBuild.Create(context.needBuildAssets, builds);
+            context.assetBuild.Create(context.needBuildAssets, builds, context.buildPkg);
 
             builds.RemoveAll(x => x.GetIsEmpty());
             builds.Sort((a, b) =>

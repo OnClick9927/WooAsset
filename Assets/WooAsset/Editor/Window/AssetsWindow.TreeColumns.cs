@@ -91,6 +91,14 @@ namespace WooAsset
                 allowToggleVisibility = false,
 
             };
+            public static MultiColumnHeaderState.Column record = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Record"),
+                minWidth = 40,
+                maxWidth = 40,
+                allowToggleVisibility = false,
+
+            };
             public static MultiColumnHeaderState.Column loopDepenence = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Loop"),

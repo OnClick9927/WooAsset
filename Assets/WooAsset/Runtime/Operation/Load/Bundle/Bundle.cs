@@ -3,7 +3,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
-using static WooAsset.AssetsInternal;
 
 namespace WooAsset
 {
@@ -70,7 +69,7 @@ namespace WooAsset
 
         private long _length;
         public long length => _length;
-        protected virtual long ProfilerAsset(AssetBundle value)
+        protected long ProfilerAsset(AssetBundle value)
         {
             if (value == null) return 0;
             return Profiler.GetRuntimeMemorySizeLong(value);

@@ -68,74 +68,56 @@ namespace WooAsset
         }
 
 
-
-
-        [MenuItem(TaskPipelineMenu.PreviewBundles)]
-        public static AssetTask PreviewBundles()
+        [MenuItem(TaskPipelineMenu.EditorSimulate)]
+        public static AssetTask EditorSimulate()
         {
-            AssetTaskContext context = new AssetTaskContext()
-            {
-                Pipeline = TaskPipelineType.PreviewBundles,
-            };
-            AssetTask task = Execute(new AssetTaskRunner(hashPreview), context);
+            var Params = new AssetTaskParams(TaskPipelineType.EditorSimulate);
+            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
             return task;
         }
+
+
         [MenuItem(TaskPipelineMenu.PreviewAssets)]
         public static AssetTask PreviewAssets()
         {
-            AssetTaskContext context = new AssetTaskContext()
-            {
-                Pipeline = TaskPipelineType.PreviewAssets,
-            };
-            AssetTask task = Execute(new AssetTaskRunner(collectAssets), context);
+            var Params = new AssetTaskParams(TaskPipelineType.PreviewAssets);
+            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
             return task;
         }
 
-        [MenuItem(TaskPipelineMenu.PreviewAllBundles)]
-        public static AssetTask PreviewAllBundles()
-        {
-            AssetTaskContext context = new AssetTaskContext()
-            {
-                Pipeline = TaskPipelineType.PreviewAllBundles,
-            };
-            AssetTask task = Execute(new AssetTaskRunner(hashPreview), context);
-            return task;
-        }
         [MenuItem(TaskPipelineMenu.PreviewAllAssets)]
         public static AssetTask PreviewAllAssets()
         {
-            AssetTaskContext context = new AssetTaskContext()
-            {
-                Pipeline = TaskPipelineType.PreviewAllAssets,
-            };
-            AssetTask task = Execute(new AssetTaskRunner(collectAssets), context);
+            var Params = new AssetTaskParams(TaskPipelineType.PreviewAllAssets);
+            AssetTask task = Execute(new AssetTaskRunner(collectAssets), Params);
             return task;
         }
-
-
-
 
         [MenuItem(TaskPipelineMenu.Build)]
         public static AssetTask Build()
         {
-            AssetTaskContext context = new AssetTaskContext() { Pipeline = TaskPipelineType.BuildBundle };
-            AssetTask task = Execute(new AssetTaskRunner(stream_common), context);
+            var Params = new AssetTaskParams(TaskPipelineType.BuildBundle);
+            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
             return task;
         }
-  
-    
+        [MenuItem(TaskPipelineMenu.DryBuild)]
+        public static AssetTask DryBuild()
+        {
+            var Params = new AssetTaskParams(TaskPipelineType.DryBuild);
+            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
+            return task;
+        }
+
         private static List<AssetTask> stream_common = new List<AssetTask>
         {
             new PrepareTask(),
             new BuildBundleTask(),
             new CopyToBundlesToServerTask(),
             new CopyBundlesToStreamTask(),
+            new BuildExportTask(),
+            new SetCacheTask(),
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
-
-
-
-
 
         private static List<AssetTask> collectAssets = new List<AssetTask>
         {
@@ -144,18 +126,6 @@ namespace WooAsset
             new SetCacheTask(),
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
-
-        private static List<AssetTask> hashPreview = new List<AssetTask>
-        {
-            new PrepareTask(),
-            new CollectAssetsTask(),
-            new CollectHashBundleGroupTask(),
-            new FastModeManifestTask(),
-            new SetCacheTask(),
-            new AssetsEditorTool.CallPipelineFinishTask(),
-        };
-
-
 
 
 

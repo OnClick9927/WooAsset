@@ -12,7 +12,7 @@ namespace WooAsset
         public string[] shortTypes;
         public int typeIndex;
         public Type baseType;
-        static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
+        public static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
         {
             if (self.IsInterface)
             {

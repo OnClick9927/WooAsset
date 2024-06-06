@@ -31,7 +31,7 @@ namespace WooAsset
             protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
             {
                 if (_task == null)
-                    _task = AssetTaskRunner.PreviewAllBundles();
+                    _task = AssetTaskRunner.EditorSimulate();
                 return _task;
             }
             protected override CheckBundleVersionOperation LoadRemoteVersions() => new AssetDataBaseCheck();

@@ -76,10 +76,11 @@ namespace WooAsset
         {
             bundles.Clear();
             assets.Clear();
-            AssetsInternal.mode = Activator.CreateInstance(option.GetAssetModeType()) as IAssetMode;
+            var _op = option;
+            AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
-            if (option.enableServer && AssetsInternal.mode is NormalAssetMode)
-                AssetsServer.Run(option.serverPort, ServerDirectory);
+            if (_op.enableServer && AssetsInternal.mode is NormalAssetMode)
+                AssetsServer.Run(_op.serverPort, ServerDirectory);
         }
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
@@ -104,10 +105,7 @@ namespace WooAsset
     }
     public partial class AssetsEditorTool
     {
-        public static BuildTarget buildTarget
-        {
-            get { return EditorUserBuildSettings.activeBuildTarget; }
-        }
+        public static BuildTarget buildTarget => EditorUserBuildSettings.activeBuildTarget;
         public static string buildTargetName => AssetsHelper.buildTarget;
         public static string EditorSimulatorPath
         {
@@ -176,9 +174,7 @@ namespace WooAsset
             get
             {
                 if (!_cache)
-                {
                     _cache = AssetsScriptableObject.Load<AssetsEditorCache>();
-                }
                 return _cache;
             }
         }
@@ -222,12 +218,13 @@ namespace WooAsset
             };
         }
 
-        public static Operation CopyFile(string srcPath, string targetPath) => new CopyFileOperation(targetPath, srcPath);
+        public static void MoveFile(string srcPath, string targetPath) => System.IO.File.Move(srcPath, targetPath);
+        public static void CopyFile(string srcPath, string targetPath) => System.IO.File.Copy(srcPath, targetPath);
 
-        public static Operation WriteObject<T>(T t, string path, bool async) where T : IBufferObject
+        public static Operation WriteObject<T>(T t, string path) where T : IBufferObject
         {
             var bytes = AssetsHelper.ObjectToBytes(t);
-            return AssetsHelper.WriteFile(bytes, path, async);
+            return AssetsHelper.WriteFile(bytes.buffer, path, 0, bytes.length);
         }
 
         public static void DeleteFile(string path) => File.Delete(path);
