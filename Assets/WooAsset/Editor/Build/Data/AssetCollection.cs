@@ -25,6 +25,8 @@ namespace WooAsset
                 AddPath(folders[i]);
             CollectDps();
             assets.RemoveAll(x => NeedRemove(x));
+            assets.RemoveAll(x => NeedRemove(x));
+
             for (int i = 0; i < assets.Count; i++)
             {
                 var asset = assets[i];
