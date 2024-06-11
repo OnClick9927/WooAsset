@@ -29,11 +29,15 @@ namespace WooAsset
         public readonly TaskPipelineType Pipeline;
         public List<string> GetAssetTags(string path)
         {
-            if (tags == null)
-                return null;
-            return tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag);
+            List<string> result = new List<string>();
+            var result_a = assetBuild.GetAssetTags(path);
+            if (result_a != null)
+                result.AddRange(result_a);
+            if (tags != null)
+                result.AddRange(tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag));
+            return result.Distinct().ToList();
         }
-        public bool GetIsRecord(string path) => !recordIgnore.Any(x => path.StartsWith(x));
+        public bool GetIsRecord(string path) => !recordIgnore.Any(x => path.StartsWith(x)) && assetBuild.GetIsRecord(path);
 
         public AssetTaskParams(TaskPipelineType Pipeline)
         {

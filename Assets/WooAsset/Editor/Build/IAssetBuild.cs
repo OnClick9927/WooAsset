@@ -7,12 +7,15 @@ using UnityEngine;
 using UnityEditor.Animations;
 using static WooAsset.AssetsEditorTool;
 
+
 namespace WooAsset
 {
     public abstract class IAssetBuild
     {
-        public virtual string GetVersion(string settingVersion, AssetTaskContext context) => settingVersion;
+        public virtual bool GetIsRecord(string path) => true;
 
+        public virtual List<string> GetAssetTags(string path) => null;
+        public virtual string GetVersion(string settingVersion, AssetTaskContext context) => settingVersion;
         public virtual void HandleLoopDependence(List<EditorAssetData> err) { }
         protected virtual AssetType CoverAssetType(string path, AssetType type) => type;
         public AssetType GetAssetType(string path)
@@ -26,9 +29,10 @@ namespace WooAsset
             {
                 AssetImporter importer = AssetImporter.GetAtPath(path);
                 if (path.EndsWith(".meta")) _type = AssetType.Ignore;
-                else if (path.EndsWith(".cs")) _type = AssetType.Ignore;
+                //else if (path.EndsWith(".cs")) _type = AssetType.Ignore;
                 else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
                 else if (importer is ModelImporter) _type = AssetType.Model;
+                else if (AssetDatabase.LoadAssetAtPath<MonoScript>(path) != null) _type = AssetType.Ignore;
                 else if (AssetDatabase.LoadAssetAtPath<LightingDataAsset>(path) != null) _type = AssetType.Ignore;
                 else if (AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path) != null) _type = AssetType.Ignore;
                 else if (AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(path) != null) _type = AssetType.Scene;
@@ -139,5 +143,6 @@ namespace WooAsset
             if (code == DefaultAssetStreamEncrypt.code) return def;
             return null;
         }
+
     }
 }

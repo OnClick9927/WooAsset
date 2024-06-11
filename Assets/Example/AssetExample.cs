@@ -13,42 +13,6 @@ using UnityEngine.UI;
 
 namespace WooAsset
 {
-    public class LocalSetting : AssetsSetting
-    {
-        //public override string GetUrlByBundleName(string buildTarget, string bundleName)
-        //{
-        //    return base.GetUrlByBundleName(buildTarget, bundleName) + ".bytes";
-        //}
-        //public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
-        //{
-        //    return GetUrlByBundleName(buildTarget, bundleName);
-        //}
-        public override bool NeedCopyStreamBundles()
-        {
-            return false;
-        }
-        public override bool GetAutoUnloadBundle()
-        {
-            return true;
-        }
-        public override bool GetBundleAwalysFromWebRequest()
-        {
-            return false;
-        }
-        protected override string GetBaseUrl()
-        {
-            //return Application.streamingAssetsPath;
-            //return "https://pic.trinityleaves.cn/images/xxx";
-            return "http://127.0.0.1:8080";
-            //Application.dataPath, "../DLCDownLoad"
-            //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());
-        }
-
-        public override IAssetLife GetAssetLife()
-        {
-            return null;
-        }
-    }
     public class AssetExample : UnityEngine.MonoBehaviour
     {
         public Image image;

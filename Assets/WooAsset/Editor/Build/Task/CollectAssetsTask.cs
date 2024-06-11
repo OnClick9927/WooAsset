@@ -34,9 +34,9 @@ namespace WooAsset
             foreach (var item in assets)
             {
                 if (AssetsHelper.GetOrDefaultFromDictionary(tag_dic, item.path) != null) continue;
-                var tags = context.Params.GetAssetTags(item.path);
-                if (tags == null || tags.Count == 0) continue;
-                tag_dic.Add(item.path, tags.ToList());
+                var tag_list = context.Params.GetAssetTags(item.path);
+                if (tag_list == null || tag_list.Count == 0) continue;
+                tag_dic.Add(item.path, tag_list.ToList());
             }
             tree.ReadRecord(record_dic);
             tree.ReadAssetTags(tag_dic);
