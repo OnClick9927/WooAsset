@@ -26,7 +26,7 @@ namespace WooAsset
             if (op.Versions != null)
             {
                 var version = op.Versions.NewestVersion();
-                var down = await Assets.DonloadVersionData(version);
+                var down = await Assets.DownloadVersionData(version);
                 var versionData = down.GetVersion();
                 var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 

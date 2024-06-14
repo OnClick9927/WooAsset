@@ -109,7 +109,7 @@ namespace WooAsset
 
         private static IAssetStreamEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAwalysFromWebRequest();
-        public static bool GetBundleAwalysFromWebRequest() => setting.GetBundleAwalysFromWebRequest();
+        public static bool GetBundleAwalysFromWebRequest() => setting.GetBundleAlwaysFromWebRequest();
 
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();

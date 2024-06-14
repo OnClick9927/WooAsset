@@ -26,7 +26,7 @@ namespace WooAsset
         {
             return true;
         }
-        public override bool GetBundleAwalysFromWebRequest()
+        public override bool GetBundleAlwaysFromWebRequest()
         {
             return false;
         }

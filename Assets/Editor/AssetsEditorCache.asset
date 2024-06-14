@@ -452,7 +452,7 @@ MonoBehaviour:
     _raw: 1
     _enCode: 0
   manifest:
-    version: 2024_06_14_11_51_19
+    version: 2024_06_14_13_27_45
     tags:
     - tag: test
       assetIndexes: 08000000090000000a0000000b0000000c000000
