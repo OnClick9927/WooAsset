@@ -49,8 +49,8 @@ namespace WooAsset
                         var _tag = _tags[j];
                         var asset = AssetsHelper.GetFromDictionary(tags, _tag);
                         if (asset.assets == null) asset.assets = new List<string>();
-                        if (asset.assets.Contains(_tag)) continue;
-                        asset.assets.Add(_tag);
+                        if (asset.assets.Contains(assetPath)) continue;
+                        asset.assets.Add(assetPath);
                     }
                 }
                 bundle = new EditorBundle(new BundleLoadArgs()
