@@ -61,18 +61,18 @@ namespace WooAsset
 
 
         public static AssetType GetAssetType(string assetPath) => Initialized() ? GetAssetData(assetPath).type : AssetType.None;
-        public static AssetData GetAssetData(string assetPath) => Initialized() ? mode.manifest.GetAssetData(assetPath) : null;
-        public static BundleData GetBundleData(string bundleName) => Initialized() ? mode.manifest.GetBundleData(bundleName) : null;
+        public static AssetData GetAssetData(string assetPath) => mode.GetAssetData(assetPath);
+        public static BundleData GetBundleData(string bundleName) => mode.GetBundleData(bundleName);
         public static string GetVersion() => Initialized() ? mode.version : string.Empty;
         public static IReadOnlyList<string> GetAssetTags(string assetPath) => GetAssetData(assetPath)?.tags;
 
 
 
-        public static IReadOnlyList<string> GetAllAssetPaths() => Initialized() ? mode.manifest.allPaths : null;
-        public static IReadOnlyList<string> GetTagAssetPaths(string tag) => Initialized() ? mode.manifest.GetTagAssetPaths(tag) : null;
-        public static IReadOnlyList<string> GetAllTags() => Initialized() ? mode.manifest.allTags : null;
-        public static IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => Initialized() ? mode.manifest.GetAssetsByAssetName(name, result) : null;
-        public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => Initialized() ? mode.manifest.GetAssets(bundleName) : null;
+        public static IReadOnlyList<string> GetAllAssetPaths() => mode.GetAllAssetPaths();
+        public static IReadOnlyList<string> GetTagAssetPaths(string tag) => mode.GetTagAssetPaths(tag);
+        public static IReadOnlyList<string> GetAllTags() => mode.GetAllTags();
+        public static IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => mode.GetAssetsByAssetName(name, result);
+        public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => mode.GetAllAssetPaths(bundleName);
 
 
     }

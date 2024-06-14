@@ -10,7 +10,7 @@ namespace WooAsset
 
         private LoadManifestOperation manifestOp;
 
-        public override ManifestData manifest => Initialized() ? manifestOp.manifest : null;
+        protected override ManifestData manifest => Initialized() ? manifestOp.manifest : null;
 
         protected override bool Initialized()
         {

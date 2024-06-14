@@ -65,9 +65,11 @@ MonoBehaviour:
   mode:
     types:
     - WooAsset.AssetsEditorTool+AssetDatabaseMode
+    - WooAsset.AssetsEditorTool+RudeMode
     - WooAsset.NormalAssetMode
     shortTypes:
     - AssetDatabaseMode
+    - RudeMode
     - NormalAssetMode
     typeIndex: 1
   encrypt:

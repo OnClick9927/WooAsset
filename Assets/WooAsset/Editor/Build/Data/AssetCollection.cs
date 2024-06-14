@@ -8,6 +8,11 @@ namespace WooAsset
     [System.Serializable]
     public class AssetCollection
     {
+        private class DistinctEditorAssetData : IEqualityComparer<EditorAssetData>
+        {
+            bool IEqualityComparer<EditorAssetData>.Equals(EditorAssetData x, EditorAssetData y) => x.path == y.path;
+            int IEqualityComparer<EditorAssetData>.GetHashCode(EditorAssetData obj) => obj.path.GetHashCode();
+        }
         [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         private IAssetBuild assetBuild;
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
@@ -20,7 +25,7 @@ namespace WooAsset
         {
             this.assetBuild = assetBuild;
             assets.Clear();
-            folders.RemoveAll(x => !AssetsEditorTool.ExistsDirectory(x) /*|| CheckRawIsIgnorePath(x)*/);
+            folders.RemoveAll(x => !AssetsEditorTool.ExistsDirectory(x));
             for (int i = 0; i < folders.Count; i++)
                 AddPath(folders[i]);
             CollectDps();
@@ -31,44 +36,24 @@ namespace WooAsset
             {
                 var asset = assets[i];
                 asset.dependence.RemoveAll(x => assets.Find(y => y.path == x) == null);
-
             }
+            assets = assets.Distinct(new DistinctEditorAssetData()).ToList();
 
-            List<string> distinctPaths = new List<string>();
-            for (int i = assets.Count - 1; i >= 0; i--)
-            {
-                var asset = assets[i];
-                string path = asset.path;
-                if (distinctPaths.Contains(path))
-                    assets.RemoveAt(i);
-                else
-                    distinctPaths.Add(path);
-            }
-            List<EditorAssetData> errs = new List<EditorAssetData>();
             for (int i = 0; i < assets.Count; i++)
             {
                 var asset = assets[i];
-                var dps = asset.dependence.ConvertAll(x => GetAssetData(x));
-                var find = dps.FindAll(x => x.dependence.Contains(asset.path));
-                if (find != null && find.Count != 0)
-                    errs.Add(asset);
+                if (asset.type != AssetType.Directory) continue;
+                asset.length = GetLength(asset);
             }
-            HandleLoopDependence(errs);
             for (int i = 0; i < assets.Count; i++)
             {
                 var asset = assets[i];
-                var dps = asset.dependence.ConvertAll(x => GetAssetData(x));
-                var find = dps.FindAll(x => x.dependence.Contains(asset.path));
-                if (find != null && find.Count != 0)
-                    asset.loopDependence = true;
-
+                if (asset.type == AssetType.Directory) continue;
+                asset.usage = assets.FindAll(x => x.dependence.Contains(asset.path)).Select(x => x.path).ToList();
             }
-
-
-
-            CalcLength();
-            CalcUsage();
         }
+
+
         public void ReadAssetTags(Dictionary<string, List<string>> tag_dic)
         {
             foreach (var item in tag_dic)
@@ -84,14 +69,8 @@ namespace WooAsset
             }
         }
 
-        private void HandleLoopDependence(List<EditorAssetData> err) => assetBuild.HandleLoopDependence(err);
         private AssetType GetAssetType(string path) => assetBuild.GetAssetType(path);
-        //private bool CheckRawIsIgnorePath(string path)
-        //{
-        //    path = AssetsHelper.ToRegularPath(path);
-        //    var type = GetAssetType(path);
-        //    return type == AssetType.Ignore;
-        //}
+
         private long GetLength(EditorAssetData data)
         {
             if (data.type != AssetType.Directory) return data.length;
@@ -117,32 +96,12 @@ namespace WooAsset
             }
             return true;
         }
-        private void CalcLength()
-        {
-            var _assets = assets;
-            for (int i = 0; i < _assets.Count; i++)
-            {
-                var asset = _assets[i];
-                if (asset.type != AssetType.Directory) continue;
-                asset.length = GetLength(asset);
-            }
-        }
-        private void CalcUsage()
-        {
-            for (int i = 0; i < assets.Count; i++)
-            {
-                var asset = assets[i];
-                if (asset.type == AssetType.Directory) continue;
-                asset.usage = assets.FindAll(x => x.dependence.Contains(asset.path)).Select(x => x.path).ToList();
-            }
-        }
 
         private void AddPath(string directory)
         {
             string path = AssetsHelper.ToRegularPath(directory);
             var root = EditorAssetData.Create(path, GetAssetType(path));
             assets.Add(root);
-
             List<string> list = new List<string>(AssetsEditorTool.GetDirectoryDirectories(directory));
             list.AddRange(AssetsHelper.GetDirectoryFiles(directory));
             //list.RemoveAll(x => CheckRawIsIgnorePath(x));

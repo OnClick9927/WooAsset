@@ -200,19 +200,7 @@ namespace WooAsset
 
             }
 
-            private bool DirectoryLoop(EditorAssetData data)
-            {
-                var tree = AssetsEditorTool.cache.tree;
-                var folds = tree.GetSubFolders(data);
-                var files = tree.GetSubFiles(data);
-                foreach (var file in files)
-                    if (file.loopDependence)
-                        return true;
-                foreach (var fold in folds)
-                    if (DirectoryLoop(fold))
-                        return true;
-                return false;
-            }
+ 
             protected override void RowGUI(RowGUIArgs args)
             {
                 var asset = cache.tree.GetAssetData(args.label);
@@ -224,10 +212,9 @@ namespace WooAsset
                     float indent = this.GetContentIndent(args.item);
                     var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                     GUI.Label(first, GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
-                    EditorGUI.Toggle(args.GetCellRect(2), asset.record);
-                    if (DirectoryLoop(asset))
-                        GUI.Label(args.GetCellRect(1), Textures.err);
-                    GUI.Label(args.GetCellRect(6), GetSizeString(asset.length));
+                    EditorGUI.Toggle(args.GetCellRect(1), asset.record);
+                   
+                    GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
                 }
                 if (ping_a == asset)
                     DrawPing(args.rowRect);

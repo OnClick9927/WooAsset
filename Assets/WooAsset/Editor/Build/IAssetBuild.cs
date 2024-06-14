@@ -16,7 +16,6 @@ namespace WooAsset
 
         public virtual List<string> GetAssetTags(string path) => null;
         public virtual string GetVersion(string settingVersion, AssetTaskContext context) => settingVersion;
-        public virtual void HandleLoopDependence(List<EditorAssetData> err) { }
         protected virtual AssetType CoverAssetType(string path, AssetType type) => type;
         public AssetType GetAssetType(string path)
         {

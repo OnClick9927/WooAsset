@@ -10,7 +10,6 @@ namespace WooAsset
         public AssetType type;
         public string directory;
         public List<string> tags;
-        public bool loopDependence = false;
         public List<string> usage = new List<string>();
         public bool record;
 
