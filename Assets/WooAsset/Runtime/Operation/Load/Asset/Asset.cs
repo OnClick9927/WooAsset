@@ -42,16 +42,17 @@ namespace WooAsset
                 InvokeComplete();
                 return;
             }
+            var _type = AssetsHelper.GetAssetType(assetType, type);
             if (async)
             {
-                loadOp = LoadAsync(path, AssetsHelper.GetAssetType(assetType, type));
+                loadOp = LoadAsync(path, _type);
                 await loadOp;
                 OnLoadAsyncEnd(loadOp);
                 SetResult(loadOp.asset);
             }
             else
             {
-                var result = LoadSync(path, AssetsHelper.GetAssetType(assetType, type));
+                var result = LoadSync(path, _type);
                 SetResult(result);
             }
 

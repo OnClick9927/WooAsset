@@ -32,7 +32,7 @@ MonoBehaviour:
     - Assets/Example
     builds:
     - param:
-        type: 9
+        type: 6
         path: 
         tag: 
         userData: 
@@ -71,7 +71,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetMode
-    typeIndex: 2
+    typeIndex: 0
   encrypt:
     types:
     - WooAsset.DefaultAssetStreamEncrypt
@@ -86,7 +86,6 @@ MonoBehaviour:
     - Assets/Example/px/1.png
     - Assets/Example/px/2.png
     - Assets/Example/px/3.png
-    - Assets/Example/px/One.prefab
     - Assets/Example/px/Two.prefab
   shaderVariantDirectory: Assets/Example
   atlasPaths:

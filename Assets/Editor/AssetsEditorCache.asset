@@ -16,7 +16,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 207148
+      length: 204939
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 2
@@ -36,7 +36,7 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/px
       name: px
-      length: 5714
+      length: 3505
       hash: 2a679d0c0f30f472975d58e5b9662848
       dependence: []
       type: 2
@@ -54,22 +54,12 @@ MonoBehaviour:
       tags: []
       usage: []
       record: 1
-    - path: Assets/Example/Scene/New Scene2
-      name: New Scene2
-      length: 133554
-      hash: 0f016481d6196c984abc801dcb2cae31
-      dependence: []
-      type: 2
-      directory: Assets/Example/Scene
-      tags: []
-      usage: []
-      record: 1
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
       length: 2199
       hash: d09107aff71dc8ecc1e41e735be1e756
       dependence: []
-      type: 6
+      type: 22
       directory: Assets/Example
       tags: []
       usage: []
@@ -82,14 +72,16 @@ MonoBehaviour:
       type: 3
       directory: Assets/Example/New Folder
       tags: []
-      usage: []
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
+      - Assets/Out/One.prefab
       record: 1
     - path: Assets/Example/New Folder/aaa
       name: aaa
       length: 9
       hash: 63373b41cf913e9f9b3226b4a0452737
       dependence: []
-      type: 20
+      type: 16
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -100,7 +92,7 @@ MonoBehaviour:
       hash: 0221ac0e5696a1f3aedad196edaac679
       dependence:
       - Assets/Example/New Folder/New Material.mat
-      type: 12
+      type: 9
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -110,7 +102,7 @@ MonoBehaviour:
       length: 9
       hash: 0696012131deed80528fdbf89ab0e7f3
       dependence: []
-      type: 20
+      type: 16
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -120,7 +112,7 @@ MonoBehaviour:
       length: 2198
       hash: d882027734006859076f557c2806d379
       dependence: []
-      type: 10
+      type: 7
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -130,7 +122,7 @@ MonoBehaviour:
       length: 2196
       hash: 98a28e10526b63e2a25bbc484abcb314
       dependence: []
-      type: 10
+      type: 7
       directory: Assets/Example/New Folder
       tags: []
       usage:
@@ -146,9 +138,7 @@ MonoBehaviour:
       tags:
       - test
       usage:
-      - Assets/Example/px/One.prefab
       - Assets/Example/px/Two.prefab
-      - Assets/Example/Scene/New Scene2.unity
       record: 1
     - path: Assets/Example/px/2.png
       name: 2.png
@@ -172,26 +162,13 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
-    - path: Assets/Example/px/One.prefab
-      name: One.prefab
-      length: 2209
-      hash: 779574084950a028591e28a6fd16a763
-      dependence:
-      - Assets/Example/px/1.png
-      type: 12
-      directory: Assets/Example/px
-      tags:
-      - test
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-      record: 1
     - path: Assets/Example/px/Two.prefab
       name: Two.prefab
       length: 2209
       hash: 76d74da6ed17581486bb93fef6951cdc
       dependence:
       - Assets/Example/px/1.png
-      type: 12
+      type: 9
       directory: Assets/Example/px
       tags:
       - test
@@ -202,7 +179,17 @@ MonoBehaviour:
       length: 15884
       hash: d8b4b78e1746091eb00c846e642e393e
       dependence: []
-      type: 9
+      type: 6
+      directory: Assets/Example/Scene
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/Scene/New Scene2
+      name: New Scene2
+      length: 133554
+      hash: 0f016481d6196c984abc801dcb2cae31
+      dependence: []
+      type: 2
       directory: Assets/Example/Scene
       tags: []
       usage: []
@@ -212,10 +199,10 @@ MonoBehaviour:
       length: 19375
       hash: 4a9f17a128c36e3109c1b482338c7ad2
       dependence:
-      - Assets/Example/px/One.prefab
-      - Assets/Example/px/1.png
+      - Assets/Example/New Folder/a.jpg
+      - Assets/Out/One.prefab
       - Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
-      type: 9
+      type: 6
       directory: Assets/Example/Scene
       tags: []
       usage: []
@@ -227,6 +214,18 @@ MonoBehaviour:
       dependence: []
       type: 4
       directory: Assets/Example/Scene/New Scene2
+      tags: []
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
+      record: 1
+    - path: Assets/Out/One.prefab
+      name: One.prefab
+      length: 2255
+      hash: 24d29ca614b06a2c970a1aceba84eeab
+      dependence:
+      - Assets/Example/New Folder/a.jpg
+      type: 9
+      directory: Assets/Out
       tags: []
       usage:
       - Assets/Example/Scene/New Scene2.unity
@@ -252,7 +251,9 @@ MonoBehaviour:
       type: 3
       directory: Assets/Example/New Folder
       tags: []
-      usage: []
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
+      - Assets/Out/One.prefab
       record: 1
     - path: Assets/Example/New Folder/Cube.prefab
       name: Cube.prefab
@@ -260,17 +261,29 @@ MonoBehaviour:
       hash: 0221ac0e5696a1f3aedad196edaac679
       dependence:
       - Assets/Example/New Folder/New Material.mat
-      type: 12
+      type: 9
       directory: Assets/Example/New Folder
       tags: []
       usage: []
+      record: 1
+    - path: Assets/Out/One.prefab
+      name: One.prefab
+      length: 2255
+      hash: 24d29ca614b06a2c970a1aceba84eeab
+      dependence:
+      - Assets/Example/New Folder/a.jpg
+      type: 9
+      directory: Assets/Out
+      tags: []
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
       record: 1
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
       length: 2199
       hash: d09107aff71dc8ecc1e41e735be1e756
       dependence: []
-      type: 6
+      type: 22
       directory: Assets/Example
       tags: []
       usage: []
@@ -280,7 +293,7 @@ MonoBehaviour:
       length: 2198
       hash: d882027734006859076f557c2806d379
       dependence: []
-      type: 10
+      type: 7
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -290,18 +303,18 @@ MonoBehaviour:
       length: 2196
       hash: 98a28e10526b63e2a25bbc484abcb314
       dependence: []
-      type: 10
+      type: 7
       directory: Assets/Example/New Folder
       tags: []
       usage:
       - Assets/Example/New Folder/Cube.prefab
       record: 1
     usage:
-    - e0fd13cee22c27f8856ab5d845382b05
+    - 16fcdbabd195f6a632db0b796ce58c2d
     dependence: []
     _loop: 0
-    _hash: 8bbebd1a5c1ec75cb07ef1df947d5ae1
-    _length: 166157
+    _hash: 902e97888b65cd7a24bc08a9033572a2
+    _length: 168412
     _raw: 0
     _enCode: 0
   - assets:
@@ -310,20 +323,19 @@ MonoBehaviour:
       length: 19375
       hash: 4a9f17a128c36e3109c1b482338c7ad2
       dependence:
-      - Assets/Example/px/One.prefab
-      - Assets/Example/px/1.png
+      - Assets/Example/New Folder/a.jpg
+      - Assets/Out/One.prefab
       - Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
-      type: 9
+      type: 6
       directory: Assets/Example/Scene
       tags: []
       usage: []
       record: 1
     usage: []
     dependence:
-    - 8a2005201903b1c01a34dea3d89ab419
-    - 8bbebd1a5c1ec75cb07ef1df947d5ae1
+    - 902e97888b65cd7a24bc08a9033572a2
     _loop: 0
-    _hash: e0fd13cee22c27f8856ab5d845382b05
+    _hash: 16fcdbabd195f6a632db0b796ce58c2d
     _length: 19375
     _raw: 0
     _enCode: 0
@@ -333,7 +345,7 @@ MonoBehaviour:
       length: 15884
       hash: d8b4b78e1746091eb00c846e642e393e
       dependence: []
-      type: 9
+      type: 6
       directory: Assets/Example/Scene
       tags: []
       usage: []
@@ -352,24 +364,11 @@ MonoBehaviour:
       hash: 76d74da6ed17581486bb93fef6951cdc
       dependence:
       - Assets/Example/px/1.png
-      type: 12
+      type: 9
       directory: Assets/Example/px
       tags:
       - test
       usage: []
-      record: 1
-    - path: Assets/Example/px/One.prefab
-      name: One.prefab
-      length: 2209
-      hash: 779574084950a028591e28a6fd16a763
-      dependence:
-      - Assets/Example/px/1.png
-      type: 12
-      directory: Assets/Example/px
-      tags:
-      - test
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
       record: 1
     - path: Assets/Example/px/3.png
       name: 3.png
@@ -403,16 +402,13 @@ MonoBehaviour:
       tags:
       - test
       usage:
-      - Assets/Example/px/One.prefab
       - Assets/Example/px/Two.prefab
-      - Assets/Example/Scene/New Scene2.unity
       record: 1
-    usage:
-    - e0fd13cee22c27f8856ab5d845382b05
+    usage: []
     dependence: []
     _loop: 0
-    _hash: 8a2005201903b1c01a34dea3d89ab419
-    _length: 5714
+    _hash: 509de4b4afb8455c191ffe814f64acb5
+    _length: 3505
     _raw: 0
     _enCode: 0
   - assets:
@@ -421,7 +417,7 @@ MonoBehaviour:
       length: 9
       hash: 63373b41cf913e9f9b3226b4a0452737
       dependence: []
-      type: 20
+      type: 16
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -439,7 +435,7 @@ MonoBehaviour:
       length: 9
       hash: 0696012131deed80528fdbf89ab0e7f3
       dependence: []
-      type: 20
+      type: 16
       directory: Assets/Example/New Folder
       tags: []
       usage: []
@@ -452,10 +448,10 @@ MonoBehaviour:
     _raw: 1
     _enCode: 0
   manifest:
-    version: 2024_06_14_13_27_45
+    version: 2024_06_18_14_06_58
     tags:
     - tag: test
-      assetIndexes: 08000000090000000a0000000b0000000c000000
+      assetIndexes: 090000000a0000000b0000000c000000
     assets:
     - bundleNameIndex: 0
       path: Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
@@ -469,42 +465,42 @@ MonoBehaviour:
       dot_segs: 
     - bundleNameIndex: 0
       path: Assets/Example/New Folder/Cube.prefab
-      type: 12
+      type: 9
+      path_segs: 
+      dot_segs: 
+    - bundleNameIndex: 0
+      path: Assets/Out/One.prefab
+      type: 9
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 0
       path: Assets/Example/shadervariants.shadervariants
-      type: 6
+      type: 22
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 0
       path: Assets/Example/New Folder/New Material 1.mat
-      type: 10
+      type: 7
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 0
       path: Assets/Example/New Folder/New Material.mat
-      type: 10
+      type: 7
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 1
       path: Assets/Example/Scene/New Scene2.unity
-      type: 9
+      type: 6
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 2
       path: Assets/Example/Scene/New Scene.unity
-      type: 9
+      type: 6
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 3
       path: Assets/Example/px/Two.prefab
-      type: 12
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 3
-      path: Assets/Example/px/One.prefab
-      type: 12
+      type: 9
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 3
@@ -524,26 +520,26 @@ MonoBehaviour:
       dot_segs: 
     - bundleNameIndex: 4
       path: Assets/Example/New Folder/aaa
-      type: 20
+      type: 16
       path_segs: 
       dot_segs: 
     - bundleNameIndex: 5
       path: Assets/Example/New Folder/kkk.rfc
-      type: 20
+      type: 16
       path_segs: 
       dot_segs: 
     bundles:
     - bundleDependence: 
-      bundleName: 8bbebd1a5c1ec75cb07ef1df947d5ae1
+      bundleName: 902e97888b65cd7a24bc08a9033572a2
       raw: 0
       enCode: 0
-      hash: 8bbebd1a5c1ec75cb07ef1df947d5ae1
-      length: 166157
-    - bundleDependence: 0000000003000000
-      bundleName: e0fd13cee22c27f8856ab5d845382b05
+      hash: 902e97888b65cd7a24bc08a9033572a2
+      length: 168412
+    - bundleDependence: 00000000
+      bundleName: 16fcdbabd195f6a632db0b796ce58c2d
       raw: 0
       enCode: 0
-      hash: e0fd13cee22c27f8856ab5d845382b05
+      hash: 16fcdbabd195f6a632db0b796ce58c2d
       length: 19375
     - bundleDependence: 
       bundleName: 1e4d59a7acf9cc4c18c063570e90a2d9
@@ -552,11 +548,11 @@ MonoBehaviour:
       hash: 1e4d59a7acf9cc4c18c063570e90a2d9
       length: 15884
     - bundleDependence: 
-      bundleName: 8a2005201903b1c01a34dea3d89ab419
+      bundleName: 509de4b4afb8455c191ffe814f64acb5
       raw: 0
       enCode: 0
-      hash: 8a2005201903b1c01a34dea3d89ab419
-      length: 5714
+      hash: 509de4b4afb8455c191ffe814f64acb5
+      length: 3505
     - bundleDependence: 
       bundleName: a2424627e64e4dd54f539fb4c64c9047
       raw: 1

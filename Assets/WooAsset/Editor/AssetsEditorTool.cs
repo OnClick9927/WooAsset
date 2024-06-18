@@ -5,6 +5,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 
 namespace WooAsset
 {
@@ -105,39 +106,42 @@ namespace WooAsset
     }
     public partial class AssetsEditorTool
     {
-        public static BuildTarget buildTarget => EditorUserBuildSettings.activeBuildTarget;
-        public static string buildTargetName => AssetsHelper.buildTarget;
+        private const string DLC = "DLC";
+        public static BuildTarget BuildTarget => EditorUserBuildSettings.activeBuildTarget;
+        public static string BuildTargetName => AssetsHelper.buildTarget;
         public static string EditorSimulatorPath
         {
             get
             {
-                string path = AssetsHelper.CombinePath("DLC/Editor Simulator", buildTargetName);
+                string path = $"{DLC}/Editor Simulator/{BuildTargetName}";
                 AssetsHelper.CreateDirectory(path);
                 return path;
             }
         }
-        public static string outputPath
+        public static string OutputPath
         {
             get
             {
-                string path = AssetsHelper.CombinePath("DLC/Output/", buildTargetName);
+                string path = $"{DLC}/Output/{BuildTargetName}";
                 AssetsHelper.CreateDirectory(path);
                 return path;
             }
         }
-        public static string historyPath
+        public static string HistoryPath
         {
             get
             {
-                string path = AssetsHelper.CombinePath("DLC/History/", buildTargetName);
+                string path = $"{DLC}/History/{BuildTargetName}";
+
                 AssetsHelper.CreateDirectory(path);
                 return path;
             }
         }
-        public static string editorPath
+        public static string EditorPath
         {
             get
             {
+
                 string path = "Assets/Editor";
                 AssetsHelper.CreateDirectory(path);
 
@@ -148,7 +152,7 @@ namespace WooAsset
         {
             get
             {
-                string path = "DLC/Server";
+                string path = $"{DLC}/Server";
                 AssetsHelper.CreateDirectory(path);
                 return path;
             }
@@ -203,10 +207,7 @@ namespace WooAsset
             AssetDatabase.Refresh();
             return Load<T>(savePath);
         }
-        public static T Load<T>(string path) where T : Object
-        {
-            return AssetDatabase.LoadAssetAtPath<T>(path);
-        }
+        public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(path);
         public static void Update<T>(T t) where T : Object
         {
             EditorApplication.delayCall += delegate ()
@@ -230,26 +231,21 @@ namespace WooAsset
         public static void DeleteFile(string path) => File.Delete(path);
 
         public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
-        public static string[] GetDirectoryDirectories(string path) => Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+        public static string[] GetDirectoryEntries(string path) => Directory.GetFileSystemEntries(path, "*", SearchOption.AllDirectories).Select(x => AssetsHelper.ToRegularPath(x)).ToArray();
         public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
         public static Operation WriteStream(string srcPath, Stream target) => new CopyFileStreamOperation(srcPath, target);
 
         public static bool IsDirectory(string path) => Directory.Exists(path);
         public static bool ExistsDirectory(string path) => Directory.Exists(path);
         public static void DeleteDirectory(string path) => Directory.Delete(path, true);
+        public static string CombinePath(string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
 
 
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
-        public static async Task BuildSpriteAtlas()
-        {
-            await SpriteAtlasTool.Execute();
-        }
+        public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute();
         [MenuItem(TaskPipelineMenu.ShaderVariant)]
-        public static async Task SpriteShaderVariant()
-        {
-            await ShaderVariantTool.Execute();
-        }
+        public static async Task SpriteShaderVariant() => await ShaderVariantTool.Execute();
 
     }
 }

@@ -6,7 +6,6 @@ namespace WooAsset
 
     public abstract class AssetsSetting
     {
-        public virtual string OverwriteBundlePath(string bundlePath) { return bundlePath; }
         public virtual bool NeedCopyStreamBundles() { return true; }
         public virtual long GetLoadingMaxTimeSlice() { return long.MaxValue; }
         protected virtual string GetBaseUrl() { return string.Empty; }

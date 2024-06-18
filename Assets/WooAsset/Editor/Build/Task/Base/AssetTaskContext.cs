@@ -8,14 +8,14 @@ namespace WooAsset
     {
         public readonly AssetTaskParams Params;
         public int MaxCacheVersionCount => Params.MaxCacheVersionCount;
-        public string outputPath => AssetsEditorTool.outputPath;
-        public string historyPath => AssetsEditorTool.historyPath;
-        public BuildTarget buildTarget => AssetsEditorTool.buildTarget;
+        public string outputPath => AssetsEditorTool.OutputPath;
+        public string historyPath => AssetsEditorTool.HistoryPath;
+        public BuildTarget buildTarget => AssetsEditorTool.BuildTarget;
         public string VersionCollectionName => VersionHelper.VersionCollectionName;
         public string VersionDataName => VersionHelper.VersionDataName;
-        public string buildTargetName => AssetsEditorTool.buildTargetName;
+        public string buildTargetName => AssetsEditorTool.BuildTargetName;
 
-        public string streamBundleDirectory => AssetsHelper.streamBundleDirectory;
+        public string streamBundleDirectory => AssetsHelper.StreamBundlePath;
 
         public string serverDirectory => AssetsEditorTool.ServerDirectory;
         public CompressType compress => Params.compress;

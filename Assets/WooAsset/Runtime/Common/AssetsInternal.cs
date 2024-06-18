@@ -56,7 +56,7 @@ namespace WooAsset
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
         public static CheckBundleVersionOperation LoadRemoteVersions() => mode.LoadRemoteVersions();
-        public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.streamBundleDirectory, localSaveDir);
+        public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.StreamBundlePath, localSaveDir);
 
 
 
@@ -113,12 +113,11 @@ namespace WooAsset
 
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
-        public static string OverwriteBundlePath(string bundlePath) => setting.OverwriteBundlePath(bundlePath);
 
     }
     partial class AssetsInternal
     {
-        public static string GetBundleLocalPath(string bundleName) => OverwriteBundlePath(AssetsHelper.CombinePath(localSaveDir, bundleName));
+        public static string GetBundleLocalPath(string bundleName) => AssetsHelper.CombinePath(localSaveDir, bundleName);
         public static void UnloadBundles() => bundles.UnloadBundles();
 
         public static AssetHandle LoadAsset(string path, bool sub, bool async, Type type)

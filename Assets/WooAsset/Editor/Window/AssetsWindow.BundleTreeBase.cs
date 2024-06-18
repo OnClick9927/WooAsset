@@ -26,9 +26,9 @@ namespace WooAsset
                 {
                     GetFirstColomn(),
                    TreeColumns.usageCount,
-                    TreeColumns.depenceCount,
+                    TreeColumns.dependenceCount,
                     TreeColumns.size,
-                    TreeColumns.loopDepenence,
+                    TreeColumns.loopDependence,
                     TreeColumns.Raw,
 
                 };

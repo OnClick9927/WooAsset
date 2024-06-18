@@ -6,6 +6,7 @@ using UnityEngine.Video;
 using UnityEngine;
 using UnityEditor.Animations;
 using static WooAsset.AssetsEditorTool;
+using UnityEngine.Audio;
 
 
 namespace WooAsset
@@ -26,33 +27,38 @@ namespace WooAsset
                 _type = AssetType.Directory;
             else
             {
-                AssetImporter importer = AssetImporter.GetAtPath(path);
-                if (path.EndsWith(".meta")) _type = AssetType.Ignore;
-                //else if (path.EndsWith(".cs")) _type = AssetType.Ignore;
-                else if (path.EndsWith(".prefab")) _type = AssetType.Prefab;
-                else if (importer is ModelImporter) _type = AssetType.Model;
-                else if (AssetDatabase.LoadAssetAtPath<MonoScript>(path) != null) _type = AssetType.Ignore;
-                else if (AssetDatabase.LoadAssetAtPath<LightingDataAsset>(path) != null) _type = AssetType.Ignore;
-                else if (AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path) != null) _type = AssetType.Ignore;
-                else if (AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(path) != null) _type = AssetType.Scene;
-                else if (AssetDatabase.LoadAssetAtPath<ScriptableObject>(path) != null) _type = AssetType.ScriptObject;
-                else if (AssetDatabase.LoadAssetAtPath<Animation>(path) != null) _type = AssetType.Animation;
-                else if (AssetDatabase.LoadAssetAtPath<AnimationClip>(path) != null) _type = AssetType.AnimationClip;
-                else if (AssetDatabase.LoadAssetAtPath<AnimatorController>(path) != null) _type = AssetType.AnimatorController;
-                else if (AssetDatabase.LoadAssetAtPath<Font>(path) != null) _type = AssetType.Font;
-                else if (AssetDatabase.LoadAssetAtPath<Mesh>(path) != null) _type = AssetType.Mesh;
-                else if (AssetDatabase.LoadAssetAtPath<Material>(path) != null) _type = AssetType.Material;
-                else if (AssetDatabase.LoadAssetAtPath<AudioClip>(path) != null) _type = AssetType.AudioClip;
-                else if (AssetDatabase.LoadAssetAtPath<VideoClip>(path) != null) _type = AssetType.VideoClip;
-                else if (AssetDatabase.LoadAssetAtPath<Sprite>(path) != null) _type = AssetType.Sprite;
-                else if (AssetDatabase.LoadAssetAtPath<Texture>(path) != null) _type = AssetType.Texture;
-                else if (AssetDatabase.LoadAssetAtPath<Shader>(path) != null) _type = AssetType.Shader;
-                else if (AssetDatabase.LoadAssetAtPath<TextAsset>(path) != null) _type = AssetType.TextAsset;
-                else if (AssetDatabase.LoadAssetAtPath<ShaderVariantCollection>(path) != null) _type = AssetType.ShaderVariant;
-                else if (AssetDatabase.LoadAssetAtPath<DefaultAsset>(path) != null) _type = AssetType.Raw;
-
-
-
+                var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                var type = obj?.GetType();
+                if (obj == null) _type = AssetType.Ignore;
+                else if (type == typeof(MonoScript)) _type = AssetType.Ignore;
+                else if (type == typeof(LightingDataAsset)) _type = AssetType.Ignore;
+                else if (type == typeof(SpriteAtlas)) _type = AssetType.Ignore;
+                else if (type == typeof(UnityEditor.SceneAsset)) _type = AssetType.Scene;
+                else if (type == typeof(GameObject)) _type = AssetType.GameObject;
+                else if (type == typeof(Animation)) _type = AssetType.Animation;
+                else if (type == typeof(AnimationClip)) _type = AssetType.AnimationClip;
+                else if (type == typeof(AnimatorController)) _type = AssetType.AnimatorController;
+                else if (type == typeof(Font)) _type = AssetType.Font;
+                else if (type == typeof(Mesh)) _type = AssetType.Mesh;
+                else if (type == typeof(Material)) _type = AssetType.Material;
+                else if (type == typeof(AudioClip)) _type = AssetType.AudioClip;
+                else if (type == typeof(VideoClip)) _type = AssetType.VideoClip;
+                else if (type == typeof(TextAsset)) _type = AssetType.TextAsset;
+                else if (type == typeof(Shader)) _type = AssetType.Shader;
+                else if (type == typeof(ShaderVariantCollection)) _type = AssetType.ShaderVariant;
+                else if (type == typeof(ComputeShader)) _type = AssetType.ComputeShader;
+                else if (type == typeof(PhysicMaterial)) _type = AssetType.PhysicMaterial;
+                else if (type == typeof(AudioMixer)) _type = AssetType.AudioMixer;
+                else if (type == typeof(GUISkin)) _type = AssetType.GUISkin;
+                else if (type == typeof(DefaultAsset)) _type = AssetType.Raw;
+                else if (typeof(ScriptableObject).IsAssignableFrom(type)) _type = AssetType.ScriptObject;
+                else if (typeof(Texture).IsAssignableFrom(type))
+                {
+                    TextureImporter assetImporter = AssetImporter.GetAtPath(path) as TextureImporter;
+                    _type = AssetType.Texture;
+                    if (assetImporter.textureType == TextureImporterType.Sprite)
+                        _type = AssetType.Sprite;
+                }
                 _type = CoverAssetType(path, _type);
             }
             return _type;
@@ -90,8 +96,7 @@ namespace WooAsset
                     AssetType.Font,
                     AssetType.AudioClip,
                     AssetType.VideoClip,
-                    AssetType.Prefab,
-                    AssetType.Model,
+                    AssetType.GameObject,
                     AssetType.Animation,
                     AssetType.AnimationClip,
                     AssetType.AnimatorController,

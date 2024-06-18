@@ -8,7 +8,6 @@ namespace WooAsset
         {
             public static MultiColumnHeaderState.Column emptyTitle = new MultiColumnHeaderState.Column()
             {
-                maxWidth = 500,
                 width = 300,
                 minWidth = 300,
                 allowToggleVisibility = false,
@@ -18,7 +17,6 @@ namespace WooAsset
             public static MultiColumnHeaderState.Column usage = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Usage"),
-                maxWidth = 500,
                 width = 300,
 
                 minWidth = 300,
@@ -28,7 +26,6 @@ namespace WooAsset
             public static MultiColumnHeaderState.Column dependence = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Dependence"),
-                maxWidth = 500,
                 width = 300,
 
                 minWidth = 300,
@@ -94,12 +91,12 @@ namespace WooAsset
             public static MultiColumnHeaderState.Column record = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Record"),
-                minWidth = 40,
-                maxWidth = 40,
+                minWidth = 50,
+                maxWidth = 50,
                 allowToggleVisibility = false,
 
             };
-            public static MultiColumnHeaderState.Column loopDepenence = new MultiColumnHeaderState.Column()
+            public static MultiColumnHeaderState.Column loopDependence = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Loop"),
                 minWidth = 40,
@@ -123,9 +120,9 @@ namespace WooAsset
                 allowToggleVisibility = false,
 
             };
-            public static MultiColumnHeaderState.Column depenceCount = new MultiColumnHeaderState.Column()
+            public static MultiColumnHeaderState.Column dependenceCount = new MultiColumnHeaderState.Column()
             {
-                headerContent = new UnityEngine.GUIContent("Depence"),
+                headerContent = new UnityEngine.GUIContent("Dependence"),
                 minWidth = 60,
                 maxWidth = 60,
                 allowToggleVisibility = false,

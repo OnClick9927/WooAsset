@@ -56,7 +56,7 @@ namespace WooAsset
                 foreach (var item in data)
                     BuildAtlas(item.Key, item.Value);
                 AssetDatabase.Refresh();
-                SpriteAtlasUtility.PackAllAtlases(buildTarget, false);
+                SpriteAtlasUtility.PackAllAtlases(BuildTarget, false);
                 await Task.Delay(1000);
                 AssetsHelper.Log("build atlas succeed");
             }

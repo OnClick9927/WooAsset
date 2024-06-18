@@ -8,21 +8,31 @@
         Directory,
         Sprite,
         Texture,
-        Shader,
-        ShaderVariant,
+
         VideoClip,
-        AudioClip,
         Scene,
         Material,
         Mesh,
-        Prefab,
+        GameObject,
         Font,
+
         Animation,
         AnimationClip,
         AnimatorController,
+
         ScriptObject,
-        Model,
         TextAsset,
         Raw,
+        PhysicMaterial,
+
+        GUISkin,
+
+        AudioMixer,
+        AudioClip,
+
+
+        Shader,
+        ShaderVariant,
+        ComputeShader,
     }
 }

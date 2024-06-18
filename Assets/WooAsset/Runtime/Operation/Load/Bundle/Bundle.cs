@@ -69,7 +69,7 @@ namespace WooAsset
 
         private long _length;
         public long length => _length;
-        protected long ProfilerAsset(AssetBundle value)
+        private long ProfilerAsset(AssetBundle value)
         {
             if (value == null) return 0;
             return Profiler.GetRuntimeMemorySizeLong(value);
@@ -98,7 +98,7 @@ namespace WooAsset
             }
         }
 
-        protected override async void SetResult(AssetBundle value)
+        protected sealed override async void SetResult(AssetBundle value)
         {
             _length = ProfilerAsset(value);
             await dependence;

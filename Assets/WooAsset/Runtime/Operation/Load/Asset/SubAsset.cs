@@ -28,7 +28,7 @@ namespace WooAsset
 
         protected override AssetRequest LoadAsync(string path, Type type)
         {
-            return bundle.LoadAssetWithSubAssetsAsync(path, AssetsHelper.GetAssetType(assetType, type));
+            return bundle.LoadAssetWithSubAssetsAsync(path, type);
         }
         protected override void OnLoadAsyncEnd(AssetRequest request)
         {
@@ -36,7 +36,7 @@ namespace WooAsset
         }
         protected override Object LoadSync(string path, Type type)
         {
-            var result = bundle.LoadAssetWithSubAssets(path, AssetsHelper.GetAssetType(assetType, type));
+            var result = bundle.LoadAssetWithSubAssets(path, type);
             assets = result;
             return result[0];
         }

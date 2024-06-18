@@ -44,7 +44,7 @@ namespace WooAsset
                 return string.Empty;
             }
         }
-        public static string streamBundleDirectory => CombinePath(Application.streamingAssetsPath, buildTarget);
+        public static string StreamBundlePath => $"Assets/StreamingAssets/{buildTarget}";
         private static string ToHashString(byte[] bytes)
         {
             byte[] retVal = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
@@ -135,7 +135,6 @@ namespace WooAsset
 
 
         public static string CombinePath(string self, string combine) => Path.Combine(self, combine);
-        public static string CombinePath(string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
 
         public static string ToRegularPath(string path) => path.Replace('\\', '/');
         public static void LogWarning(string msg) => Debug.LogWarning("Assets : " + msg);
@@ -162,13 +161,12 @@ namespace WooAsset
                     case AssetType.AudioClip:
                     case AssetType.Scene:
                     case AssetType.Material:
-                    case AssetType.Prefab:
+                    case AssetType.GameObject:
                     case AssetType.Font:
                     case AssetType.Animation:
                     case AssetType.AnimationClip:
                     case AssetType.AnimatorController:
                     case AssetType.ScriptObject:
-                    case AssetType.Model:
                     default:
                         return type;
                 }

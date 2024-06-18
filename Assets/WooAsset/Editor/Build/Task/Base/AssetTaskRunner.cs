@@ -28,7 +28,6 @@ namespace WooAsset
                     for (int i = 0; i < tasks.Count; i++)
                     {
                         _progress = (float)i / tasks.Count;
-                        await Task.Delay(100);
                         await Execute(tasks[i], context.context);
                         if (tasks[i].isErr)
                         {
@@ -53,7 +52,6 @@ namespace WooAsset
         protected async override void OnExecute(AssetTaskContext context)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            await Task.Delay(100);
             var op = await new SegmentOperation(context.pipelineStartTasks, this);
             if (!op.isErr)
             {

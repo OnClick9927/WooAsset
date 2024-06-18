@@ -23,7 +23,7 @@ namespace WooAsset
                     TreeColumns.record,
 
                     TreeColumns.usageCount,
-                    TreeColumns.depenceCount,
+                    TreeColumns.dependenceCount,
                     TreeColumns.type,
                     TreeColumns.size,
                     TreeColumns.tag,
