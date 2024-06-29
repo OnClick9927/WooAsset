@@ -22,19 +22,19 @@
         }
         protected virtual async void Copy()
         {
-            string destlistPath = AssetsHelper.CombinePath(destPath, StreamBundleList.fileName);
-            string srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundleList.fileName);
+            string destlistPath = AssetsHelper.CombinePath(destPath, StreamBundlesData.fileName);
+            string srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundlesData.fileName);
             if (AssetsInternal.NeedCopyStreamBundles() && AssetsHelper.ExistsFile(srclistPath) && !AssetsHelper.ExistsFile(destlistPath))
             {
-                Downloader downloader = AssetsInternal.DownloadBytes(srclistPath);
+                DownLoader downloader = AssetsInternal.DownloadBytes(srclistPath);
                 await downloader;
                 if (!downloader.isErr)
                 {
 
-                    StreamBundleList list = AssetsHelper.ReadFromBytes<StreamBundleList>(downloader.data);
+                    StreamBundlesData list = AssetsHelper.ReadFromBytes<StreamBundlesData>(downloader.data);
                     foreach (var fileName in list.fileNames)
                     {
-                        string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(StreamBundleList.fileExt, "");
+                        string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(StreamBundlesData.fileExt, "");
                         if (AssetsHelper.ExistsFile(dest)) continue;
                         string src = AssetsHelper.CombinePath(srcPath, fileName);
                         await AssetsInternal.CopyFile(src, dest);

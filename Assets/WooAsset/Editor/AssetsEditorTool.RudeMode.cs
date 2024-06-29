@@ -7,7 +7,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        private class RudeMode : AssetMode
+        private class RudeMode : AssetsMode
         {
             private List<string> GetAssetTags(string path)
             {
@@ -21,7 +21,7 @@ namespace WooAsset
             }
             private BundleData data;
             private EditorBundle bundle;
-            private IAssetBuild assetBuild;
+            private IAssetsBuild assetBuild;
             private Dictionary<string, TagAssets> tags = new Dictionary<string, TagAssets>();
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
@@ -38,7 +38,7 @@ namespace WooAsset
                     hash = "Rude",
                     raw = false,
                 };
-                assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetBuild;
+                assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
                 for (int i = 0; i < data.assets.Count; i++)
                 {
                     var assetPath = data.assets[i];
@@ -62,7 +62,7 @@ namespace WooAsset
                 });
                 return Operation.empty;
             }
-            protected override CheckBundleVersionOperation LoadRemoteVersions() => new AssetDataBaseCheck();
+            protected override LoadRemoteVersionsOperation LoadRemoteVersions() => new AssetDataBaseCheck();
             protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args) => bundle;
 
             protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => new AssetDatabaseCompare(version, pkgs, compareType);

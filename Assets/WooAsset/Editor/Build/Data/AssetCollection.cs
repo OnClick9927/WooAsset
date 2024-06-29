@@ -9,7 +9,7 @@ namespace WooAsset
     public class AssetCollection
     {
         [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
-        private IAssetBuild assetBuild;
+        private IAssetsBuild assetBuild;
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
         public EditorAssetData GetAssetData(string path) => assets.Find(x => x.path == path);
         public List<EditorAssetData> GetAllAssets() => assets;
@@ -17,7 +17,7 @@ namespace WooAsset
         public List<EditorAssetData> GetSubFiles(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type != AssetType.Directory);
         private List<EditorAssetData> GetSubDatas(EditorAssetData data) => assets.FindAll(x => x.directory == data.path);
 
-        public void ReadPaths(List<string> folders, IAssetBuild assetBuild)
+        public void ReadPaths(List<string> folders, IAssetsBuild assetBuild)
         {
             this.assetBuild = assetBuild;
             Dictionary<string, EditorAssetData> asset_Map = new Dictionary<string, EditorAssetData>();

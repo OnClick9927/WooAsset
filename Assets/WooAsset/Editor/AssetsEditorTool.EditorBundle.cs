@@ -9,7 +9,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        public class EditorBundle : Bundle
+        class EditorBundle : Bundle
         {
             private class EditorAssetRequest : AssetRequest
             {
@@ -37,7 +37,7 @@ namespace WooAsset
             public override bool async => false;
             protected override void OnLoad()
             {
-               
+
                 SetResult(null);
             }
             protected override void OnUnLoad() { }

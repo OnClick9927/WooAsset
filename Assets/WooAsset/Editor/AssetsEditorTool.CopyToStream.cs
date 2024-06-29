@@ -40,18 +40,18 @@ namespace WooAsset
                         .ToArray();
                 }
                 var list = this.files.Select(x => GetDestFileName(x)).ToList();
-                await WriteObject(new StreamBundleList()
+                await WriteObject(new StreamBundlesData()
                 {
                     fileNames = list.ToArray(),
                 },
-                  AssetsHelper.CombinePath(destPath, StreamBundleList.fileName)
+                  AssetsHelper.CombinePath(destPath, StreamBundlesData.fileName)
                   );
                 base.Done();
             }
 
             protected override string GetDestFileName(string src)
             {
-                return $"{base.GetDestFileName(src)}{StreamBundleList.fileExt}";
+                return $"{base.GetDestFileName(src)}{StreamBundlesData.fileExt}";
             }
         }
     }

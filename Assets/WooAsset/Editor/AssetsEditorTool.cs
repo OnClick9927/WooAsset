@@ -53,7 +53,7 @@ namespace WooAsset
 
         }
 
-        public class AssetLife<T> where T : IAsset
+        public class AssetLife<T> where T : AssetOperation
         {
             public T asset;
             public long assetLength;
@@ -78,9 +78,9 @@ namespace WooAsset
             bundles.Clear();
             assets.Clear();
             var _op = option;
-            AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetMode;
+            AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetsMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
-            if (_op.enableServer && AssetsInternal.mode is NormalAssetMode)
+            if (_op.enableServer && AssetsInternal.mode is NormalAssetsMode)
                 AssetsServer.Run(_op.serverPort, ServerDirectory);
         }
 

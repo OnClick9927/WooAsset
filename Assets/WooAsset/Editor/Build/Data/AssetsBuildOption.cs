@@ -54,17 +54,17 @@ namespace WooAsset
         {
             if (encrypt.baseType == null)
             {
-                encrypt.baseType = typeof(IAssetStreamEncrypt);
+                encrypt.baseType = typeof(IAssetEncrypt);
                 encrypt.Enable();
             }
             if (build.baseType == null)
             {
-                build.baseType = typeof(IAssetBuild);
+                build.baseType = typeof(IAssetsBuild);
                 build.Enable();
             }
             if (mode.baseType == null)
             {
-                mode.baseType = typeof(IAssetMode);
+                mode.baseType = typeof(IAssetsMode);
                 mode.Enable();
             }
             recordIgnore.RemoveAll(x => !AssetsHelper.ExistsFile(x) && !AssetsEditorTool.ExistsDirectory(x));

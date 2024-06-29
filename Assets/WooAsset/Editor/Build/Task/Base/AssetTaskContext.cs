@@ -28,8 +28,8 @@ namespace WooAsset
         public bool copyToStream => Params.copyToStream;
         public bool isNormalBuildMode => Pipeline != TaskPipelineType.DryBuild && Pipeline != TaskPipelineType.EditorSimulate;
         public TaskPipelineType Pipeline => Params.Pipeline;
-        public IAssetBuild assetBuild => Params.assetBuild;
-        public IAssetStreamEncrypt encrypt => Params.encrypt;
+        public IAssetsBuild assetBuild => Params.assetBuild;
+        public IAssetEncrypt encrypt => Params.encrypt;
         public List<AssetTask> pipelineStartTasks => Params.pipelineStartTasks;
         public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
 

@@ -16,8 +16,8 @@ namespace WooAsset
         public List<string> buildInAssets;
         public BuildMode buildMode;
         public bool copyToStream;
-        public IAssetBuild assetBuild;
-        public IAssetStreamEncrypt encrypt;
+        public IAssetsBuild assetBuild;
+        public IAssetEncrypt encrypt;
         public string version;
 
         public List<TagAssets> tags;
@@ -52,8 +52,8 @@ namespace WooAsset
             buildInAssets = option.buildInAssets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
             buildMode = option.buildMode;
             copyToStream = option.copyToStream;
-            encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetStreamEncrypt;
-            assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetBuild;
+            encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetEncrypt;
+            assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
             version = option.version;
             tags = option.tags;
             recordIgnore = option.recordIgnore;

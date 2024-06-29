@@ -21,7 +21,7 @@ namespace WooAsset
 
         public virtual IAssetLife GetAssetLife() { return new LRULife(1024 * 1024 * 1024); }
 
-        public virtual IAssetStreamEncrypt GetEncrypt(int code)
+        public virtual IAssetEncrypt GetEncrypt(int code)
         {
             if (code == NoneAssetStreamEncrypt.code) return none;
             if (code == DefaultAssetStreamEncrypt.code) return def;

@@ -5,7 +5,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        private class AssetDataBaseCheck : CheckBundleVersionOperation
+        private class AssetDataBaseCheck : LoadRemoteVersionsOperation
         {
             protected override void Done() => InvokeComplete();
         }
@@ -20,7 +20,7 @@ namespace WooAsset
                 InvokeComplete();
             }
         }
-        private class AssetDatabaseMode : AssetMode
+        private class AssetDatabaseMode : AssetsMode
         {
 
 
@@ -35,7 +35,7 @@ namespace WooAsset
                     _task = AssetTaskRunner.EditorSimulate();
                 return _task;
             }
-            protected override CheckBundleVersionOperation LoadRemoteVersions() => new AssetDataBaseCheck();
+            protected override LoadRemoteVersionsOperation LoadRemoteVersions() => new AssetDataBaseCheck();
 
             protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args) => new EditorBundle(args);
 

@@ -85,7 +85,7 @@ namespace WooAsset
              
 
                     GUI.enabled = true;
-                    if (option.GetAssetModeType() == typeof(NormalAssetMode))
+                    if (option.GetAssetModeType() == typeof(NormalAssetsMode))
                     {
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.enableServer)));
                         if (option.enableServer)
