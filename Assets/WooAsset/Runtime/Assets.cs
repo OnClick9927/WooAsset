@@ -98,7 +98,10 @@ namespace WooAsset
         public static void Destroy(GameObject gameObject)
         {
 #if UNITY_EDITOR
-            GameObject.DestroyImmediate(gameObject);
+            if (Application.isPlaying)
+                GameObject.Destroy(gameObject);
+            else
+                GameObject.DestroyImmediate(gameObject);
 #else
             GameObject.Destroy(gameObject);
 #endif

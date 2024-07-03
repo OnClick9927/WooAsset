@@ -26,8 +26,7 @@ namespace WooAsset
                     EditorGUI.BeginChangeCheck();
                     GUILayout.BeginVertical(EditorStyles.helpBox);
                     GUILayout.Label(title, EditorStyles.whiteLargeLabel);
-                    GUILayout.Label("", GUILayout.Height(0));
-                    var rect = GUILayoutUtility.GetLastRect();
+                    var rect = EditorGUILayout.GetControlRect(GUILayout.Height(0));
                     EditorGUI.LabelField(rect, "", (GUIStyle)"in title");
                 }
                 protected void MidGUI(string title)
@@ -36,8 +35,7 @@ namespace WooAsset
                     GUILayout.EndVertical();
                     GUILayout.BeginVertical(EditorStyles.helpBox);
                     GUILayout.Label(title, EditorStyles.whiteLargeLabel);
-                    GUILayout.Label("", GUILayout.Height(0));
-                    var rect = GUILayoutUtility.GetLastRect();
+                    var rect = EditorGUILayout.GetControlRect(GUILayout.Height(0));
                     EditorGUI.LabelField(rect, "", (GUIStyle)"in title");
                 }
                 protected void EndGUI()

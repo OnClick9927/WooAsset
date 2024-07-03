@@ -155,8 +155,7 @@ namespace WooAsset
             GUILayout.BeginArea(position);
             {
                 GUILayout.BeginHorizontal(EditorStyles.toolbar);
-                GUILayout.Label("", GUILayout.Width(100));
-                Rect rect = GUILayoutUtility.GetLastRect();
+                Rect rect = EditorGUILayout.GetControlRect(GUILayout.Width(100));
                 if (GUI.Button(rect, GUIContent("Tools"), EditorStyles.toolbarDropDown))
                 {
                     EditorUtility.DisplayPopupMenu(rect, TaskPipelineMenu.root, new MenuCommand(null));
