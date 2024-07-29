@@ -109,7 +109,7 @@ namespace WooAsset
                 var rs = RectEx.HorizontalSplit(rect, 40);
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
                 search.OnGUI(rs1[0]);
-                GUI.Label(rs1[1], $"Total Size   {GetSizeString(totalSize)}");
+                GUI.Label(rs1[1], $"Total Size {GetSizeString(totalSize)}");
                 if (dpViewType == DpViewType.None)
                 {
                     base.OnGUI(rs[1]);
@@ -200,11 +200,13 @@ namespace WooAsset
 
             }
 
- 
+
             protected override void RowGUI(RowGUIArgs args)
             {
                 var asset = cache.tree.GetAssetData(args.label);
                 if (asset == null) return;
+
+                EditorGUI.ProgressBar(args.GetCellRect(5), asset.length / (float)totalSize, "");
                 if (asset.type != AssetType.Directory)
                     base.RowGUI(args);
                 else
@@ -213,9 +215,10 @@ namespace WooAsset
                     var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                     GUI.Label(first, GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
                     EditorGUI.Toggle(args.GetCellRect(1), asset.record);
-                   
+
                     GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
                 }
+
                 if (ping_a == asset)
                     DrawPing(args.rowRect);
             }

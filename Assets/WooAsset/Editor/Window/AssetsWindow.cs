@@ -19,7 +19,7 @@ namespace WooAsset
                 tmp /= 1024;
                 stage++;
             }
-            return $"{(length / Mathf.Pow(1024, stage)).ToString("0.00")} {stages[stage]}";
+            return $" {(length / Mathf.Pow(1024, stage)).ToString("0.00")} {stages[stage]}";
         }
 
         private static void DrawCount(Rect rect, int count)
@@ -30,7 +30,7 @@ namespace WooAsset
         }
         private static List<string> stages = new List<string>()
         {
-            "B","KB","MB","GB","TB"
+            "B","K","M","G","T","P"
         };
         private static string GetTagsString(IReadOnlyList<string> sources)
         {

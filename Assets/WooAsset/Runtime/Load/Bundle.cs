@@ -23,6 +23,8 @@ namespace WooAsset
 
         public string bundleName => loadArgs.bundleName;
         public bool raw => loadArgs.data.raw;
+        public long rawLength => loadArgs.data.length;
+
 
         private AssetBundleCreateRequest loadOp;
         private Operation downloader;
@@ -101,7 +103,10 @@ namespace WooAsset
 
         protected async void SetResult(AssetBundle value)
         {
-            _length = ProfilerAsset(value);
+            if (raw)
+                _length = rawLength;
+            else
+                _length = ProfilerAsset(value);
             await dependence;
             this.value = value;
             InvokeComplete();

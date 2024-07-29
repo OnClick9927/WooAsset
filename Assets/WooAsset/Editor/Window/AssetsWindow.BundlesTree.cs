@@ -196,9 +196,12 @@ namespace WooAsset
 
                 float indent = this.GetContentIndent(args.item);
                 var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
+
+
                 if (args.item.depth == 0)
                 {
                     EditorBundleData group = cache.GetBundleGroupByBundleName(args.label);
+                    EditorGUI.ProgressBar(args.GetCellRect(3), group.length / (float)totalSize, "");
                     base.RowGUI(args);
                     if (ping_g == group) draw = true;
                 }
@@ -210,6 +213,7 @@ namespace WooAsset
                     GUI.Label(first, GUIContent(path, Textures.GetMiniThumbnail(path)));
                     DrawCount(args.GetCellRect(1), asset.usageCount);
                     DrawCount(args.GetCellRect(2), asset.dependence.Count);
+                    EditorGUI.ProgressBar(args.GetCellRect(3), length / (float)totalSize, "");
                     GUI.Label(args.GetCellRect(3), GetSizeString(length));
                     if (ping_a == asset) draw = true;
                 }

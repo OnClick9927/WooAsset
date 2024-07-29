@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using static WooAsset.AssetsEditorTool;
 using System.Linq;
+using UnityEngine.UIElements;
 
 namespace WooAsset
 {
@@ -137,6 +138,8 @@ namespace WooAsset
                     GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(AssetsHelper.GetFileName(name), Textures.folder));
                     GUI.Label(args.GetCellRect(1), life.asset.refCount.ToString());
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
+                    EditorGUI.ProgressBar(args.GetCellRect(3), life.assetLength / (float)totalBundleSize, "");
+
                     GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
 
                 }

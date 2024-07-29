@@ -58,27 +58,27 @@ MonoBehaviour:
   recordIgnore: []
   build:
     types:
-    - WooAsset.AssetsEditorTool+DefaultAssetBuild
+    - WooAsset.DefaultAssetsBuild
     shortTypes:
-    - DefaultAssetBuild
+    - DefaultAssetsBuild
     typeIndex: 0
   mode:
     types:
     - WooAsset.AssetsEditorTool+AssetDatabaseMode
     - WooAsset.AssetsEditorTool+RudeMode
-    - WooAsset.NormalAssetMode
+    - WooAsset.NormalAssetsMode
     shortTypes:
     - AssetDatabaseMode
     - RudeMode
-    - NormalAssetMode
-    typeIndex: 0
+    - NormalAssetsMode
+    typeIndex: 1
   encrypt:
     types:
-    - WooAsset.DefaultAssetStreamEncrypt
     - WooAsset.NoneAssetStreamEncrypt
+    - WooAsset.DefaultAssetStreamEncrypt
     shortTypes:
-    - DefaultAssetStreamEncrypt
     - NoneAssetStreamEncrypt
+    - DefaultAssetStreamEncrypt
     typeIndex: 1
   tags:
   - tag: test
