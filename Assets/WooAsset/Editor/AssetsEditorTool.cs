@@ -6,6 +6,8 @@ using Object = UnityEngine.Object;
 using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
+using UnityEngine.UIElements;
+using System.Reflection;
 
 namespace WooAsset
 {
@@ -240,7 +242,17 @@ namespace WooAsset
         public static void DeleteDirectory(string path) => Directory.Delete(path, true);
         public static string CombinePath(string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
 
-
+        private static MethodInfo _GetTextureMemorySizeLong;
+        public static long GetTextureMemorySizeLong(string path)
+        {
+            if (_GetTextureMemorySizeLong == null)
+            {
+                var type = typeof(AssetDatabase).Assembly.GetType("UnityEditor.TextureUtil");
+                _GetTextureMemorySizeLong = type.GetMethod("GetStorageMemorySizeLong", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+            }
+            var tx = AssetDatabase.LoadAssetAtPath<UnityEngine.Texture>(path);
+            return (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { tx });
+        }
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
         public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute();

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine.Profiling;
 
 namespace WooAsset
 {
@@ -25,7 +27,10 @@ namespace WooAsset
             else
             {
                 hash = AssetsHelper.GetFileHash(path);
-                length = AssetsHelper.GetFileLength(path);
+                if (_type == AssetType.Sprite || _type == AssetType.Texture)
+                    length = AssetsEditorTool.GetTextureMemorySizeLong(path);
+                else
+                    length = AssetsHelper.GetFileLength(path);
             }
 
             return new EditorAssetData()
