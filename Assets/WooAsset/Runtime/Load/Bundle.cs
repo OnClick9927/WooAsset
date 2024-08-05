@@ -122,8 +122,7 @@ namespace WooAsset
 
             if (raw)
             {
-                rawObject = RawObject.Create(_path);
-                rawObject.bytes = new byte[len];
+                rawObject = RawObject.Create(_path, new byte[len]);
             }
 
 
@@ -187,15 +186,19 @@ namespace WooAsset
             }
             else
             {
+                if (raw || (!raw && encrypt is NoneAssetStreamEncrypt))
+                {
+                    var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
+                    this.downloader = downloader;
+                    await downloader;
+                }
+
                 if (raw)
                 {
                     var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
                     this.downloader = downloader;
                     await downloader;
-                    rawObject = RawObject.Create(_path);
-                    var bytes = downloader.data;
-                    bytes = EncryptBuffer.Decode(bundleName, bytes, encrypt);
-                    rawObject.bytes = bytes;
+                    rawObject = RawObject.Create(_path, EncryptBuffer.Decode(bundleName, downloader.data, encrypt));
                     SetResult(null);
                 }
                 else
@@ -251,26 +254,11 @@ namespace WooAsset
 
         }
 
-        public virtual RawObject LoadRawObject(string path)
-        {
-            return rawObject;
-        }
-        public virtual AssetRequest LoadAssetWithSubAssetsAsync(string name, Type type)
-        {
-            return new RuntimeAssetRequest(value.LoadAssetWithSubAssetsAsync(name, type));
-        }
-        public virtual UnityEngine.Object[] LoadAssetWithSubAssets(string name, Type type)
-        {
-            return value.LoadAssetWithSubAssets(name, type);
-        }
-        public virtual AssetRequest LoadAssetAsync(string name, Type type)
-        {
-            return new RuntimeAssetRequest(value.LoadAssetAsync(name, type));
-        }
-        public virtual UnityEngine.Object LoadAsset(string name, Type type)
-        {
-            return value.LoadAsset(name, type);
-        }
+        public virtual RawObject LoadRawObject(string path) => rawObject;
+        public virtual AssetRequest LoadAssetWithSubAssetsAsync(string name, Type type) => new RuntimeAssetRequest(value.LoadAssetWithSubAssetsAsync(name, type));
+        public virtual UnityEngine.Object[] LoadAssetWithSubAssets(string name, Type type) => value.LoadAssetWithSubAssets(name, type);
+        public virtual AssetRequest LoadAssetAsync(string name, Type type) => new RuntimeAssetRequest(value.LoadAssetAsync(name, type));
+        public virtual UnityEngine.Object LoadAsset(string name, Type type) => value.LoadAsset(name, type);
         public virtual Scene LoadScene(string path, LoadSceneParameters parameters) => SceneManager.LoadScene(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
         public AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => SceneManager.UnloadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), op);
         public virtual AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => SceneManager.LoadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), parameters);

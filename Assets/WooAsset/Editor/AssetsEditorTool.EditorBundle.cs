@@ -44,10 +44,7 @@ namespace WooAsset
 
             public override RawObject LoadRawObject(string path)
             {
-                RawObject rawObject = RawObject.Create(path);
-                var reader = AssetsHelper.ReadFile(path, false);
-                rawObject.bytes = reader.bytes;
-                return rawObject;
+                return RawObject.Create(path, AssetsHelper.ReadFile(path, false).bytes);
             }
 
             public override Object[] LoadAssetWithSubAssets(string path, Type type)
