@@ -30,10 +30,20 @@ namespace WooAsset
                 assets.RemoveAll(x => x.length >= size);
                 One2One(big, result);
                 if (assets.Count == 0) return;
-                assets.Sort((a, b) =>
+                for (int i = 0; i < assets.Count - 1; i++)
                 {
-                    return a.length < b.length ? 1 : -1;
-                });
+                    for (int j = i + 1; j < assets.Count; j++)
+                    {
+                        var a = assets[i];
+                        var b = assets[j];
+                        if (a.length > b.length)
+                        {
+                            assets[i] = b;
+                            assets[j] = a;
+                        }
+                    }
+                }
+
                 List<EditorAssetData> tmp = new List<EditorAssetData>();
                 long len = 0;
                 for (int i = 0; i < assets.Count; i++)
@@ -63,7 +73,7 @@ namespace WooAsset
             }
 
         }
-  
+
 
     }
 

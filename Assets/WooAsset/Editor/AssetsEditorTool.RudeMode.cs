@@ -70,6 +70,7 @@ namespace WooAsset
             protected override IReadOnlyList<string> GetAllAssetPaths(string bundleName) => GetAllAssetPaths();
             protected override AssetData GetAssetData(string assetPath)
             {
+                if (!data.assets.Contains(assetPath)) return null;
                 return new AssetData()
                 {
                     bundleName = data.bundleName,
