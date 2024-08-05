@@ -15,9 +15,11 @@ namespace WooAsset
 
             static void BuildAtlas(string directory, List<string> sprites)
             {
-                List<Texture> textures = sprites.SelectMany(x => AssetDatabase.LoadAllAssetsAtPath(x).Select(x => x as Texture).ToList()).ToList();
+                List<Texture> textures = sprites.SelectMany(x => AssetDatabase.LoadAllAssetsAtPath(x)
+                .Select(x => x as Texture).ToList()).ToList();
                 textures.RemoveAll(x => x == null);
-
+                textures.RemoveAll(x => x is RenderTexture);
+                if (textures.Count == 0) return;
 
                 string file_path = $"{directory}.spriteatlas";
                 SpriteAtlas asset = new SpriteAtlas();

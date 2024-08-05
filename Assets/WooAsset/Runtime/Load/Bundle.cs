@@ -156,6 +156,7 @@ namespace WooAsset
                     {
                         SetErr($"Can not Load Bundle {bundleName}");
                     }
+                    Debug.Log(loadOp.assetBundle);
                     SetResult(loadOp.assetBundle);
                 }
             }

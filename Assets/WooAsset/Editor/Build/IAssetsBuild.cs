@@ -55,10 +55,13 @@ namespace WooAsset
                 else if (typeof(ScriptableObject).IsAssignableFrom(type)) _type = AssetType.ScriptObject;
                 else if (typeof(Texture).IsAssignableFrom(type))
                 {
-                    TextureImporter assetImporter = AssetImporter.GetAtPath(path) as TextureImporter;
                     _type = AssetType.Texture;
-                    if (assetImporter.textureType == TextureImporterType.Sprite)
-                        _type = AssetType.Sprite;
+                    if (type == typeof(Texture2D))
+                    {
+                        TextureImporter assetImporter = AssetImporter.GetAtPath(path) as TextureImporter;
+                        if (assetImporter.textureType == TextureImporterType.Sprite)
+                            _type = AssetType.Sprite;
+                    }
                 }
                 _type = CoverAssetType(path, _type);
             }

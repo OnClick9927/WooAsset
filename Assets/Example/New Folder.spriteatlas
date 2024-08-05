@@ -50,16 +50,8 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: -807609689785687374, guid: bbc2f73bea9decd47971ea7567111237, type: 3}
-  - {fileID: -4910088520043721169, guid: bbc2f73bea9decd47971ea7567111237, type: 3}
-  - {fileID: 425005124838576428, guid: bbc2f73bea9decd47971ea7567111237, type: 3}
-  - {fileID: 2530395009782480059, guid: bbc2f73bea9decd47971ea7567111237, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - a_1
-  - a_0
-  - a_3
-  - a_2
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: New Folder
   m_IsVariant: 0

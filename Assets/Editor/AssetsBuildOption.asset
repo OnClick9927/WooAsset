@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
   version: 0.0.1
-  copyToStream: 1
+  copyToStream: 0
   buildMode: 0
   typeTreeOption: 1
   bundleNameType: 2
-  compress: 1
+  compress: 0
   MaxCacheVersionCount: 8
   cleanHistory: 1
   buildInAssets: []
@@ -71,7 +71,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
-    typeIndex: 1
+    typeIndex: 2
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt
