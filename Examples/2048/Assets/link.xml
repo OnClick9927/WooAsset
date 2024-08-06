@@ -1,0 +1,9 @@
+<linker>
+	<assembly fullname="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    	<type fullname="UnityEngine.TrailRenderer" preserve="all"/>
+            	<type fullname="UnityEngine.AnimationClip" preserve="all"/>
+            	<type fullname="UnityEngine.AudioListener" preserve="all"/>
+            	<type fullname="UnityEngine.AudioSource" preserve="all"/>
+
+    </assembly>
+ </linker>
