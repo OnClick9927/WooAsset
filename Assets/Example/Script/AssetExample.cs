@@ -22,19 +22,19 @@ namespace WooAsset
         {
             Assets.SetAssetsSetting(new LocalSetting());
             //await Assets.CopyToSandBox();
-            var op = await Assets.LoadRemoteVersions();
-            if (op.Versions != null)
-            {
-                var version = op.Versions.NewestVersion();
-                var down = await Assets.DownloadVersionData(version);
-                var versionData = down.GetVersion();
-                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
+            //var op = await Assets.LoadRemoteVersions();
+            //if (op.Versions != null)
+            //{
+            //    var version = op.Versions.NewestVersion();
+            //    var down = await Assets.DownloadVersionData(version);
+            //    var versionData = down.GetVersion();
+            //    var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 
-                for (int i = 0; i < compare.add.Count; i++)
-                    await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
-                for (int i = 0; i < compare.change.Count; i++)
-                    await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
-            }
+            //    for (int i = 0; i < compare.add.Count; i++)
+            //        await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
+            //    for (int i = 0; i < compare.change.Count; i++)
+            //        await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
+            //}
 
 
             await Assets.InitAsync();

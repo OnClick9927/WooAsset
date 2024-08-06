@@ -10,6 +10,7 @@ namespace WooAsset
         [UnityEngine.SerializeField] internal List<int> bundleDependence;
         public string bundleName;
         public bool raw;
+        public CompressType compress;
         public int enCode;
         public string hash;
         public long length;
@@ -31,6 +32,7 @@ namespace WooAsset
             bundleDependence = reader.ReadInt32List();
             bundleName = reader.ReadUTF8();
             hash = reader.ReadUTF8();
+            compress = (CompressType)reader.ReadByte();
         }
 
         void IBufferObject.WriteData(BufferWriter writer)
@@ -42,7 +44,7 @@ namespace WooAsset
             writer.WriteInt32List(bundleDependence);
             writer.WriteUTF8(bundleName);
             writer.WriteUTF8(hash);
-
+            writer.WriteByte((byte)compress);
         }
 
         [System.NonSerialized] public List<string> assets;

@@ -19,8 +19,8 @@ namespace WooAsset
                 public EditorAssetRequest(Object[] allAssets, Object asset)
                 {
                     _allAssets = allAssets;
-                    InvokeComplete();
                     _asset = asset;
+                    InvokeComplete();
                 }
 
                 public override Object asset => _asset;
@@ -30,22 +30,13 @@ namespace WooAsset
                 public override float progress => 1;
             }
 
-            public EditorBundle(BundleLoadArgs loadArgs) : base(loadArgs)
-            {
-            }
+            public EditorBundle(BundleLoadArgs loadArgs) : base(loadArgs) { }
             public override float progress => 1;
             public override bool async => false;
-            protected override void OnLoad()
-            {
-
-                SetResult(null);
-            }
+            protected override void OnLoad() => SetResult(null);
             protected override void OnUnLoad() { }
 
-            public override RawObject LoadRawObject(string path)
-            {
-                return RawObject.Create(path, AssetsHelper.ReadFile(path, false).bytes);
-            }
+            public override RawObject LoadRawObject(string path) => RawObject.Create(path, AssetsHelper.ReadFile(path, false).bytes);
 
             public override Object[] LoadAssetWithSubAssets(string path, Type type)
             {
@@ -62,19 +53,8 @@ namespace WooAsset
                 }
                 return _allAssets;
             }
-            public override AssetRequest LoadAssetWithSubAssetsAsync(string path, Type type)
-            {
-                var _allAssets = AssetDatabase.LoadAllAssetsAtPath(path);
-                var result = AssetDatabase.LoadAssetAtPath(path, type);
-                return new EditorAssetRequest(_allAssets, result);
-            }
-
-
-            public override AssetRequest LoadAssetAsync(string name, Type type)
-            {
-                var result = AssetDatabase.LoadAssetAtPath(name, type);
-                return new EditorAssetRequest(null, result);
-            }
+            public override AssetRequest LoadAssetWithSubAssetsAsync(string path, Type type) => new EditorAssetRequest(AssetDatabase.LoadAllAssetsAtPath(path), AssetDatabase.LoadAssetAtPath(path, type));
+            public override AssetRequest LoadAssetAsync(string name, Type type) => new EditorAssetRequest(null, AssetDatabase.LoadAssetAtPath(name, type));
             public override Object LoadAsset(string name, Type type) => AssetDatabase.LoadAssetAtPath(name, type);
             public override AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => EditorSceneManager.LoadSceneAsyncInPlayMode(path, parameters);
             public override Scene LoadScene(string path, LoadSceneParameters parameters) => EditorSceneManager.LoadSceneInPlayMode(path, parameters);

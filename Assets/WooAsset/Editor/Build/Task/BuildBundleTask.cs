@@ -26,14 +26,14 @@ namespace WooAsset
                 foreach (EditorBundleData build in builds)
                     build.FindUsage(builds);
             }
-            public static ManifestData BuildManifest(string version, List<EditorBundleData> groups, AssetCollection tree)
+            public static ManifestData BuildManifest(string version, List<EditorBundleData> groups, AssetCollection tree, CompressType compress)
             {
                 List<AssetData> _assets = new List<AssetData>();
                 List<BundleData> _bundles = new List<BundleData>();
 
                 foreach (var build in groups)
                 {
-                    _bundles.Add(build.CreateBundleData());
+                    _bundles.Add(build.CreateBundleData(compress));
                     foreach (var assetPath in build.GetAssets())
                     {
                         EditorAssetData data = tree.GetAssetData(assetPath);
@@ -94,7 +94,7 @@ namespace WooAsset
 
 
 
-                var manifest = BuildManifest(context.version, source, context.assetsCollection);
+                var manifest = BuildManifest(context.version, source, context.assetsCollection, context.compress);
 
 
                 context.manifest = manifest;

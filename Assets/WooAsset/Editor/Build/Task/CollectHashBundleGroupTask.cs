@@ -26,7 +26,7 @@ namespace WooAsset
             for (int i = 0; i < builds.Count; i++)
             {
                 EditorBundleData build = builds[i];
-                build.CalcHash(hashMap);
+                build.CalculateHash(hashMap);
             }
 
 

@@ -16,18 +16,25 @@ namespace WooAsset
         }
         private bool _async = false;
         private string _path;
+        private long _length;
         private BundleLoadType type;
         private IAssetEncrypt encrypt => loadArgs.encrypt;
         public override bool async => _async;
         protected BundleLoadArgs loadArgs;
-
         public string bundleName => loadArgs.bundleName;
         public bool raw => loadArgs.data.raw;
         public long rawLength => loadArgs.data.length;
-
+        protected CompressType compress => loadArgs.data.compress;
+        public long length => _length;
+        private Operation dependence => loadArgs.dependence;
 
         private AssetBundleCreateRequest loadOp;
         private Operation downloader;
+        private Operation bytes_op;
+
+        private RawObject rawObject;
+
+        FileStream filestream;
         public AssetBundle value { get; private set; }
         public Bundle(BundleLoadArgs loadArgs)
         {
@@ -50,196 +57,117 @@ namespace WooAsset
                 if (isDone) return 1;
                 if (async)
                 {
-
-                    if (type == BundleLoadType.FromRequest)
-                    {
-                        if (downloader == null) return 0;
-                        if (raw)
-                            return downloader.progress;
-                        else
-                        {
-                            if (loadOp == null) return (downloader.progress + dependence.progress) * 0.5f;
-                            return (downloader.progress + dependence.progress) * 0.5f + loadOp.progress * 0.5f;
-                        }
-                    }
-                    if (raw)
-                        return rawProgress;
-                    return loadOp == null ? 0 : loadOp.progress;
+                    var op = bytes_op != null ? bytes_op : downloader;
+                    return op == null ? loadOp.progress : op.progress;
                 }
                 return 0;
             }
         }
 
-        private long _length;
-        public long length => _length;
+
+
+
         private long ProfilerAsset(AssetBundle value)
         {
             if (value == null) return 0;
             return Profiler.GetRuntimeMemorySizeLong(value);
         }
-        private async void LoadBundle(byte[] buffer)
+        private async void LoadFromBytes(Operation op)
         {
-            buffer = EncryptBuffer.Decode(bundleName, buffer, encrypt);
-            if (async)
+            bytes_op = op;
+            byte[] buffer = null;
+            await op;
+            if (op is ReadFileOperation)
+                buffer = (op as ReadFileOperation).bytes;
+            else if (op is DownLoader)
+                buffer = (op as DownLoader).data;
+            if (op.isErr)
             {
-                loadOp = AssetBundle.LoadFromMemoryAsync(buffer);
-                await this.loadOp;
-                if (loadOp.assetBundle == null)
-                {
-                    SetErr($"Can not Load Bundle {bundleName}");
-                }
-                SetResult(loadOp.assetBundle);
+                SetErr(op.error);
+                SetResult(null);
+                return;
+            }
+
+
+            buffer = EncryptBuffer.Decode(bundleName, buffer, encrypt);
+            if (raw)
+            {
+                rawObject = RawObject.Create(_path, buffer);
+                SetResult(null);
             }
             else
             {
-                AssetBundle result = AssetBundle.LoadFromMemory(buffer);
-                if (result == null)
+                if (async)
                 {
-                    SetErr($"Can not Load Bundle {bundleName}");
+                    loadOp = AssetBundle.LoadFromMemoryAsync(buffer);
+                    await this.loadOp;
+                    SetResult(loadOp.assetBundle);
                 }
-                SetResult(result);
+                else
+                    SetResult(AssetBundle.LoadFromMemory(buffer));
             }
         }
-
         protected async void SetResult(AssetBundle value)
         {
+#if UNITY_EDITOR
+            if (GetType() == typeof(Bundle))
+#endif
+                if (!raw)
+                {
+                    if (value == null)
+                    {
+                        SetErr($"Can not Load Bundle {bundleName}");
+                    }
+                }
+
+
             if (raw)
                 _length = rawLength;
             else
                 _length = ProfilerAsset(value);
+
+
             await dependence;
             this.value = value;
             InvokeComplete();
         }
-        private RawObject rawObject;
-        private float rawProgress;
-        FileStream filestream;
+
         private async void LoadFromStream()
         {
-            filestream = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
-
-            long len = filestream.Length;
-
-            if (raw)
+            if (raw || (compress != CompressType.LZMA && !(encrypt is NoneAssetStreamEncrypt)))
+                LoadFromBytes(AssetsHelper.ReadFile(_path, async));
+            else
             {
-                rawObject = RawObject.Create(_path, new byte[len]);
-            }
-
-
-
-            if (async)
-            {
-                if (raw)
+                filestream = new BundleStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
+                long len = filestream.Length;
+                if (async)
                 {
-                    int n = 1024 * 8;
-                    int offset = 0;
-                    var bytes = rawObject.bytes;
-                    long last = len;
-                    while (last > 0)
-                    {
-                        var read = filestream.Read(bytes, offset, (int)Math.Min(n, last));
-                        offset += read;
-                        last -= read;
-                        rawProgress = offset / (float)len;
-                        if (last <= 0) break;
-                        await new YieldOperation();
-                    }
-                    SetResult(null);
-                }
-                else
-                {
-
                     loadOp = AssetBundle.LoadFromStreamAsync(filestream);
                     await this.loadOp;
-                    if (loadOp.assetBundle == null)
-                    {
-                        SetErr($"Can not Load Bundle {bundleName}");
-                    }
-                    Debug.Log(loadOp.assetBundle);
                     SetResult(loadOp.assetBundle);
                 }
-            }
-            else
-            {
-                if (raw)
-                {
-                    filestream.Read(rawObject.bytes, 0, (int)length);
-                    SetResult(null);
-                }
                 else
-                {
-                    AssetBundle result = AssetBundle.LoadFromStream(filestream);
-                    if (result == null)
-                        SetErr($"Can not Load Bundle {bundleName}");
-                    SetResult(result);
-                }
+                    SetResult(AssetBundle.LoadFromStream(filestream));
             }
         }
-        private Operation dependence => loadArgs.dependence;
-        protected override async void OnLoad()
+        private async void LoadFromRequest()
         {
-
-
-            if (type == BundleLoadType.FromFile)
-            {
-                LoadFromStream();
-            }
+            if (raw || (!raw && !(encrypt is NoneAssetStreamEncrypt)))
+                LoadFromBytes(AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName));
             else
             {
-                if (raw || (!raw && encrypt is NoneAssetStreamEncrypt))
-                {
-                    var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
-                    this.downloader = downloader;
-                    await downloader;
-                }
-
-                if (raw)
-                {
-                    var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
-                    this.downloader = downloader;
-                    await downloader;
-                    rawObject = RawObject.Create(_path, EncryptBuffer.Decode(bundleName, downloader.data, encrypt));
-                    SetResult(null);
-                }
-                else
-                {
-                    if (encrypt is NoneAssetStreamEncrypt)
-                    {
-                        var downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName);
-                        this.downloader = downloader;
-                        await downloader;
-                        if (!downloader.isErr)
-                        {
-                            SetResult(downloader.bundle);
-                        }
-                        else
-                        {
-                            SetErr(downloader.error);
-                            SetResult(null);
-                        }
-                    }
-                    else
-                    {
-                        var downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
-                        this.downloader = downloader;
-                        await downloader;
-                        if (!downloader.isErr)
-                        {
-                            byte[] buffer = downloader.data;
-                            LoadBundle(buffer);
-                        }
-                        else
-                        {
-                            SetErr(downloader.error);
-                            SetResult(null);
-                        }
-                    }
-                }
-
-
-
-
+                var downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName);
+                this.downloader = downloader;
+                await downloader;
+                SetResult(downloader.bundle);
             }
+        }
+        protected override void OnLoad()
+        {
+            if (type == BundleLoadType.FromFile)
+                LoadFromStream();
+            else
+                LoadFromRequest();
         }
 
         protected override void OnUnLoad()

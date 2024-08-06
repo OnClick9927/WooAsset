@@ -33,7 +33,7 @@ namespace WooAsset
         public long length { get => _length; private set { _length = value; } }
         public bool raw { get => _raw; private set { _raw = value; } }
 
-        public BundleData CreateBundleData()
+        public BundleData CreateBundleData(CompressType compress)
         {
             return new BundleData()
             {
@@ -41,6 +41,7 @@ namespace WooAsset
                 dependence = dependence,
                 raw = raw,
                 enCode = _enCode,
+                compress = compress,
                 assets = assets.ConvertAll(x => x.path),
                 hash = hash,
                 length = length,
@@ -48,16 +49,16 @@ namespace WooAsset
         }
 
         public List<EditorBundleData> GetUsage(List<EditorBundleData> src) => src.FindAll(x => usage.Contains(x.hash));
-        public List<EditorBundleData> GetDpendence(List<EditorBundleData> src) => src.FindAll(x => dependence.Contains(x.hash));
+        public List<EditorBundleData> GetDependence(List<EditorBundleData> src) => src.FindAll(x => dependence.Contains(x.hash));
         public bool CheckLoop(List<EditorBundleData> builds)
         {
-            var dps = GetDpendence(builds);
+            var dps = GetDependence(builds);
             var find = dps.FindAll(x => x.dependence.Contains(hash));
             loopDependence = find != null && find.Count != 0;
             return loopDependence;
         }
         public bool GetIsEmpty() => assets.Count == 0;
-        public void CalcHash(Dictionary<string, List<string>> hashMap)
+        public void CalculateHash(Dictionary<string, List<string>> hashMap)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var item in assets)

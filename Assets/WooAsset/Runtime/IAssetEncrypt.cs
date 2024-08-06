@@ -27,17 +27,17 @@
     {
         public const int code = 0;
 
-        public byte[] Decode(string bundleName, byte[] buffer)
+        byte[] IAssetEncrypt.Decode(string bundleName, byte[] buffer)
         {
             return buffer;
         }
 
-        public byte[] Decode(string bundleName, byte[] buffer, int offset, int length)
+        byte[] IAssetEncrypt.Decode(string bundleName, byte[] buffer, int offset, int length)
         {
             return buffer;
         }
 
-        public byte[] Encode(string bundleName, byte[] buffer)
+        byte[] IAssetEncrypt.Encode(string bundleName, byte[] buffer)
         {
             return buffer;
         }
@@ -45,12 +45,12 @@
     public class DefaultAssetStreamEncrypt : IAssetEncrypt
     {
         public const int code = 1;
-        public byte[] Decode(string bundleName, byte[] buffer)
+        byte[] IAssetEncrypt.Decode(string bundleName, byte[] buffer)
         {
-            return Decode(bundleName, buffer, 0, buffer.Length);
+            return ((IAssetEncrypt)this).Decode(bundleName, buffer, 0, buffer.Length);
         }
 
-        public byte[] Decode(string bundleName, byte[] buffer, int offset, int length)
+        byte[] IAssetEncrypt.Decode(string bundleName, byte[] buffer, int offset, int length)
         {
             for (int i = offset; i < offset + length && i < buffer.Length; i++)
             {
@@ -59,9 +59,9 @@
             return buffer;
         }
 
-        public byte[] Encode(string bundleName, byte[] buffer)
+        byte[] IAssetEncrypt.Encode(string bundleName, byte[] buffer)
         {
-            return Decode(bundleName, buffer);
+            return ((IAssetEncrypt)this).Decode(bundleName, buffer);
         }
     }
 }

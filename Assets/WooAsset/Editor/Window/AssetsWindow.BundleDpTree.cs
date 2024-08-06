@@ -10,7 +10,7 @@ namespace WooAsset
             public void SetBundleGroup(EditorBundleData group)
             {
                 if (group != null)
-                    base.SetBundleBuilds(group.GetDpendence(cache.previewBundles));
+                    base.SetBundleBuilds(group.GetDependence(cache.previewBundles));
                 else
                     base.SetBundleBuilds(null);
             }
