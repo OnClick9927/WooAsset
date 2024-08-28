@@ -29,10 +29,10 @@ namespace WooAsset
             protected override ManifestData manifest => Initialized() ? cache.manifest : null;
             protected override bool Initialized() => _task != null && _task.isDone;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;
-            protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
+            protected override Operation InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
             {
                 if (_task == null)
-                    _task = AssetTaskRunner.EditorSimulate();
+                    _task = AssetTaskRunner.EditorSimulate(fuzzySearch);
                 return _task;
             }
             protected override LoadRemoteVersionsOperation LoadRemoteVersions() => new AssetDataBaseCheck();

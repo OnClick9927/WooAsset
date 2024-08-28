@@ -12,14 +12,15 @@ namespace WooAsset
         private VersionData version;
         public ManifestData manifest;
         public List<FileData> bundles;
-
+        private bool fuzzySearch;
         private string _version = "";
         private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
 
         public string GetVersion() => version.version;
-        public LoadManifestOperation(List<string> loadedBundles, string version, Func<VersionData, List<PackageData>> getPkgs)
+        public LoadManifestOperation(List<string> loadedBundles, string version, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {
+            this.fuzzySearch = fuzzySearch;
             _version = version;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
@@ -102,7 +103,7 @@ namespace WooAsset
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }
 
-            manifest.Prepare();
+            manifest.Prepare(fuzzySearch);
             InvokeComplete();
         }
     }

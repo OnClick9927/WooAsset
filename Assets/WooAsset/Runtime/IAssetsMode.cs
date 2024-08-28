@@ -8,7 +8,7 @@ namespace WooAsset
     {
         string version { get; }
         bool Initialized();
-        Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
+        Operation InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs);
         LoadRemoteVersionsOperation LoadRemoteVersions();
         Operation CopyToSandBox(string from, string to);
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
@@ -26,10 +26,10 @@ namespace WooAsset
 
     public abstract class AssetsMode : IAssetsMode
     {
-        Operation IAssetsMode.InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
+        Operation IAssetsMode.InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {
             SetVersion(version);
-            return InitAsync(version, again, getPkgs);
+            return InitAsync(version, again, fuzzySearch, getPkgs);
         }
         bool IAssetsMode.Initialized() => Initialized();
         Operation IAssetsMode.CopyToSandBox(string from, string to) => CopyToSandBox(from, to);
@@ -42,7 +42,7 @@ namespace WooAsset
         protected void SetVersion(string version) => (this).version = version;
         protected abstract bool Initialized();
         protected abstract Operation CopyToSandBox(string from, string to);
-        protected abstract Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs);
+        protected abstract Operation InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs);
         protected abstract LoadRemoteVersionsOperation LoadRemoteVersions();
         protected abstract Bundle CreateBundle(string bundleName, BundleLoadArgs args);
         protected abstract VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType);
@@ -56,7 +56,7 @@ namespace WooAsset
         IReadOnlyList<string> IAssetsMode.GetAllAssetPaths(string bundleName) => GetAllAssetPaths(bundleName);
         AssetData IAssetsMode.GetFuzzyAssetData(string path) => GetFuzzyAssetData(path);
         protected virtual AssetData GetAssetData(string assetPath) => manifest.GetAssetData(assetPath);
-        protected virtual AssetData GetFuzzyAssetData(string path)=> manifest.GetFuzzyAssetData(path);
+        protected virtual AssetData GetFuzzyAssetData(string path) => manifest.GetFuzzyAssetData(path);
         protected virtual BundleData GetBundleData(string bundleName) => manifest.GetBundleData(bundleName);
         protected virtual IReadOnlyList<string> GetAllAssetPaths() => manifest.allPaths;
         protected virtual IReadOnlyList<string> GetTagAssetPaths(string tag) => manifest.GetTagAssetPaths(tag);
@@ -84,7 +84,7 @@ namespace WooAsset
 
         protected override Operation CopyToSandBox(string from, string to) => new CopyStreamBundlesOperation(from, to);
 
-        protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
+        protected override Operation InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {
             if (again)
             {
@@ -94,7 +94,7 @@ namespace WooAsset
             }
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
-                    , version, getPkgs);
+                    , version, fuzzySearch, getPkgs);
             if (manifestOp.isDone)
                 ManifestOp_completed();
             else

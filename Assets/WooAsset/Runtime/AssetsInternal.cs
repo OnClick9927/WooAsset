@@ -54,16 +54,17 @@ namespace WooAsset
     {
         private static Bundle CreateBundle(BundleLoadArgs args) => mode.CreateBundle(args.bundleName, args);
         public static bool Initialized() => mode.Initialized();
-        public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, getPkgs);
+        public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, GetFuzzySearch(), getPkgs);
         public static LoadRemoteVersionsOperation LoadRemoteVersions() => mode.LoadRemoteVersions();
         public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.StreamBundlePath, localSaveDir);
 
 
 
         public static AssetType GetAssetType(string assetPath) => Initialized() ? GetAssetData(assetPath).type : AssetType.None;
-        public static AssetData GetAssetData(string assetPath) {
+        public static AssetData GetAssetData(string assetPath)
+        {
             var data = mode.GetAssetData(assetPath);
-            if (data==null && GetFuzzySearch())
+            if (data == null && GetFuzzySearch())
             {
                 data = mode.GetFuzzyAssetData(assetPath);
             }
@@ -133,7 +134,7 @@ namespace WooAsset
         {
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
 
-            
+
             if (data == null)
             {
                 AssetsHelper.LogError($"Not Found Asset: {path}");

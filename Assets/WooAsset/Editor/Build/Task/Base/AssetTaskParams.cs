@@ -25,7 +25,7 @@ namespace WooAsset
         public List<AssetTask> pipelineStartTasks;
         public List<AssetTask> pipelineEndTasks;
         public List<string> recordIgnore;
-
+        public bool fuzzySearch;
         public readonly TaskPipelineType Pipeline;
         public List<string> GetAssetTags(string path)
         {

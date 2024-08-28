@@ -29,17 +29,19 @@ namespace WooAsset
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;
-            protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
+            protected override Operation InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
             {
-                assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
 
-
+                AssetTaskParams param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
+                assetBuild = param.assetBuild;
 
                 data = new BundleData()
                 {
                     length = -1,
                     assets = AssetDatabase.GetAllAssetPaths().Where(x =>
                     {
+                        if (!param.GetIsRecord(x))
+                            return false;
                         var type = assetBuild.GetAssetType(x);
                         return type != AssetType.Ignore && type != AssetType.Directory;
 
@@ -72,13 +74,18 @@ namespace WooAsset
                     encrypt = new NoneAssetStreamEncrypt(),
                 });
 
-                for (int i = 0; i < data.assets.Count; i++)
-                {
-                    string path = data.assets[i];
-                    string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
-                    string dir = AssetsHelper.GetDirectoryName(path);
-                    _fuzzleAssets.Add(AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx)), path);
-                }
+                if (fuzzySearch)
+                    for (int i = 0; i < data.assets.Count; i++)
+                    {
+                        string path = data.assets[i];
+                        string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
+                        string dir = AssetsHelper.GetDirectoryName(path);
+                        var key = AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx));
+                        if (_fuzzleAssets.ContainsKey(key))
+                            AssetsHelper.LogError($"fuzzy search:  same name asset in directory : {dir}  name {assetName_noEx} ");
+                        else
+                            _fuzzleAssets.Add(key, path);
+                    }
 
                 return Operation.empty;
             }

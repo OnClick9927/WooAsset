@@ -151,7 +151,7 @@ namespace WooAsset
         }
 
 
-        public void Prepare()
+        public void Prepare(bool fuzzySearch)
         {
             for (int i = 0; i < assets.Count; i++)
             {
@@ -192,9 +192,6 @@ namespace WooAsset
                 _bundles.Add(bundle.bundleName, bundle);
             }
 
-
-
-
             _assets = new Dictionary<string, AssetData>();
             _names = new Dictionary<string, RTName>();
             _fuzzleAssets = new Dictionary<string, string>();
@@ -203,9 +200,16 @@ namespace WooAsset
                 AssetData asset = assets[i];
                 string path = asset.path;
                 string assetName = AssetsHelper.GetFileName(path);
-                string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
-                string dir = AssetsHelper.GetDirectoryName(path);
-                _fuzzleAssets.Add(AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx)), path);
+                if (fuzzySearch)
+                {
+                    string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
+                    string dir = AssetsHelper.GetDirectoryName(path);
+                    var key = AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx));
+                    if (_fuzzleAssets.ContainsKey(key))
+                        AssetsHelper.LogError($"fuzzy search:  same name asset in directory : {dir}  name {assetName_noEx} ");
+                    else
+                        _fuzzleAssets.Add(key, path);
+                }
 
                 string bundleName = asset.bundleName;
                 _bundles[bundleName].AddAsset(path);
