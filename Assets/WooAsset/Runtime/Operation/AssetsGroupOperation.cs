@@ -19,9 +19,11 @@
 
         public AssetHandle FindAsset(string path)
         {
+            var data = AssetsInternal.GetAssetData(path);
+            if (data == null) return null;
             for (int i = 0; i < paths.Length; i++)
             {
-                if (paths[i] == path)
+                if (paths[i] == data.path)
                 {
                     return assets[i];
                 }

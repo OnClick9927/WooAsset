@@ -51,7 +51,6 @@ namespace WooAsset
             RawObject raw = asset.GetAsset();
             Debug.Log(raw.bytes.Length);
 
-
             var _asset = await Assets.LoadSubAsset("Assets/Example/New Folder/a");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");
 
