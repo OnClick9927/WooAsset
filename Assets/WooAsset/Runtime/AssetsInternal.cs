@@ -61,7 +61,15 @@ namespace WooAsset
 
 
         public static AssetType GetAssetType(string assetPath) => Initialized() ? GetAssetData(assetPath).type : AssetType.None;
-        public static AssetData GetAssetData(string assetPath) => mode.GetAssetData(assetPath);
+        public static AssetData GetAssetData(string assetPath) {
+            var data = mode.GetAssetData(assetPath);
+            if (data==null && GetFuzzySearch())
+            {
+                data = mode.GetFuzzyAssetData(assetPath);
+            }
+            return data;
+        }
+
         public static BundleData GetBundleData(string bundleName) => mode.GetBundleData(bundleName);
         public static string GetVersion() => Initialized() ? mode.version : string.Empty;
         public static IReadOnlyList<string> GetAssetTags(string assetPath) => GetAssetData(assetPath)?.tags;
@@ -84,6 +92,7 @@ namespace WooAsset
 
         private static string GetUrlFromBundleName(string version, string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, version, bundleName);
 
+        private static bool GetFuzzySearch() => setting.GetFuzzySearch();
 
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
 
@@ -102,14 +111,14 @@ namespace WooAsset
 
         public static DownLoader DownloadRawBundle(string version, string bundleName) => new DownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 
-        public static LoadVersionDataOperation DonloadVersionData(string version) => new LoadVersionDataOperation(version);
+        public static LoadVersionDataOperation DownloadVersionData(string version) => new LoadVersionDataOperation(version);
         public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => mode.CompareVersion(version, pkgs, compareType);
         public static DownLoader CopyFile(string url, string path) => new FileDownLoader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static DownLoader DownloadBytes(string url) => new DownLoader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
 
         private static IAssetEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
-        public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAwalysFromWebRequest();
-        public static bool GetBundleAwalysFromWebRequest() => setting.GetBundleAlwaysFromWebRequest();
+        public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAlwaysFromWebRequest();
+        public static bool GetBundleAlwaysFromWebRequest() => setting.GetBundleAlwaysFromWebRequest();
 
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
@@ -123,6 +132,8 @@ namespace WooAsset
         public static AssetHandle LoadAsset(string path, bool sub, bool async, Type type)
         {
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
+
+            
             if (data == null)
             {
                 AssetsHelper.LogError($"Not Found Asset: {path}");

@@ -2,6 +2,7 @@
 using System;
 using UnityEditor;
 using System.Linq;
+using UnityEditor.VersionControl;
 
 namespace WooAsset
 {
@@ -23,22 +24,32 @@ namespace WooAsset
             private EditorBundle bundle;
             private IAssetsBuild assetBuild;
             private Dictionary<string, TagAssets> tags = new Dictionary<string, TagAssets>();
+            Dictionary<string, string> _fuzzleAssets = new Dictionary<string, string>();
+
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;
             protected override Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs)
             {
+                assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
+
+
+
                 data = new BundleData()
                 {
                     length = -1,
-                    assets = AssetDatabase.GetAllAssetPaths().ToList(),
+                    assets = AssetDatabase.GetAllAssetPaths().Where(x =>
+                    {
+                        var type = assetBuild.GetAssetType(x);
+                        return type != AssetType.Ignore && type != AssetType.Directory;
+
+                    }).ToList(),
                     bundleName = "Rude",
                     enCode = NoneAssetStreamEncrypt.code,
                     dependence = new List<string>(),
                     hash = "Rude",
                     raw = false,
                 };
-                assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
                 for (int i = 0; i < data.assets.Count; i++)
                 {
                     var assetPath = data.assets[i];
@@ -60,6 +71,15 @@ namespace WooAsset
                     dependence = Operation.empty,
                     encrypt = new NoneAssetStreamEncrypt(),
                 });
+
+                for (int i = 0; i < data.assets.Count; i++)
+                {
+                    string path = data.assets[i];
+                    string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
+                    string dir = AssetsHelper.GetDirectoryName(path);
+                    _fuzzleAssets.Add(AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx)), path);
+                }
+
                 return Operation.empty;
             }
             protected override LoadRemoteVersionsOperation LoadRemoteVersions() => new AssetDataBaseCheck();
@@ -68,6 +88,13 @@ namespace WooAsset
             protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => new AssetDatabaseCompare(version, pkgs, compareType);
             protected override IReadOnlyList<string> GetAllAssetPaths() => data.assets;
             protected override IReadOnlyList<string> GetAllAssetPaths(string bundleName) => GetAllAssetPaths();
+            protected override AssetData GetFuzzyAssetData(string path)
+            {
+                string target = string.Empty;
+                if (_fuzzleAssets.TryGetValue(path, out target))
+                    return GetAssetData(target);
+                return null;
+            }
             protected override AssetData GetAssetData(string assetPath)
             {
                 if (!data.assets.Contains(assetPath)) return null;

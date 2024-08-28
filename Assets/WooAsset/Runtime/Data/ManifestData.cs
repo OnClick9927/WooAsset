@@ -197,11 +197,16 @@ namespace WooAsset
 
             _assets = new Dictionary<string, AssetData>();
             _names = new Dictionary<string, RTName>();
+            _fuzzleAssets = new Dictionary<string, string>();
             for (int i = 0; i < assets.Count; i++)
             {
                 AssetData asset = assets[i];
                 string path = asset.path;
                 string assetName = AssetsHelper.GetFileName(path);
+                string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
+                string dir = AssetsHelper.GetDirectoryName(path);
+                _fuzzleAssets.Add(AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx)), path);
+
                 string bundleName = asset.bundleName;
                 _bundles[bundleName].AddAsset(path);
                 _assets.Add(path, asset);
@@ -212,6 +217,7 @@ namespace WooAsset
             allBundle = AssetsHelper.ToKeyList(_bundles);
             allName = AssetsHelper.ToKeyList(_names);
         }
+        private Dictionary<string, string> _fuzzleAssets;
         private Dictionary<string, AssetData> _assets;
         private Dictionary<string, RTName> _names;
         private Dictionary<string, TagData> _tags;
@@ -242,8 +248,13 @@ namespace WooAsset
             }
             return result;
         }
-
-
+        internal AssetData GetFuzzyAssetData(string path)
+        {
+            string target = string.Empty;
+            if (_fuzzleAssets.TryGetValue(path, out target))
+                return GetAssetData(target);
+            return null;
+        }
 
         public static void Merge(ManifestData src, ManifestData dest, List<string> prefer_bundles)
         {
@@ -334,6 +345,7 @@ namespace WooAsset
             }
 
         }
+
 
     }
 }

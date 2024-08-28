@@ -130,6 +130,7 @@ namespace WooAsset
         public static string GetFileName(string path) => Path.GetFileName(path);
         public static string GetFileNameWithoutExtension(string path) => Path.GetFileNameWithoutExtension(path);
 
+        public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
 
 
 

@@ -40,7 +40,7 @@ namespace WooAsset
                 length = length,
                 hash = hash,
                 type = _type,
-                directory = AssetsEditorTool.ToAssetsPath(AssetsEditorTool.GetDirectoryName(path))
+                directory = AssetsEditorTool.ToAssetsPath(AssetsHelper.GetDirectoryName(path))
             };
         }
 

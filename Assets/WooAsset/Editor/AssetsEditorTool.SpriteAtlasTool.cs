@@ -53,7 +53,7 @@ namespace WooAsset
                 await Task.Delay(1000);
                 var data = AssetDatabase.FindAssets("t:Texture", atlasPaths)
                     .Select(x => AssetDatabase.GUIDToAssetPath(x))
-                    .Select(x => new { dir = AssetsEditorTool.GetDirectoryName(x), path = x })
+                    .Select(x => new { dir = AssetsHelper.GetDirectoryName(x), path = x })
                     .GroupBy(x => x.dir).ToDictionary(x => x.Key, x => x.Select(y => y.path).ToList());
                 foreach (var item in data)
                     BuildAtlas(item.Key, item.Value);

@@ -14,6 +14,7 @@ namespace WooAsset
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
         VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType);
         AssetData GetAssetData(string assetPath);
+        AssetData GetFuzzyAssetData(string path);
         BundleData GetBundleData(string bundleName);
         IReadOnlyList<string> GetAllAssetPaths();
         IReadOnlyList<string> GetTagAssetPaths(string tag);
@@ -53,8 +54,9 @@ namespace WooAsset
         IReadOnlyList<string> IAssetsMode.GetAllTags() => GetAllTags();
         IReadOnlyList<string> IAssetsMode.GetAssetsByAssetName(string name, List<string> result) => GetAssetsByAssetName(name, result);
         IReadOnlyList<string> IAssetsMode.GetAllAssetPaths(string bundleName) => GetAllAssetPaths(bundleName);
-
+        AssetData IAssetsMode.GetFuzzyAssetData(string path) => GetFuzzyAssetData(path);
         protected virtual AssetData GetAssetData(string assetPath) => manifest.GetAssetData(assetPath);
+        protected virtual AssetData GetFuzzyAssetData(string path)=> manifest.GetFuzzyAssetData(path);
         protected virtual BundleData GetBundleData(string bundleName) => manifest.GetBundleData(bundleName);
         protected virtual IReadOnlyList<string> GetAllAssetPaths() => manifest.allPaths;
         protected virtual IReadOnlyList<string> GetTagAssetPaths(string tag) => manifest.GetTagAssetPaths(tag);
@@ -62,8 +64,6 @@ namespace WooAsset
         protected virtual IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => manifest.GetAssetsByAssetName(name, result);
 
         protected virtual IReadOnlyList<string> GetAllAssetPaths(string bundleName) => manifest.GetAssets(bundleName);
-
-
 
 
     }

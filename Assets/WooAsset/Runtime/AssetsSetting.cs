@@ -16,6 +16,8 @@ namespace WooAsset
         public virtual bool GetSaveBundlesWhenPlaying() => true;
         public virtual bool GetBundleAlwaysFromWebRequest() { return true; }
         public virtual int GetWebRequestTimeout() { return 30; }
+        public virtual bool GetFuzzySearch() { return false; }
+
         public virtual int GetWebRequestRetryCount() { return 3; }
         public virtual bool GetAutoUnloadBundle() { return true; }
 

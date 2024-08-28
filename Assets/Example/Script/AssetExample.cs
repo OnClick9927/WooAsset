@@ -52,7 +52,7 @@ namespace WooAsset
             Debug.Log(raw.bytes.Length);
 
 
-            var _asset = await Assets.LoadSubAsset("Assets/Example/New Folder/a.jpg");
+            var _asset = await Assets.LoadSubAsset("Assets/Example/New Folder/a");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");
 
             int index = 0;

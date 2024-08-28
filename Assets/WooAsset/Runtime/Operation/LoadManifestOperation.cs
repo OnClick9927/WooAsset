@@ -62,7 +62,7 @@ namespace WooAsset
                 {
                     VersionCollectionData collection = VersionHelper.ReadAssetsVersionCollection(downloader.data);
                     _version = string.IsNullOrEmpty(_version) ? collection.NewestVersion() : collection.FindVersion(_version);
-                    var _op = AssetsInternal.DonloadVersionData(_version);
+                    var _op = AssetsInternal.DownloadVersionData(_version);
                     await _op;
                     version = _op.GetVersion();
                     await VersionHelper.WriteVersionData(version, localVersionPath);

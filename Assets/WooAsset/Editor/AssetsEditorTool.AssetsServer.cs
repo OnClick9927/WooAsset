@@ -12,8 +12,10 @@ namespace WooAsset
                 public GetOperation(HttpListenerContext context, string folder)
                 {
                     HttpListenerRequest request = context.Request;
-                    var rawUrl = request.RawUrl;
-                    string filePath = AssetsHelper.CombinePath(folder, rawUrl.Remove(0, 1));
+                    var rawUrl = request.RawUrl.Remove(0, 1);
+
+                    string filePath = AssetsHelper.CombinePath(folder, rawUrl);
+                    AssetsHelper.Log($"Client DownLoad {rawUrl}");
                     WriteToClient(filePath, context);
                 }
                 public async void WriteToClient(string filePath, HttpListenerContext context)

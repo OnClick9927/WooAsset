@@ -18,6 +18,10 @@ namespace WooAsset
         //{
         //    return GetUrlByBundleName(buildTarget, bundleName);
         //}
+        public override bool GetFuzzySearch()
+        {
+            return true;
+        }
         public override bool NeedCopyStreamBundles()
         {
             return false;

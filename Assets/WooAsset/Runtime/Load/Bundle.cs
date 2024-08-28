@@ -40,7 +40,7 @@ namespace WooAsset
         {
             this.loadArgs = loadArgs;
             _async = loadArgs.async;
-            type = AssetsInternal.GetBundleAwalysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
+            type = AssetsInternal.GetBundleAlwaysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
             _path = AssetsInternal.GetBundleLocalPath(bundleName);
             if (type == BundleLoadType.FromFile && !AssetsHelper.ExistsFile(_path))
             {

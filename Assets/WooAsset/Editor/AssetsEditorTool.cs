@@ -234,7 +234,6 @@ namespace WooAsset
 
         public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
         public static string[] GetDirectoryEntries(string path) => Directory.GetFileSystemEntries(path, "*", SearchOption.AllDirectories).Select(x => AssetsHelper.ToRegularPath(x)).ToArray();
-        public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
         public static Operation WriteStream(string srcPath, Stream target) => new CopyFileStreamOperation(srcPath, target);
 
         public static bool IsDirectory(string path) => Directory.Exists(path);
