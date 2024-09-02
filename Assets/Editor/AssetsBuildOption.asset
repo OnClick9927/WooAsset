@@ -71,7 +71,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
-    typeIndex: 1
+    typeIndex: 0
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt
