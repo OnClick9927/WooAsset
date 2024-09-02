@@ -1,3 +1,5 @@
+## upm 地址 https://github.com/OnClick9927/WooAsset.git#src
+
 # WooAsset [文档](https://onclick9927.github.io/2023/05/19/Doc/WooAsset/0-WooAsset-%E7%AE%80%E4%BB%8B)
 * 一个简单、高效、易扩展的 AssetBundle管理工具
 
