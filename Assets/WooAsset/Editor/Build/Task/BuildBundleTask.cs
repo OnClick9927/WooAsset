@@ -56,9 +56,9 @@ namespace WooAsset
 
 
                 Dictionary<string, string> needRenameFiles = new Dictionary<string, string>();
-                if (context.Pipeline != TaskPipelineType.EditorSimulate)
+                if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
                 {
-                    if (normal.Count != 0 && context.Pipeline != TaskPipelineType.EditorSimulate)
+                    if (normal.Count != 0)
                     {
                         var assetbuilds = normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray();
                         AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
@@ -98,7 +98,7 @@ namespace WooAsset
 
 
                 context.manifest = manifest;
-                if (context.isNormalBuildMode)
+                if (context.Pipeline == TaskPipelineType.BuildBundle)
                 {
                     //把raw存到history
                     foreach (var item in raws)
@@ -220,7 +220,7 @@ namespace WooAsset
             manifest.Prepare(context.fuzzySearch);
             context.mergedManifest = manifest;
             context.exports = exports;
-            if (context.isNormalBuildMode)
+            if (context.Pipeline == TaskPipelineType.BuildBundle)
             {
                 var versions = context.historyVersions;
 

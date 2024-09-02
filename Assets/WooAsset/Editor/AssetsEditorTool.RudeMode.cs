@@ -2,7 +2,6 @@
 using System;
 using UnityEditor;
 using System.Linq;
-using UnityEditor.VersionControl;
 
 namespace WooAsset
 {

@@ -6,7 +6,7 @@ namespace WooAsset
     {
         protected async override void OnExecute(AssetTaskContext context)
         {
-            if (context.isNormalBuildMode)
+            if (context.Pipeline == TaskPipelineType.BuildBundle)
             {
 
                 if (context.cleanHistory)
@@ -20,7 +20,7 @@ namespace WooAsset
                             .ForEach(x => AssetsEditorTool.DeleteFile(x));
                 }
             }
-            if (context.Pipeline != TaskPipelineType.EditorSimulate)
+            if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
             {
 
                 foreach (var item in context.exports)

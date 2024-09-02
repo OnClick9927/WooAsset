@@ -8,7 +8,7 @@ namespace WooAsset
     {
         protected async override void OnExecute(AssetTaskContext context)
         {
-            if (context.isNormalBuildMode && context.copyToStream)
+            if (context.Pipeline == TaskPipelineType.BuildBundle && context.copyToStream)
             {
                 string streamPath = context.streamBundleDirectory;
                 var buildInAssets = context.buildInAssets;

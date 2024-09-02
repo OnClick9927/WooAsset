@@ -81,7 +81,7 @@ namespace WooAsset
         public static AssetTask PreviewAssets()
         {
             var Params = new AssetTaskParams(TaskPipelineType.PreviewAssets);
-            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
+            AssetTask task = Execute(new AssetTaskRunner(collectAssets), Params);
             return task;
         }
 

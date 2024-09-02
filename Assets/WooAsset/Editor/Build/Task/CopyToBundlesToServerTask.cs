@@ -8,7 +8,7 @@ namespace WooAsset
     {
         protected async override void OnExecute(AssetTaskContext context)
         {
-            if (context.isNormalBuildMode)
+            if (context.Pipeline == TaskPipelineType.BuildBundle)
             {
                 try
                 {
