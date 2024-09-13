@@ -30,7 +30,6 @@
                 await downloader;
                 if (!downloader.isErr)
                 {
-
                     StreamBundlesData list = AssetsHelper.ReadFromBytes<StreamBundlesData>(downloader.data);
                     foreach (var fileName in list.fileNames)
                     {

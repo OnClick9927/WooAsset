@@ -1,7 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
 
     public class VersionHelper
@@ -16,8 +13,6 @@ namespace WooAsset
 
         private static Operation Write<T>(T version, string path) where T : IBufferObject
         {
-            var go = !(Application.isPlaying && !AssetsInternal.GetSaveBundlesWhenPlaying());
-            if (!go) return Operation.empty;
             var bytes = AssetsHelper.ObjectToBytes(version);
             return AssetsHelper.WriteFile(bytes.buffer, path, 0, bytes.length);
         }

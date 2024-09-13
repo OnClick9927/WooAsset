@@ -21,20 +21,20 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            //await Assets.CopyToSandBox();
-            //var op = await Assets.LoadRemoteVersions();
-            //if (op.Versions != null)
-            //{
-            //    var version = op.Versions.NewestVersion();
-            //    var down = await Assets.DownloadVersionData(version);
-            //    var versionData = down.GetVersion();
-            //    var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
+            await Assets.CopyToSandBox();
+            var op = await Assets.LoadRemoteVersions();
+            if (op.Versions != null)
+            {
+                var version = op.Versions.NewestVersion();
+                var down = await Assets.DownloadVersionData(version);
+                var versionData = down.GetVersion();
+                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 
-            //    for (int i = 0; i < compare.add.Count; i++)
-            //        await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
-            //    for (int i = 0; i < compare.change.Count; i++)
-            //        await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
-            //}
+                for (int i = 0; i < compare.add.Count; i++)
+                    await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
+                for (int i = 0; i < compare.change.Count; i++)
+                    await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
+            }
 
 
             await Assets.InitAsync();
@@ -51,6 +51,7 @@ namespace WooAsset
             RawObject raw = asset.GetAsset();
             Debug.Log(raw.bytes.Length);
 
+
             var _asset = await Assets.LoadSubAsset("Assets/Example/New Folder/a");
             image2.sprite = _asset.GetSubAsset<Sprite>("a_1");
 
@@ -62,6 +63,7 @@ namespace WooAsset
                 image.sprite = asset_1.GetAsset<Sprite>();
                 await Task.Delay(100);
             }
+
             await Assets.UnloadSceneAsync("Assets/Example/Scene/New Scene2.unity", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
         }
 

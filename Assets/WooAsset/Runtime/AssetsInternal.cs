@@ -56,7 +56,7 @@ namespace WooAsset
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, again, GetFuzzySearch(), getPkgs);
         public static LoadRemoteVersionsOperation LoadRemoteVersions() => mode.LoadRemoteVersions();
-        public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.StreamBundlePath, localSaveDir);
+        public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.ToAbsPath(AssetsHelper.StreamBundlePath), localSaveDir);
 
 
 

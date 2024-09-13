@@ -141,7 +141,10 @@ namespace WooAsset
         public static void LogWarning(string msg) => Debug.LogWarning("Assets : " + msg);
         public static void Log(string msg) => Debug.Log("Assets : " + msg);
         public static void LogError(string err) => Debug.LogError("Assets : " + err);
-
+        public static string ToAbsPath(string src)
+        {
+            return CombinePath(Directory.GetCurrentDirectory(), src);
+        }
         public static Type GetAssetType(AssetType assetType, Type type)
         {
             if (type == typeof(UnityEngine.Object))
@@ -175,5 +178,6 @@ namespace WooAsset
             return type;
         }
 
+  
     }
 }

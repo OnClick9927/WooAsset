@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
   version: 0.0.1
-  copyToStream: 0
+  copyToStream: 1
   buildMode: 0
   typeTreeOption: 1
   bundleNameType: 2
@@ -21,7 +21,7 @@ MonoBehaviour:
   MaxCacheVersionCount: 8
   cleanHistory: 1
   buildInAssets: []
-  enableServer: 1
+  enableServer: 0
   serverPort: 8080
   pkgs:
   - build: 1

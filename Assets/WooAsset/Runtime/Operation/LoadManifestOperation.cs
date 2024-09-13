@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WooAsset
 {
-     class LoadManifestOperation : Operation
+    class LoadManifestOperation : Operation
     {
         public override float progress => isDone ? 1 : _progress;
         private float _progress;
@@ -34,42 +34,39 @@ namespace WooAsset
         {
             _progress = 0f;
             string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName);
-            bool download = false;
-            if (!AssetsHelper.ExistsFile(localVersionPath))
-                download = true;
-            else
+            bool download = AssetsInternal.GetBundleAlwaysFromWebRequest() || !AssetsHelper.ExistsFile(localVersionPath);
+            if (!download && !string.IsNullOrEmpty(_version))
             {
-                var reader = AssetsHelper.ReadFile(localVersionPath, true);
-                await reader;
-                version = VersionHelper.ReadVersionData(reader.bytes);
-
-                if (!string.IsNullOrEmpty(_version))
-                    if (version.version != _version)
-                        download = true;
+                var reader = await AssetsHelper.ReadFile(localVersionPath, true) as ReadFileOperation;
+                if (VersionHelper.ReadVersionData(reader.bytes).version != _version)
+                    download = true;
             }
-            _progress = 0.2f;
-
-
+            _progress = 0.1f;
             if (download)
             {
-                downloader = AssetsInternal.DownloadRemoteVersion();
-
-                await downloader;
+                downloader = await AssetsInternal.DownloadRemoteVersion() as DownLoader;
                 if (downloader.isErr)
                 {
                     SetErr(downloader.error);
+                    version = new VersionData() { version = _version };
                 }
                 else
                 {
                     VersionCollectionData collection = VersionHelper.ReadAssetsVersionCollection(downloader.data);
-                    _version = string.IsNullOrEmpty(_version) ? collection.NewestVersion() : collection.FindVersion(_version);
-                    var _op = AssetsInternal.DownloadVersionData(_version);
-                    await _op;
+                    _version = collection.FindVersion(_version);
+                    if (string.IsNullOrEmpty(_version)) _version = collection.NewestVersion();
+                    var _op = await AssetsInternal.DownloadVersionData(_version);
                     version = _op.GetVersion();
-                    await VersionHelper.WriteVersionData(version, localVersionPath);
+                    if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                        await VersionHelper.WriteVersionData(version, localVersionPath);
                 }
             }
-            _progress = 0.5f;
+            else
+            {
+                var op = await AssetsHelper.ReadFile(localVersionPath, true) as ReadFileOperation;
+                version = VersionHelper.ReadVersionData(op.bytes);
+            }
+            _progress = 0.3f;
             var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
 
             manifest = new ManifestData();
@@ -77,28 +74,26 @@ namespace WooAsset
             {
                 var pkg = pkgs[i];
                 string fileName = pkg.manifestFileName;
-
-                string _path = AssetsInternal.GetBundleLocalPath(fileName);
+                string localPath = AssetsInternal.GetBundleLocalPath(fileName);
+                bool _download = AssetsInternal.GetBundleAlwaysFromWebRequest() || !AssetsHelper.ExistsFile(localPath);
                 ManifestData v;
-                if (AssetsHelper.ExistsFile(_path))
+                if (_download)
                 {
-                    var reader = AssetsHelper.ReadFile(_path, true);
-                    await reader;
-                    v = VersionHelper.ReadManifest(reader.bytes);
-                }
-                else
-                {
-                    downloader = AssetsInternal.DownloadVersion(version.version, fileName);
-                    await downloader;
+                    downloader = await AssetsInternal.DownloadVersion(version.version, fileName) as DownLoader;
                     if (downloader.isErr)
                     {
                         SetErr(downloader.error);
                         break;
                     }
                     v = VersionHelper.ReadManifest(downloader.data);
-                    await VersionHelper.WriteManifest(v, _path);
+                    if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                        await VersionHelper.WriteManifest(v, localPath);
                 }
-
+                else
+                {
+                    var reader = await AssetsHelper.ReadFile(localPath, true) as ReadFileOperation;
+                    v = VersionHelper.ReadManifest(reader.bytes);
+                }
                 ManifestData.Merge(v, manifest, this.loadedBundles);
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }

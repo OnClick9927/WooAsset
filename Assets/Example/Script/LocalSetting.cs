@@ -6,25 +6,27 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
+using UnityEngine;
+
 namespace WooAsset
 {
     public class LocalSetting : AssetsSetting
     {
-        //public override string GetUrlByBundleName(string buildTarget, string bundleName)
-        //{
-        //    return base.GetUrlByBundleName(buildTarget, bundleName) + ".bytes";
-        //}
-        //public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
-        //{
-        //    return GetUrlByBundleName(buildTarget, bundleName);
-        //}
+        public override string GetUrlByBundleName(string buildTarget, string bundleName)
+        {
+            return base.GetUrlByBundleName(buildTarget, bundleName) + StreamBundlesData.fileExt;
+        }
+        public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
+        {
+            return GetUrlByBundleName(buildTarget, bundleName);
+        }
         public override bool GetFuzzySearch()
         {
             return true;
         }
         public override bool NeedCopyStreamBundles()
         {
-            return false;
+            return true;
         }
         public override bool GetAutoUnloadBundle()
         {
@@ -36,7 +38,7 @@ namespace WooAsset
         }
         protected override string GetBaseUrl()
         {
-            //return Application.streamingAssetsPath;
+            return Application.streamingAssetsPath;
             //return "https://pic.trinityleaves.cn/images/xxx";
             return "http://127.0.0.1:8080";
             //Application.dataPath, "../DLCDownLoad"

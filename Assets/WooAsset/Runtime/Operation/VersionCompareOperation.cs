@@ -105,7 +105,8 @@ namespace WooAsset
                         }
                     }
                 }
-                await VersionHelper.WriteManifest(remote_main, AssetsInternal.GetBundleLocalPath(fileName));
+                if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                    await VersionHelper.WriteManifest(remote_main, AssetsInternal.GetBundleLocalPath(fileName));
 
             }
             if (compareType != VersionCompareType.Manifest)
@@ -117,8 +118,8 @@ namespace WooAsset
                 for (int j = 0; j < delete.Count; j++)
                     this.delete.Add(delete[j].name);
             }
-
-            await VersionHelper.WriteVersionData(version,
+            if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                await VersionHelper.WriteVersionData(version,
                   AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName)
                   );
             InvokeComplete();
