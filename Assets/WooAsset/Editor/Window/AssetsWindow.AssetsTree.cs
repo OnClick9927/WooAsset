@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using System.IO;
+using static WooAsset.AssetsWindow;
 
 namespace WooAsset
 {
@@ -213,10 +214,20 @@ namespace WooAsset
                 {
                     float indent = this.GetContentIndent(args.item);
                     var first = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
-                    GUI.Label(first, GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
-                    EditorGUI.Toggle(args.GetCellRect(1), asset.record);
+                    if (args.item.id != -1)
+                    {
+                        GUI.Label(first, GUIContent(args.label, Textures.GetMiniThumbnail(args.label)));
+                        EditorGUI.Toggle(args.GetCellRect(1), asset.record);
 
-                    GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
+                        GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
+
+                    }
+                    else
+                    {
+                        GUI.contentColor = new Color(1f, 0.2f, 0, 1);
+                        GUI.Label(first, new GUIContent($"Not Found---> {args.label}", Textures.err));
+                        GUI.contentColor = Color.white;
+                    }
                 }
 
                 if (ping_a == asset)
