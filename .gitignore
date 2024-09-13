@@ -8,4 +8,8 @@ ProjectSettings/
 Logs/
 obj/
 *.csproj
-UserSettings
+UserSettings/
+Assets/StreamingAssets
+Assets/StreamingAssets.meta
+DLC/
+Export/
