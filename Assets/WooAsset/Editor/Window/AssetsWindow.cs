@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 namespace WooAsset
@@ -106,9 +107,11 @@ namespace WooAsset
             preSearchType = pre._searchType;
             rtSearchType = rt._searchType;
         }
+        static float scale = 1.1f;
         private void OnGUI()
         {
-            var rs = RectEx.HorizontalSplit(new Rect(Vector2.zero, position.size), 30, 6, false);
+            GUIUtility.ScaleAroundPivot(Vector2.one * scale, Vector2.zero);
+            var rs = RectEx.HorizontalSplit(new Rect(Vector2.zero, position.size / scale), 30, 6, false);
             Tool(rs[0]);
             ContentGUI(rs[1]);
         }
@@ -160,6 +163,8 @@ namespace WooAsset
                 {
                     EditorUtility.DisplayPopupMenu(rect, TaskPipelineMenu.root, new MenuCommand(null));
                 }
+
+
                 GUILayout.FlexibleSpace();
                 treeType = (TreeType)GUILayout.Toolbar((int)treeType, System.Enum.GetNames(typeof(TreeType)), EditorStyles.toolbarButton, GUILayout.Width(300));
                 GUILayout.EndHorizontal();

@@ -16,7 +16,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 819929
+      length: 2321098
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 2
@@ -46,7 +46,7 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/Scene
       name: Scene
-      length: 168745
+      length: 172560
       hash: 85037ddcb1ef134e5b57635b483efafb
       dependence: []
       type: 2
@@ -56,10 +56,20 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2199
-      hash: d09107aff71dc8ecc1e41e735be1e756
+      length: 2139
+      hash: da4c7092ef9d7ae188a64dd75f304fb3
       dependence: []
       type: 22
+      directory: Assets/Example
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro
+      name: TextMesh Pro
+      length: 1497414
+      hash: f13abd4195fb0ef23b93d1d98c18d953
+      dependence: []
+      type: 2
       directory: Assets/Example
       tags: []
       usage: []
@@ -207,15 +217,57 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/Scene/New Scene2.unity
       name: New Scene2.unity
-      length: 21629
-      hash: c2d05094d0a298bd13c345bc3688aba8
+      length: 25444
+      hash: 40417857d29c784a64afdf44cde84ba5
       dependence:
       - Assets/Example/New Folder/a.jpg
       - Assets/Out/One.prefab
+      - Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       - Assets/Example/Scene/New Render Texture.renderTexture
       - Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
+      - Assets/Example/TextMesh Pro/Fonts/LiberationSans.ttf
       type: 6
       directory: Assets/Example/Scene
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Documentation
+      name: Documentation
+      length: 694398
+      hash: 9fbc939f5a516f1e795f54b18c65a92f
+      dependence: []
+      type: 2
+      directory: Assets/Example/TextMesh Pro
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Fonts
+      name: Fonts
+      length: 354669
+      hash: d568228c82b30694cb75cf1a744cf874
+      dependence: []
+      type: 2
+      directory: Assets/Example/TextMesh Pro
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders
+      name: Shaders
+      length: 94486
+      hash: 155a428969b50454182927f3ca42e8b2
+      dependence: []
+      type: 2
+      directory: Assets/Example/TextMesh Pro
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Sprites
+      name: Sprites
+      length: 353861
+      hash: 71a02b569846a52e4013bbb101bfe5b0
+      dependence: []
+      type: 2
+      directory: Assets/Example/TextMesh Pro
       tags: []
       usage: []
       record: 1
@@ -230,6 +282,238 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
       record: 1
+    - path: Assets/Example/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf
+      name: TextMesh Pro User Guide 2016.pdf
+      length: 694398
+      hash: d5e461fcd15d946196ba95d7af5f22f7
+      dependence: []
+      type: 16
+      directory: Assets/Example/TextMesh Pro/Documentation
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Fonts/LiberationSans - OFL.txt
+      name: LiberationSans - OFL.txt
+      length: 4469
+      hash: a4b00b7892bfb2fc9398e7f292af5b3d
+      dependence: []
+      type: 15
+      directory: Assets/Example/TextMesh Pro/Fonts
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Fonts/LiberationSans.ttf
+      name: LiberationSans.ttf
+      length: 350200
+      hash: bbbd0bdbfba093dec2ee4ca8b62e61f9
+      dependence: []
+      type: 10
+      directory: Assets/Example/TextMesh Pro/Fonts
+      tags: []
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMPro.cginc
+      name: TMPro.cginc
+      length: 2277
+      hash: 9c521b1514957ae9616b18d9ba3878f7
+      dependence: []
+      type: 0
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMPro_Mobile.cginc
+      name: TMPro_Mobile.cginc
+      length: 5311
+      hash: 2f6dc248df3e08a2e7804c25d46bd0e4
+      dependence: []
+      type: 0
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMPro_Properties.cginc
+      name: TMPro_Properties.cginc
+      length: 2843
+      hash: 35cc3f74a993b178f3d30fd7631878e7
+      dependence: []
+      type: 0
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMPro_Surface.cginc
+      name: TMPro_Surface.cginc
+      length: 3563
+      hash: ac8a29911a78b17497b77be3abff0fbd
+      dependence: []
+      type: 0
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader
+      name: TMP_Bitmap-Custom-Atlas.shader
+      length: 3497
+      hash: 1f495e99bc677ac6a840b9aa28cf7877
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader
+      name: TMP_Bitmap-Mobile.shader
+      length: 3549
+      hash: 5110ea4ecfea826d2496b3df8de06b57
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_Bitmap.shader
+      name: TMP_Bitmap.shader
+      length: 3499
+      hash: b70392d32cb4194bf9aa62e65eeaf0a2
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF Overlay.shader
+      name: TMP_SDF Overlay.shader
+      length: 10585
+      hash: 2d668be66e5caa1e0d0760ffe044a7c8
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF SSD.shader
+      name: TMP_SDF SSD.shader
+      length: 12000
+      hash: 661a4fc02d8a92091b454bd5983b9c6f
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader
+      name: TMP_SDF-Mobile Masking.shader
+      length: 7822
+      hash: cdc58f1b3325c594e8a272c4e088596d
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader
+      name: TMP_SDF-Mobile Overlay.shader
+      length: 7643
+      hash: 31ef80315c7900a25cf871c070adeadc
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader
+      name: TMP_SDF-Mobile SSD.shader
+      length: 3071
+      hash: 75384ce23193bf10427062b28d85a446
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+      name: TMP_SDF-Mobile.shader
+      length: 7674
+      hash: c1d2d4f27275b212be8715422d64536f
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage:
+      - Assets/Example/Scene/New Scene2.unity
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader
+      name: TMP_SDF-Surface-Mobile.shader
+      length: 3524
+      hash: f0f899c9c596ba474dd6b107a124434e
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF-Surface.shader
+      name: TMP_SDF-Surface.shader
+      length: 4355
+      hash: 14ce94afd631c9488428d5d77d6e9af3
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_SDF.shader
+      name: TMP_SDF.shader
+      length: 10600
+      hash: 03dbcfbd13a766317c371bdec23132a9
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Shaders/TMP_Sprite.shader
+      name: TMP_Sprite.shader
+      length: 2673
+      hash: f12a41b0fa654483159417ac45ecb320
+      dependence: []
+      type: 21
+      directory: Assets/Example/TextMesh Pro/Shaders
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Sprites/EmojiOne Attribution.txt
+      name: EmojiOne Attribution.txt
+      length: 187
+      hash: 759264906d349d566518f06e38d06772
+      dependence: []
+      type: 15
+      directory: Assets/Example/TextMesh Pro/Sprites
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Sprites/EmojiOne.json
+      name: EmojiOne.json
+      length: 4122
+      hash: 53408097aa38738c15b17ca34e13882a
+      dependence: []
+      type: 15
+      directory: Assets/Example/TextMesh Pro/Sprites
+      tags: []
+      usage: []
+      record: 1
+    - path: Assets/Example/TextMesh Pro/Sprites/EmojiOne.png
+      name: EmojiOne.png
+      length: 349552
+      hash: abd61fb690e3df99b4cbd4f114afbd06
+      dependence: []
+      type: 4
+      directory: Assets/Example/TextMesh Pro/Sprites
+      tags: []
+      usage: []
+      record: 1
     - path: Assets/Out/One.prefab
       name: One.prefab
       length: 2255
@@ -242,361 +526,9 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
       record: 1
-  previewBundles:
-  - assets:
-    - path: Assets/Example/px/Two.prefab
-      name: Two.prefab
-      length: 2209
-      hash: 76d74da6ed17581486bb93fef6951cdc
-      dependence:
-      - Assets/Example/px/1.png
-      type: 9
-      directory: Assets/Example/px
-      tags:
-      - test
-      usage: []
-      record: 1
-    - path: Assets/Example/px/2.png
-      name: 2.png
-      length: 51200
-      hash: ad6c8de70668d4a6dd34ce44ab6f815a
-      dependence: []
-      type: 3
-      directory: Assets/Example/px
-      tags:
-      - test
-      usage: []
-      record: 1
-    - path: Assets/Example/px/1.png
-      name: 1.png
-      length: 202240
-      hash: e2f30f55a684a7d510149a288e134f56
-      dependence: []
-      type: 3
-      directory: Assets/Example/px
-      tags:
-      - test
-      usage:
-      - Assets/Example/px/Two.prefab
-      record: 1
-    - path: Assets/Example/px/3.png
-      name: 3.png
-      length: 206080
-      hash: 89774a5daaaf4992a55619ccb6660c7b
-      dependence: []
-      type: 3
-      directory: Assets/Example/px
-      tags:
-      - test
-      usage: []
-      record: 1
-    usage: []
-    dependence: []
-    _loop: 0
-    _hash: 1f1ef7db1d856d35151ac3764fa4db77
-    _length: 461729
-    _raw: 0
-    _enCode: 0
-  - assets:
-    - path: Assets/Example/Scene/New Render Texture.renderTexture
-      name: New Render Texture.renderTexture
-      length: 0
-      hash: 145cc430050e1f53a0650a15fd8497a8
-      dependence: []
-      type: 4
-      directory: Assets/Example/Scene
-      tags: []
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-      record: 1
-    - path: Assets/Example/New Folder/New Material.mat
-      name: New Material.mat
-      length: 2196
-      hash: 98a28e10526b63e2a25bbc484abcb314
-      dependence: []
-      type: 7
-      directory: Assets/Example/New Folder
-      tags: []
-      usage:
-      - Assets/Example/New Folder/Cube.prefab
-      record: 1
-    - path: Assets/Example/New Folder/New Material 1.mat
-      name: New Material 1.mat
-      length: 2198
-      hash: d882027734006859076f557c2806d379
-      dependence: []
-      type: 7
-      directory: Assets/Example/New Folder
-      tags: []
-      usage: []
-      record: 1
-    - path: Assets/Example/shadervariants.shadervariants
-      name: shadervariants.shadervariants
-      length: 2199
-      hash: d09107aff71dc8ecc1e41e735be1e756
-      dependence: []
-      type: 22
-      directory: Assets/Example
-      tags: []
-      usage: []
-      record: 1
-    - path: Assets/Out/One.prefab
-      name: One.prefab
-      length: 2255
-      hash: 24d29ca614b06a2c970a1aceba84eeab
-      dependence:
-      - Assets/Example/New Folder/a.jpg
-      type: 9
-      directory: Assets/Out
-      tags: []
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-      record: 1
-    - path: Assets/Example/New Folder/Cube.prefab
-      name: Cube.prefab
-      length: 2844
-      hash: 0221ac0e5696a1f3aedad196edaac679
-      dependence:
-      - Assets/Example/New Folder/New Material.mat
-      type: 9
-      directory: Assets/Example/New Folder
-      tags: []
-      usage: []
-      record: 1
-    - path: Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
-      name: ReflectionProbe-0.exr
-      length: 131232
-      hash: 8abb9da324817b701da15499b1315c4b
-      dependence: []
-      type: 4
-      directory: Assets/Example/Scene/New Scene2
-      tags: []
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-      record: 1
-    - path: Assets/Example/New Folder/a.jpg
-      name: a.jpg
-      length: 180000
-      hash: 6de058942339e09666a74eccc57d7a00
-      dependence: []
-      type: 3
-      directory: Assets/Example/New Folder
-      tags: []
-      usage:
-      - Assets/Example/Scene/New Scene2.unity
-      - Assets/Out/One.prefab
-      record: 1
-    usage:
-    - 83c03ff7465fc82177419b2b5e276694
-    dependence: []
-    _loop: 0
-    _hash: 6404845b096f2551c3b4c8438c7f8dd2
-    _length: 322924
-    _raw: 0
-    _enCode: 0
-  - assets:
-    - path: Assets/Example/Scene/New Scene2.unity
-      name: New Scene2.unity
-      length: 21629
-      hash: c2d05094d0a298bd13c345bc3688aba8
-      dependence:
-      - Assets/Example/New Folder/a.jpg
-      - Assets/Out/One.prefab
-      - Assets/Example/Scene/New Render Texture.renderTexture
-      - Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
-      type: 6
-      directory: Assets/Example/Scene
-      tags: []
-      usage: []
-      record: 1
-    usage: []
-    dependence:
-    - 6404845b096f2551c3b4c8438c7f8dd2
-    _loop: 0
-    _hash: 83c03ff7465fc82177419b2b5e276694
-    _length: 21629
-    _raw: 0
-    _enCode: 0
-  - assets:
-    - path: Assets/Example/Scene/New Scene.unity
-      name: New Scene.unity
-      length: 15884
-      hash: d8b4b78e1746091eb00c846e642e393e
-      dependence: []
-      type: 6
-      directory: Assets/Example/Scene
-      tags: []
-      usage: []
-      record: 1
-    usage: []
-    dependence: []
-    _loop: 0
-    _hash: 1e4d59a7acf9cc4c18c063570e90a2d9
-    _length: 15884
-    _raw: 0
-    _enCode: 0
-  - assets:
-    - path: Assets/Example/New Folder/aaa
-      name: aaa
-      length: 9
-      hash: 63373b41cf913e9f9b3226b4a0452737
-      dependence: []
-      type: 16
-      directory: Assets/Example/New Folder
-      tags: []
-      usage: []
-      record: 1
-    usage: []
-    dependence: []
-    _loop: 0
-    _hash: a2424627e64e4dd54f539fb4c64c9047
-    _length: 9
-    _raw: 1
-    _enCode: 0
-  - assets:
-    - path: Assets/Example/New Folder/kkk.rfc
-      name: kkk.rfc
-      length: 9
-      hash: 0696012131deed80528fdbf89ab0e7f3
-      dependence: []
-      type: 16
-      directory: Assets/Example/New Folder
-      tags: []
-      usage: []
-      record: 1
-    usage: []
-    dependence: []
-    _loop: 0
-    _hash: 74bdeb362c709eb0728d7fcc49065ff7
-    _length: 9
-    _raw: 1
-    _enCode: 0
+  previewBundles: []
   manifest:
-    version: 2024_09_02_10_49_22
-    tags:
-    - tag: test
-      assetIndexes: 00000000010000000200000003000000
-    assets:
-    - bundleNameIndex: 0
-      path: Assets/Example/px/Two.prefab
-      type: 9
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 0
-      path: Assets/Example/px/2.png
-      type: 3
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 0
-      path: Assets/Example/px/1.png
-      type: 3
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 0
-      path: Assets/Example/px/3.png
-      type: 3
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/Scene/New Render Texture.renderTexture
-      type: 4
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/New Folder/New Material.mat
-      type: 7
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/New Folder/New Material 1.mat
-      type: 7
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/shadervariants.shadervariants
-      type: 22
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Out/One.prefab
-      type: 9
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/New Folder/Cube.prefab
-      type: 9
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
-      type: 4
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 1
-      path: Assets/Example/New Folder/a.jpg
-      type: 3
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 2
-      path: Assets/Example/Scene/New Scene2.unity
-      type: 6
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 3
-      path: Assets/Example/Scene/New Scene.unity
-      type: 6
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 4
-      path: Assets/Example/New Folder/aaa
-      type: 16
-      path_segs: 
-      dot_segs: 
-    - bundleNameIndex: 5
-      path: Assets/Example/New Folder/kkk.rfc
-      type: 16
-      path_segs: 
-      dot_segs: 
-    bundles:
-    - bundleDependence: 
-      bundleName: 1f1ef7db1d856d35151ac3764fa4db77
-      raw: 0
-      compress: 1
-      enCode: 0
-      hash: 1f1ef7db1d856d35151ac3764fa4db77
-      length: 461729
-    - bundleDependence: 
-      bundleName: 6404845b096f2551c3b4c8438c7f8dd2
-      raw: 0
-      compress: 1
-      enCode: 0
-      hash: 6404845b096f2551c3b4c8438c7f8dd2
-      length: 322924
-    - bundleDependence: 01000000
-      bundleName: 83c03ff7465fc82177419b2b5e276694
-      raw: 0
-      compress: 1
-      enCode: 0
-      hash: 83c03ff7465fc82177419b2b5e276694
-      length: 21629
-    - bundleDependence: 
-      bundleName: 1e4d59a7acf9cc4c18c063570e90a2d9
-      raw: 0
-      compress: 1
-      enCode: 0
-      hash: 1e4d59a7acf9cc4c18c063570e90a2d9
-      length: 15884
-    - bundleDependence: 
-      bundleName: a2424627e64e4dd54f539fb4c64c9047
-      raw: 1
-      compress: 1
-      enCode: 0
-      hash: a2424627e64e4dd54f539fb4c64c9047
-      length: 9
-    - bundleDependence: 
-      bundleName: 74bdeb362c709eb0728d7fcc49065ff7
-      raw: 1
-      compress: 1
-      enCode: 0
-      hash: 74bdeb362c709eb0728d7fcc49065ff7
-      length: 9
+    version: 
+    tags: []
+    assets: []
+    bundles: []

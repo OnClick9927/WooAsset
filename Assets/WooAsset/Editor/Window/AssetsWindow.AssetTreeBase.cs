@@ -28,7 +28,7 @@ namespace WooAsset
                     TreeColumns.size,
                     TreeColumns.tag,
                 }));
-
+                //this.rowHeight = 20;
                 this.multiColumnHeader.ResizeToFit();
                 Reload();
             }
@@ -51,12 +51,18 @@ namespace WooAsset
             protected static TreeViewItem CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result, int depth)
             {
                 Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-                var _item = new TreeViewItem()
+
+                TreeViewItem _item = null;
+                _item = new TreeViewItem()
                 {
-                    id = o.GetInstanceID(),
+                    id = o ? o.GetInstanceID() : -1,
                     depth = depth,
                     displayName = path,
                 };
+                if (o)
+                {
+
+                }
                 _item.parent = parent;
                 parent.AddChild(_item);
                 result.Add(_item);
@@ -67,22 +73,33 @@ namespace WooAsset
             protected override void RowGUI(RowGUIArgs args)
             {
                 string path = args.label;
+
+
                 float indent = this.GetContentIndent(args.item);
-
-                EditorAssetData asset = cache.tree.GetAssetData(path);
-
                 var rect1 = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
-                var rs = RectEx.VerticalSplit(rect1, 18);
-                GUI.Label(rs[0], Textures.GetMiniThumbnail(path));
-                EditorGUI.SelectableLabel(rs[1], path);
+                if (args.item.id != -1)
+                {
 
-             
-                EditorGUI.Toggle(args.GetCellRect(1), asset.record);
-                DrawCount(args.GetCellRect(2), asset.usageCount);
-                DrawCount(args.GetCellRect(3), asset.dependence.Count);
-                GUI.Label(args.GetCellRect(4), asset.type.ToString());
-                GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
-                EditorGUI.SelectableLabel(args.GetCellRect(6), GetTagsString(asset));
+                    EditorAssetData asset = cache.tree.GetAssetData(path);
+                    var rs = RectEx.VerticalSplit(rect1, 18);
+                    GUI.Label(rs[0], Textures.GetMiniThumbnail(path));
+
+                    EditorGUI.SelectableLabel(rs[1], path);
+
+
+                    EditorGUI.Toggle(args.GetCellRect(1), asset.record);
+                    DrawCount(args.GetCellRect(2), asset.usageCount);
+                    DrawCount(args.GetCellRect(3), asset.dependence.Count);
+                    GUI.Label(args.GetCellRect(4), asset.type.ToString());
+                    GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
+                    EditorGUI.SelectableLabel(args.GetCellRect(6), GetTagsString(asset));
+                }
+                else
+                {
+                    GUI.contentColor = new Color(1f,0.2f,0,1);
+                    GUI.Label(rect1, new GUIContent($"Not Found---> {path}", Textures.err));
+                    GUI.contentColor = Color.white;
+                }
 
             }
 

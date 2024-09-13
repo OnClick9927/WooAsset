@@ -9,31 +9,24 @@ namespace WooAsset
     {
         private class RudeMode : AssetsMode
         {
-            private List<string> GetAssetTags(string path)
-            {
-                List<string> result = new List<string>();
-                var result_a = assetBuild.GetAssetTags(path);
-                if (result_a != null)
-                    result.AddRange(result_a);
-                if (tags != null)
-                    result.AddRange(option.tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag));
-                return result.Distinct().ToList();
-            }
             private BundleData data;
             private EditorBundle bundle;
-            private IAssetsBuild assetBuild;
+            private AssetTaskParams param;
+            private IAssetsBuild assetBuild => param.assetBuild;
+
             private Dictionary<string, TagAssets> tags = new Dictionary<string, TagAssets>();
             Dictionary<string, string> _fuzzleAssets = new Dictionary<string, string>();
+
+
+
+
 
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;
             protected override Operation InitAsync(string version, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
             {
-
-                AssetTaskParams param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
-                assetBuild = param.assetBuild;
-
+                param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
                 data = new BundleData()
                 {
                     length = -1,
@@ -51,20 +44,6 @@ namespace WooAsset
                     hash = "Rude",
                     raw = false,
                 };
-                for (int i = 0; i < data.assets.Count; i++)
-                {
-                    var assetPath = data.assets[i];
-                    var _tags = GetAssetTags(assetPath);
-                    if (_tags == null) continue;
-                    for (int j = 0; j < _tags.Count; j++)
-                    {
-                        var _tag = _tags[j];
-                        var asset = AssetsHelper.GetFromDictionary(tags, _tag);
-                        if (asset.assets == null) asset.assets = new List<string>();
-                        if (asset.assets.Contains(assetPath)) continue;
-                        asset.assets.Add(assetPath);
-                    }
-                }
                 bundle = new EditorBundle(new BundleLoadArgs()
                 {
                     async = false,
@@ -72,20 +51,30 @@ namespace WooAsset
                     dependence = Operation.empty,
                     encrypt = new NoneAssetStreamEncrypt(),
                 });
-
-                if (fuzzySearch)
-                    for (int i = 0; i < data.assets.Count; i++)
+                for (int i = 0; i < data.assets.Count; i++)
+                {
+                    var assetPath = data.assets[i];
+                    if (fuzzySearch)
                     {
-                        string path = data.assets[i];
-                        string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
-                        string dir = AssetsHelper.GetDirectoryName(path);
+                        string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(assetPath);
+                        string dir = AssetsHelper.GetDirectoryName(assetPath);
                         var key = AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx));
                         if (_fuzzleAssets.ContainsKey(key))
                             AssetsHelper.LogError($"fuzzy search:  same name asset in directory : {dir}  name {assetName_noEx} ");
                         else
-                            _fuzzleAssets.Add(key, path);
+                            _fuzzleAssets.Add(key, assetPath);
                     }
-
+                    var _tags = param.GetAssetTags(assetPath);
+                    if (_tags == null) continue;
+                    for (int j = 0; j < _tags.Count; j++)
+                    {
+                        var _tag = _tags[j];
+                        var tag = AssetsHelper.GetFromDictionary(tags, _tag);
+                        if (tag.assets == null) tag.assets = new List<string>();
+                        if (tag.assets.Contains(assetPath)) continue;
+                        tag.assets.Add(assetPath);
+                    }
+                }
                 return Operation.empty;
             }
             protected override LoadRemoteVersionsOperation LoadRemoteVersions() => new AssetDataBaseCheck();
@@ -96,7 +85,7 @@ namespace WooAsset
             protected override IReadOnlyList<string> GetAllAssetPaths(string bundleName) => GetAllAssetPaths();
             protected override AssetData GetFuzzyAssetData(string path)
             {
-                string target = string.Empty;
+                string target;
                 if (_fuzzleAssets.TryGetValue(path, out target))
                     return GetAssetData(target);
                 return null;
@@ -108,7 +97,7 @@ namespace WooAsset
                 {
                     bundleName = data.bundleName,
                     path = assetPath,
-                    tags = GetAssetTags(assetPath),
+                    tags = param.GetAssetTags(assetPath),
                     type = assetBuild.GetAssetType(assetPath),
                 };
             }

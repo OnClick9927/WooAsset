@@ -1,14 +1,11 @@
 .vs/
-Assembly-CSharp.csproj
-Assembly-CSharp-Editor.csproj
-WooAsset.sln
+*.csproj
+*.sln
 .vsconfig
 Library/
 Temp/
 ProjectSettings/
 Logs/
 obj/
-UserSettings/EditorUserSettings.asset
 *.csproj
-UserSettings/Layouts/default-2021.dwlt
-UserSettings/Layouts/default-2021.dwlt
+UserSettings

@@ -13,8 +13,6 @@ ShaderVariantCollection:
       variants:
       - keywords: SHADOWS_SINGLE_CASCADE SHADOWS_SPLIT_SPHERES
         passType: 0
-      - keywords: SHADOWS_SPLIT_SPHERES
-        passType: 0
   - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -73,4 +71,13 @@ ShaderVariantCollection:
     second:
       variants:
       - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: OUTLINE_ON
+        passType: 0
+      - keywords: OUTLINE_ON UNDERLAY_ON
         passType: 0

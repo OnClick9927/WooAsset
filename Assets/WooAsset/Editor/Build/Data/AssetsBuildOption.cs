@@ -29,7 +29,8 @@ namespace WooAsset
         public TypeSelect mode = new TypeSelect();
         public TypeSelect encrypt = new TypeSelect();
         public List<TagAssets> tags = new List<TagAssets>();
-        public string shaderVariantDirectory;
+        public List<string> shaderVariantInputDirectory;
+        public string shaderVariantOutputDirectory;
         public List<string> atlasPaths = new List<string>();
         public PackingSetting packSetting = new PackingSetting();
         public TextureSetting textureSetting = new TextureSetting();
