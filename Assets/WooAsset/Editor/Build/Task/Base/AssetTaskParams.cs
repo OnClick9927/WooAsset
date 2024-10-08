@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using static WooAsset.AssetsBuildOption;
 
 namespace WooAsset
 {
@@ -24,7 +25,7 @@ namespace WooAsset
 
         public List<AssetTask> pipelineStartTasks;
         public List<AssetTask> pipelineEndTasks;
-        public List<string> recordIgnore;
+        public List<AssetIgnoreData> recordIgnore;
         public bool fuzzySearch;
         public readonly TaskPipelineType Pipeline;
         public List<string> GetAssetTags(string path)
@@ -34,10 +35,19 @@ namespace WooAsset
             if (result_a != null)
                 result.AddRange(result_a);
             if (tags != null)
-                result.AddRange(tags.FindAll(x => x.assets.Contains(path)).ConvertAll(x => x.tag));
+                result.AddRange(tags.FindAll(x => x.FitAssetTag(path)).ConvertAll(x => x.tag));
             return result.Distinct().ToList();
         }
-        public bool GetIsRecord(string path) => !recordIgnore.Any(x => path.StartsWith(x)) && assetBuild.GetIsRecord(path);
+        public bool GetIsRecord(string path)
+        {
+            if (!assetBuild.GetIsRecord(path)) return false;
+            for (int i = 0; i < recordIgnore.Count; i++)
+            {
+                var ignore = recordIgnore[i];
+                if (ignore.Fit(path)) return false;
+            }
+            return true;
+        }
 
         public AssetTaskParams(TaskPipelineType Pipeline)
         {

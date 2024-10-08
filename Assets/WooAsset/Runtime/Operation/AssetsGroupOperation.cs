@@ -1,6 +1,9 @@
-﻿namespace WooAsset
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace WooAsset
 {
-    public class AssetsGroupOperation : Operation
+    public class AssetsGroupOperation : Operation, IEnumerable<AssetHandle>
     {
         public override float progress
         {
@@ -8,20 +11,22 @@
             {
                 if (isDone) return 1;
                 float sum = 0;
-                for (int i = 0; i < assets.Length; i++)
+                for (int i = 0; i < assets.Count; i++)
                     sum += assets[i].progress;
-                return sum / assets.Length;
+                return sum / assets.Count;
             }
         }
 
-        private string[] paths;
-        private AssetHandle[] assets;
+        private IReadOnlyList<string> paths;
+        private List<AssetHandle> assets;
+
+        public int count => paths.Count;
 
         public AssetHandle FindAsset(string path)
         {
             var data = AssetsInternal.GetAssetData(path);
             if (data == null) return null;
-            for (int i = 0; i < paths.Length; i++)
+            for (int i = 0; i < paths.Count; i++)
             {
                 if (paths[i] == data.path)
                 {
@@ -30,7 +35,7 @@
             }
             return null;
         }
-        public AssetsGroupOperation(string[] paths)
+        public AssetsGroupOperation(IReadOnlyList<string> paths)
         {
             this.paths = paths;
             Done();
@@ -39,30 +44,39 @@
         {
             if (paths != null)
             {
-                assets = new AssetHandle[paths.Length];
-                for (int i = 0; i < paths.Length; i++)
+                assets = new List<AssetHandle>(paths.Count);
+                for (int i = 0; i < paths.Count; i++)
                 {
-                    assets[i] = AssetsInternal.LoadAsset(paths[i], false, true, typeof(UnityEngine.Object));
+                    assets.Add(AssetsInternal.LoadAsset(paths[i], false, true, typeof(UnityEngine.Object)));
                 }
-                for (int i = 0; i < paths.Length; i++)
+                for (int i = 0; i < paths.Count; i++)
                 {
                     await assets[i];
                 }
             }
-
             InvokeComplete();
         }
         public void Release()
         {
             if (assets != null)
             {
-                for (int i = 0; i < assets.Length; i++)
+                for (int i = 0; i < assets.Count; i++)
                 {
                     Assets.Release(assets[i]);
                 }
             }
             paths = null;
             assets = null;
+        }
+
+        IEnumerator<AssetHandle> IEnumerable<AssetHandle>.GetEnumerator()
+        {
+            return assets.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<AssetHandle>)this).GetEnumerator();
         }
     }
 }

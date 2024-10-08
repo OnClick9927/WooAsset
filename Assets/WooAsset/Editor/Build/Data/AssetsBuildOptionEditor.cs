@@ -52,7 +52,7 @@ namespace WooAsset
                 {
                     BeginGUI("Asset Mode");
                     option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
-            
+
                     MidGUI("Simulator");
                     {
                         GUILayout.BeginHorizontal();
@@ -80,7 +80,7 @@ namespace WooAsset
                         GUILayout.EndHorizontal();
                         GUI.enabled = false;
                     }
-             
+
 
                     GUI.enabled = true;
                     if (option.GetAssetModeType() == typeof(NormalAssetsMode))
@@ -89,6 +89,9 @@ namespace WooAsset
                         if (option.enableServer)
                             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.serverPort)));
                     }
+
+
+
                     MidGUI("Shader Variant");
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantOutputDirectory)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantInputDirectory)));

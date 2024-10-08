@@ -6,8 +6,6 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
-using System.IO;
-using static WooAsset.AssetsWindow;
 
 namespace WooAsset
 {
@@ -135,33 +133,33 @@ namespace WooAsset
                 }
             }
 
-            private void CollectPath(List<string> paths, List<string> result)
-            {
-                var tree = AssetsEditorTool.cache.tree;
-                foreach (var path in paths)
-                {
-                    var data = tree.GetAssetData(path);
-                    if (data.type == AssetType.Directory)
-                    {
-                        var folders = tree.GetSubFolders(data).ConvertAll(x => x.path);
-                        var files = tree.GetSubFiles(data).ConvertAll(x => x.path);
+            //private void CollectPath(List<string> paths, List<string> result)
+            //{
+            //    var tree = AssetsEditorTool.cache.tree;
+            //    foreach (var path in paths)
+            //    {
+            //        var data = tree.GetAssetData(path);
+            //        if (data.type == AssetType.Directory)
+            //        {
+            //            var folders = tree.GetSubFolders(data).ConvertAll(x => x.path);
+            //            var files = tree.GetSubFiles(data).ConvertAll(x => x.path);
 
-                        CollectPath(folders, result);
-                        CollectPath(files, result);
-                    }
-                    else
-                    {
-                        result.Add(path);
-                    }
-                }
+            //            CollectPath(folders, result);
+            //            CollectPath(files, result);
+            //        }
+            //        else
+            //        {
+            //            result.Add(path);
+            //        }
+            //    }
 
-            }
+            //}
             protected override void ContextClicked()
             {
                 var selection = this.GetSelection();
                 var rows = this.FindRows(selection).ToList().ConvertAll(x => x.displayName);
-                List<string> paths = new List<string>();
-                CollectPath(rows, paths);
+                List<string> paths = rows;
+                //CollectPath(rows, paths);
                 var tags = AssetsEditorTool.option.GetAllTags();
                 GenericMenu menu = new GenericMenu();
                 foreach (var tag in tags)
@@ -169,7 +167,10 @@ namespace WooAsset
                     menu.AddItem(new GUIContent($"Tag/Add/{tag}"), false, () =>
                     {
                         foreach (var path in paths)
-                            AssetsEditorTool.option.AddAssetTag(path, tag);
+                        {
+                            var data = cache.tree.GetAssetData(path);
+                            AssetsEditorTool.option.AddAssetTag(path, data.fileType, tag);
+                        }
                         AssetsEditorTool.option.Save();
                         AssetTaskRunner.PreviewAllAssets();
 
@@ -177,7 +178,10 @@ namespace WooAsset
                     menu.AddItem(new GUIContent($"Tag/Remove/{tag}"), false, () =>
                     {
                         foreach (var path in paths)
-                            AssetsEditorTool.option.RemoveAssetTag(path, tag);
+                        {
+                            var data = cache.tree.GetAssetData(path);
+                            AssetsEditorTool.option.RemoveAssetTag(path, data.fileType, tag);
+                        }
                         AssetsEditorTool.option.Save();
                         AssetTaskRunner.PreviewAllAssets();
                     });
@@ -186,14 +190,21 @@ namespace WooAsset
                 menu.AddItem(new UnityEngine.GUIContent("Record/AddToIgnore"), false, () =>
                 {
                     foreach (var path in rows)
-                        AssetsEditorTool.option.AddToRecordIgnore(path);
+                    {
+                        var data = cache.tree.GetAssetData(path);
+                        AssetsEditorTool.option.AddToRecordIgnore(path, data.fileType);
+                    }
                     AssetsEditorTool.option.Save();
                     AssetTaskRunner.PreviewAllAssets();
                 });
                 menu.AddItem(new UnityEngine.GUIContent("Record/RemoveFromIgnore"), false, () =>
                 {
                     foreach (var path in rows)
-                        AssetsEditorTool.option.RemoveFromRecordIgnore(path);
+                    {
+                        var data = cache.tree.GetAssetData(path);
+                        AssetsEditorTool.option.RemoveFromRecordIgnore(path, data.fileType);
+
+                    }
                     AssetsEditorTool.option.Save();
                     AssetTaskRunner.PreviewAllAssets();
                 });

@@ -14,7 +14,7 @@ namespace WooAsset
             private AssetTaskParams param;
             private IAssetsBuild assetBuild => param.assetBuild;
 
-            private Dictionary<string, TagAssets> tags = new Dictionary<string, TagAssets>();
+            private Dictionary<string, List<string>> tags = new Dictionary<string, List<string>>();
             Dictionary<string, string> _fuzzleAssets = new Dictionary<string, string>();
 
 
@@ -70,9 +70,8 @@ namespace WooAsset
                     {
                         var _tag = _tags[j];
                         var tag = AssetsHelper.GetFromDictionary(tags, _tag);
-                        if (tag.assets == null) tag.assets = new List<string>();
-                        if (tag.assets.Contains(assetPath)) continue;
-                        tag.assets.Add(assetPath);
+                        if (tag.Contains(assetPath)) continue;
+                        tag.Add(assetPath);
                     }
                 }
                 return Operation.empty;
@@ -107,7 +106,7 @@ namespace WooAsset
             protected override IReadOnlyList<string> GetTagAssetPaths(string tag)
             {
                 var asset = AssetsHelper.GetOrDefaultFromDictionary(tags, tag);
-                return asset == null ? null : asset.assets;
+                return asset == null ? null : asset;
             }
         }
     }

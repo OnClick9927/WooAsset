@@ -2,10 +2,59 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using static WooAsset.AssetsAsyncSupport;
 
 
 namespace WooAsset
 {
+    public static class AssetsAsyncSupport2
+    {
+        private struct AsyncOperationAwaiter<T> : IAwaiter<T> where T : AsyncOperation
+        {
+            private T task;
+            private Queue<Action> calls;
+            public AsyncOperationAwaiter(T task)
+            {
+                if (task == null) throw new ArgumentNullException("task");
+                this.task = task;
+                calls = new Queue<Action>();
+                this.task.completed += Task_completed;
+            }
+
+            private void Task_completed(AsyncOperation op)
+            {
+                while (calls.Count != 0)
+                {
+                    calls.Dequeue()?.Invoke();
+                }
+            }
+
+            public bool IsCompleted => task.isDone;
+
+            public T GetResult()
+            {
+                if (!IsCompleted)
+                    throw new Exception("The task is not finished yet");
+                return task;
+            }
+
+            public void OnCompleted(Action continuation)
+            {
+                UnsafeOnCompleted(continuation);
+            }
+
+            public void UnsafeOnCompleted(Action continuation)
+            {
+                if (continuation == null)
+                    throw new ArgumentNullException("continuation");
+
+                calls.Enqueue(continuation);
+            }
+        }
+
+        public static IAwaiter<T> GetAwaiter<T>(this T target) where T : AsyncOperation => new AsyncOperationAwaiter<T>(target);
+
+    }
     public static class AssetsAsyncSupport
     {
         public interface IAwaiter<out TResult> : INotifyCompletion, ICriticalNotifyCompletion
@@ -55,67 +104,7 @@ namespace WooAsset
                 calls.Enqueue(continuation);
             }
         }
-        private struct AsyncOperationAwaiter<T> : IAwaiter<T> where T : AsyncOperation
-        {
-            private T task;
-            private Queue<Action> calls;
-            public AsyncOperationAwaiter(T task)
-            {
-                if (task == null) throw new ArgumentNullException("task");
-                this.task = task;
-                calls = new Queue<Action>();
-                this.task.completed += Task_completed;
-            }
-
-            private void Task_completed(AsyncOperation op)
-            {
-                while (calls.Count != 0)
-                {
-                    calls.Dequeue()?.Invoke();
-                }
-            }
-
-            public bool IsCompleted => task.isDone;
-
-            public T GetResult()
-            {
-                if (!IsCompleted)
-                    throw new Exception("The task is not finished yet");
-                return task;
-            }
-
-            public void OnCompleted(Action continuation)
-            {
-                UnsafeOnCompleted(continuation);
-            }
-
-            public void UnsafeOnCompleted(Action continuation)
-            {
-                if (continuation == null)
-                    throw new ArgumentNullException("continuation");
-
-                calls.Enqueue(continuation);
-            }
-        }
-
-
-        public static IAwaiter<AsyncOperation> GetAwaiter(this AsyncOperation target) => new AsyncOperationAwaiter<AsyncOperation>(target);
-
-        public static IAwaiter<Operation> GetAwaiter(this Operation target) => new AssetOperationAwaiter<Operation>(target);
-
-        public static IAwaiter<LoadRemoteVersionsOperation> GetAwaiter(this LoadRemoteVersionsOperation target) => new AssetOperationAwaiter<LoadRemoteVersionsOperation>(target);
-        public static IAwaiter<VersionCompareOperation> GetAwaiter(this VersionCompareOperation target) => new AssetOperationAwaiter<VersionCompareOperation>(target);
-
-        public static IAwaiter<RawAsset> GetAwaiter(this RawAsset target) => new AssetOperationAwaiter<RawAsset>(target);
-        public static IAwaiter<Asset> GetAwaiter(this Asset target) => new AssetOperationAwaiter<Asset>(target);
-        public static IAwaiter<SceneAsset> GetAwaiter(this SceneAsset target) => new AssetOperationAwaiter<SceneAsset>(target);
-        public static IAwaiter<SubAsset> GetAwaiter(this SubAsset target) => new AssetOperationAwaiter<SubAsset>(target);
-
-        public static IAwaiter<AssetsGroupOperation> GetAwaiter(this AssetsGroupOperation target) => new AssetOperationAwaiter<AssetsGroupOperation>(target);
-        public static IAwaiter<InstantiateObjectOperation> GetAwaiter(this InstantiateObjectOperation target) => new AssetOperationAwaiter<InstantiateObjectOperation>(target);
-        public static IAwaiter<LoadVersionDataOperation> GetAwaiter(this LoadVersionDataOperation target) => new AssetOperationAwaiter<LoadVersionDataOperation>(target);
-
-        
+        public static IAwaiter<T> GetAwaiter<T>(this T target)where T: Operation  =>  new AssetOperationAwaiter<T>(target); 
         public static void WarpErr(this Operation self) { }
 
     }

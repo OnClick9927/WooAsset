@@ -71,7 +71,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
-    typeIndex: 2
+    typeIndex: 0
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt
@@ -83,10 +83,8 @@ MonoBehaviour:
   tags:
   - tag: test
     assets:
-    - Assets/Example/px/1.png
-    - Assets/Example/px/2.png
-    - Assets/Example/px/3.png
-    - Assets/Example/px/Two.prefab
+    - path: Assets/Example
+      type: 1
   shaderVariantInputDirectory:
   - Assets/TextMesh Pro
   shaderVariantOutputDirectory: Assets/Example

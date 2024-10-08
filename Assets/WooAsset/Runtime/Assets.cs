@@ -92,8 +92,8 @@ namespace WooAsset
         }
 
 
-        public static AssetsGroupOperation PrepareAssets(string[] paths) => new AssetsGroupOperation(paths);
-        public static AssetsGroupOperation PrepareAssetsByTag(string tag) => new AssetsGroupOperation(Assets.GetTagAssetPaths(tag)?.ToArray());
+        public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
+        public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));
         public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => new InstantiateObjectOperation(path, parent);
         public static void Destroy(GameObject gameObject)
         {

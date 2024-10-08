@@ -9,6 +9,7 @@ namespace WooAsset
     public class TypeSelect
     {
         public string[] types;
+        public Type[] realTypes;
         public string[] shortTypes;
         public int typeIndex;
         public Type baseType;
@@ -29,13 +30,14 @@ namespace WooAsset
         {
             var list = GetSubTypesInAssemblies(baseType)
            .Where(type => !type.IsAbstract);
+            realTypes = list.ToArray();
             types = list.Select(type => type.FullName).ToArray();
             shortTypes = list.Select(type => type.Name).ToArray();
         }
         public Type GetSelectType()
         {
             var type_str = types[typeIndex];
-            Type type = GetSubTypesInAssemblies(baseType)
+            Type type = realTypes
                .Where(type => !type.IsAbstract)
                .ToList()
                .Find(x => x.FullName == type_str);
