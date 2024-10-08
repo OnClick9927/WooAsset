@@ -3,6 +3,7 @@ using System;
 using UnityEditor.U2D;
 using UnityEditor;
 using Object = UnityEngine.Object;
+using System.Linq;
 
 namespace WooAsset
 {
@@ -24,7 +25,10 @@ namespace WooAsset
         public bool enableServer;
         public int serverPort = 8080;
         public List<EditorPackageData> pkgs = new List<EditorPackageData>();
-        public List<string> recordIgnore = new List<string>();
+
+
+
+        public List<AssetIgnoreData> recordIgnore = new List<AssetIgnoreData>();
         public TypeSelect build = new TypeSelect();
         public TypeSelect mode = new TypeSelect();
         public TypeSelect encrypt = new TypeSelect();
@@ -68,8 +72,12 @@ namespace WooAsset
                 mode.baseType = typeof(IAssetsMode);
                 mode.Enable();
             }
-            recordIgnore.RemoveAll(x => !AssetsHelper.ExistsFile(x) && !AssetsEditorTool.ExistsDirectory(x));
-            tags.ForEach(x => x.assets.RemoveAll(y => !AssetsHelper.ExistsFile(y)));
+            recordIgnore.RemoveAll(x =>
+
+       (x.type == FileType.File && !AssetsHelper.ExistsFile(x.path)) ||
+       (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path)));
+            tags.ForEach(z => z.assets.RemoveAll(x => (x.type == FileType.File && !AssetsHelper.ExistsFile(x.path)) ||
+       (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path))));
         }
 
 
@@ -107,14 +115,18 @@ namespace WooAsset
             return false;
         }
 
-        public void AddToRecordIgnore(string path)
+        public void AddToRecordIgnore(string path, FileType type)
         {
-            if (recordIgnore.Contains(path)) return;
-            recordIgnore.Add(path);
+            if (recordIgnore.Any(x => x.path == path && x.type == type)) return;
+            recordIgnore.Add(new AssetIgnoreData() { type = type, path = path });
         }
-        public void RemoveFromRecordIgnore(string path) => recordIgnore.Remove(path);
+        public void RemoveFromRecordIgnore(string path, FileType type) => recordIgnore.RemoveAll(x => x.path == path && x.type == type);
+
+
+
+
         public List<string> GetAllTags() => tags.ConvertAll(x => x.tag);
-        public void AddAssetTag(string path, string tag)
+        public void AddAssetTag(string path, FileType type, string tag)
         {
             if (tags == null) tags = new List<TagAssets>();
             TagAssets assets = tags.Find(x => x.tag == tag);
@@ -123,18 +135,15 @@ namespace WooAsset
                 assets = new TagAssets();
                 tags.Add(assets);
             }
-            if (!assets.assets.Contains(path))
-            {
-                assets.assets.Add(path);
-            }
+            assets.Add(type, path);
 
         }
-        public void RemoveAssetTag(string path, string tag)
+        public void RemoveAssetTag(string path, FileType type, string tag)
         {
             if (tags == null) return;
             TagAssets assets = tags.Find(x => x.tag == tag);
             if (assets == null) return;
-            assets.assets.Remove(path);
+            assets.Remove(type, path);
 
         }
 

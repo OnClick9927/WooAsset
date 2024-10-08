@@ -10,6 +10,7 @@ namespace WooAsset
 
         public List<string> dependence = new List<string>();
         public AssetType type;
+        public FileType fileType => type == AssetType.Directory ? FileType.Directory : FileType.File;
         public string directory;
         public List<string> tags;
         public List<string> usage = new List<string>();
