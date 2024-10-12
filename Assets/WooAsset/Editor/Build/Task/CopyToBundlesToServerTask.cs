@@ -6,7 +6,7 @@ namespace WooAsset
 {
     public class CopyToBundlesToServerTask : AssetTask
     {
-        protected async override void OnExecute(AssetTaskContext context)
+        protected override void OnExecute(AssetTaskContext context)
         {
             if (context.Pipeline == TaskPipelineType.BuildBundle)
             {
@@ -16,7 +16,7 @@ namespace WooAsset
                     {
 
                         string target = AssetsEditorTool.CombinePath(context.serverDirectory, context.buildTargetName, context.version);
-                        await new CopyDirectoryOperation(context.outputPath, target, true);
+                        new CopyDirectoryCMD(context.outputPath, target);
                         string version = AssetsEditorTool.CombinePath(context.serverDirectory, context.buildTargetName, context.VersionCollectionName);
                         if (AssetsHelper.ExistsFile(version))
                             AssetsEditorTool.DeleteFile(version);

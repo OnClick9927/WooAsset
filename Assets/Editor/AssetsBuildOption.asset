@@ -16,7 +16,7 @@ MonoBehaviour:
   copyToStream: 1
   buildMode: 0
   typeTreeOption: 1
-  bundleNameType: 0
+  bundleNameType: 2
   compress: 1
   MaxCacheVersionCount: 8
   cleanHistory: 1

@@ -222,19 +222,30 @@ namespace WooAsset
         }
 
         public static void MoveFile(string srcPath, string targetPath) => System.IO.File.Move(srcPath, targetPath);
-        public static void CopyFile(string srcPath, string targetPath) => System.IO.File.Copy(srcPath, targetPath);
+        public static void CopyFile(string srcPath, string targetPath) => System.IO.File.Copy(srcPath, targetPath, true);
 
-        public static Operation WriteObject<T>(T t, string path) where T : IBufferObject
+        public static byte[] ReadFileSync(string path) => File.ReadAllBytes(path);
+        public static void WriteFileSync(string path, byte[] bytes) => File.WriteAllBytes(path, bytes);
+
+        public static void WriteJson<T>(T t, string path)
+        {
+            WriteFileSync(path, System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(t, true)));
+        }
+        public static T ReadJson<T>(string path)
+        {
+            return JsonUtility.FromJson<T>(System.Text.Encoding.UTF8.GetString(ReadFileSync(path)));
+        }
+        public static void WriteObjectSync<T>(T t, string path) where T : IBufferObject
         {
             var bytes = AssetsHelper.ObjectToBytes(t);
-            return AssetsHelper.WriteFile(bytes.buffer, path, 0, bytes.length);
+            var buffer = new byte[bytes.length];
+            Array.Copy(bytes.buffer, 0, buffer, 0, buffer.Length);
+            WriteFileSync(path, buffer);
         }
-
         public static void DeleteFile(string path) => File.Delete(path);
 
         public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
         public static string[] GetDirectoryEntries(string path) => Directory.GetFileSystemEntries(path, "*", SearchOption.AllDirectories).Select(x => AssetsHelper.ToRegularPath(x)).ToArray();
-        public static Operation WriteStream(string srcPath, Stream target) => new CopyFileStreamOperation(srcPath, target);
 
         public static bool IsDirectory(string path) => Directory.Exists(path);
         public static bool ExistsDirectory(string path) => Directory.Exists(path);

@@ -136,20 +136,37 @@ namespace WooAsset
 
 
         public static string CombinePath(string self, string combine) => Path.Combine(self, combine);
-
         public static string ToRegularPath(string path) => path.Replace('\\', '/');
-        public static void LogWarning(string msg) => Debug.LogWarning("Assets : " + msg);
-        public static void Log(string msg) => Debug.Log("Assets : " + msg);
-        public static void LogError(string err) => Debug.LogError("Assets : " + err);
+
+
+        public static bool log_Enable = true;
+        public static bool warn_Enable = true;
+        public static bool err_Enable = true;
+
+        public static void LogWarning(string msg)
+        {
+            if (!warn_Enable) return;
+            Debug.LogWarning("Assets : " + msg);
+        }
+        public static void Log(string msg)
+        {
+            if (!log_Enable) return;
+            Debug.Log("Assets : " + msg);
+        }
+        public static void LogError(string err)
+        {
+            if (!err_Enable) return;
+            Debug.LogError("Assets : " + err);
+        }
         public static string ToAbsPath(string src)
         {
             return CombinePath(Directory.GetCurrentDirectory(), src);
         }
         public static Type GetAssetType(AssetType assetType, Type type)
         {
+
             if (type == typeof(UnityEngine.Object))
             {
-
                 switch (assetType)
                 {
                     case AssetType.Sprite: return typeof(UnityEngine.Sprite);
@@ -177,7 +194,5 @@ namespace WooAsset
             }
             return type;
         }
-
-  
     }
 }
