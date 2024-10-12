@@ -1,3 +1,4 @@
+using System.IO;
 using System.Net;
 
 namespace WooAsset
@@ -25,7 +26,12 @@ namespace WooAsset
                     if (AssetsHelper.ExistsFile(filePath))
                     {
                         response.StatusCode = (int)HttpStatusCode.OK;
-                        await AssetsEditorTool.WriteStream(filePath, OutputStream);
+                        using (FileStream fs = File.OpenRead(filePath))
+                        {
+                            byte[] buffer = new byte[fs.Length];
+                            await fs.ReadAsync(buffer, 0, buffer.Length);
+                            await OutputStream.WriteAsync(buffer, 0, buffer.Length);
+                        }
                     }
                     else
                     {
@@ -63,7 +69,7 @@ namespace WooAsset
                 {
 
                 }
-            
+
             }
             public static void Stop()
             {

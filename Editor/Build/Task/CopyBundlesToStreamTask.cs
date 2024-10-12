@@ -6,7 +6,7 @@ namespace WooAsset
 {
     public class CopyBundlesToStreamTask : AssetTask
     {
-        protected async override void OnExecute(AssetTaskContext context)
+        protected override void OnExecute(AssetTaskContext context)
         {
             if (context.Pipeline == TaskPipelineType.BuildBundle && context.copyToStream)
             {
@@ -46,14 +46,10 @@ namespace WooAsset
                 {
                     buildInConfigs.Add(VersionHelper.GetManifestFileName(item.name));
                 }
-                if (AssetsEditorTool.ExistsDirectory(streamPath))
-                    AssetsEditorTool.DeleteDirectory(streamPath);
-
-                await new CopyToStream(context.outputPath, streamPath, buildInBundles, buildInConfigs);
+                new CopyToStreamCMD(context.outputPath, streamPath, buildInBundles, buildInConfigs);
                 AssetDatabase.Refresh();
 
 
-                AssetDatabase.Refresh();
             }
 
             InvokeComplete();

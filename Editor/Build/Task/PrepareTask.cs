@@ -2,7 +2,7 @@
 {
     public class PrepareTask : AssetTask
     {
-        protected override async void OnExecute(AssetTaskContext context)
+        protected override void OnExecute(AssetTaskContext context)
         {
             string err = context.Params.CheckLeagal();
             if (!string.IsNullOrEmpty(err))
@@ -16,9 +16,8 @@
             context.historyVersionPath = versionPath;
             if (AssetsHelper.ExistsFile(versionPath))
             {
-                var reader = AssetsHelper.ReadFile(versionPath, true);
-                await reader;
-                context.historyVersions = VersionHelper.ReadAssetsVersionCollection(reader.bytes);
+                //var bytes = AssetsEditorTool.ReadFileSync(versionPath);
+                context.historyVersions = AssetsEditorTool.ReadJson<VersionCollectionData>(versionPath);
             }
             context.BuildOption = context.Params.GetBundleOption();
             context.version = context.assetBuild.GetVersion(context.Params.version, context);

@@ -4,7 +4,7 @@ namespace WooAsset
 {
     public class BuildExportTask : AssetTask
     {
-        protected async override void OnExecute(AssetTaskContext context)
+        protected override void OnExecute(AssetTaskContext context)
         {
             if (context.Pipeline == TaskPipelineType.BuildBundle)
             {
@@ -25,8 +25,8 @@ namespace WooAsset
 
                 foreach (var item in context.exports)
                 {
-                    await AssetsEditorTool.WriteObject(item,
-                         AssetsHelper.CombinePath(context.outputPath, $"Export_{item.pkg.name}{VersionHelper.versionExt}"));
+                    AssetsEditorTool.WriteJson(item,
+                         AssetsHelper.CombinePath(context.outputPath, $"Export_{item.pkg.name}.json"));
                 }
 
             }

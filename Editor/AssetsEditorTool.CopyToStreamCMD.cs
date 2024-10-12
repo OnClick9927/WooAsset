@@ -1,32 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        internal class CopyToStream : CopyDirectoryOperation
+        internal class CopyToStreamCMD : CopyDirectoryCMD
         {
             private readonly List<string> buildInBundles;
             private readonly List<string> buildInConfigs;
 
-            public CopyToStream(string srcPath, string destPath, List<string> buildInBundles, List<string> buildInConfigs) : base(srcPath, destPath, true)
+            public CopyToStreamCMD(string srcPath, string targetPath, List<string> buildInBundles, List<string> buildInConfigs)
+                : base(srcPath, targetPath)
             {
                 this.buildInBundles = buildInBundles;
                 this.buildInConfigs = buildInConfigs;
             }
-            protected override async void Done()
+            protected override void Done()
             {
-                await Task.Delay(1);
                 if (buildInBundles != null && buildInBundles.Count > 0)
                 {
                     foreach (var bundleName in buildInBundles)
                     {
                         if (files.Where(x => AssetsHelper.GetFileName(x) == bundleName).Count() == 0)
                         {
-                            SetErr($"the bundle want copy not build {bundleName}");
-                            InvokeComplete();
+                            AssetsHelper.LogError($"the bundle want copy not build {bundleName}");
                             return;
                         }
                     }
@@ -39,19 +37,18 @@ namespace WooAsset
                         .Where(x => buildInBundles.Contains(AssetsHelper.GetFileName(x)) || buildInConfigs.Contains(AssetsHelper.GetFileName(x)))
                         .ToArray();
                 }
-                var list = this.files.Select(x => GetDestFileName(x)).ToList();
-                await WriteObject(new StreamBundlesData()
+                var list = this.files.Select(x => GetTargetFileName(x)).ToList();
+                AssetsEditorTool.WriteObjectSync(new StreamBundlesData()
                 {
                     fileNames = list.ToArray(),
                 },
-                  AssetsHelper.CombinePath(destPath, StreamBundlesData.fileName)
-                  );
+                AssetsHelper.CombinePath(targetPath, StreamBundlesData.fileName));
                 base.Done();
             }
 
-            protected override string GetDestFileName(string src)
+            protected override string GetTargetFileName(string src)
             {
-                return $"{base.GetDestFileName(src)}{StreamBundlesData.fileExt}";
+                return $"{base.GetTargetFileName(src)}{StreamBundlesData.fileExt}";
             }
         }
     }
