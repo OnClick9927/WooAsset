@@ -16,7 +16,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 825580
+      length: 827428
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 2
@@ -46,7 +46,7 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/Scene
       name: Scene
-      length: 174041
+      length: 175806
       hash: 85037ddcb1ef134e5b57635b483efafb
       dependence: []
       type: 2
@@ -56,8 +56,8 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
-      length: 2477
-      hash: 95ea7d16aac5d29776c8affa4b2dedb7
+      length: 2560
+      hash: 8e5e760fc44b8cfc8be758908799d076
       dependence:
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       type: 22
@@ -182,10 +182,21 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+    - path: Assets/Example/Scene/Camera.prefab
+      name: Camera.prefab
+      length: 3495
+      hash: 874bdd72cf3515263af34d8c56004a9e
+      dependence: []
+      type: 9
+      directory: Assets/Example/Scene
+      tags:
+      - test
+      usage: []
+      record: 1
     - path: Assets/Example/Scene/New Render Texture.renderTexture
       name: New Render Texture.renderTexture
       length: 0
-      hash: 59043ad0fe77757fde260db3c9a3591f
+      hash: 145cc430050e1f53a0650a15fd8497a8
       dependence: []
       type: 4
       directory: Assets/Example/Scene
@@ -196,8 +207,8 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/Scene/New Scene.unity
       name: New Scene.unity
-      length: 16483
-      hash: f7f9224d32b26b8697a14d1793090217
+      length: 15635
+      hash: 90bac0a133b0841ce01105611abb3a72
       dependence: []
       type: 6
       directory: Assets/Example/Scene
@@ -217,8 +228,8 @@ MonoBehaviour:
       record: 1
     - path: Assets/Example/Scene/New Scene2.unity
       name: New Scene2.unity
-      length: 26326
-      hash: 6cf0b8acfc8384229784625c85dca84d
+      length: 25444
+      hash: 40417857d29c784a64afdf44cde84ba5
       dependence:
       - Assets/Example/New Folder/a.jpg
       - Assets/Out/One.prefab

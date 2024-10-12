@@ -8,11 +8,6 @@ ShaderVariantCollection:
   m_PrefabAsset: {fileID: 0}
   m_Name: shadervariants
   m_Shaders:
-  - first: {fileID: 64, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
-      - keywords: SHADOWS_SINGLE_CASCADE SHADOWS_SPLIT_SPHERES
-        passType: 0
   - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -23,10 +18,15 @@ ShaderVariantCollection:
       variants:
       - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
         passType: 4
-      - keywords: 
-        passType: 8
       - keywords: SHADOWS_DEPTH
         passType: 8
+  - first: {fileID: 64, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: SHADOWS_SINGLE_CASCADE SHADOWS_SPLIT_SPHERES
+        passType: 0
+      - keywords: SHADOWS_SPLIT_SPHERES
+        passType: 0
   - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -80,4 +80,9 @@ ShaderVariantCollection:
       - keywords: OUTLINE_ON
         passType: 0
       - keywords: OUTLINE_ON UNDERLAY_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: db942cb4bb141474f8785c245f51d459, type: 3}
+    second:
+      variants:
+      - keywords: 
         passType: 0

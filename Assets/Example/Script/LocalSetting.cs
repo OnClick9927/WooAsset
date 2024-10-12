@@ -22,7 +22,7 @@ namespace WooAsset
         }
         public override bool GetFuzzySearch()
         {
-            return true;
+            return false;
         }
         public override bool NeedCopyStreamBundles()
         {
@@ -34,7 +34,7 @@ namespace WooAsset
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {
-            return false;
+            return true;
         }
         protected override string GetBaseUrl()
         {
@@ -44,7 +44,7 @@ namespace WooAsset
             //Application.dataPath, "../DLCDownLoad"
             //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());
         }
-
+   
         public override IAssetLife GetAssetLife()
         {
             return null;

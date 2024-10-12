@@ -16,7 +16,7 @@ MonoBehaviour:
   copyToStream: 1
   buildMode: 0
   typeTreeOption: 1
-  bundleNameType: 2
+  bundleNameType: 0
   compress: 1
   MaxCacheVersionCount: 8
   cleanHistory: 1
@@ -30,31 +30,7 @@ MonoBehaviour:
     tags: []
     paths:
     - Assets/Example
-    builds:
-    - param:
-        type: 6
-        path: 
-        tag: 
-        userData: 
-      typeIndex: 3
-      packType: 0
-      size: 2097152
-    - param:
-        type: 0
-        path: 
-        tag: test
-        userData: 
-      typeIndex: 12
-      packType: 2
-      size: 2097152
-    - param:
-        type: 0
-        path: 
-        tag: 
-        userData: 
-      typeIndex: 0
-      packType: 2
-      size: 2097152
+    builds: []
   recordIgnore: []
   build:
     types:
@@ -71,7 +47,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
-    typeIndex: 0
+    typeIndex: 2
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt
@@ -87,6 +63,7 @@ MonoBehaviour:
       type: 1
   shaderVariantInputDirectory:
   - Assets/TextMesh Pro
+  - Assets/Out
   shaderVariantOutputDirectory: Assets/Example
   atlasPaths:
   - Assets/Example

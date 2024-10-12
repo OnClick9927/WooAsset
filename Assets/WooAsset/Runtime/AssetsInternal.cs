@@ -121,6 +121,7 @@ namespace WooAsset
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAlwaysFromWebRequest();
         public static bool GetBundleAlwaysFromWebRequest() => setting.GetBundleAlwaysFromWebRequest();
 
+        public static bool CheckVersionByVersionCollection() => setting.CheckVersionByVersionCollection();
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
 
