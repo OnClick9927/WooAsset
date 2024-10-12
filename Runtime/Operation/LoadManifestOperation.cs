@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 
 namespace WooAsset
@@ -8,78 +9,53 @@ namespace WooAsset
     {
         public override float progress => isDone ? 1 : _progress;
         private float _progress;
-        private DownLoader downloader;
-        private VersionData version;
         public ManifestData manifest;
-        public List<FileData> bundles;
+        private string initVersion = "";
+
+
         private bool fuzzySearch;
-        private string _version = "";
         private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
 
-        public string GetVersion() => version.version;
+        private void SetResult(ManifestData manifest, string version)
+        {
+            this.initVersion = version;
+            this.manifest = manifest;
+            AssetsHelper.Log($"init by version {version}");
+            InvokeComplete();
+        }
+        private void ExitErr(string version, string err)
+        {
+            this.initVersion = version;
+            SetErr(err);
+            InvokeComplete();
+        }
+        public string GetVersion() => initVersion;
         public LoadManifestOperation(List<string> loadedBundles, string version, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {
             this.fuzzySearch = fuzzySearch;
-            _version = version;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
-            Done();
+            Done(version);
         }
 
 
-
-
-        private async void Done()
+        private async void DoPkgs(VersionData version, bool AlwaysFromWebRequest)
         {
-            _progress = 0f;
-            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName);
-            bool download = AssetsInternal.GetBundleAlwaysFromWebRequest() || !AssetsHelper.ExistsFile(localVersionPath);
-            if (!download && !string.IsNullOrEmpty(_version))
-            {
-                var reader = await AssetsHelper.ReadFile(localVersionPath, true) as ReadFileOperation;
-                if (VersionHelper.ReadVersionData(reader.bytes).version != _version)
-                    download = true;
-            }
-            _progress = 0.1f;
-            if (download)
-            {
-                downloader = await AssetsInternal.DownloadRemoteVersion() as DownLoader;
-                if (downloader.isErr)
-                {
-                    SetErr(downloader.error);
-                    version = new VersionData() { version = _version };
-                }
-                else
-                {
-                    VersionCollectionData collection = VersionHelper.ReadAssetsVersionCollection(downloader.data);
-                    _version = collection.FindVersion(_version);
-                    if (string.IsNullOrEmpty(_version)) _version = collection.NewestVersion();
-                    var _op = await AssetsInternal.DownloadVersionData(_version);
-                    version = _op.GetVersion();
-                    if (AssetsInternal.GetSaveBundlesWhenPlaying())
-                        await VersionHelper.WriteVersionData(version, localVersionPath);
-                }
-            }
-            else
-            {
-                var op = await AssetsHelper.ReadFile(localVersionPath, true) as ReadFileOperation;
-                version = VersionHelper.ReadVersionData(op.bytes);
-            }
             _progress = 0.3f;
             var pkgs = this.getPkgs == null ? version.GetAllPkgs() : this.getPkgs.Invoke(version);
 
-            manifest = new ManifestData();
+            var _manifest = new ManifestData();
             for (int i = 0; i < pkgs.Count; i++)
             {
                 var pkg = pkgs[i];
                 string fileName = pkg.manifestFileName;
                 string localPath = AssetsInternal.GetBundleLocalPath(fileName);
-                bool _download = AssetsInternal.GetBundleAlwaysFromWebRequest() || !AssetsHelper.ExistsFile(localPath);
+                bool _download = AlwaysFromWebRequest || !AssetsHelper.ExistsFile(localPath);
                 ManifestData v;
                 if (_download)
                 {
-                    downloader = await AssetsInternal.DownloadVersion(version.version, fileName) as DownLoader;
+                    var downloader = await AssetsInternal.DownloadVersion(version.version, fileName) as DownLoader;
                     if (downloader.isErr)
                     {
                         SetErr(downloader.error);
@@ -94,12 +70,91 @@ namespace WooAsset
                     var reader = await AssetsHelper.ReadFile(localPath, true) as ReadFileOperation;
                     v = VersionHelper.ReadManifest(reader.bytes);
                 }
-                ManifestData.Merge(v, manifest, this.loadedBundles);
+                ManifestData.Merge(v, _manifest, this.loadedBundles);
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }
 
-            manifest.Prepare(fuzzySearch);
-            InvokeComplete();
+            _manifest.Prepare(fuzzySearch);
+            SetResult(_manifest, version.version);
+        }
+
+        private async void LoadVersion(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
+        {
+            var _op = await AssetsInternal.DownloadVersionData(targetVersion);
+            if (_op.isErr)
+                ExitErr(targetVersion, $"can not download VersionData with {targetVersion}");
+            else
+            {
+                var version = _op.GetVersion();
+                if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                    await VersionHelper.WriteVersionData(version, localVersionPath);
+                DoPkgs(version, AlwaysFromWebRequest);
+            }
+        }
+
+        private async void CheckVersionLegal(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
+        {
+            var downloader = await AssetsInternal.DownloadRemoteVersion() as DownLoader;
+            if (downloader.isErr)
+            {
+                ExitErr(targetVersion, " can not load VersionCollection");
+            }
+            else
+            {
+                VersionCollectionData collection = VersionHelper.ReadAssetsVersionCollection(downloader.data);
+                targetVersion = collection.FindVersion(targetVersion);
+                if (string.IsNullOrEmpty(targetVersion))
+                {
+                    AssetsHelper.Log($"target version:{targetVersion} not exist ,so newest:{collection.NewestVersion()}");
+                    targetVersion = collection.NewestVersion();
+                }
+
+                LoadVersion(localVersionPath, targetVersion, AlwaysFromWebRequest);
+            }
+        }
+        private void DownLoad(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
+        {
+            if (string.IsNullOrEmpty(targetVersion))
+            {
+                CheckVersionLegal(localVersionPath, targetVersion, AlwaysFromWebRequest);
+            }
+            else if (AssetsInternal.CheckVersionByVersionCollection())
+            {
+                CheckVersionLegal(localVersionPath, targetVersion, AlwaysFromWebRequest);
+            }
+            else
+            {
+                LoadVersion(localVersionPath, targetVersion, AlwaysFromWebRequest);
+            }
+        }
+        private async void FromLocal(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
+        {
+            var op = await AssetsHelper.ReadFile(localVersionPath, true);
+            var version = VersionHelper.ReadVersionData(op.bytes);
+            if (!string.IsNullOrEmpty(targetVersion) && version.version != targetVersion)
+            {
+                AssetsHelper.Log($"Local version wrong local:{version.version} target:{targetVersion}");
+                DownLoad(localVersionPath, targetVersion, AlwaysFromWebRequest);
+            }
+            else
+                DoPkgs(version, AlwaysFromWebRequest);
+        }
+        private void Done(string targetVersion)
+        {
+            _progress = 0f;
+            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName);
+            bool AlwaysFromWebRequest = AssetsInternal.GetBundleAlwaysFromWebRequest();
+            bool download = AlwaysFromWebRequest;
+            if (!download)
+                if (!AssetsHelper.ExistsFile(localVersionPath))
+                    download = true;
+
+            AssetsHelper.Log($"LoadManifest AlwaysFromWebRequest:{AlwaysFromWebRequest}  download:{download}");
+            _progress = 0.1f;
+            if (download)
+                DownLoad(localVersionPath, targetVersion, AlwaysFromWebRequest);
+            else
+                FromLocal(localVersionPath, targetVersion, AlwaysFromWebRequest);
         }
     }
 

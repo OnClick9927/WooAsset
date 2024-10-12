@@ -1,27 +1,25 @@
-﻿using System;
-using static WooAsset.FileData;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
 
     public abstract class AssetsSetting
     {
-        public virtual bool NeedCopyStreamBundles() { return true; }
-        public virtual long GetLoadingMaxTimeSlice() { return long.MaxValue; }
-        protected virtual string GetBaseUrl() { return string.Empty; }
+        public virtual bool CheckVersionByVersionCollection() => false;
+        public virtual bool NeedCopyStreamBundles() => true;
+        public virtual long GetLoadingMaxTimeSlice() => long.MaxValue;
+        protected virtual string GetBaseUrl() => string.Empty;
         public virtual string GetUrlByBundleName(string buildTarget, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{bundleName}";
         public virtual string GetUrlByBundleName(string buildTarget, string version, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{version}/{bundleName}";
 
 
         public virtual bool GetSaveBundlesWhenPlaying() => true;
-        public virtual bool GetBundleAlwaysFromWebRequest() { return true; }
-        public virtual int GetWebRequestTimeout() { return 30; }
-        public virtual bool GetFuzzySearch() { return false; }
+        public virtual bool GetBundleAlwaysFromWebRequest() => true;
+        public virtual int GetWebRequestTimeout() => 30;
+        public virtual bool GetFuzzySearch() => false;
 
-        public virtual int GetWebRequestRetryCount() { return 3; }
-        public virtual bool GetAutoUnloadBundle() { return true; }
+        public virtual int GetWebRequestRetryCount() => 3;
+        public virtual bool GetAutoUnloadBundle() => true;
 
-        public virtual IAssetLife GetAssetLife() { return new LRULife(1024 * 1024 * 1024); }
+        public virtual IAssetLife GetAssetLife() => new LRULife(1024 * 1024 * 1024);
 
         public virtual IAssetEncrypt GetEncrypt(int code)
         {

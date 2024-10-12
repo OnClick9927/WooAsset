@@ -13,7 +13,8 @@ namespace WooAsset
         private static Operation _empty = new EmptyOperation();
         public static Operation empty { get { return _empty; } }
 
-        public bool isDone { get; private set; }
+        private bool _isDone;
+        public bool isDone => _isDone;
 
         public abstract float progress { get; }
 
@@ -25,7 +26,7 @@ namespace WooAsset
 
         protected void InvokeComplete()
         {
-            isDone = true;
+            _isDone = true;
             completed?.Invoke();
         }
         protected void SetErr(string err)
@@ -33,14 +34,14 @@ namespace WooAsset
             _err = err;
             AssetsHelper.LogError(this.error);
         }
-        bool IEnumerator.MoveNext() => !isDone;
+        bool IEnumerator.MoveNext() => !_isDone;
         void IEnumerator.Reset()
         {
-            isDone = false;
+            _isDone = false;
             completed = null;
             _err = String.Empty;
         }
-        object IEnumerator.Current => this;
+        object IEnumerator.Current => _isDone ? null : this;
 
         public async void WaitForComplete()
         {
