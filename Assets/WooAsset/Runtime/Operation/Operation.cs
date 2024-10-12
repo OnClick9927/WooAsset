@@ -41,7 +41,7 @@ namespace WooAsset
             completed = null;
             _err = String.Empty;
         }
-        object IEnumerator.Current => _isDone ? null : this;
+        object IEnumerator.Current => _isDone ? this : null;
 
         public async void WaitForComplete()
         {
