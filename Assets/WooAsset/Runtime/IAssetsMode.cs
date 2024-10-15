@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.IO;
 
 namespace WooAsset
 {
@@ -21,6 +22,7 @@ namespace WooAsset
         IReadOnlyList<string> GetAllTags();
         IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result);
         IReadOnlyList<string> GetAllAssetPaths(string bundleName);
+        string GUIDToAssetPath(string guid);
     }
 
 
@@ -55,7 +57,10 @@ namespace WooAsset
         IReadOnlyList<string> IAssetsMode.GetAssetsByAssetName(string name, List<string> result) => GetAssetsByAssetName(name, result);
         IReadOnlyList<string> IAssetsMode.GetAllAssetPaths(string bundleName) => GetAllAssetPaths(bundleName);
         AssetData IAssetsMode.GetFuzzyAssetData(string path) => GetFuzzyAssetData(path);
+
+        string IAssetsMode.GUIDToAssetPath(string guid) => GUIDToAssetPath(guid);
         protected virtual AssetData GetAssetData(string assetPath) => manifest.GetAssetData(assetPath);
+        protected virtual string GUIDToAssetPath(string guid) => manifest.GUIDToAssetPath(guid);
         protected virtual AssetData GetFuzzyAssetData(string path) => manifest.GetFuzzyAssetData(path);
         protected virtual BundleData GetBundleData(string bundleName) => manifest.GetBundleData(bundleName);
         protected virtual IReadOnlyList<string> GetAllAssetPaths() => manifest.allPaths;
@@ -64,8 +69,7 @@ namespace WooAsset
         protected virtual IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => manifest.GetAssetsByAssetName(name, result);
 
         protected virtual IReadOnlyList<string> GetAllAssetPaths(string bundleName) => manifest.GetAssets(bundleName);
-
-
+    
     }
 
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine.Profiling;
 
 namespace WooAsset
 {
@@ -15,6 +14,7 @@ namespace WooAsset
         public List<string> tags;
         public List<string> usage = new List<string>();
         public bool record;
+        public string guid;
 
         public int usageCount { get { return usage.Count; } }
         public static EditorAssetData Create(string path, AssetType _type)
@@ -41,7 +41,8 @@ namespace WooAsset
                 length = length,
                 hash = hash,
                 type = _type,
-                directory = AssetsEditorTool.ToAssetsPath(AssetsHelper.GetDirectoryName(path))
+                directory = AssetsEditorTool.ToAssetsPath(AssetsHelper.GetDirectoryName(path)),
+                guid = AssetDatabase.AssetPathToGUID(path)
             };
         }
 
@@ -49,6 +50,7 @@ namespace WooAsset
         {
             return new AssetData()
             {
+                guid = guid,
                 path = path,
                 bundleName = bundleName,
                 tags = tags,

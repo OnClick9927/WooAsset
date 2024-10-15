@@ -16,7 +16,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example
       name: Example
-      length: 827428
+      length: 825957
       hash: d365b40c6946f1ec0add277791d7ea38
       dependence: []
       type: 2
@@ -24,6 +24,7 @@ MonoBehaviour:
       tags: []
       usage: []
       record: 1
+      guid: c413c40c9cb231c41abd0dcf7137d273
     - path: Assets/Example/New Folder
       name: New Folder
       length: 187256
@@ -34,6 +35,7 @@ MonoBehaviour:
       tags: []
       usage: []
       record: 1
+      guid: d5a2208061f958e42a20b3b53f4016a1
     - path: Assets/Example/px
       name: px
       length: 461806
@@ -44,9 +46,10 @@ MonoBehaviour:
       tags: []
       usage: []
       record: 1
+      guid: bbc92a7718cdba640abb9cb3c2868d67
     - path: Assets/Example/Scene
       name: Scene
-      length: 175806
+      length: 174335
       hash: 85037ddcb1ef134e5b57635b483efafb
       dependence: []
       type: 2
@@ -54,6 +57,7 @@ MonoBehaviour:
       tags: []
       usage: []
       record: 1
+      guid: a95be4dc7c47d5b4a99fa6a13aed99a7
     - path: Assets/Example/shadervariants.shadervariants
       name: shadervariants.shadervariants
       length: 2560
@@ -66,6 +70,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: a91e8beb1bb9b6f46a3757275dc809bc
     - path: Assets/Example/New Folder/a.jpg
       name: a.jpg
       length: 180000
@@ -79,6 +84,7 @@ MonoBehaviour:
       - Assets/Example/Scene/New Scene2.unity
       - Assets/Out/One.prefab
       record: 1
+      guid: bbc2f73bea9decd47971ea7567111237
     - path: Assets/Example/New Folder/aaa
       name: aaa
       length: 9
@@ -90,6 +96,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 7e312993be360bc41afaa304b9680668
     - path: Assets/Example/New Folder/Cube.prefab
       name: Cube.prefab
       length: 2844
@@ -102,6 +109,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 487a1ec2badf94644a0424c23bd6452f
     - path: Assets/Example/New Folder/kkk.rfc
       name: kkk.rfc
       length: 9
@@ -113,6 +121,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 93bfbe3c35a19704f9dd1344a0e1720a
     - path: Assets/Example/New Folder/New Material 1.mat
       name: New Material 1.mat
       length: 2198
@@ -124,6 +133,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 65d3e6214ff702348b3b42f770c307a7
     - path: Assets/Example/New Folder/New Material.mat
       name: New Material.mat
       length: 2196
@@ -136,6 +146,7 @@ MonoBehaviour:
       usage:
       - Assets/Example/New Folder/Cube.prefab
       record: 1
+      guid: 6caec025d002cde4a857656b95345745
     - path: Assets/Example/px/1.png
       name: 1.png
       length: 202240
@@ -148,6 +159,7 @@ MonoBehaviour:
       usage:
       - Assets/Example/px/Two.prefab
       record: 1
+      guid: a30f6eb37b63cc742adb33161147194e
     - path: Assets/Example/px/2.png
       name: 2.png
       length: 51200
@@ -159,6 +171,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 05fd5d23dddee404b9812904baadb6db
     - path: Assets/Example/px/3.png
       name: 3.png
       length: 206080
@@ -170,6 +183,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: e8a889971385c9d46aad1104720159ce
     - path: Assets/Example/px/Two.prefab
       name: Two.prefab
       length: 2286
@@ -182,10 +196,11 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 582630400e8d8c34d85112cd5af28159
     - path: Assets/Example/Scene/Camera.prefab
       name: Camera.prefab
-      length: 3495
-      hash: 874bdd72cf3515263af34d8c56004a9e
+      length: 1963
+      hash: e79703a65edc0c90c63eb526b755a546
       dependence: []
       type: 9
       directory: Assets/Example/Scene
@@ -193,6 +208,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 6163d8a026972204db0da425c7baf456
     - path: Assets/Example/Scene/New Render Texture.renderTexture
       name: New Render Texture.renderTexture
       length: 0
@@ -205,10 +221,11 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
       record: 1
+      guid: c0dff2785cbc5c64c9fdbc54e35fc837
     - path: Assets/Example/Scene/New Scene.unity
       name: New Scene.unity
-      length: 15635
-      hash: 90bac0a133b0841ce01105611abb3a72
+      length: 15696
+      hash: 9dda025428379856127077ca8c10b93c
       dependence: []
       type: 6
       directory: Assets/Example/Scene
@@ -216,6 +233,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 27b8977017efe2f4692899b3ade803ee
     - path: Assets/Example/Scene/New Scene2
       name: New Scene2
       length: 131232
@@ -226,6 +244,7 @@ MonoBehaviour:
       tags: []
       usage: []
       record: 1
+      guid: 532c7647841be304ea7e00c1ca0835db
     - path: Assets/Example/Scene/New Scene2.unity
       name: New Scene2.unity
       length: 25444
@@ -243,6 +262,7 @@ MonoBehaviour:
       - test
       usage: []
       record: 1
+      guid: 7623efd24e38a4e46948380b33aadb32
     - path: Assets/Example/Scene/New Scene2/ReflectionProbe-0.exr
       name: ReflectionProbe-0.exr
       length: 131232
@@ -255,6 +275,7 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
       record: 1
+      guid: 09d8b16787f44f5428261130f83b4c1c
     - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       name: TMP_SDF-Mobile.shader
       length: 7914
@@ -267,6 +288,7 @@ MonoBehaviour:
       - Assets/Example/shadervariants.shadervariants
       - Assets/Example/Scene/New Scene2.unity
       record: 1
+      guid: fe393ace9b354375a9cb14cdbbc28be4
     - path: Assets/Out/One.prefab
       name: One.prefab
       length: 2333
@@ -279,6 +301,7 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
       record: 1
+      guid: b6790795c73f4364d8ff1f812b0ebb64
     - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
       name: LiberationSans.ttf
       length: 350200
@@ -290,6 +313,7 @@ MonoBehaviour:
       usage:
       - Assets/Example/Scene/New Scene2.unity
       record: 1
+      guid: e3265ab4bf004d28a9537516768c1c75
   previewBundles: []
   manifest:
     version: 

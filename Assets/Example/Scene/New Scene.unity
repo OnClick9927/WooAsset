@@ -383,6 +383,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 290998014}
   image2: {fileID: 1149735709}
+  assetReference:
+    guid: a30f6eb37b63cc742adb33161147194e
 --- !u!1 &749284324
 GameObject:
   m_ObjectHideFlags: 0

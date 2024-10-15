@@ -17,7 +17,9 @@ namespace WooAsset
     {
         public Image image;
         public Image image2;
-        
+        public AssetReference<UnityEngine.Sprite> assetReference;
+
+
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
@@ -40,6 +42,9 @@ namespace WooAsset
             await Assets.InitAsync();
             //var asset_svc = await Assets.LoadAsset("Assets/Example/GameObject.prefab");
             //asset_svc.GetAsset<ShaderVariantCollection>().WarmUp();
+            var _test = await assetReference.LoadAssetAsync();
+            image.sprite=_test.GetAsset<UnityEngine.Sprite>();
+            return;
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
             oppp.Destroy();

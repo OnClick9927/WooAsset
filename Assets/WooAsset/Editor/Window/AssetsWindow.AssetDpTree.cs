@@ -14,17 +14,20 @@ namespace WooAsset
             {
                 this.asset = info;
                 this.Reload();
-                this.multiColumnHeader.ResizeToFit(); 
+                this.multiColumnHeader.ResizeToFit();
             }
             public AssetDpTree(TreeViewState state, IPing<EditorAssetData> ping) : base(state, ping) { }
-        
+
             protected override MultiColumnHeaderState.Column GetFirtColumn() => TreeColumns.dependence;
             private void Build(TreeViewItem root, List<string> assets, IList<TreeViewItem> result)
             {
+                long len = asset.length;
                 foreach (var item in assets)
                 {
+                    len += cache.tree.GetAssetData(item).length;
                     CreateItem(item, root, result, 1);
                 }
+                TreeColumns.dependence.headerContent = new UnityEngine.GUIContent($"Dependence \ttotal:{GetSizeString(len)}");
             }
 
             protected override void CreateRows(TreeViewItem root, IList<TreeViewItem> result)

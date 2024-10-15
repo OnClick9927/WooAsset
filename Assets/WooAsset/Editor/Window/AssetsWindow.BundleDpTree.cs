@@ -1,5 +1,6 @@
 ﻿using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace WooAsset
 {
@@ -7,10 +8,21 @@ namespace WooAsset
     {
         private class BundleDpTree : BundleTreeBase
         {
+            long len;
             public void SetBundleGroup(EditorBundleData group)
             {
+                len = 0;
                 if (group != null)
-                    base.SetBundleBuilds(group.GetDependence(cache.previewBundles));
+                {
+                    len = group.length;
+                    var gs = group.GetDependence(cache.previewBundles);
+                    foreach (var item in gs)
+                    {
+                        len += item.length;
+                    }
+                    base.SetBundleBuilds(gs);
+
+                }
                 else
                     base.SetBundleBuilds(null);
             }
@@ -28,6 +40,8 @@ namespace WooAsset
                     {
                         BuildBundle(i, root, result);
                     }
+                    TreeColumns.dependence.headerContent = new UnityEngine.GUIContent($"Dependence \ttotal:{GetSizeString(len)}");
+
                 }
             }
 
