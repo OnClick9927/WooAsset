@@ -14,6 +14,9 @@ namespace WooAsset
         public AssetType type;
         public int[] path_segs;
         public int[] dot_segs;
+        public string guid;
+
+
         [System.NonSerialized] public List<string> tags;
         [System.NonSerialized] public string bundleName;
 
@@ -30,6 +33,7 @@ namespace WooAsset
             type = (AssetType)reader.ReadUInt16();
             path_segs = reader.ReadInt32Array();
             dot_segs = reader.ReadInt32Array();
+            guid = reader.ReadUTF8();
         }
 
         void IBufferObject.WriteData(BufferWriter writer)
@@ -39,6 +43,7 @@ namespace WooAsset
             writer.WriteUInt16((ushort)type);
             writer.WriteInt32Array(path_segs);
             writer.WriteInt32Array(dot_segs);
+            writer .WriteUTF8(guid);
         }
     }
 }

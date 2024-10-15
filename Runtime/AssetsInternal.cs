@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static WooAsset.ManifestData;
 using UnityEngine.SceneManagement;
 
 namespace WooAsset
@@ -70,7 +69,7 @@ namespace WooAsset
             }
             return data;
         }
-
+        public static string GUIDToAssetPath(string guid) => mode.GUIDToAssetPath(guid);
         public static BundleData GetBundleData(string bundleName) => mode.GetBundleData(bundleName);
         public static string GetVersion() => Initialized() ? mode.version : string.Empty;
         public static IReadOnlyList<string> GetAssetTags(string assetPath) => GetAssetData(assetPath)?.tags;

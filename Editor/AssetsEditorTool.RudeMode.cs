@@ -18,9 +18,6 @@ namespace WooAsset
             Dictionary<string, string> _fuzzleAssets = new Dictionary<string, string>();
 
 
-
-
-
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;
@@ -89,6 +86,7 @@ namespace WooAsset
                     return GetAssetData(target);
                 return null;
             }
+            protected override string GUIDToAssetPath(string guid) => AssetDatabase.GUIDToAssetPath(guid);
             protected override AssetData GetAssetData(string assetPath)
             {
                 if (!data.assets.Contains(assetPath)) return null;

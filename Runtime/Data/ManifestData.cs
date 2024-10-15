@@ -195,11 +195,13 @@ namespace WooAsset
             _assets = new Dictionary<string, AssetData>();
             _names = new Dictionary<string, RTName>();
             _fuzzleAssets = new Dictionary<string, string>();
+            _guidAssets = new Dictionary<string, string>();
             for (int i = 0; i < assets.Count; i++)
             {
                 AssetData asset = assets[i];
                 string path = asset.path;
                 string assetName = AssetsHelper.GetFileName(path);
+                _guidAssets.Add(asset.guid, asset.path);
                 if (fuzzySearch)
                 {
                     string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(path);
@@ -221,6 +223,8 @@ namespace WooAsset
             allBundle = AssetsHelper.ToKeyList(_bundles);
             allName = AssetsHelper.ToKeyList(_names);
         }
+
+        private Dictionary<string, string> _guidAssets;
         private Dictionary<string, string> _fuzzleAssets;
         private Dictionary<string, AssetData> _assets;
         private Dictionary<string, RTName> _names;
@@ -233,7 +237,7 @@ namespace WooAsset
         [NonSerialized] public List<string> allName;
         public string GetVersion() => version;
 
-        public AssetData GetAssetData(string assetpath) => AssetsHelper.GetOrDefaultFromDictionary(_assets, assetpath);
+        public AssetData GetAssetData(string assetPath) => AssetsHelper.GetOrDefaultFromDictionary(_assets, assetPath);
         public List<string> GetTagAssetPaths(string tag) => AssetsHelper.GetOrDefaultFromDictionary(_tags, tag)?.assets;
         public IReadOnlyList<string> GetAssets(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName)?.assets;
         public BundleData GetBundleData(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName);
@@ -252,7 +256,8 @@ namespace WooAsset
             }
             return result;
         }
-        internal AssetData GetFuzzyAssetData(string path)
+        public string GUIDToAssetPath(string guid) => AssetsHelper.GetOrDefaultFromDictionary(_guidAssets, guid);
+        public AssetData GetFuzzyAssetData(string path)
         {
             string target = string.Empty;
             if (_fuzzleAssets.TryGetValue(path, out target))
