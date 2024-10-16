@@ -2,8 +2,8 @@
 using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
 using UnityEditor;
-using static WooAsset.AssetsEditorTool;
 using System.Linq;
+using static WooAsset.AssetsEditorTool.LifePart;
 
 namespace WooAsset
 {
@@ -44,12 +44,12 @@ namespace WooAsset
 
             protected override TreeViewItem BuildRoot()
             {
-                totalBundleSize = AssetsEditorTool.bundles.Values.Sum(x => x.assetLength);
+                totalBundleSize = AssetsEditorTool.LifePart.bundles.Values.Sum(x => x.assetLength);
                 return new TreeViewItem() { id = -10, depth = -1 };
             }
             public void BuildBundles(TreeViewItem root, IList<TreeViewItem> result)
             {
-                foreach (var life in AssetsEditorTool.bundles.Keys)
+                foreach (var life in AssetsEditorTool.LifePart.bundles.Keys)
                 {
                     TreeViewItem item = new TreeViewItem()
                     {
@@ -61,10 +61,10 @@ namespace WooAsset
 
                     if (!DoesItemMatchSearch(item, this.searchString)) continue;
                     result.Add(item);
-                    Bundle bundle = AssetsEditorTool.bundles[life].asset;
+                    Bundle bundle = AssetsEditorTool.LifePart.bundles[life].asset;
                     var r = AssetsInternal.GetAllAssetPaths(bundle.bundleName);
                     if (r == null) continue;
-                    var paths = r.ToList().FindAll(x => AssetsHelper.GetOrDefaultFromDictionary(AssetsEditorTool.assets, x) != null);
+                    var paths = r.ToList().FindAll(x => AssetsEditorTool.GetOrDefaultFromDictionary(AssetsEditorTool.LifePart.assets, x) != null);
                     if (paths == null && paths.Count == 0) continue;
                     if (IsExpanded(item.id) || !string.IsNullOrEmpty(this.searchString))
                     {
@@ -86,7 +86,7 @@ namespace WooAsset
             }
             public void BuildAssets(TreeViewItem root, IList<TreeViewItem> result)
             {
-                foreach (var path in AssetsEditorTool.assets.Keys)
+                foreach (var path in AssetsEditorTool.LifePart.assets.Keys)
                 {
                     TreeViewItem item = new TreeViewItem()
                     {
@@ -131,10 +131,10 @@ namespace WooAsset
                 string name = args.item.displayName;
 
                 AssetLife<Bundle> life;
-                if (AssetsEditorTool.bundles.TryGetValue(name, out life))
+                if (AssetsEditorTool.LifePart.bundles.TryGetValue(name, out life))
                 {
                     float indent = this.GetContentIndent(args.item);
-                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(AssetsHelper.GetFileName(name), Textures.folder));
+                    GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(AssetsEditorTool.GetFileName(name), Textures.folder));
                     GUI.Label(args.GetCellRect(1), life.asset.refCount.ToString());
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     EditorGUI.ProgressBar(args.GetCellRect(3), life.assetLength / (float)totalBundleSize, "");
@@ -148,7 +148,7 @@ namespace WooAsset
                 string name = args.item.displayName;
 
                 AssetLife<AssetHandle> life;
-                if (AssetsEditorTool.assets.TryGetValue(name, out life))
+                if (AssetsEditorTool.LifePart.assets.TryGetValue(name, out life))
                 {
                     float indent = _searchType == SearchType.Asset ? 0 : string.IsNullOrEmpty(searchString) ? this.GetContentIndent(args.item) : 30;
                     GUI.Label(RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0)), GUIContent(name, Textures.GetMiniThumbnail(args.label)));
@@ -156,7 +156,7 @@ namespace WooAsset
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     //GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
                     GUI.Label(args.GetCellRect(4), life.assetType.ToString());
-                    EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsHelper.GetFileName(life.asset.bundleName));
+                    EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsEditorTool.GetFileName(life.asset.bundleName));
                     GUI.Label(args.GetCellRect(6), GetTagsString(life.tags));
                 }
             }

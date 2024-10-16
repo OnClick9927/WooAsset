@@ -85,7 +85,7 @@ namespace WooAsset
 
         private void AddPath(string directory, Dictionary<string, EditorAssetData> assetMap)
         {
-            string path = AssetsHelper.ToRegularPath(directory);
+            string path = AssetsEditorTool.ToRegularPath(directory);
             AddToAssets(path, assetMap);
             var list = AssetsEditorTool.GetDirectoryEntries(directory);
             foreach (var item in list) AddToAssets(item, assetMap);

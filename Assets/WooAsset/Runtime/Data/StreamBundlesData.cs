@@ -6,7 +6,7 @@
         public const string fileExt = ".bytes";
 
         public string[] fileNames;
-        public static string fileName = $"StreamBundleList{VersionHelper.versionExt}{fileExt}";
+        public static string fileName = $"StreamBundleList{AssetsHelper.versionExt}{fileExt}";
 
         void IBufferObject.ReadData(BufferReader reader) => fileNames = reader.ReadUTF8Array();
 

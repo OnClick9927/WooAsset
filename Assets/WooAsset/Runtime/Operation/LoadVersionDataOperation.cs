@@ -14,8 +14,8 @@
 
         private async void Done(string version)
         {
-            var _downloader = await AssetsInternal.DownloadVersion(version, VersionHelper.VersionDataName);
-            this.version = VersionHelper.ReadVersionData((_downloader as DownLoader).data);
+            var _downloader = await AssetsInternal.DownloadVersion(version, AssetsHelper.VersionDataName);
+            this.version = AssetsHelper.ReadBufferObject<VersionData>((_downloader as DownLoader).data);
             InvokeComplete();
         }
     }

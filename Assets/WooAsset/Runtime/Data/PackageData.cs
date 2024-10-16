@@ -7,7 +7,7 @@ namespace WooAsset
     {
         public string name;
         public string description;
-        public string manifestFileName => VersionHelper.GetManifestFileName(name);
+        public string manifestFileName => AssetsHelper.GetManifestFileName(name);
         //public string bundleFileName => VersionHelper.GetBundleFileName(name);
 
         public List<string> tags = new List<string>();

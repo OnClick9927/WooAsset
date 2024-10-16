@@ -107,7 +107,7 @@ namespace WooAsset
         public static BundleDownLoader DownLoadBundle(string version, string bundleName) => new BundleDownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static FileDownLoader DownLoadFile(string version, string bundleName) => new FileDownLoader(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
         public static DownLoader DownloadVersion(string version, string bundleName) => new DownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static DownLoader DownloadRemoteVersion() => new DownLoader(GetUrlFromBundleName(VersionHelper.VersionCollectionName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static DownLoader DownloadRemoteVersion() => new DownLoader(GetUrlFromBundleName(AssetsHelper.VersionCollectionName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 
         public static DownLoader DownloadRawBundle(string version, string bundleName) => new DownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
 

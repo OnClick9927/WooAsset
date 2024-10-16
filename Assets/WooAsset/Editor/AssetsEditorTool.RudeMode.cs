@@ -53,11 +53,11 @@ namespace WooAsset
                     var assetPath = data.assets[i];
                     if (fuzzySearch)
                     {
-                        string assetName_noEx = AssetsHelper.GetFileNameWithoutExtension(assetPath);
-                        string dir = AssetsHelper.GetDirectoryName(assetPath);
-                        var key = AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(dir, assetName_noEx));
+                        string assetName_noEx = AssetsEditorTool.GetFileNameWithoutExtension(assetPath);
+                        string dir = AssetsEditorTool.GetDirectoryName(assetPath);
+                        var key = AssetsEditorTool.ToRegularPath(AssetsEditorTool.CombinePath(dir, assetName_noEx));
                         if (_fuzzleAssets.ContainsKey(key))
-                            AssetsHelper.LogError($"fuzzy search:  same name asset in directory : {dir}  name {assetName_noEx} ");
+                            AssetsEditorTool.LogError($"fuzzy search:  same name asset in directory : {dir}  name {assetName_noEx} ");
                         else
                             _fuzzleAssets.Add(key, assetPath);
                     }
@@ -66,7 +66,7 @@ namespace WooAsset
                     for (int j = 0; j < _tags.Count; j++)
                     {
                         var _tag = _tags[j];
-                        var tag = AssetsHelper.GetFromDictionary(tags, _tag);
+                        var tag = AssetsEditorTool.GetFromDictionary(tags, _tag);
                         if (tag.Contains(assetPath)) continue;
                         tag.Add(assetPath);
                     }
@@ -103,7 +103,7 @@ namespace WooAsset
             protected override IReadOnlyList<string> GetAllTags() => tags.Keys.ToArray();
             protected override IReadOnlyList<string> GetTagAssetPaths(string tag)
             {
-                var asset = AssetsHelper.GetOrDefaultFromDictionary(tags, tag);
+                var asset = AssetsEditorTool.GetOrDefaultFromDictionary(tags, tag);
                 return asset == null ? null : asset;
             }
         }

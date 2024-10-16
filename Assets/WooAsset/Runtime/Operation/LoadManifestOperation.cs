@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 
 namespace WooAsset
@@ -61,14 +60,14 @@ namespace WooAsset
                         SetErr(downloader.error);
                         break;
                     }
-                    v = VersionHelper.ReadManifest(downloader.data);
+                    v = AssetsHelper.ReadBufferObject<ManifestData>(downloader.data);
                     if (AssetsInternal.GetSaveBundlesWhenPlaying())
-                        await VersionHelper.WriteManifest(v, localPath);
+                        await AssetsHelper.WriteBufferObject(v, localPath);
                 }
                 else
                 {
                     var reader = await AssetsHelper.ReadFile(localPath, true) as ReadFileOperation;
-                    v = VersionHelper.ReadManifest(reader.bytes);
+                    v = AssetsHelper.ReadBufferObject<ManifestData>(reader.bytes);
                 }
                 ManifestData.Merge(v, _manifest, this.loadedBundles);
                 _progress = 0.5f + i / pkgs.Count / 2f;
@@ -87,21 +86,22 @@ namespace WooAsset
             {
                 var version = _op.GetVersion();
                 if (AssetsInternal.GetSaveBundlesWhenPlaying())
-                    await VersionHelper.WriteVersionData(version, localVersionPath);
+                    await AssetsHelper.WriteBufferObject(version, localVersionPath);
                 DoPkgs(version, AlwaysFromWebRequest);
             }
         }
 
         private async void CheckVersionLegal(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
         {
-            var downloader = await AssetsInternal.DownloadRemoteVersion() as DownLoader;
-            if (downloader.isErr)
+            var remote = await AssetsInternal.LoadRemoteVersions();
+            if (remote.isErr)
             {
                 ExitErr(targetVersion, " can not load VersionCollection");
             }
             else
             {
-                VersionCollectionData collection = VersionHelper.ReadAssetsVersionCollection(downloader.data);
+
+                VersionCollectionData collection = remote.Versions;
                 targetVersion = collection.FindVersion(targetVersion);
                 if (string.IsNullOrEmpty(targetVersion))
                 {
@@ -130,7 +130,7 @@ namespace WooAsset
         private async void FromLocal(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
         {
             var op = await AssetsHelper.ReadFile(localVersionPath, true);
-            var version = VersionHelper.ReadVersionData(op.bytes);
+            var version = AssetsHelper.ReadBufferObject<VersionData>(op.bytes);
             if (!string.IsNullOrEmpty(targetVersion) && version.version != targetVersion)
             {
                 AssetsHelper.Log($"Local version wrong local:{version.version} target:{targetVersion}");
@@ -142,7 +142,7 @@ namespace WooAsset
         private void Done(string targetVersion)
         {
             _progress = 0f;
-            string localVersionPath = AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName);
+            string localVersionPath = AssetsInternal.GetBundleLocalPath(AssetsHelper.VersionDataName);
             bool AlwaysFromWebRequest = AssetsInternal.GetBundleAlwaysFromWebRequest();
             bool download = AlwaysFromWebRequest;
             if (!download)

@@ -11,10 +11,10 @@
                 InvokeComplete();
                 return;
             }
-            string versionPath = AssetsHelper.CombinePath(context.historyPath, context.VersionCollectionName);
+            string versionPath = AssetsEditorTool.CombinePath(context.historyPath, context.VersionCollectionName);
             context.historyVersions = new VersionCollectionData() { };
             context.historyVersionPath = versionPath;
-            if (AssetsHelper.ExistsFile(versionPath))
+            if (AssetsEditorTool.ExistsFile(versionPath))
             {
                 //var bytes = AssetsEditorTool.ReadFileSync(versionPath);
                 context.historyVersions = AssetsEditorTool.ReadJson<VersionCollectionData>(versionPath);

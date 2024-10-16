@@ -11,11 +11,11 @@ namespace WooAsset
 
                 if (context.cleanHistory)
                 {
-                    var useful = AssetsHelper.GetDirectoryFiles(context.outputPath)
-                               .Select(x => AssetsHelper.GetFileName(x))
+                    var useful = AssetsEditorTool.GetDirectoryFiles(context.outputPath)
+                               .Select(x => AssetsEditorTool.GetFileName(x))
                               .ToList();
-                    AssetsHelper.GetDirectoryFiles(context.historyPath)
-                            .Where(x => !useful.Contains(AssetsHelper.GetFileName(x)))
+                    AssetsEditorTool.GetDirectoryFiles(context.historyPath)
+                            .Where(x => !useful.Contains(AssetsEditorTool.GetFileName(x)))
                             .ToList()
                             .ForEach(x => AssetsEditorTool.DeleteFile(x));
                 }
@@ -26,7 +26,7 @@ namespace WooAsset
                 foreach (var item in context.exports)
                 {
                     AssetsEditorTool.WriteJson(item,
-                         AssetsHelper.CombinePath(context.outputPath, $"Export_{item.pkg.name}.json"));
+                         AssetsEditorTool.CombinePath(context.outputPath, $"Export_{item.pkg.name}.json"));
                 }
 
             }

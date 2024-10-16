@@ -21,25 +21,25 @@
 
                 if (!AssetsEditorTool.ExistsDirectory(srcPath))
                 {
-                    AssetsHelper.LogError("Path not Exist");
+                    AssetsEditorTool.LogError("Path not Exist");
                 }
                 else
                 {
-                    files = AssetsHelper.GetDirectoryFiles(srcPath);
+                    files = AssetsEditorTool.GetDirectoryFiles(srcPath);
                     if (AssetsEditorTool.ExistsDirectory(targetPath))
                         AssetsEditorTool.DeleteDirectory(targetPath);
-                    AssetsHelper.CreateDirectory(targetPath);
+                    AssetsEditorTool.CreateDirectory(targetPath);
                     Done();
                 }
             }
-            protected virtual string GetTargetFileName(string src) => AssetsHelper.GetFileName(src);
+            protected virtual string GetTargetFileName(string src) => AssetsEditorTool.GetFileName(src);
             protected virtual bool NeedCopy(string src) { return true; }
             protected virtual void Done()
             {
                 foreach (var path in files)
                 {
                     if (!NeedCopy(path)) continue;
-                    string _destPath = AssetsHelper.CombinePath(targetPath, GetTargetFileName(path));
+                    string _destPath = AssetsEditorTool.CombinePath(targetPath, GetTargetFileName(path));
                     AssetsEditorTool.CopyFile(path, _destPath);
                     step++;
                 }

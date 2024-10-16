@@ -39,12 +39,12 @@ namespace WooAsset
                 }
                 List<string> buildInConfigs = new List<string>
                 {
-                    VersionHelper.VersionDataName,
-                    VersionHelper.VersionCollectionName,
+                    AssetsEditorTool.VersionDataName,
+                    AssetsEditorTool.VersionCollectionName,
                 };
                 foreach (var item in context.buildPkgs)
                 {
-                    buildInConfigs.Add(VersionHelper.GetManifestFileName(item.name));
+                    buildInConfigs.Add(AssetsEditorTool.GetManifestFileName(item.name));
                 }
                 new CopyToStreamCMD(context.outputPath, streamPath, buildInBundles, buildInConfigs);
                 AssetDatabase.Refresh();

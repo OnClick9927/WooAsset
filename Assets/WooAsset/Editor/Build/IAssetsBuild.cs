@@ -21,7 +21,7 @@ namespace WooAsset
         protected virtual AssetType CoverAssetType(string path, AssetType type) => type;
         public AssetType GetAssetType(string path)
         {
-            var list = AssetsHelper.ToRegularPath(path).Split('/').ToList();
+            var list = AssetsEditorTool.ToRegularPath(path).Split('/').ToList();
             if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return AssetType.Ignore;
             AssetType _type = AssetType.None;
             if (AssetsEditorTool.IsDirectory(path))

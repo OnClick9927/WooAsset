@@ -11,11 +11,11 @@ namespace WooAsset
         public string outputPath => AssetsEditorTool.OutputPath;
         public string historyPath => AssetsEditorTool.HistoryPath;
         public BuildTarget buildTarget => AssetsEditorTool.BuildTarget;
-        public string VersionCollectionName => VersionHelper.VersionCollectionName;
-        public string VersionDataName => VersionHelper.VersionDataName;
+        public string VersionCollectionName => AssetsEditorTool.VersionCollectionName;
+        public string VersionDataName => AssetsEditorTool.VersionDataName;
         public string buildTargetName => AssetsEditorTool.BuildTargetName;
 
-        public string streamBundleDirectory => AssetsHelper.StreamBundlePath;
+        public string streamBundleDirectory => AssetsEditorTool.StreamBundlePath;
 
         public string serverDirectory => AssetsEditorTool.ServerDirectory;
         public CompressType compress => Params.compress;

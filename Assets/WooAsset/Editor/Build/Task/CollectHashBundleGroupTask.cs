@@ -37,7 +37,7 @@ namespace WooAsset
 
             foreach (EditorBundleData group in builds)
                 if (group.CheckLoop(builds))
-                    AssetsHelper.LogError($"Bundle Contains Loop {group.hash}");
+                    AssetsEditorTool.LogError($"Bundle Contains Loop {group.hash}");
 
             foreach (EditorBundleData group in builds)
             {

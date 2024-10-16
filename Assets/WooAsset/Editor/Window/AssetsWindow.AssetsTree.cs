@@ -270,7 +270,7 @@ namespace WooAsset
                     switch (_searchType)
                     {
                         case SearchType.Name:
-                            source = AssetsHelper.GetFileName(asset.path);
+                            source = AssetsEditorTool.GetFileName(asset.path);
                             break;
                         case SearchType.Tag:
                             source = GetTagsString(asset);

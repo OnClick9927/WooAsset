@@ -33,7 +33,7 @@ namespace WooAsset
             }
             foreach (var item in assets)
             {
-                if (AssetsHelper.GetOrDefaultFromDictionary(tag_dic, item.path) != null) continue;
+                if (AssetsEditorTool.GetOrDefaultFromDictionary(tag_dic, item.path) != null) continue;
                 var tag_list = context.Params.GetAssetTags(item.path);
                 if (tag_list == null || tag_list.Count == 0) continue;
                 tag_dic.Add(item.path, tag_list.ToList());

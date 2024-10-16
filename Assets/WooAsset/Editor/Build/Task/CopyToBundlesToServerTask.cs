@@ -18,9 +18,9 @@ namespace WooAsset
                         string target = AssetsEditorTool.CombinePath(context.serverDirectory, context.buildTargetName, context.version);
                         new CopyDirectoryCMD(context.outputPath, target);
                         string version = AssetsEditorTool.CombinePath(context.serverDirectory, context.buildTargetName, context.VersionCollectionName);
-                        if (AssetsHelper.ExistsFile(version))
+                        if (AssetsEditorTool.ExistsFile(version))
                             AssetsEditorTool.DeleteFile(version);
-                        AssetsEditorTool.MoveFile(AssetsHelper.CombinePath(target, context.VersionCollectionName), version);
+                        AssetsEditorTool.MoveFile(AssetsEditorTool.CombinePath(target, context.VersionCollectionName), version);
 
                     }
                 }
