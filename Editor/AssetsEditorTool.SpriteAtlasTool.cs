@@ -37,7 +37,7 @@ namespace WooAsset
             {
                 if (EditorSettings.spritePackerMode == SpritePackerMode.Disabled)
                 {
-                    AssetsHelper.LogError("SpritePackerMode is Disabled");
+                    AssetsEditorTool.LogError("SpritePackerMode is Disabled");
                     return;
                 }
                 var atlasPaths = option.atlasPaths.ToArray();
@@ -53,14 +53,14 @@ namespace WooAsset
                 await Task.Delay(1000);
                 var data = AssetDatabase.FindAssets("t:Texture", atlasPaths)
                     .Select(x => AssetDatabase.GUIDToAssetPath(x))
-                    .Select(x => new { dir = AssetsHelper.GetDirectoryName(x), path = x })
+                    .Select(x => new { dir = AssetsEditorTool.GetDirectoryName(x), path = x })
                     .GroupBy(x => x.dir).ToDictionary(x => x.Key, x => x.Select(y => y.path).ToList());
                 foreach (var item in data)
                     BuildAtlas(item.Key, item.Value);
                 AssetDatabase.Refresh();
                 SpriteAtlasUtility.PackAllAtlases(BuildTarget, false);
                 await Task.Delay(1000);
-                AssetsHelper.Log("build atlas succeed");
+                AssetsEditorTool.Log("build atlas succeed");
             }
         }
 

@@ -36,7 +36,7 @@ namespace WooAsset
             protected override void OnLoad() => SetResult(null);
             protected override void OnUnLoad() { }
 
-            public override RawObject LoadRawObject(string path) => RawObject.Create(path, AssetsHelper.ReadFile(path, false).bytes);
+            public override RawObject LoadRawObject(string path) => RawObject.Create(path, AssetsEditorTool.ReadFile(path, false).bytes);
 
             public override Object[] LoadAssetWithSubAssets(string path, Type type)
             {

@@ -60,15 +60,15 @@ namespace WooAsset
             StringBuilder sb = new StringBuilder();
             foreach (var item in assets)
             {
-                sb = sb.Append(item.hash).Append(AssetsHelper.GetStringHash(item.path));
-                List<string> hashList = AssetsHelper.GetOrDefaultFromDictionary(hashMap, item.path);
+                sb = sb.Append(item.hash).Append(AssetsEditorTool.GetStringHash(item.path));
+                List<string> hashList = AssetsEditorTool.GetOrDefaultFromDictionary(hashMap, item.path);
                 if (hashList != null)
                     for (int i = 0; i < hashList.Count; i++)
                         sb.Append(hashList[i]);
 
             }
 
-            this.hash = AssetsHelper.GetStringHash(sb.ToString());
+            this.hash = AssetsEditorTool.GetStringHash(sb.ToString());
         }
         public void RemoveAsset(string assetPath)
         {

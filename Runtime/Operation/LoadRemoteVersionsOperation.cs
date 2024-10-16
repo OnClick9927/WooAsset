@@ -21,7 +21,7 @@
             }
             else
             {
-                remote = VersionHelper.ReadAssetsVersionCollection(downloader.data);
+                remote = AssetsHelper.ReadBufferObject<VersionCollectionData>(downloader.data);
             }
             AssetsHelper.Log($"Check Version Complete");
             InvokeComplete();

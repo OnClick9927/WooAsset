@@ -64,7 +64,7 @@ namespace WooAsset
                 }
                 else
                 {
-                    remote_main = VersionHelper.ReadManifest(downloader.data);
+                    remote_main = AssetsHelper.ReadBufferObject<ManifestData>(downloader.data);
 
                     if (compareType != VersionCompareType.Manifest)
                     {
@@ -80,7 +80,7 @@ namespace WooAsset
                     {
                         var reader = AssetsHelper.ReadFile(local_path, true);
                         await reader;
-                        local_main = VersionHelper.ReadManifest(reader.bytes);
+                        local_main = AssetsHelper.ReadBufferObject<ManifestData>(reader.bytes);
                     }
                     if (add == null)
                         add = new List<BundleData>();
@@ -106,7 +106,7 @@ namespace WooAsset
                     }
                 }
                 if (AssetsInternal.GetSaveBundlesWhenPlaying())
-                    await VersionHelper.WriteManifest(remote_main, AssetsInternal.GetBundleLocalPath(fileName));
+                    await AssetsHelper.WriteBufferObject(remote_main, AssetsInternal.GetBundleLocalPath(fileName));
 
             }
             if (compareType != VersionCompareType.Manifest)
@@ -119,8 +119,8 @@ namespace WooAsset
                     this.delete.Add(delete[j].name);
             }
             if (AssetsInternal.GetSaveBundlesWhenPlaying())
-                await VersionHelper.WriteVersionData(version,
-                  AssetsInternal.GetBundleLocalPath(VersionHelper.VersionDataName)
+                await AssetsHelper.WriteBufferObject(version,
+                  AssetsInternal.GetBundleLocalPath(AssetsHelper.VersionDataName)
                   );
             InvokeComplete();
         }

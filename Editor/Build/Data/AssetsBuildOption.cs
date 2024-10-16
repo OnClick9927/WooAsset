@@ -53,9 +53,12 @@ namespace WooAsset
 
 
 
+        protected override void OnLoad()
+        {
+            OnEnable();
+        }
 
-
-        public void OnEnable()
+        private void OnEnable()
         {
             if (encrypt.baseType == null)
             {
@@ -74,9 +77,9 @@ namespace WooAsset
             }
             recordIgnore.RemoveAll(x =>
 
-       (x.type == FileType.File && !AssetsHelper.ExistsFile(x.path)) ||
+       (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
        (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path)));
-            tags.ForEach(z => z.assets.RemoveAll(x => (x.type == FileType.File && !AssetsHelper.ExistsFile(x.path)) ||
+            tags.ForEach(z => z.assets.RemoveAll(x => (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
        (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path))));
         }
 

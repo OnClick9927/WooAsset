@@ -147,13 +147,13 @@ namespace WooAsset
 
                     {
                         GUILayout.BeginHorizontal();
-                        EditorGUILayout.TextField(nameof(AssetsHelper.StreamBundlePath), AssetsHelper.StreamBundlePath);
+                        EditorGUILayout.TextField(nameof(AssetsEditorTool.StreamBundlePath), AssetsEditorTool.StreamBundlePath);
                         GUI.enabled = true;
 
                         if (GUILayout.Button("Open", GUILayout.Width(40)))
-                            EditorUtility.OpenWithDefaultApp(AssetsHelper.StreamBundlePath);
+                            EditorUtility.OpenWithDefaultApp(AssetsEditorTool.StreamBundlePath);
                         if (GUILayout.Button("Clear", GUILayout.Width(50)))
-                            AssetsEditorTool.DeleteDirectory(AssetsHelper.StreamBundlePath);
+                            AssetsEditorTool.DeleteDirectory(AssetsEditorTool.StreamBundlePath);
                         GUILayout.EndHorizontal();
                         GUI.enabled = false;
                     }

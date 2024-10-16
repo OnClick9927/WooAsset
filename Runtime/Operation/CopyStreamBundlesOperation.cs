@@ -30,7 +30,7 @@
                 await downloader;
                 if (!downloader.isErr)
                 {
-                    StreamBundlesData list = AssetsHelper.ReadFromBytes<StreamBundlesData>(downloader.data);
+                    StreamBundlesData list = AssetsHelper.ReadBufferObject<StreamBundlesData>(downloader.data);
                     foreach (var fileName in list.fileNames)
                     {
                         string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(StreamBundlesData.fileExt, "");

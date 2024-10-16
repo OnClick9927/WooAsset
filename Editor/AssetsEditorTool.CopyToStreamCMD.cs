@@ -22,9 +22,9 @@ namespace WooAsset
                 {
                     foreach (var bundleName in buildInBundles)
                     {
-                        if (files.Where(x => AssetsHelper.GetFileName(x) == bundleName).Count() == 0)
+                        if (files.Where(x => AssetsEditorTool.GetFileName(x) == bundleName).Count() == 0)
                         {
-                            AssetsHelper.LogError($"the bundle want copy not build {bundleName}");
+                            AssetsEditorTool.LogError($"the bundle want copy not build {bundleName}");
                             return;
                         }
                     }
@@ -34,15 +34,15 @@ namespace WooAsset
                 {
                     this.files = this.files
                         .ToList()
-                        .Where(x => buildInBundles.Contains(AssetsHelper.GetFileName(x)) || buildInConfigs.Contains(AssetsHelper.GetFileName(x)))
+                        .Where(x => buildInBundles.Contains(AssetsEditorTool.GetFileName(x)) || buildInConfigs.Contains(AssetsEditorTool.GetFileName(x)))
                         .ToArray();
                 }
                 var list = this.files.Select(x => GetTargetFileName(x)).ToList();
-                AssetsEditorTool.WriteObjectSync(new StreamBundlesData()
+                AssetsEditorTool.WriteBufferObjectSync(new StreamBundlesData()
                 {
                     fileNames = list.ToArray(),
                 },
-                AssetsHelper.CombinePath(targetPath, StreamBundlesData.fileName));
+                AssetsEditorTool.CombinePath(targetPath, StreamBundlesData.fileName));
                 base.Done();
             }
 

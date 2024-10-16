@@ -62,7 +62,7 @@ namespace WooAsset
 
             sw.Stop();
             InvokeComplete();
-            AssetsHelper.Log($"{context.Pipeline} Finish {sw.Elapsed.ToString(@"G")}");
+            AssetsEditorTool.Log($"{context.Pipeline} Finish {sw.Elapsed.ToString(@"G")}");
         }
 
 

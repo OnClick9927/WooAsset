@@ -110,10 +110,10 @@ namespace WooAsset
                 string _savePath = AssetsEditorTool.option.shaderVariantOutputDirectory;
                 if (!AssetsEditorTool.ExistsDirectory(_savePath))
                 {
-                    AssetsHelper.LogError("ShaderVariantDirectory Not Exist,CheckSetting");
+                    AssetsEditorTool.LogError("ShaderVariantDirectory Not Exist,CheckSetting");
                     return;
                 }
-                _savePath = AssetsHelper.ToRegularPath(AssetsHelper.CombinePath(_savePath, "shadervariants.shadervariants"));
+                _savePath = AssetsEditorTool.ToRegularPath(AssetsEditorTool.CombinePath(_savePath, "shadervariants.shadervariants"));
                 AssetDatabase.DeleteAsset(_savePath);
                 // 聚焦到游戏窗口
                 ShaderVariantCollectionHelper.FocusUnityGameWindow();
@@ -138,7 +138,7 @@ namespace WooAsset
                 AssetDatabase.Refresh();
                 if (!string.IsNullOrEmpty(activePath))
                     EditorSceneManager.OpenScene(activePath, OpenSceneMode.Single);
-                AssetsHelper.Log("shader variant succeed");
+                AssetsEditorTool.Log("shader variant succeed");
             }
         }
 

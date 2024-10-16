@@ -94,14 +94,14 @@ namespace WooAsset
             pre = new BundlesTree(previewState, preSearchType);
             rt = new LifeTree(rtState, rtSearchType);
             buildSetting_editor = Editor.CreateEditor(AssetsEditorTool.option);
-            AssetsEditorTool.onAssetLifeChange += rt.Reload;
+            AssetsEditorTool.LifePart.onAssetLifeChange += rt.Reload;
             AssetsEditorTool.onPipelineFinish += FreshPreview;
 
         }
         public void OnDisable()
         {
             AssetsEditorTool.onPipelineFinish -= FreshPreview;
-            AssetsEditorTool.onAssetLifeChange -= rt.Reload;
+            AssetsEditorTool.LifePart.onAssetLifeChange -= rt.Reload;
 
             colSearchType = col._searchType;
             preSearchType = pre._searchType;

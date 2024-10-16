@@ -1,84 +1,27 @@
 ﻿using UnityEditor;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
-using UnityEngine.UIElements;
 using System.Reflection;
 
 namespace WooAsset
 {
-
-    partial class AssetsEditorTool : AssetModificationProcessor, IAssetLife<Bundle>, IAssetLife<AssetHandle>
+    public partial class AssetsEditorTool : AssetsHelper
     {
-        async void IAssetLife<Bundle>.OnAssetCreate(string path, Bundle asset)
-        {
-            AssetLife<Bundle> life = new AssetLife<Bundle>()
-            {
-                asset = asset,
-            };
-            bundles.Add(asset.bundleName, life);
-            await asset;
-            life.assetLength = asset.length;
-            onAssetLifeChange?.Invoke();
-        }
-        void IAssetLife<Bundle>.OnAssetRetain(Bundle asset, int count) => onAssetLifeChange?.Invoke();
-        void IAssetLife<Bundle>.OnAssetRelease(Bundle asset, int count) => onAssetLifeChange?.Invoke();
-        void IAssetLife<Bundle>.OnAssetUnload(string path, Bundle asset)
-        {
-            bundles.Remove(asset.bundleName);
-            onAssetLifeChange?.Invoke();
-        }
-        async void IAssetLife<AssetHandle>.OnAssetCreate(string path, AssetHandle asset)
-        {
-            var data = asset.data;
-            var life = new AssetLife<AssetHandle>()
-            {
-                asset = asset,
-                tags = Assets.GetAssetTags(path),
-                assetType = AssetsInternal.GetAssetType(path).ToString(),
-            };
-            assets.Add(path, life);
-            onAssetLifeChange?.Invoke();
-            await asset;
-            onAssetLifeChange?.Invoke();
-        }
-        void IAssetLife<AssetHandle>.OnAssetRelease(AssetHandle asset, int count) => onAssetLifeChange?.Invoke();
-        void IAssetLife<AssetHandle>.OnAssetRetain(AssetHandle asset, int count) => onAssetLifeChange?.Invoke();
-        void IAssetLife<AssetHandle>.OnAssetUnload(string path, AssetHandle asset)
-        {
-            assets.Remove(path);
-            onAssetLifeChange?.Invoke();
-
-        }
-
-        public class AssetLife<T> where T : AssetOperation
-        {
-            public T asset;
-            public long assetLength;
-            public IReadOnlyList<string> tags;
-            public string assetType;
-        }
-        public static Dictionary<string, AssetLife<Bundle>> bundles = new Dictionary<string, AssetLife<Bundle>>();
-        public static Dictionary<string, AssetLife<AssetHandle>> assets = new Dictionary<string, AssetLife<AssetHandle>>();
-        private static AssetsEditorTool ins = new AssetsEditorTool();
-        public static event Action onAssetLifeChange;
 
         [InitializeOnLoadMethod]
         static void Tool()
         {
-            AssetsInternal.AddAssetLife(ins);
+            AssetsInternal.AddAssetLife(new LifePart());
             EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
 
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Tool2()
         {
-            bundles.Clear();
-            assets.Clear();
+            LifePart.Clear();
             var _op = option;
             AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetsMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
@@ -105,85 +48,19 @@ namespace WooAsset
             }
         }
 
-    }
-    public partial class AssetsEditorTool
-    {
         private const string DLC = "DLC";
         public static BuildTarget BuildTarget => EditorUserBuildSettings.activeBuildTarget;
-        public static string BuildTargetName => AssetsHelper.buildTarget;
-        public static string EditorSimulatorPath
-        {
-            get
-            {
-                string path = $"{DLC}/Editor Simulator/{BuildTargetName}";
-                AssetsHelper.CreateDirectory(path);
-                return path;
-            }
-        }
-        public static string OutputPath
-        {
-            get
-            {
-                string path = $"{DLC}/Output/{BuildTargetName}";
-                AssetsHelper.CreateDirectory(path);
-                return path;
-            }
-        }
-        public static string HistoryPath
-        {
-            get
-            {
-                string path = $"{DLC}/History/{BuildTargetName}";
-
-                AssetsHelper.CreateDirectory(path);
-                return path;
-            }
-        }
-        public static string EditorPath
-        {
-            get
-            {
-
-                string path = "Assets/Editor";
-                AssetsHelper.CreateDirectory(path);
-
-                return path;
-            }
-        }
-        public static string ServerDirectory
-        {
-            get
-            {
-                string path = $"{DLC}/Server";
-                AssetsHelper.CreateDirectory(path);
-                return path;
-            }
-        }
+        public static string BuildTargetName => buildTarget;
+        public static string EditorSimulatorPath => CreateDirectory($"{DLC}/Editor Simulator/{BuildTargetName}");
+        public static string OutputPath => CreateDirectory($"{DLC}/Output/{BuildTargetName}");
+        public static string HistoryPath => CreateDirectory($"{DLC}/History/{BuildTargetName}");
+        public static string EditorPath => CreateDirectory("Assets/Editor");
+        public static string ServerDirectory => CreateDirectory($"{DLC}/Server");
 
 
-        private static AssetsBuildOption _option;
-        private static AssetsEditorCache _cache;
-        public static AssetsBuildOption option
-        {
-            get
-            {
-                if (!_option)
-                {
-                    _option = AssetsScriptableObject.Load<AssetsBuildOption>();
-                    _option.OnEnable();
-                }
-                return _option;
-            }
-        }
-        public static AssetsEditorCache cache
-        {
-            get
-            {
-                if (!_cache)
-                    _cache = AssetsScriptableObject.Load<AssetsEditorCache>();
-                return _cache;
-            }
-        }
+
+        public static AssetsBuildOption option => AssetsScriptableObject.Get<AssetsBuildOption>();
+        public static AssetsEditorCache cache => AssetsScriptableObject.Get<AssetsEditorCache>();
 
         public static event Action onPipelineFinish;
 
@@ -194,31 +71,6 @@ namespace WooAsset
                 onPipelineFinish?.Invoke();
                 InvokeComplete();
             }
-        }
-
-
-
-
-        public static T CreateScriptableObject<T>(string savePath) where T : ScriptableObject
-        {
-            ScriptableObject sto = ScriptableObject.CreateInstance<T>();
-            AssetDatabase.CreateAsset(sto, savePath);
-            EditorUtility.SetDirty(sto);
-            AssetDatabase.ImportAsset(savePath);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            return Load<T>(savePath);
-        }
-        public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(path);
-        public static void Update<T>(T t) where T : Object
-        {
-            EditorApplication.delayCall += delegate ()
-            {
-                EditorUtility.SetDirty(t);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
-            };
         }
 
         public static void MoveFile(string srcPath, string targetPath) => System.IO.File.Move(srcPath, targetPath);
@@ -235,9 +87,9 @@ namespace WooAsset
         {
             return JsonUtility.FromJson<T>(System.Text.Encoding.UTF8.GetString(ReadFileSync(path)));
         }
-        public static void WriteObjectSync<T>(T t, string path) where T : IBufferObject
+        public static void WriteBufferObjectSync<T>(T t, string path) where T : IBufferObject
         {
-            var bytes = AssetsHelper.ObjectToBytes(t);
+            var bytes = WriteBufferObject(t);
             var buffer = new byte[bytes.length];
             Array.Copy(bytes.buffer, 0, buffer, 0, buffer.Length);
             WriteFileSync(path, buffer);
@@ -245,7 +97,7 @@ namespace WooAsset
         public static void DeleteFile(string path) => File.Delete(path);
 
         public static string ToAssetsPath(string self) => "Assets" + Path.GetFullPath(self).Substring(Path.GetFullPath(Application.dataPath).Length).Replace("\\", "/");
-        public static string[] GetDirectoryEntries(string path) => Directory.GetFileSystemEntries(path, "*", SearchOption.AllDirectories).Select(x => AssetsHelper.ToRegularPath(x)).ToArray();
+        public static string[] GetDirectoryEntries(string path) => Directory.GetFileSystemEntries(path, "*", SearchOption.AllDirectories).Select(x => AssetsEditorTool.ToRegularPath(x)).ToArray();
 
         public static bool IsDirectory(string path) => Directory.Exists(path);
         public static bool ExistsDirectory(string path) => Directory.Exists(path);

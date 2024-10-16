@@ -2,10 +2,6 @@
 
 using System;
 using System.Collections;
-#if UNITY_EDITOR
-using System.Threading.Tasks;
-#endif
-
 namespace WooAsset
 {
     public abstract class Operation : IEnumerator
@@ -116,7 +112,7 @@ namespace WooAsset
         protected virtual async void EditorWait()
         {
 #if UNITY_EDITOR
-            await Task.Delay(1);
+            await System.Threading.Tasks.Task.Delay(1);
             InvokeComplete();
 #endif
         }
@@ -141,7 +137,7 @@ namespace WooAsset
         {
 #if UNITY_EDITOR
             while (AssetsLoop.isBusy)
-                await Task.Delay(10);
+                await System.Threading.Tasks.Task.Delay(10);
             InvokeComplete();
 #endif
         }

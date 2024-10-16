@@ -105,7 +105,7 @@ namespace WooAsset
                     {
                         string src_path = item.GetAssets()[0];
                         string bundleName = item.hash;
-                        string dest = AssetsHelper.CombinePath(context.historyPath, bundleName);
+                        string dest = AssetsEditorTool.CombinePath(context.historyPath, bundleName);
                         AssetsEditorTool.CopyFile(src_path, dest);
                     }
                     if (needRenameFiles.Count > 0)
@@ -113,11 +113,11 @@ namespace WooAsset
                         foreach (var src in needRenameFiles.Keys)
                         {
                             var dest = needRenameFiles[src];
-                            var destpath = AssetsHelper.CombinePath(context.historyPath, dest);
-                            if (AssetsHelper.ExistsFile(destpath))
+                            var destpath = AssetsEditorTool.CombinePath(context.historyPath, dest);
+                            if (AssetsEditorTool.ExistsFile(destpath))
                                 AssetsEditorTool.DeleteFile(destpath);
                             AssetsEditorTool.MoveFile(
-                                AssetsHelper.CombinePath(context.historyPath, src),
+                                AssetsEditorTool.CombinePath(context.historyPath, src),
                               destpath);
                         }
                     }
@@ -126,21 +126,21 @@ namespace WooAsset
                     foreach (var bundle in source)
                     {
                         var bundleName = bundle.hash;
-                        var bytes_src = AssetsEditorTool.ReadFileSync(AssetsHelper.CombinePath(context.historyPath, bundleName));
+                        var bytes_src = AssetsEditorTool.ReadFileSync(AssetsEditorTool.CombinePath(context.historyPath, bundleName));
                         var en = context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode());
                         var bytes = EncryptBuffer.Encode(bundleName, bytes_src, en);
-                        AssetsEditorTool.WriteFileSync(AssetsHelper.CombinePath(context.outputPath, bundleName), bytes);
+                        AssetsEditorTool.WriteFileSync(AssetsEditorTool.CombinePath(context.outputPath, bundleName), bytes);
                     }
 
 
                     foreach (var bundleName in manifest.allBundle)
                     {
-                        string path = AssetsHelper.CombinePath(context.outputPath, bundleName);
+                        string path = AssetsEditorTool.CombinePath(context.outputPath, bundleName);
                         BundleData bundleData = manifest.GetBundleData(bundleName);
 
 
 
-                        if (AssetsHelper.ExistsFile(path))
+                        if (AssetsEditorTool.ExistsFile(path))
                         {
                             var data = FileData.CreateByFile(path);
                             bundleData.length = data.length;
@@ -154,10 +154,10 @@ namespace WooAsset
                         }
                     }
 
-                    var mainfestName = VersionHelper.GetManifestFileName(context.buildPkg.name);
+                    var mainfestName = AssetsEditorTool.GetManifestFileName(context.buildPkg.name);
 
-                    AssetsEditorTool.WriteObjectSync(manifest,
-                           AssetsHelper.CombinePath(context.outputPath,
+                    AssetsEditorTool.WriteBufferObjectSync(manifest,
+                           AssetsEditorTool.CombinePath(context.outputPath,
                            mainfestName));
                 }
 
@@ -178,7 +178,7 @@ namespace WooAsset
         protected override async void OnExecute(AssetTaskContext context)
         {
             AssetsEditorTool.DeleteDirectory(context.outputPath);
-            AssetsHelper.CreateDirectory(context.outputPath);
+            AssetsEditorTool.CreateDirectory(context.outputPath);
 
             var builds = context.buildPkgs.FindAll(x => x.build);
             if (context.Pipeline == TaskPipelineType.EditorSimulate)
@@ -231,18 +231,18 @@ namespace WooAsset
                 outputVersions.RemoveFirstIFTooLarge(context.MaxCacheVersionCount);
 
 
-                AssetsEditorTool.WriteObjectSync(
+                AssetsEditorTool.WriteBufferObjectSync(
                          outputVersions,
-                         AssetsHelper.CombinePath(context.outputPath, context.VersionCollectionName));
+                         AssetsEditorTool.CombinePath(context.outputPath, context.VersionCollectionName));
                 VersionData versionData = versionData = new VersionData()
                 {
                     version = context.version,
                 };
                 versionData.SetPkgs(context.buildPkgs.ConvertAll(x => x.ToPackageData()));
 
-                AssetsEditorTool.WriteObjectSync(
+                AssetsEditorTool.WriteBufferObjectSync(
                     versionData,
-                    AssetsHelper.CombinePath(context.outputPath, context.VersionDataName));
+                    AssetsEditorTool.CombinePath(context.outputPath, context.VersionDataName));
             }
 
             InvokeComplete();

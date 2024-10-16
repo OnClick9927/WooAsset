@@ -10,7 +10,7 @@ namespace WooAsset
             {
                 Dictionary<string, List<EditorAssetData>> dic = new Dictionary<string, List<EditorAssetData>>();
                 foreach (EditorAssetData asset in list)
-                    AssetsHelper.GetFromDictionary(dic, asset.directory).Add(asset);
+                    AssetsEditorTool.GetFromDictionary(dic, asset.directory).Add(asset);
                 return dic;
             }
             public static void One2One(List<EditorAssetData> assets, List<EditorBundleData> result)

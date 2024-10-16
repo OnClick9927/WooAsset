@@ -23,25 +23,25 @@ namespace WooAsset
             string hash;
             if (_type == AssetType.Directory)
             {
-                hash = AssetsHelper.GetStringHash(path);
+                hash = AssetsEditorTool.GetStringHash(path);
             }
             else
             {
-                hash = AssetsHelper.GetFileHash(path);
+                hash = AssetsEditorTool.GetFileHash(path);
                 if (_type == AssetType.Sprite || _type == AssetType.Texture)
                     length = AssetsEditorTool.GetTextureMemorySizeLong(path);
                 else
-                    length = AssetsHelper.GetFileLength(path);
+                    length = AssetsEditorTool.GetFileLength(path);
             }
 
             return new EditorAssetData()
             {
                 path = path,
-                name = AssetsHelper.GetFileName(path),
+                name = AssetsEditorTool.GetFileName(path),
                 length = length,
                 hash = hash,
                 type = _type,
-                directory = AssetsEditorTool.ToAssetsPath(AssetsHelper.GetDirectoryName(path)),
+                directory = AssetsEditorTool.ToAssetsPath(AssetsEditorTool.GetDirectoryName(path)),
                 guid = AssetDatabase.AssetPathToGUID(path)
             };
         }

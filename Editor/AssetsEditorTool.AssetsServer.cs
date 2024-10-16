@@ -15,15 +15,15 @@ namespace WooAsset
                     HttpListenerRequest request = context.Request;
                     var rawUrl = request.RawUrl.Remove(0, 1);
 
-                    string filePath = AssetsHelper.CombinePath(folder, rawUrl);
-                    AssetsHelper.Log($"Client DownLoad {rawUrl}");
+                    string filePath = AssetsEditorTool.CombinePath(folder, rawUrl);
+                    AssetsEditorTool.Log($"Client DownLoad {rawUrl}");
                     WriteToClient(filePath, context);
                 }
                 public async void WriteToClient(string filePath, HttpListenerContext context)
                 {
                     HttpListenerResponse response = context.Response;
                     var OutputStream = response.OutputStream;
-                    if (AssetsHelper.ExistsFile(filePath))
+                    if (AssetsEditorTool.ExistsFile(filePath))
                     {
                         response.StatusCode = (int)HttpStatusCode.OK;
                         using (FileStream fs = File.OpenRead(filePath))
@@ -50,7 +50,7 @@ namespace WooAsset
             {
                 _dir = directory;
                 _port = port;
-                AssetsHelper.Log($"Server Start {_dir}:{_port}");
+                AssetsEditorTool.Log($"Server Start {_dir}:{_port}");
                 httpListener = new HttpListener();
                 httpListener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
                 httpListener.Prefixes.Add(string.Format("http://*:{0}/", port));
@@ -77,7 +77,7 @@ namespace WooAsset
                 {
                     httpListener?.Close();
                     httpListener = null;
-                    AssetsHelper.Log($"Server Stop {_dir}:{_port}");
+                    AssetsEditorTool.Log($"Server Stop {_dir}:{_port}");
                 }
             }
         }
