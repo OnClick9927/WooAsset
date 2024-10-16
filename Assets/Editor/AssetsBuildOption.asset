@@ -30,7 +30,6 @@ MonoBehaviour:
     - WooAsset.DefaultAssetsBuild
     shortTypes:
     - DefaultAssetsBuild
-    typeIndex: 0
   mode:
     types:
     - WooAsset.AssetsEditorTool+AssetDatabaseMode
@@ -40,7 +39,6 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
-    typeIndex: 0
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt
@@ -48,7 +46,6 @@ MonoBehaviour:
     shortTypes:
     - NoneAssetStreamEncrypt
     - DefaultAssetStreamEncrypt
-    typeIndex: 0
   tags: []
   shaderVariantInputDirectory: []
   shaderVariantOutputDirectory: 
