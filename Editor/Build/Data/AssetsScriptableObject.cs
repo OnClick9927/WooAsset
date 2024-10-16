@@ -19,7 +19,8 @@ namespace WooAsset
             T t = null;
             if (AssetsEditorTool.ExistsFile(stoPath))
                 t = Load<T>(stoPath);
-            t = CreateScriptableObject<T>(stoPath);
+            else
+                t = CreateScriptableObject<T>(stoPath);
             t.OnLoad();
             _map[type] = t;
             return t;
