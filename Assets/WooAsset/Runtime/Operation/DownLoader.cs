@@ -82,6 +82,10 @@ namespace WooAsset
 
                 }
             }
+            else
+            {
+                _progress = request.downloadProgress;
+            }
         }
     }
     public class FileDownLoader : DownLoader
