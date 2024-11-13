@@ -20,8 +20,7 @@ MonoBehaviour:
   compress: 1
   MaxCacheVersionCount: 8
   cleanHistory: 1
-  buildInAssets:
-  - {fileID: 1083932652807240154, guid: 330736a7384aa8549a8a85ab8ac26779, type: 3}
+  buildInAssets: []
   enableServer: 0
   serverPort: 8080
   pkgs:
@@ -58,7 +57,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
-    typeIndex: 0
+    typeIndex: 2
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt

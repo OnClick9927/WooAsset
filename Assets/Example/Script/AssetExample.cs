@@ -44,7 +44,7 @@ namespace WooAsset
             //asset_svc.GetAsset<ShaderVariantCollection>().WarmUp();
             var _test = await assetReference.LoadAssetAsync();
             image.sprite=_test.GetAsset<UnityEngine.Sprite>();
-            return;
+            //return;
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
             oppp.Destroy();
