@@ -1,10 +1,22 @@
-﻿namespace WooAsset
+﻿using UnityEditor.Hardware;
+
+namespace WooAsset
 {
     partial class AssetsInternal
     {
         private class AssetMap : NameMap<AssetHandle>
         {
 
+            public AssetHandle LoadAsset(AssetData data,bool async,System.Type type,bool sub)
+            {
+                AssetLoadArgs args = default;
+                var asset = Find(data.path);
+                if (asset != null)
+                    args = asset.loadArgs;
+                else
+                    args = AssetLoadArgs.NormalArg(data, async, type, sub);
+                return LoadAsync(args);
+            }
             protected override AssetHandle CreateNew(IAssetArgs args)
             {
                 AssetLoadArgs arg = (AssetLoadArgs)args;

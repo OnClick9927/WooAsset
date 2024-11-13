@@ -140,7 +140,7 @@ namespace WooAsset
                 AssetsHelper.LogError($"Not Found Asset: {path}");
                 return null;
             }
-            return assets.LoadAsync(AssetLoadArgs.NormalArg(data, async, type, sub));
+            return assets.LoadAsset(data, async, type, sub);
         }
         public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op)
         {

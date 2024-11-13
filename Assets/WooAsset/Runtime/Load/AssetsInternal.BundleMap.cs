@@ -11,9 +11,15 @@ namespace WooAsset
             public Bundle LoadBundle(string bundleName, bool async)
             {
                 var data = GetBundleData(bundleName);
-                BundleDependenceOperation dps;
-                dps = new BundleDependenceOperation(data, async);
-                return LoadAsync(new BundleLoadArgs(data, async, GetEncrypt(data.enCode), dps));
+                BundleLoadArgs args = default;
+
+                var bundle = Find(bundleName);
+                if (bundle != null)
+                    args = bundle.loadArgs;
+                else
+                    args = new BundleLoadArgs(data, async, GetEncrypt(data.enCode)
+                        , new BundleDependenceOperation(data, async));
+                return LoadAsync(args);
             }
 
 

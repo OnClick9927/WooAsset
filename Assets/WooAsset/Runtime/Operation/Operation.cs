@@ -24,6 +24,7 @@ namespace WooAsset
         {
             _isDone = true;
             completed?.Invoke();
+            completed = null;
         }
         protected void SetErr(string err)
         {
