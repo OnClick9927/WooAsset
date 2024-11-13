@@ -14,11 +14,6 @@
             {
                 this.srcPath = srcPath;
                 this.targetPath = targetPath;
-                Copy();
-            }
-            protected virtual void Copy()
-            {
-
                 if (!AssetsEditorTool.ExistsDirectory(srcPath))
                 {
                     AssetsEditorTool.LogError("Path not Exist");
@@ -33,12 +28,10 @@
                 }
             }
             protected virtual string GetTargetFileName(string src) => AssetsEditorTool.GetFileName(src);
-            protected virtual bool NeedCopy(string src) { return true; }
             protected virtual void Done()
             {
                 foreach (var path in files)
                 {
-                    if (!NeedCopy(path)) continue;
                     string _destPath = AssetsEditorTool.CombinePath(targetPath, GetTargetFileName(path));
                     AssetsEditorTool.CopyFile(path, _destPath);
                     step++;

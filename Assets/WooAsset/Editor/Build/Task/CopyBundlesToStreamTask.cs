@@ -15,24 +15,27 @@ namespace WooAsset
                 ManifestData manifest = context.mergedManifest;
 
                 List<string> dps = new List<string>();
-                foreach (var item in buildInAssets)
+                foreach (var assetPath in buildInAssets)
                 {
-                    var _dps = context.assetsCollection.GetAssetData(item).dependence;
-                    if (_dps != null)
-                        dps.AddRange(_dps);
+                    var assetData = context.assetsCollection.GetAssetData(assetPath);
+                    if (assetData == null)
+                    {
+                        SetErr($"build-in asset are not build in bundles {assetPath}");
+                        InvokeComplete();
+                        return;
+                    }
+                    else
+                    {
+                        var _dps = assetData.dependence;
+                        if (_dps != null)
+                            dps.AddRange(_dps);
+                    }
                 }
                 List<string> buildInBundles = new List<string>();
                 buildInAssets.AddRange(dps);
                 foreach (var assetPath in buildInAssets)
                 {
                     var assetData = manifest.GetAssetData(assetPath);
-                    if (assetData == null)
-                    {
-                        SetErr($"could not find asset in this build {assetPath}");
-                        InvokeComplete();
-                        return;
-                    }
-
                     var bundleName = assetData.bundleName;
                     if (buildInBundles.Contains(bundleName)) continue;
                     buildInBundles.Add(bundleName);

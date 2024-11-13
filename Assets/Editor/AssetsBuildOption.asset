@@ -13,23 +13,42 @@ MonoBehaviour:
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
   version: 0.0.1
-  copyToStream: 0
+  copyToStream: 1
   buildMode: 0
   typeTreeOption: 1
-  bundleNameType: 2
+  bundleNameType: 1
   compress: 1
   MaxCacheVersionCount: 8
   cleanHistory: 1
-  buildInAssets: []
+  buildInAssets:
+  - {fileID: 1083932652807240154, guid: 330736a7384aa8549a8a85ab8ac26779, type: 3}
   enableServer: 0
   serverPort: 8080
-  pkgs: []
+  pkgs:
+  - build: 1
+    name: Example
+    description: 
+    tags: []
+    paths:
+    - Assets/Example/New Folder
+    - Assets/Example/px
+    - Assets/Example/Scene
+    builds:
+    - param:
+        type: 0
+        path: 
+        tag: 
+        userData: 
+      typeIndex: 0
+      packType: 0
+      size: 0
   recordIgnore: []
   build:
     types:
     - WooAsset.DefaultAssetsBuild
     shortTypes:
     - DefaultAssetsBuild
+    typeIndex: 0
   mode:
     types:
     - WooAsset.AssetsEditorTool+AssetDatabaseMode
@@ -39,6 +58,7 @@ MonoBehaviour:
     - AssetDatabaseMode
     - RudeMode
     - NormalAssetsMode
+    typeIndex: 0
   encrypt:
     types:
     - WooAsset.NoneAssetStreamEncrypt
@@ -46,6 +66,7 @@ MonoBehaviour:
     shortTypes:
     - NoneAssetStreamEncrypt
     - DefaultAssetStreamEncrypt
+    typeIndex: 0
   tags: []
   shaderVariantInputDirectory: []
   shaderVariantOutputDirectory: 
