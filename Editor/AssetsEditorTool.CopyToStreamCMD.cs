@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WooAsset
 {
@@ -16,8 +17,9 @@ namespace WooAsset
                 this.buildInBundles = buildInBundles;
                 this.buildInConfigs = buildInConfigs;
             }
-            protected override void Done()
+            protected override async void Done()
             {
+                await Task.Delay(1);
                 if (buildInBundles != null && buildInBundles.Count > 0)
                 {
                     foreach (var bundleName in buildInBundles)
