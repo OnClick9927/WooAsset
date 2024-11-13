@@ -34,7 +34,7 @@ namespace WooAsset
         public AssetType assetType => data.type;
         public virtual string path => data.path;
         public string bundleName => data.bundleName;
-        private AssetLoadArgs loadArgs;
+        public AssetLoadArgs loadArgs {  get; private set; }
 
         public AssetHandle(AssetLoadArgs loadArgs, Bundle bundle)
         {

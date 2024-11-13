@@ -20,7 +20,7 @@ namespace WooAsset
         private BundleLoadType type;
         private IAssetEncrypt encrypt => loadArgs.encrypt;
         public override bool async => _async;
-        protected BundleLoadArgs loadArgs;
+        public BundleLoadArgs loadArgs {  get; private set; }
         public string bundleName => loadArgs.bundleName;
         public bool raw => loadArgs.data.raw;
         public long rawLength => loadArgs.data.length;

@@ -40,7 +40,7 @@ namespace WooAsset
 
 
 
-            public T LoadAsync(IAssetArgs args)
+            protected T LoadAsync(IAssetArgs args)
             {
                 string uid = args.uid;
                 T result = Find(uid);

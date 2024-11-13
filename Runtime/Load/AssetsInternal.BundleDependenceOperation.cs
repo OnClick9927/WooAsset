@@ -26,10 +26,16 @@ namespace WooAsset
                     for (int i = 0; i < dps.Count; i++)
                     {
                         var bundle = bundles.LoadBundle(dps[i], async);
-                        _bundles.Add(bundle);
+                        if (bundle.isDone)
+                            _index++;
+                        else
+                        {
+                            _bundles.Add(bundle);
+                            bundle.completed += Bundle_completed;
+                        }
 
-                        bundle.completed += Bundle_completed;
                     }
+                    CheckComplete();
                 }
                 else
                 {
@@ -37,18 +43,20 @@ namespace WooAsset
 
                 }
             }
-
-            private void Bundle_completed()
+            private void CheckComplete()
             {
-                _index++;
-                _progress = (float)_index / _count;
-
                 if (_index >= _count)
                 {
                     for (int i = 0; i < _bundles.Count; i++)
                         _bundles[i].completed -= Bundle_completed;
                     InvokeComplete();
                 }
+            }
+            private void Bundle_completed()
+            {
+                _index++;
+                _progress = (float)_index / _count;
+                CheckComplete();
             }
         }
     }
