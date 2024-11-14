@@ -23,20 +23,20 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            //await Assets.CopyToSandBox();
-            //var op = await Assets.LoadRemoteVersions();
-            //if (op.Versions != null)
-            //{
-            //    var version = op.Versions.NewestVersion();
-            //    var down = await Assets.DownloadVersionData(version);
-            //    var versionData = down.GetVersion();
-            //    var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
+            await Assets.CopyToSandBox();
+            var op = await Assets.LoadRemoteVersions();
+            if (op.Versions != null)
+            {
+                var version = op.Versions.NewestVersion();
+                var down = await Assets.DownloadVersionData(version);
+                var versionData = down.GetVersion();
+                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 
-            //    for (int i = 0; i < compare.add.Count; i++)
-            //        await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
-            //    for (int i = 0; i < compare.change.Count; i++)
-            //        await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
-            //}
+                for (int i = 0; i < compare.add.Count; i++)
+                    await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
+                for (int i = 0; i < compare.change.Count; i++)
+                    await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
+            }
 
 
             await Assets.InitAsync();
@@ -44,12 +44,13 @@ namespace WooAsset
             //asset_svc.GetAsset<ShaderVariantCollection>().WarmUp();
             var _test = await assetReference.LoadAssetAsync();
             await _test;
-            image.sprite=_test.GetAsset<UnityEngine.Sprite>();
+            image.sprite = _test.GetAsset<UnityEngine.Sprite>();
             //return;
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);
-            oppp.Destroy();
+
+
 
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
 
@@ -71,8 +72,8 @@ namespace WooAsset
                 image.sprite = asset_1.GetAsset<Sprite>();
                 await Task.Delay(100);
             }
-
             await Assets.UnloadSceneAsync("Assets/Example/Scene/New Scene2.unity", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            oppp.Destroy();
         }
 
     }

@@ -34,19 +34,24 @@ namespace WooAsset
         public AssetType assetType => data.type;
         public virtual string path => data.path;
         public string bundleName => data.bundleName;
-        public AssetLoadArgs loadArgs {  get; private set; }
+        public AssetLoadArgs loadArgs { get; private set; }
 
-        public AssetHandle(AssetLoadArgs loadArgs, Bundle bundle)
+        protected AssetHandle(AssetLoadArgs loadArgs, Bundle bundle)
         {
             this.loadArgs = loadArgs;
             this.bundle = bundle;
         }
         protected sealed override void OnUnLoad() { }
-        protected sealed override async void OnLoad()
+        protected sealed override void OnLoad()
         {
-            if (AssetsLoop.isBusy)
-                await new WaitBusyOperation();
-            await bundle;
+            if (AssetsLoop.isBusy) return;
+            if (!bundle.isDone) return;
+            if (bundle.isErr)
+            {
+                this.SetErr(bundle.error);
+                InvokeComplete();
+                return;
+            }
             InternalLoad();
         }
 
@@ -86,26 +91,22 @@ namespace WooAsset
         protected virtual AssetRequest LoadAsync(string path, System.Type type) => bundle.LoadAssetAsync(path, type);
         protected virtual void OnLoadAsyncEnd(AssetRequest request) { }
         protected virtual Object LoadSync(string path, System.Type type) => bundle.LoadAsset(path, type);
-        protected sealed async override void InternalLoad()
+        private Type _assetType;
+        protected sealed override void InternalLoad()
         {
-            if (bundle.isErr)
-            {
-                this.SetErr(bundle.error);
-                InvokeComplete();
-                return;
-            }
-            var _type = AssetsHelper.GetAssetType(assetType, type);
+            if (_assetType == null)
+                _assetType = AssetsHelper.GetAssetType(assetType, type);
             if (async)
             {
-                loadOp = LoadAsync(path, _type);
-                await loadOp;
+                if (loadOp == null)
+                    loadOp = LoadAsync(path, _assetType);
+                if (!loadOp.isDone) return;
                 OnLoadAsyncEnd(loadOp);
                 SetResult(loadOp.asset);
             }
             else
             {
-                var result = LoadSync(path, _type);
-                SetResult(result);
+                SetResult(LoadSync(path, _assetType));
             }
 
         }
@@ -155,26 +156,8 @@ namespace WooAsset
         }
         public RawObject GetAsset() => isDone ? value : null;
 
-        public override float progress
-        {
-            get
-            {
-                if (isDone) return 1;
-                return bundle.progress;
-            }
-        }
-        protected override void InternalLoad()
-        {
-            if (bundle.isErr)
-            {
-                this.SetErr(bundle.error);
-                InvokeComplete();
-                return;
-            }
-
-            var raw = bundle.LoadRawObject(path);
-            SetResult(raw);
-        }
+        public override float progress => isDone ? 1 : bundle.progress;
+        protected override void InternalLoad() => SetResult(bundle.LoadRawObject(path));
     }
 
     public class SceneAsset : AssetHandle
@@ -184,12 +167,7 @@ namespace WooAsset
         {
         }
 
-        protected override void InternalLoad()
-        {
-            if (bundle.isErr)
-                SetErr(bundle.error);
-            InvokeComplete();
-        }
+        protected override void InternalLoad() => InvokeComplete();
 
         public Scene LoadScene(LoadSceneMode mode) => LoadScene(new LoadSceneParameters(mode));
         public virtual Scene LoadScene(LoadSceneParameters parameters) => !isDone || isErr ? default : bundle.LoadScene(path, parameters);
