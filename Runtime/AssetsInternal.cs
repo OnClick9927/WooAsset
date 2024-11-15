@@ -104,17 +104,28 @@ namespace WooAsset
             if (life != null)
                 AddAssetLife(life);
         }
-        public static BundleDownLoader DownLoadBundle(string version, string bundleName) => new BundleDownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static FileDownLoader DownLoadFile(string version, string bundleName) => new FileDownLoader(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static DownLoader DownloadVersion(string version, string bundleName) => new DownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static DownLoader DownloadRemoteVersion() => new DownLoader(GetUrlFromBundleName(AssetsHelper.VersionCollectionName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static DownLoader DownLoadBundle(string version, string bundleName, bool raw)
+        {
+            if (raw)
+                return DownloadBytes(GetUrlFromBundleName(version, bundleName));
+            return new BundleDownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        }
 
-        public static DownLoader DownloadRawBundle(string version, string bundleName) => new DownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static DownLoader DownLoadBundleFile(string version, string bundleName) =>
+            DownLoadFile(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName));
+
+        public static DownLoader DownloadVersion(string version, string bundleName) => DownLoadBundle(version, bundleName, true);
+        public static DownLoader DownloadRemoteVersion() =>
+            DownloadBytes(GetUrlFromBundleName(AssetsHelper.VersionCollectionName));
+        public static DownLoader DownLoadFile(string url, string path) => new FileDownLoader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static DownLoader DownloadBytes(string url) => new DownLoader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
+
+
+
 
         public static LoadVersionDataOperation DownloadVersionData(string version) => new LoadVersionDataOperation(version);
         public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => mode.CompareVersion(version, pkgs, compareType);
-        public static DownLoader CopyFile(string url, string path) => new FileDownLoader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static DownLoader DownloadBytes(string url) => new DownLoader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
+
 
         private static IAssetEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
         public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAlwaysFromWebRequest();
@@ -123,6 +134,7 @@ namespace WooAsset
         public static bool CheckVersionByVersionCollection() => setting.CheckVersionByVersionCollection();
         public static long GetLoadingMaxTimeSlice() => setting.GetLoadingMaxTimeSlice();
         public static bool NeedCopyStreamBundles() => setting.NeedCopyStreamBundles();
+        public static string GetStreamingFileUrl(string url) => setting.GetStreamingFileUrl(url);
 
     }
     partial class AssetsInternal

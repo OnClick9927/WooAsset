@@ -13,7 +13,7 @@ namespace WooAsset
         public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType = VersionCompareType.Manifest) => AssetsInternal.CompareVersion(version, pkgs, compareType);
         public static LoadVersionDataOperation DownloadVersionData(string version) => AssetsInternal.DownloadVersionData(version);
 
-        public static FileDownLoader DownLoadBundle(string version, string bundleName) => AssetsInternal.DownLoadFile(version, bundleName);
+        public static DownLoader DownLoadBundleFile(string version, string bundleName) => AssetsInternal.DownLoadBundleFile(version, bundleName);
         public static Operation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);

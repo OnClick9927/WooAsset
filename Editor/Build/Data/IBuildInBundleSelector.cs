@@ -12,12 +12,13 @@ namespace WooAsset
         /// <param name="buildInAssets">编辑器配置</param>
         /// <param name="buildInConfig">必须拷贝的文件</param>
         /// <param name="manifest">打包出来的配置文件（Merged）</param>
+        /// <param name="exports">打包报告（Merged）</param>
         /// <returns></returns>
-        string[] Select(string[] files, List<string> buildInAssets, List<string> buildInConfig, ManifestData manifest);
+        string[] Select(string[] files, List<string> buildInAssets, List<string> buildInConfig, ManifestData manifest, List<PackageExportData> exports);
     }
     public class DefaultBuildInBundleSelector : IBuildInBundleSelector
     {
-        public string[] Select(string[] files, List<string> buildInAssets, List<string> buildInConfig, ManifestData manifest)
+        public string[] Select(string[] files, List<string> buildInAssets, List<string> buildInConfig, ManifestData manifest, List<PackageExportData> exports)
         {
 
             var buildInBundles = new List<string>();
