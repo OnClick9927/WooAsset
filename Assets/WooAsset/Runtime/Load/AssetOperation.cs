@@ -16,7 +16,6 @@ namespace WooAsset
 
     public abstract class AssetOperation : LoopOperation, IAsset
     {
-
         public abstract bool async { get; }
         public DateTime time { get; private set; }
 
@@ -24,12 +23,6 @@ namespace WooAsset
         public int refCount => _ref;
 
         void IAsset.Retain() => _ref++;
-
-        private enum State
-        {
-            None, Load, UnLoad
-        }
-        private State _state;
         int IAsset.Release()
         {
             _ref--;
@@ -37,40 +30,16 @@ namespace WooAsset
         }
         void IAsset.LoadAsync()
         {
-            _state = State.Load;
             time = DateTime.Now;
-            //OnLoad();
+            Update();
         }
-        void IAsset.UnLoad()
-        {
-            _state = State.UnLoad;
-        }
-        protected sealed override bool NeedUpdate()
-        {
-            return _state != State.None;
-        }
+        void IAsset.UnLoad() => OnUnLoad();
+        protected sealed override bool NeedUpdate() => base.NeedUpdate();
         protected abstract void OnUnLoad();
         protected abstract void OnLoad();
 
-        protected sealed override void AddToLoop()
-        {
-            base.AddToLoop();
-        }
-        protected sealed override void OnUpdate()
-        {
-            if (_state == State.Load)
-            {
-                OnLoad();
-                if (isDone)
-                    _state = State.None;
-            }
-            else if (_state == State.UnLoad)
-            {
-                OnUnLoad();
-                _state = State.None;
-            }
-
-        }
+        protected sealed override void AddToLoop() => base.AddToLoop();
+        protected sealed override void OnUpdate() => OnLoad();
 
     }
 }

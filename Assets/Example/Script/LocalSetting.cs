@@ -30,7 +30,7 @@ namespace WooAsset
         }
         public override bool GetAutoUnloadBundle()
         {
-            return false;
+            return true;
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {

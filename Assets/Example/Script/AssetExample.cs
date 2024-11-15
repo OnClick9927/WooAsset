@@ -33,9 +33,9 @@ namespace WooAsset
                 var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
 
                 for (int i = 0; i < compare.add.Count; i++)
-                    await Assets.DownLoadBundle(versionData.version, compare.add[i].bundleName);
+                    await Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName);
                 for (int i = 0; i < compare.change.Count; i++)
-                    await Assets.DownLoadBundle(versionData.version, compare.change[i].bundleName);
+                    await Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName);
             }
 
 

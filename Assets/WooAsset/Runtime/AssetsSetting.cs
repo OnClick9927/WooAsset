@@ -5,6 +5,7 @@
     {
         public virtual bool CheckVersionByVersionCollection() => false;
         public virtual bool NeedCopyStreamBundles() => true;
+        public virtual string GetStreamingFileUrl(string url) => url;
         public virtual long GetLoadingMaxTimeSlice() => long.MaxValue;
         protected virtual string GetBaseUrl() => string.Empty;
         public virtual string GetUrlByBundleName(string buildTarget, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{bundleName}";

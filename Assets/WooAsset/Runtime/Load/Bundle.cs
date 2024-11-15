@@ -202,14 +202,8 @@ namespace WooAsset
             public FromRequestMode(Bundle bundle) : base(bundle)
             {
                 if (raw || (!raw && !(encrypt is NoneAssetStreamEncrypt)))
-                {
                     fromBytes = true;
-                    this.downloader = AssetsInternal.DownloadRawBundle(AssetsInternal.GetVersion(), bundleName);
-                }
-                else
-                {
-                    this.downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName);
-                }
+                this.downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName, fromBytes);
             }
 
             public override float progress => fromBytes ? bytesProgress : this.downloader.progress;
@@ -275,7 +269,7 @@ namespace WooAsset
             mode?.Update();
         }
 
-        protected override void OnUnLoad()
+        protected sealed override void OnUnLoad()
         {
             if (value != null)
                 value.Unload(true);
