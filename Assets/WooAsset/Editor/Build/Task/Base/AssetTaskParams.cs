@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using static WooAsset.AssetsBuildOption;
 
 namespace WooAsset
 {
@@ -19,6 +18,7 @@ namespace WooAsset
         public bool copyToStream;
         public IAssetsBuild assetBuild;
         public IAssetEncrypt encrypt;
+        public IBuildInBundleSelector buildInBundleSelector;
         public string version;
 
         public List<TagAssets> tags;
@@ -64,6 +64,7 @@ namespace WooAsset
             copyToStream = option.copyToStream;
             encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetEncrypt;
             assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
+            buildInBundleSelector = Activator.CreateInstance(option.GetBuildInBundleSelectorType()) as IBuildInBundleSelector;
             version = option.version;
             tags = option.tags;
             recordIgnore = option.recordIgnore;

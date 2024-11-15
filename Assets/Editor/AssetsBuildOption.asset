@@ -66,6 +66,12 @@ MonoBehaviour:
     - NoneAssetStreamEncrypt
     - DefaultAssetStreamEncrypt
     typeIndex: 0
+  buildInBundleSelector:
+    types:
+    - WooAsset.DefaultBuildInBundleSelector
+    shortTypes:
+    - DefaultBuildInBundleSelector
+    typeIndex: 0
   tags: []
   shaderVariantInputDirectory: []
   shaderVariantOutputDirectory: 

@@ -31,8 +31,9 @@ namespace WooAsset
         public IAssetEncrypt encrypt => Params.encrypt;
         public List<AssetTask> pipelineStartTasks => Params.pipelineStartTasks;
         public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
+        public IBuildInBundleSelector buildInBundleSelector => Params.buildInBundleSelector;
 
-        public bool fuzzySearch=>Params.fuzzySearch;
+        public bool fuzzySearch => Params.fuzzySearch;
 
 
         public string version;
