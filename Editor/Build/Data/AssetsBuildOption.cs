@@ -32,6 +32,10 @@ namespace WooAsset
         public TypeSelect build = new TypeSelect();
         public TypeSelect mode = new TypeSelect();
         public TypeSelect encrypt = new TypeSelect();
+        public TypeSelect buildInBundleSelector = new TypeSelect();
+
+
+
         public List<TagAssets> tags = new List<TagAssets>();
         public List<string> shaderVariantInputDirectory;
         public string shaderVariantOutputDirectory;
@@ -75,6 +79,13 @@ namespace WooAsset
                 mode.baseType = typeof(IAssetsMode);
                 mode.Enable();
             }
+            if (buildInBundleSelector.baseType == null)
+            {
+                buildInBundleSelector.baseType = typeof(IBuildInBundleSelector);
+                buildInBundleSelector.Enable();
+            }
+
+
             recordIgnore.RemoveAll(x =>
 
        (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
@@ -98,6 +109,10 @@ namespace WooAsset
         {
             return mode.GetSelectType();
         }
+        public Type GetBuildInBundleSelectorType()
+        {
+            return buildInBundleSelector.GetSelectType();
+        }
 
         public bool SetAssetBuildType(Type type)
         {
@@ -111,6 +126,15 @@ namespace WooAsset
         public bool SetStreamEncryptType(Type type)
         {
             if (encrypt.SetType(type))
+            {
+                Save();
+                return true;
+            }
+            return false;
+        }
+        public bool SetBuildInBundleSelectorType(Type type)
+        {
+            if (buildInBundleSelector.SetType(type))
             {
                 Save();
                 return true;

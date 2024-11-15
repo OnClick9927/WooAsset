@@ -8,7 +8,7 @@
             private readonly string srcPath;
             protected readonly string targetPath;
             private bool _cover;
-            protected string[] files;
+            public string[] files;
             private int step = 0;
             public CopyDirectoryCMD(string srcPath, string targetPath)
             {
@@ -24,12 +24,12 @@
                     if (AssetsEditorTool.ExistsDirectory(targetPath))
                         AssetsEditorTool.DeleteDirectory(targetPath);
                     AssetsEditorTool.CreateDirectory(targetPath);
-                    Done();
                 }
             }
             protected virtual string GetTargetFileName(string src) => AssetsEditorTool.GetFileName(src);
-            protected virtual void Done()
+            public virtual void Execute()
             {
+                if (files == null) return;
                 foreach (var path in files)
                 {
                     string _destPath = AssetsEditorTool.CombinePath(targetPath, GetTargetFileName(path));

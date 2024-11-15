@@ -130,6 +130,12 @@ namespace WooAsset
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.copyToStream)));
+                    if (option.copyToStream)
+                    {
+                        option.buildInBundleSelector.typeIndex = EditorGUILayout.Popup("Build-In Bundle Selector", option.buildInBundleSelector.typeIndex, option.buildInBundleSelector.shortTypes);
+                    }
+
+
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildMode)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.bundleNameType)));
 

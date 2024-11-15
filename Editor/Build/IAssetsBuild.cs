@@ -12,6 +12,8 @@ using System;
 
 namespace WooAsset
 {
+
+
     public abstract class IAssetsBuild
     {
         public virtual bool GetIsRecord(string path) => true;

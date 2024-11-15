@@ -1,6 +1,4 @@
-﻿using UnityEditor.Hardware;
-
-namespace WooAsset
+﻿namespace WooAsset
 {
     partial class AssetsInternal
     {
