@@ -654,7 +654,7 @@ MonoBehaviour:
     _raw: 1
     _enCode: 0
   manifest:
-    version: 2024_11_15_21_44_49
+    version: 2024_11_18_21_17_05
     tags: []
     assets:
     - bundleNameIndex: 0

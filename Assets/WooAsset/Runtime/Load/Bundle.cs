@@ -18,26 +18,30 @@ namespace WooAsset
         private string _path;
         private long _length;
         private BundleLoadType type;
-        private IAssetEncrypt encrypt => loadArgs.encrypt;
-        public override bool async => _async;
-        public BundleLoadArgs loadArgs { get; private set; }
-        public string bundleName => loadArgs.bundleName;
-        public bool raw => loadArgs.data.raw;
-        public long rawLength => loadArgs.data.length;
-        protected CompressType compress => loadArgs.data.compress;
         public long length => _length;
-        private Operation dependence => loadArgs.dependence;
+        public override bool async => _async;
+        public readonly string bundleName;
+        private readonly IAssetEncrypt encrypt;
+        public readonly bool raw;
+        public readonly long rawLength;
+        private readonly CompressType compress;
+        private readonly Operation dependence;
 
 
-
-        private RawObject rawObject { get { return mode.rawObject; } }
+        private RawObject rawObject => mode.rawObject;
 
         public AssetBundle value { get; private set; }
 
         private Mode mode;
         public Bundle(BundleLoadArgs loadArgs)
         {
-            this.loadArgs = loadArgs;
+            bundleName = loadArgs.bundleName;
+            encrypt = loadArgs.encrypt;
+            raw = loadArgs.data.raw;
+            rawLength = loadArgs.data.length;
+            dependence = loadArgs.dependence;
+            compress = loadArgs.data.compress;
+
             _async = loadArgs.async;
             type = AssetsInternal.GetBundleAlwaysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
             _path = AssetsInternal.GetBundleLocalPath(bundleName);
@@ -50,7 +54,20 @@ namespace WooAsset
 
         private abstract class Mode
         {
-            public virtual float progress { get; }
+            public virtual float progress
+            {
+                get
+                {
+                    if (bytes_op == null)
+                        return _progress;
+                    else
+                    {
+                        if (loadOp == null)
+                            return bytes_op.progress * 0.5f;
+                        return loadOp.progress * 0.5f + 0.5f;
+                    }
+                }
+            }
             private Bundle bundle;
             public bool raw => bundle.raw;
             public IAssetEncrypt encrypt => bundle.encrypt;
@@ -61,44 +78,38 @@ namespace WooAsset
             public Operation dependence => bundle.dependence;
             public RawObject rawObject { get; private set; }
 
-            public float bytesProgress
-            {
-                get
-                {
-                    if (loadOp == null)
-                        return bytes_op.progress * 0.5f;
-                    return loadOp.progress * 0.5f + 0.5f;
-                }
-            }
+            protected abstract float _progress { get; }
 
             private Operation bytes_op;
             private AssetBundleCreateRequest loadOp;
-            private AssetBundle assetbundle;
             protected Mode(Bundle bundle)
             {
                 this.bundle = bundle;
             }
 
-            private bool _setResult = false;
-            public void Update()
+            public void Load()
             {
-                OnUpdate();
-                if (!_setResult) return;
-                if (!dependence.isDone) return;
-                bundle.SetResult(assetbundle);
+                var formBytesOperation = BeforeLoad();
+                if (formBytesOperation != null)
+                {
+                    bytes_op = formBytesOperation;
+                    LoadFromBytes(bytes_op);
+                }
+                else
+                    OnLoad();
 
             }
-            protected abstract void OnUpdate();
-            protected void End(AssetBundle value)
+            protected abstract Operation BeforeLoad();
+            protected abstract void OnLoad();
+            protected async void End(AssetBundle value)
             {
-                _setResult = true;
-                assetbundle = value;
+                await dependence;
+                bundle.SetResult(value);
             }
 
-            protected void LoadFromBytes(Operation op)
+            private async void LoadFromBytes(Operation op)
             {
-                if (!op.isDone) return;
-                bytes_op = op;
+                await op;
                 byte[] buffer = null;
                 if (op is ReadFileOperation)
                     buffer = (op as ReadFileOperation).bytes;
@@ -122,9 +133,8 @@ namespace WooAsset
                 {
                     if (async)
                     {
-                        if (loadOp == null)
-                            loadOp = AssetBundle.LoadFromMemoryAsync(buffer);
-                        if (!loadOp.isDone) return;
+                        loadOp = AssetBundle.LoadFromMemoryAsync(buffer);
+                        await loadOp;
                         End(loadOp.assetBundle);
                     }
                     else
@@ -140,48 +150,32 @@ namespace WooAsset
             FileStream filestream;
             private AssetBundleCreateRequest loadOp;
             private bool fromBytes = false;
-            public override float progress
-            {
-                get
-                {
-                    if (fromBytes)
-                        return bytesProgress;
-                    return loadOp.progress;
-                }
-            }
+            protected override float _progress => async ? loadOp.progress : 0.9f;
 
-            public FromFileMode(Bundle bundle) : base(bundle)
+            public FromFileMode(Bundle bundle) : base(bundle) { }
+
+            protected override Operation BeforeLoad()
             {
                 if (raw || (compress != CompressType.LZMA && !(encrypt is NoneAssetStreamEncrypt)))
                 {
-                    fromBytes = true;
-                    readFileOperation = AssetsHelper.ReadFile(path, async);
+                    return AssetsHelper.ReadFile(path, async);
                 }
                 else
                 {
                     filestream = new BundleStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
                     if (async)
-                    {
                         loadOp = AssetBundle.LoadFromStreamAsync(filestream);
-                    }
                     else
                         End(AssetBundle.LoadFromStream(filestream));
+                    return null;
                 }
             }
-
-            protected override void OnUpdate()
+            protected override async void OnLoad()
             {
-                if (fromBytes)
+                if (async)
                 {
-                    LoadFromBytes(readFileOperation);
-                }
-                else
-                {
-                    if (async)
-                    {
-                        if (!loadOp.isDone) return;
-                        End(loadOp.assetBundle);
-                    }
+                    await loadOp;
+                    End(loadOp.assetBundle);
                 }
             }
             public override void UnLoad()
@@ -192,37 +186,39 @@ namespace WooAsset
                     filestream = null;
                 }
             }
+
         }
         private class FromRequestMode : Mode
         {
             private DownLoader downloader;
 
-            private bool fromBytes = false;
 
             public FromRequestMode(Bundle bundle) : base(bundle)
             {
+
+            }
+
+            protected override float _progress => this.downloader.progress;
+            protected override Operation BeforeLoad()
+            {
+                var fromBytes = false;
                 if (raw || (!raw && !(encrypt is NoneAssetStreamEncrypt)))
                     fromBytes = true;
                 this.downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName, fromBytes);
+                return fromBytes ? this.downloader : null;
             }
 
-            public override float progress => fromBytes ? bytesProgress : this.downloader.progress;
-            protected override void OnUpdate()
+            protected override async void OnLoad()
             {
-                if (fromBytes)
-                {
-                    LoadFromBytes(this.downloader);
-                }
-                else
-                {
-                    if (!downloader.isDone) return;
-                    End((downloader as BundleDownLoader).bundle);
-                }
+                await downloader;
+                End((downloader as BundleDownLoader).bundle);
             }
 
             public override void UnLoad()
             {
             }
+
+
         }
 
 
@@ -241,13 +237,13 @@ namespace WooAsset
 #if UNITY_EDITOR
             if (GetType() == typeof(Bundle))
 #endif
-                if (!raw)
+            if (!raw)
+            {
+                if (value == null)
                 {
-                    if (value == null)
-                    {
-                        SetErr($"Can not Load Bundle {bundleName}");
-                    }
+                    SetErr($"Can not Load Bundle {bundleName}");
                 }
+            }
 
 
             if (raw)
@@ -264,9 +260,9 @@ namespace WooAsset
 
         protected override void OnLoad()
         {
-            if (mode == null)
-                mode = type == BundleLoadType.FromRequest ? new FromRequestMode(this) : new FromFileMode(this);
-            mode?.Update();
+            mode = type == BundleLoadType.FromRequest ?
+                new FromRequestMode(this) : new FromFileMode(this);
+            mode?.Load();
         }
 
         protected sealed override void OnUnLoad()

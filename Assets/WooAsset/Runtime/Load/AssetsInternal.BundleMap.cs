@@ -13,12 +13,12 @@ namespace WooAsset
                 var data = GetBundleData(bundleName);
                 BundleLoadArgs args = default;
 
-                var bundle = Find(bundleName);
-                if (bundle != null)
-                    args = bundle.loadArgs;
-                else
-                    args = new BundleLoadArgs(data, async, GetEncrypt(data.enCode)
-                        , new BundleDependenceOperation(data, async));
+                //var bundle = Find(bundleName);
+                //if (bundle != null)
+                //    args = bundle.loadArgs;
+                //else
+                args = new BundleLoadArgs(data, async, GetEncrypt(data.enCode)
+                    , new BundleDependenceOperation(data, async));
                 return LoadAsync(args);
             }
 
