@@ -14,7 +14,7 @@ namespace WooAsset
 
     }
 
-    public abstract class AssetOperation : LoopOperation, IAsset
+    public abstract class AssetOperation : Operation, IAsset
     {
         public abstract bool async { get; }
         public DateTime time { get; private set; }
@@ -31,15 +31,11 @@ namespace WooAsset
         void IAsset.LoadAsync()
         {
             time = DateTime.Now;
-            Update();
+            OnLoad();
         }
         void IAsset.UnLoad() => OnUnLoad();
-        protected sealed override bool NeedUpdate() => base.NeedUpdate();
         protected abstract void OnUnLoad();
         protected abstract void OnLoad();
-
-        protected sealed override void AddToLoop() => base.AddToLoop();
-        protected sealed override void OnUpdate() => OnLoad();
 
     }
 }

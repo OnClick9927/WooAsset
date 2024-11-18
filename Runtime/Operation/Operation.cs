@@ -24,7 +24,6 @@ namespace WooAsset
         {
             _isDone = true;
             completed?.Invoke();
-            completed = null;
         }
         protected void SetErr(string err)
         {
@@ -132,5 +131,21 @@ namespace WooAsset
         }
     }
 
+    public class WaitBusyOperation : YieldOperation
+    {
+        protected async override void EditorWait()
+        {
+#if UNITY_EDITOR
+            while (AssetsLoop.isBusy)
+                await System.Threading.Tasks.Task.Delay(10);
+            InvokeComplete();
+#endif
+        }
+        protected override void OnUpdate()
+        {
+            if (!AssetsLoop.isBusy)
+                InvokeComplete();
+        }
+    }
 
 }
