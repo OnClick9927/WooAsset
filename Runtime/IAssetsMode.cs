@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
-using System.IO;
 
 namespace WooAsset
 {
@@ -100,13 +99,13 @@ namespace WooAsset
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
                     , version, fuzzySearch, getPkgs);
             if (manifestOp.isDone)
-                ManifestOp_completed();
+                ManifestOp_completed(manifestOp);
             else
                 manifestOp.completed += ManifestOp_completed;
             return manifestOp;
         }
 
-        private void ManifestOp_completed()
+        private void ManifestOp_completed(Operation operation)
         {
             SetVersion(manifestOp.GetVersion());
         }
