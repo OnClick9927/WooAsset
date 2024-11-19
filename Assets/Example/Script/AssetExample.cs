@@ -6,6 +6,7 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,7 +24,11 @@ namespace WooAsset
         private async void Start()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            await Assets.CopyToSandBox();
+            Debug.LogError("-----------------");
+
+            //await Assets.CopyToSandBox();
+            Debug.LogError("-----------------");
+
             var op = await Assets.LoadRemoteVersions();
             if (op.Versions != null)
             {
@@ -31,12 +36,19 @@ namespace WooAsset
                 var down = await Assets.DownloadVersionData(version);
                 var versionData = down.GetVersion();
                 var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
+                List<DownLoader> downloader = new List<DownLoader>();
+
+
 
                 for (int i = 0; i < compare.add.Count; i++)
-                    await Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName);
+                    downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName));
                 for (int i = 0; i < compare.change.Count; i++)
-                    await Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName);
+                    downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName));
+                GroupOperation<DownLoader> op2 = new GroupOperation<DownLoader>();
+                op2.Done(downloader);
+                await op2;
             }
+            Debug.LogError("-----------------");
 
 
             await Assets.InitAsync();

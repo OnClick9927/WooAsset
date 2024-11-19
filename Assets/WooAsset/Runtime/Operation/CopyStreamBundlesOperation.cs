@@ -1,51 +1,59 @@
-﻿namespace WooAsset
+﻿using System.Collections.Generic;
+
+namespace WooAsset
 {
-    class CopyStreamBundlesOperation : Operation
+    class CopyStreamBundlesOperation : GroupOperation<DownLoader>
     {
         private readonly string srcPath;
         private readonly string destPath;
- 
-        private float _progress;
-        public override float progress
-        {
-            get
-            {
-                if (isDone) return 1;
-                return _progress;
-            }
-        }
+        string destlistPath, srclistPath;
+        StreamBundlesData streamBundlesData;
         public CopyStreamBundlesOperation(string srcPath, string destPath)
         {
             this.srcPath = srcPath;
             this.destPath = destPath;
+            destlistPath = AssetsHelper.CombinePath(destPath, StreamBundlesData.fileName);
+            srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundlesData.fileName);
             Copy();
+        }
+
+        protected async override void BeforeInvokeComplete()
+        {
+            if (streamBundlesData != null)
+            {
+                var writer = AssetsHelper.WriteBufferObject(streamBundlesData);
+                await AssetsHelper.WriteFile(writer.buffer, destlistPath, 0, writer.length);
+            }
         }
         protected virtual async void Copy()
         {
-            string destlistPath = AssetsHelper.CombinePath(destPath, StreamBundlesData.fileName);
-            string srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundlesData.fileName);
             if (AssetsInternal.NeedCopyStreamBundles() && AssetsHelper.ExistsFile(srclistPath) && !AssetsHelper.ExistsFile(destlistPath))
             {
-                DownLoader downloader = AssetsInternal.DownloadBytes(AssetsInternal.GetStreamingFileUrl(srclistPath));
-                await downloader;
-                _progress = 0.2f;
+                DownLoader downloader = await AssetsInternal.DownloadBytes(AssetsInternal.GetStreamingFileUrl(srclistPath));
                 if (!downloader.isErr)
                 {
-                    StreamBundlesData list = AssetsHelper.ReadBufferObject<StreamBundlesData>(downloader.data);
-                    float seg = 0.8f / list.fileNames.Length;
-                    foreach (var fileName in list.fileNames)
+                    streamBundlesData = AssetsHelper.ReadBufferObject<StreamBundlesData>(downloader.data);
+                    List<DownLoader> ds = new List<DownLoader>();
+                    foreach (var fileName in streamBundlesData.fileNames)
                     {
-                        _progress += seg;
                         string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(StreamBundlesData.fileExt, "");
                         if (AssetsHelper.ExistsFile(dest)) continue;
                         string src = AssetsHelper.CombinePath(srcPath, fileName);
-                        await AssetsInternal.DownLoadFile(AssetsInternal.GetStreamingFileUrl(src), dest);
+                        ds.Add(AssetsInternal.DownLoadFile(AssetsInternal.GetStreamingFileUrl(src), dest));
                     }
-                    var writer = AssetsHelper.WriteBufferObject(list);
-                    await AssetsHelper.WriteFile(writer.buffer, destlistPath, 0, writer.length);
+
+                    base.Done(ds);
+
+                }
+                else
+                {
+                    base.Done(null);
                 }
             }
-            InvokeComplete();
+            else
+            {
+                base.Done(null);
+            }
 
         }
     }

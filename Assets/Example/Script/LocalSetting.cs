@@ -34,7 +34,7 @@ namespace WooAsset
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {
-            return true;
+            return false;
         }
         protected override string GetBaseUrl()
         {

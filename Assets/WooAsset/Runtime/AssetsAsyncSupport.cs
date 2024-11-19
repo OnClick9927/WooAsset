@@ -74,7 +74,7 @@ namespace WooAsset
                 this.task.completed += Task_completed;
             }
 
-            private void Task_completed()
+            private void Task_completed(Operation operation)
             {
                 while (calls.Count != 0)
                 {

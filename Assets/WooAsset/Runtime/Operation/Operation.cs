@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 namespace WooAsset
 {
     public abstract class Operation : IEnumerator
@@ -18,12 +19,12 @@ namespace WooAsset
         public string error { get { return _err; } }
         public bool isErr { get { return !string.IsNullOrEmpty(error); } }
 
-        public event Action completed;
+        public event Action<Operation> completed;
 
         protected void InvokeComplete()
         {
             _isDone = true;
-            completed?.Invoke();
+            completed?.Invoke(this);
         }
         protected void SetErr(string err)
         {
@@ -58,31 +59,51 @@ namespace WooAsset
         }
     }
 
-    public class GroupOperation : Operation
+    public class GroupOperation<T> : Operation where T : Operation
     {
-        private readonly Operation[] ops;
-        private int total;
-        private int step;
-        public override float progress => isDone ? 1 : step / (float)total;
+        public override float progress => isDone ? 1 : (float)_index / _count;
+        private int _count;
+        private int _index;
+        public int count => _count;
 
-        public GroupOperation(Operation[] ops)
+        public void Done(List<T> ops)
         {
-            this.ops = ops;
-            if (this.ops == null || this.ops.Length == 0)
-                InvokeComplete();
-            else
-                Done();
-        }
-
-        private async void Done()
-        {
-            total = this.ops.Length;
-            for (int i = 0; i < total; i++)
+            if (ops != null && ops.Count != 0)
             {
-                await this.ops[i];
-                step = i;
+                _count = ops.Count;
+                for (int i = 0; i < ops.Count; i++)
+                {
+                    var bundle = ops[i];
+                    if (bundle.isDone)
+                        _index++;
+                    else
+                    {
+                        bundle.completed += Op_completed;
+                    }
+                }
             }
-            InvokeComplete();
+            CheckComplete();
+
+        }
+        protected virtual void BeforeInvokeComplete()
+        {
+
+        }
+        private void CheckComplete()
+        {
+            if (_index >= _count)
+            {
+                BeforeInvokeComplete();
+                InvokeComplete();
+            }
+        }
+        private void Op_completed(Operation operation)
+        {
+            _index++;
+            operation.completed -= Op_completed;
+            if (operation.isErr)
+                SetErr(operation.error);
+            CheckComplete();
         }
     }
 
@@ -121,7 +142,7 @@ namespace WooAsset
 #if UNITY_EDITOR
             EditorWait();
 #else
-                      base.AddToLoop();
+            base.AddToLoop();
 
 #endif
         }
