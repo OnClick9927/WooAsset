@@ -40,7 +40,7 @@ namespace WooAsset
             }
         }
 
-        protected AssetTaskRunner(List<AssetTask> tasks)
+        internal AssetTaskRunner(List<AssetTask> tasks)
         {
             this.tasks = tasks;
         }
@@ -72,7 +72,7 @@ namespace WooAsset
         {
             var Params = new AssetTaskParams(TaskPipelineType.EditorSimulate) { fuzzySearch = fuzzySearch };
 
-            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
+            AssetTask task = Execute(stream_common, Params);
             return task;
         }
 
@@ -81,7 +81,7 @@ namespace WooAsset
         public static AssetTask PreviewAssets()
         {
             var Params = new AssetTaskParams(TaskPipelineType.PreviewAssets);
-            AssetTask task = Execute(new AssetTaskRunner(collectAssets), Params);
+            AssetTask task = Execute(collectAssets, Params);
             return task;
         }
 
@@ -89,7 +89,7 @@ namespace WooAsset
         public static AssetTask PreviewAllAssets()
         {
             var Params = new AssetTaskParams(TaskPipelineType.PreviewAllAssets);
-            AssetTask task = Execute(new AssetTaskRunner(collectAssets), Params);
+            AssetTask task = Execute(collectAssets, Params);
             return task;
         }
 
@@ -97,14 +97,14 @@ namespace WooAsset
         public static AssetTask Build()
         {
             var Params = new AssetTaskParams(TaskPipelineType.BuildBundle);
-            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
+            AssetTask task = Execute(stream_common, Params);
             return task;
         }
         [MenuItem(TaskPipelineMenu.DryBuild)]
         public static AssetTask DryBuild()
         {
             var Params = new AssetTaskParams(TaskPipelineType.DryBuild);
-            AssetTask task = Execute(new AssetTaskRunner(stream_common), Params);
+            AssetTask task = Execute(stream_common, Params);
             return task;
         }
 

@@ -1,15 +1,16 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace WooAsset
 {
     public abstract class AssetTask : Operation
     {
         public override float progress => 1;
-        protected static AssetTask Execute(AssetTask task, AssetTaskParams param)
+        public static AssetTask Execute(List<AssetTask> tasks, AssetTaskParams param)
         {
-            return task.Execute(new AssetTaskContext(param));
+            return new AssetTaskRunner(tasks).Execute(new AssetTaskContext(param));
         }
-        protected static AssetTask Execute(AssetTask task, AssetTaskContext context)
+        public static AssetTask Execute(AssetTask task, AssetTaskContext context)
         {
             return task.Execute(context);
         }
