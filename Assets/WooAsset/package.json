@@ -1,7 +1,7 @@
 {
   "name": "com.woo.wooasset",
   "displayName": "WooAsset",
-  "version": "1.8.25",
+  "version": "1.8.26",
   "unity": "2019.4",
   "description": "WooAsset",
   "type": "library",
@@ -10,5 +10,4 @@
     "email": "2809399366@qq.com",
     "url": "https://github.com/OnClick9927"
   }
-
 }

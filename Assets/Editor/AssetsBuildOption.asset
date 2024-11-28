@@ -15,8 +15,8 @@ MonoBehaviour:
   version: 0.0.1
   copyToStream: 1
   buildMode: 0
-  typeTreeOption: 1
-  bundleNameType: 1
+  typeTreeOption: 0
+  bundleNameType: 2
   compress: 1
   MaxCacheVersionCount: 8
   cleanHistory: 1
@@ -29,19 +29,8 @@ MonoBehaviour:
     description: 
     tags: []
     paths:
-    - Assets/Example/New Folder
-    - Assets/Example/px
-    - Assets/Example/Scene
-    builds:
-    - selectors:
-      - typeIndex: 1
-        type: 0
-        assetType: 3
-        path: 
-        tag: test
-        userData: 
-      packType: 1
-      size: 0
+    - Assets/Example
+    builds: []
   recordIgnore: []
   build:
     _select: WooAsset.DefaultAssetsBuild
