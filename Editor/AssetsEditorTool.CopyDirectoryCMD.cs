@@ -5,14 +5,10 @@
 
         internal class CopyDirectoryCMD
         {
-            private readonly string srcPath;
             protected readonly string targetPath;
-            private bool _cover;
             public string[] files;
-            private int step = 0;
             public CopyDirectoryCMD(string srcPath, string targetPath)
             {
-                this.srcPath = srcPath;
                 this.targetPath = targetPath;
                 if (!AssetsEditorTool.ExistsDirectory(srcPath))
                 {
@@ -34,7 +30,6 @@
                 {
                     string _destPath = AssetsEditorTool.CombinePath(targetPath, GetTargetFileName(path));
                     AssetsEditorTool.CopyFile(path, _destPath);
-                    step++;
                 }
             }
         }

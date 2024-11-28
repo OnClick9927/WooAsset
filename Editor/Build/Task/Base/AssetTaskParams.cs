@@ -19,6 +19,7 @@ namespace WooAsset
         public IAssetsBuild assetBuild;
         public IAssetEncrypt encrypt;
         public IBuildInBundleSelector buildInBundleSelector;
+        public IBuildPipeLine buildPipe;
         public string version;
 
         public List<TagAssets> tags;
@@ -64,41 +65,15 @@ namespace WooAsset
             copyToStream = option.copyToStream;
             encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetEncrypt;
             assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
+            buildPipe = Activator.CreateInstance(option.GetBuildPipelineType()) as IBuildPipeLine;
+
             buildInBundleSelector = Activator.CreateInstance(option.GetBuildInBundleSelectorType()) as IBuildInBundleSelector;
             version = option.version;
             tags = option.tags;
             recordIgnore = option.recordIgnore;
         }
 
-        public BuildAssetBundleOptions GetBundleOption()
-        {
-            BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
-            opt |= BuildAssetBundleOptions.StrictMode;
-            opt |= BuildAssetBundleOptions.DisableLoadAssetByFileName;
-            opt |= BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension;
-
-
-            if (typeTreeOption == TypeTreeOption.DisableWriteTypeTree)
-                opt |= BuildAssetBundleOptions.DisableWriteTypeTree;
-            if (typeTreeOption == TypeTreeOption.IgnoreTypeTreeChanges)
-                opt |= BuildAssetBundleOptions.IgnoreTypeTreeChanges;
-
-            if (buildMode == BuildMode.ForceRebuild)
-                opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle;
-            opt |= BuildAssetBundleOptions.DisableLoadAssetByFileName;
-            opt |= BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension;
-            if (compress == CompressType.LZ4)
-                opt |= BuildAssetBundleOptions.ChunkBasedCompression;
-            if (compress == CompressType.Uncompressed)
-                opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
-
-            if (Pipeline == TaskPipelineType.DryBuild)
-                opt = BuildAssetBundleOptions.DryRunBuild;
-            if (bundleNameType == BundleNameType.NameWithHash || bundleNameType == BundleNameType.Hash)
-                opt |= BuildAssetBundleOptions.AppendHashToAssetBundleName;
-
-            return opt;
-        }
+        public BuildAssetBundleOptions GetBundleOption(out string err) => buildPipe.GetBundleOption(this, out err);
 
         public string CheckLeagal()
         {

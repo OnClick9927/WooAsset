@@ -19,7 +19,13 @@
                 //var bytes = AssetsEditorTool.ReadFileSync(versionPath);
                 context.historyVersions = AssetsEditorTool.ReadJson<VersionCollectionData>(versionPath);
             }
-            context.BuildOption = context.Params.GetBundleOption();
+            context.BuildOption = context.Params.GetBundleOption(out err);
+            if (!string.IsNullOrEmpty(err))
+            {
+                SetErr(err);
+                InvokeComplete();
+                return;
+            }
             context.version = context.assetBuild.GetVersion(context.Params.version, context);
 
 

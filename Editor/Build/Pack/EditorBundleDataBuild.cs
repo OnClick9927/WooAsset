@@ -10,8 +10,8 @@ namespace WooAsset
     [System.Serializable]
     public class EditorBundleDataBuild
     {
-        private IAssetSelector selector;
         private static string[] types;
+        private static Type[] realTypes;
         private static string[] _shortTypes;
         public static string[] shortTypes
         {
@@ -22,8 +22,7 @@ namespace WooAsset
                 return _shortTypes;
             }
         }
-        public AssetSelectorParam param = new AssetSelectorParam();
-        public int typeIndex;
+        public List<AssetSelectorParam> selectors;
         public static System.Type baseType = typeof(IAssetSelector);
         public enum PackType
         {
@@ -39,7 +38,7 @@ namespace WooAsset
             if (_shortTypes == null)
                 SearchTypes();
             var type_str = types[typeIndex];
-            System.Type type = TypeSelect.GetSubTypesInAssemblies(baseType)
+            System.Type type = realTypes
                .Where(type => !type.IsAbstract)
                .ToList()
                .Find(x => x.FullName == type_str);
@@ -66,25 +65,52 @@ namespace WooAsset
                 }
                 return 1;
             });
+            realTypes = list.ToArray();
             types = list.Select(type => type.FullName).ToArray();
             _shortTypes = list.Select(type => type.Name).ToArray();
         }
 
         public void Build(List<EditorAssetData> assets, List<EditorBundleData> result)
         {
-            selector = Activator.CreateInstance(GetSelectType(this.typeIndex)) as IAssetSelector;
-            var s = selector.Select(assets, param);
-            assets.RemoveAll(x => s.Contains(x));
+            IEnumerable<EditorAssetData> selected = new List<EditorAssetData>();
+
+            var _result = this.selectors.Select(param =>
+                  {
+                      return new { param = param, selector = Activator.CreateInstance(GetSelectType(param.typeIndex)) as IAssetSelector };
+                  }).Select(x =>
+                  {
+                      var selects = x.selector.Select(assets, x.param);
+                      return new { x.param.type, selects };
+                  });
+
+
+            var union = _result.Where(x => x.type == AssetSelectorParam.SelectType.Union).SelectMany(x => x.selects);
+            if (union.Count() == 0)
+                union = new List<EditorAssetData>(assets);
+            var intersect = _result.Where(x => x.type == AssetSelectorParam.SelectType.Intersect).Select(x => x.selects);
+            selected = selected.Union(union);
+
+
+
+            foreach (var item in intersect)
+                selected = selected.Intersect(item);
+
+
+
+
+
+            assets.RemoveAll(x => selected.Contains(x));
+            var list = selected.Distinct().ToList();
             switch (packType)
             {
                 case PackType.One2One:
-                    EditorBundleTool.One2One(s, result); break;
+                    EditorBundleTool.One2One(list, result); break;
                 case PackType.N2One:
-                    EditorBundleTool.N2One(s, result); break;
+                    EditorBundleTool.N2One(list, result); break;
                 case PackType.N2MBySize:
-                    EditorBundleTool.N2MBySize(s, result, size); break;
+                    EditorBundleTool.N2MBySize(list, result, size); break;
                 case PackType.N2MBySizeAndDir:
-                    EditorBundleTool.N2MBySize(s, result, size); break;
+                    EditorBundleTool.N2MBySize(list, result, size); break;
             }
         }
     }

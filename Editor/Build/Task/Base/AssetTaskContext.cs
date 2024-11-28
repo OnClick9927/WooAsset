@@ -32,6 +32,8 @@ namespace WooAsset
         public List<AssetTask> pipelineStartTasks => Params.pipelineStartTasks;
         public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
         public IBuildInBundleSelector buildInBundleSelector => Params.buildInBundleSelector;
+        public IBuildPipeLine buildPipe => Params.buildPipe;
+
 
         public bool fuzzySearch => Params.fuzzySearch;
 
