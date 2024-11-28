@@ -105,7 +105,7 @@ namespace WooAsset
                         }
                     }
                 }
-                if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                if (AssetsInternal.GetSaveBytesWhenPlaying())
                     await AssetsHelper.WriteBufferObject(remote_main, AssetsInternal.GetBundleLocalPath(fileName));
 
             }
@@ -118,7 +118,7 @@ namespace WooAsset
                 for (int j = 0; j < delete.Count; j++)
                     this.delete.Add(delete[j].name);
             }
-            if (AssetsInternal.GetSaveBundlesWhenPlaying())
+            if (AssetsInternal.GetSaveBytesWhenPlaying())
                 await AssetsHelper.WriteBufferObject(version,
                   AssetsInternal.GetBundleLocalPath(AssetsHelper.VersionDataName)
                   );

@@ -11,8 +11,8 @@
         public virtual string GetUrlByBundleName(string buildTarget, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{bundleName}";
         public virtual string GetUrlByBundleName(string buildTarget, string version, string bundleName) => $"{GetBaseUrl()}/{buildTarget}/{version}/{bundleName}";
 
-
-        public virtual bool GetSaveBundlesWhenPlaying() => true;
+        public virtual bool GetCachesDownloadedBundles() => false;
+        public virtual bool GetSaveBytesWhenPlaying() => true;
         public virtual bool GetBundleAlwaysFromWebRequest() => true;
         public virtual int GetWebRequestTimeout() => 30;
         public virtual bool GetFuzzySearch() => false;

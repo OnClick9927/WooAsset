@@ -104,17 +104,17 @@ namespace WooAsset
             if (life != null)
                 AddAssetLife(life);
         }
-        public static DownLoader DownLoadBundle(string version, string bundleName, bool raw)
+
+        public static DownLoader DownLoadRawBundle(string version, string bundleName) => DownloadBytes(GetUrlFromBundleName(version, bundleName));
+        public static DownLoader DownLoadBundle(string version, string bundleName, uint crc, Hash128 hash)
         {
-            if (raw)
-                return DownloadBytes(GetUrlFromBundleName(version, bundleName));
-            return new BundleDownLoader(GetUrlFromBundleName(version, bundleName), GetWebRequestTimeout(), GetWebRequestRetryCount());
+            return new BundleDownLoader(GetUrlFromBundleName(version, bundleName), AssetsInternal.GetCachesDownloadedBundles(), crc, hash, GetWebRequestTimeout(), GetWebRequestRetryCount());
         }
 
         public static DownLoader DownLoadBundleFile(string version, string bundleName) =>
             DownLoadFile(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName));
 
-        public static DownLoader DownloadVersion(string version, string bundleName) => DownLoadBundle(version, bundleName, true);
+        public static DownLoader DownloadVersion(string version, string bundleName) => DownLoadRawBundle(version, bundleName);
         public static DownLoader DownloadRemoteVersion() =>
             DownloadBytes(GetUrlFromBundleName(AssetsHelper.VersionCollectionName));
         public static DownLoader DownLoadFile(string url, string path) => new FileDownLoader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
@@ -128,7 +128,9 @@ namespace WooAsset
 
 
         private static IAssetEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
-        public static bool GetSaveBundlesWhenPlaying() => setting.GetSaveBundlesWhenPlaying() && !GetBundleAlwaysFromWebRequest();
+        public static bool GetSaveBytesWhenPlaying() => setting.GetSaveBytesWhenPlaying() && !GetBundleAlwaysFromWebRequest();
+        public static bool GetCachesDownloadedBundles() => setting.GetCachesDownloadedBundles();
+
         public static bool GetBundleAlwaysFromWebRequest() => setting.GetBundleAlwaysFromWebRequest();
 
         public static bool CheckVersionByVersionCollection() => setting.CheckVersionByVersionCollection();

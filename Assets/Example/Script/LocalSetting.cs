@@ -32,7 +32,15 @@ namespace WooAsset
         {
             return true;
         }
+        public override bool GetSaveBytesWhenPlaying()
+        {
+            return true;
+        }
         public override bool GetBundleAlwaysFromWebRequest()
+        {
+            return true;
+        }
+        public override bool GetCachesDownloadedBundles()
         {
             return true;
         }

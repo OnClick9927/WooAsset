@@ -13,6 +13,8 @@ namespace WooAsset
         public int enCode;
         public string hash;
         public long length;
+        public string bundleHash;
+        public uint bundleCrc;
 
         public void AddAsset(string path)
         {
@@ -32,6 +34,8 @@ namespace WooAsset
             bundleName = reader.ReadUTF8();
             hash = reader.ReadUTF8();
             compress = (CompressType)reader.ReadByte();
+            bundleHash = reader.ReadUTF8();
+            bundleCrc = reader.ReadUInt32();
         }
 
         void IBufferObject.WriteData(BufferWriter writer)
@@ -44,6 +48,8 @@ namespace WooAsset
             writer.WriteUTF8(bundleName);
             writer.WriteUTF8(hash);
             writer.WriteByte((byte)compress);
+            writer.WriteUTF8(bundleHash);
+            writer.WriteUInt32(bundleCrc);
         }
 
         [System.NonSerialized] public List<string> assets;

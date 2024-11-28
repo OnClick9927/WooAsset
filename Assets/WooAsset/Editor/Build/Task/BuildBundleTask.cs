@@ -8,7 +8,7 @@ namespace WooAsset
 
         public class BuildTask : AssetTask
         {
-            private static void UpdateHash(List<EditorBundleData> builds, IBuildPipeLine _main, BundleNameType nameType)
+            private static void UpdateHash(List<EditorBundleData> builds, IBuildPipeLine _main, BundleNameType nameType, string bundledir)
             {
                 var bundles = _main.GetAllAssetBundles(nameType);
                 for (int i = 0; i < builds.Count; i++)
@@ -16,6 +16,8 @@ namespace WooAsset
                     var build = builds[i];
                     var find = bundles.FirstOrDefault(a => a.StartsWith(build.hash));
                     build.SyncRealHash(find);
+                    build.bundleHash = _main.GetBundleHash(bundledir, build.hash, nameType);
+                    build.bundleCrc = _main.GetBundleCrc(bundledir, build.hash, nameType);
                 }
 
 
@@ -68,7 +70,7 @@ namespace WooAsset
                             return;
                         }
 
-                        UpdateHash(normal, context.buildPipe, context.bundleNameType);
+                        UpdateHash(normal, context.buildPipe, context.bundleNameType, context.historyPath);
                     }
 
                     if (context.bundleNameType == BundleNameType.NameWithHash)
@@ -150,6 +152,7 @@ namespace WooAsset
                             var data = FileData.CreateByFile(path);
                             bundleData.length = data.length;
                             bundleData.hash = data.hash;
+
                         }
                         else
                         {

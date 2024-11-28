@@ -29,25 +29,25 @@ namespace WooAsset
             //await Assets.CopyToSandBox();
             Debug.LogError("-----------------");
 
-            var op = await Assets.LoadRemoteVersions();
-            if (op.Versions != null)
-            {
-                var version = op.Versions.NewestVersion();
-                var down = await Assets.DownloadVersionData(version);
-                var versionData = down.GetVersion();
-                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
-                List<DownLoader> downloader = new List<DownLoader>();
+            //var op = await Assets.LoadRemoteVersions();
+            //if (op.Versions != null)
+            //{
+            //    var version = op.Versions.NewestVersion();
+            //    var down = await Assets.DownloadVersionData(version);
+            //    var versionData = down.GetVersion();
+            //    var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
+            //    List<DownLoader> downloader = new List<DownLoader>();
 
 
 
-                for (int i = 0; i < compare.add.Count; i++)
-                    downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName));
-                for (int i = 0; i < compare.change.Count; i++)
-                    downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName));
-                GroupOperation<DownLoader> op2 = new GroupOperation<DownLoader>();
-                op2.Done(downloader);
-                await op2;
-            }
+            //    for (int i = 0; i < compare.add.Count; i++)
+            //        downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName));
+            //    for (int i = 0; i < compare.change.Count; i++)
+            //        downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName));
+            //    GroupOperation<DownLoader> op2 = new GroupOperation<DownLoader>();
+            //    op2.Done(downloader);
+            //    await op2;
+            //}
             Debug.LogError("-----------------");
 
 

@@ -61,7 +61,7 @@ namespace WooAsset
                         break;
                     }
                     v = AssetsHelper.ReadBufferObject<ManifestData>(downloader.data);
-                    if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                    if (AssetsInternal.GetSaveBytesWhenPlaying())
                         await AssetsHelper.WriteBufferObject(v, localPath);
                 }
                 else
@@ -85,7 +85,7 @@ namespace WooAsset
             else
             {
                 var version = _op.GetVersion();
-                if (AssetsInternal.GetSaveBundlesWhenPlaying())
+                if (AssetsInternal.GetSaveBytesWhenPlaying())
                     await AssetsHelper.WriteBufferObject(version, localVersionPath);
                 DoPkgs(version, AlwaysFromWebRequest);
             }

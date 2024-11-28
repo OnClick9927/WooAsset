@@ -107,17 +107,37 @@ namespace WooAsset
     }
     public class BundleDownLoader : DownLoader
     {
-        public BundleDownLoader(string url, int timeout, int retry) : base(url, timeout, retry) { }
+        private Hash128 hash;
+        private uint crc;
+        private bool cache;
+        public BundleDownLoader(string url, bool cache, uint crc, Hash128 hash, int timeout, int retry) : base(url, timeout, retry)
+        {
+            this.hash = hash;
+            this.crc = crc;
+            this.cache = cache;
+        }
 
 
         public AssetBundle bundle { get; private set; }
 
         protected override UnityWebRequest GetRequest()
         {
-            return new UnityWebRequest(url, "Get", new DownloadHandlerAssetBundle(url, 0), null);
+            DownloadHandlerAssetBundle download;
+            if (cache)
+                download = new DownloadHandlerAssetBundle(url, hash, crc);
+            else
+                download = new DownloadHandlerAssetBundle(url, 0);
+
+#if UNITY_2020_3_OR_NEWER
+            download.autoLoadAssetBundle = false;
+#endif
+
+
+            return new UnityWebRequest(url, "Get", download, null); ;
         }
         protected override void OnRequestEnd(UnityWebRequest req)
         {
+
             this.bundle = (req.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
         }
     }
