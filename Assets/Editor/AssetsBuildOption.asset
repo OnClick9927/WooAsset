@@ -30,7 +30,16 @@ MonoBehaviour:
     tags: []
     paths:
     - Assets/Example
-    builds: []
+    builds:
+    - selectors:
+      - typeIndex: 0
+        type: 0
+        assetType: 0
+        path: 
+        tag: 
+        userData: 
+      packType: 0
+      size: 0
   recordIgnore: []
   build:
     _select: WooAsset.DefaultAssetsBuild
