@@ -30,15 +30,9 @@ namespace WooAsset
             }
         }
 
-        public List<string> GetAllAssetBundles(BundleNameType nameType)
-        {
-            return _main.GetAllAssetBundles().ToList();
-        }
+        public List<string> GetAllAssetBundles(BundleNameType nameType) => _main.GetAllAssetBundles().ToList();
 
-        public List<string> GetAllDependencies(string assetBundleName, BundleNameType nameType)
-        {
-            return _main.GetAllDependencies(assetBundleName).ToList();
-        }
+        public List<string> GetAllDependencies(string assetBundleName, BundleNameType nameType) => _main.GetAllDependencies(assetBundleName).ToList();
 
         public BuildAssetBundleOptions GetBundleOption(AssetTaskParams param, out string err)
         {
@@ -71,5 +65,4 @@ namespace WooAsset
             return opt;
         }
     }
-
 }
