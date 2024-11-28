@@ -2,17 +2,48 @@
 using System.Linq;
 using System;
 using UnityEditor;
+using UnityEngine;
 
 namespace WooAsset
 {
     [System.Serializable]
     public class TypeSelect
     {
-        public string[] types;
-        public Type[] realTypes;
-        public string[] shortTypes;
-        public int typeIndex;
-        public Type baseType;
+        [NonSerialized] public string[] types;
+        [NonSerialized] public Type[] realTypes;
+        [NonSerialized] public string[] shortTypes;
+        [NonSerialized] public Type baseType;
+
+        [UnityEngine.SerializeField] private string _select;
+        public int typeIndex
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_select))
+                {
+                    try
+                    {
+                        if (types != null && types.Length > 0)
+                            _select = types[0];
+                        return 0;
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                }
+                return Array.IndexOf(types, _select);
+            }
+            set
+            {
+
+                var _index = Mathf.Clamp(value, 0, types.Length);
+                if (types != null && types.Length > 0)
+                    _select = types[_index];
+            }
+        }
         public static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
         {
             if (self.IsInterface)
@@ -36,11 +67,10 @@ namespace WooAsset
         }
         public Type GetSelectType()
         {
-            var type_str = types[typeIndex];
             Type type = realTypes
                .Where(type => !type.IsAbstract)
                .ToList()
-               .Find(x => x.FullName == type_str);
+               .Find(x => x.FullName == _select);
 
             return type;
         }
@@ -53,7 +83,7 @@ namespace WooAsset
             {
                 if (types[i] == name)
                 {
-                    typeIndex = i;
+                    _select = name;
                     return true;
                 }
             }

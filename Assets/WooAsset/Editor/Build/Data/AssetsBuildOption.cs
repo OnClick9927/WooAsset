@@ -33,6 +33,7 @@ namespace WooAsset
         public TypeSelect mode = new TypeSelect();
         public TypeSelect encrypt = new TypeSelect();
         public TypeSelect buildInBundleSelector = new TypeSelect();
+        public TypeSelect buildPipeline = new TypeSelect();
 
 
 
@@ -84,7 +85,11 @@ namespace WooAsset
                 buildInBundleSelector.baseType = typeof(IBuildInBundleSelector);
                 buildInBundleSelector.Enable();
             }
-
+            if (buildPipeline.baseType == null)
+            {
+                buildPipeline.baseType = typeof(IBuildPipeLine);
+                buildPipeline.Enable();
+            }
 
             recordIgnore.RemoveAll(x =>
 
@@ -97,22 +102,11 @@ namespace WooAsset
 
 
 
-        public Type GetAssetBuildType()
-        {
-            return build.GetSelectType();
-        }
-        public Type GetStreamEncryptType()
-        {
-            return encrypt.GetSelectType();
-        }
-        public Type GetAssetModeType()
-        {
-            return mode.GetSelectType();
-        }
-        public Type GetBuildInBundleSelectorType()
-        {
-            return buildInBundleSelector.GetSelectType();
-        }
+        public Type GetAssetBuildType() => build.GetSelectType();
+        public Type GetStreamEncryptType() => encrypt.GetSelectType();
+        public Type GetAssetModeType() => mode.GetSelectType();
+        public Type GetBuildInBundleSelectorType() => buildInBundleSelector.GetSelectType();
+        public Type GetBuildPipelineType() => buildPipeline.GetSelectType();
 
         public bool SetAssetBuildType(Type type)
         {
@@ -141,6 +135,16 @@ namespace WooAsset
             }
             return false;
         }
+        public bool SetBuildPipelineType(Type type)
+        {
+            if (buildPipeline.SetType(type))
+            {
+                Save();
+                return true;
+            }
+            return false;
+        }
+
 
         public void AddToRecordIgnore(string path, FileType type)
         {

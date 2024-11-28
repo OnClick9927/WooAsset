@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
-using UnityEngine;
 
 namespace WooAsset
 {
@@ -10,9 +8,9 @@ namespace WooAsset
 
         public class BuildTask : AssetTask
         {
-            private static void UpdateHash(List<EditorBundleData> builds, AssetBundleManifest _main)
+            private static void UpdateHash(List<EditorBundleData> builds, IBuildPipeLine _main, BundleNameType nameType)
             {
-                var bundles = _main.GetAllAssetBundles().ToList();
+                var bundles = _main.GetAllAssetBundles(nameType);
                 for (int i = 0; i < builds.Count; i++)
                 {
                     var build = builds[i];
@@ -22,7 +20,7 @@ namespace WooAsset
 
 
                 foreach (EditorBundleData build in builds)
-                    build.SetDependence(_main.GetAllDependencies(build.hash).ToList());
+                    build.SetDependence(_main.GetAllDependencies(build.hash, nameType));
                 foreach (EditorBundleData build in builds)
                     build.FindUsage(builds);
             }
@@ -61,9 +59,16 @@ namespace WooAsset
                     if (normal.Count != 0)
                     {
                         var assetbuilds = normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray();
-                        AssetBundleManifest _main = BuildPipeline.BuildAssetBundles(context.historyPath,
-                            assetbuilds, context.BuildOption, context.buildTarget);
-                        UpdateHash(normal, _main);
+
+                        bool succ = context.buildPipe.BuildAssetBundles(context.historyPath,
+                                assetbuilds, context.BuildOption, context.buildTarget);
+                        if (!succ)
+                        {
+                            InvokeComplete();
+                            return;
+                        }
+
+                        UpdateHash(normal, context.buildPipe, context.bundleNameType);
                     }
 
                     if (context.bundleNameType == BundleNameType.NameWithHash)

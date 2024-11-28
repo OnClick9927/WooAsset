@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace WooAsset
 {
@@ -8,7 +6,6 @@ namespace WooAsset
     {
         internal class CopyToStreamCMD : CopyDirectoryCMD
         {
-            private List<string> buildInConfigs;
 
             public CopyToStreamCMD(string srcPath, string targetPath) : base(srcPath, targetPath)
             {

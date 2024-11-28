@@ -33,46 +33,35 @@ MonoBehaviour:
     - Assets/Example/px
     - Assets/Example/Scene
     builds:
-    - param:
+    - selectors:
+      - typeIndex: 1
         type: 0
+        assetType: 3
         path: 
-        tag: 
+        tag: test
         userData: 
-      typeIndex: 0
-      packType: 0
+      packType: 1
       size: 0
   recordIgnore: []
   build:
-    types:
-    - WooAsset.DefaultAssetsBuild
-    shortTypes:
-    - DefaultAssetsBuild
-    typeIndex: 0
+    _select: WooAsset.DefaultAssetsBuild
   mode:
-    types:
-    - WooAsset.AssetsEditorTool+AssetDatabaseMode
-    - WooAsset.AssetsEditorTool+RudeMode
-    - WooAsset.NormalAssetsMode
-    shortTypes:
-    - AssetDatabaseMode
-    - RudeMode
-    - NormalAssetsMode
-    typeIndex: 2
+    _select: WooAsset.NormalAssetsMode
   encrypt:
-    types:
-    - WooAsset.NoneAssetStreamEncrypt
-    - WooAsset.DefaultAssetStreamEncrypt
-    shortTypes:
-    - NoneAssetStreamEncrypt
-    - DefaultAssetStreamEncrypt
-    typeIndex: 0
+    _select: WooAsset.NoneAssetStreamEncrypt
   buildInBundleSelector:
-    types:
-    - WooAsset.DefaultBuildInBundleSelector
-    shortTypes:
-    - DefaultBuildInBundleSelector
-    typeIndex: 0
-  tags: []
+    _select: WooAsset.DefaultBuildInBundleSelector
+  buildPipeline:
+    _select: WooAsset.BuildInPipeline
+  tags:
+  - tag: test
+    assets:
+    - path: Assets/Example/px/2.png
+      type: 0
+    - path: Assets/Example/px/Two.prefab
+      type: 0
+    - path: Assets/Example/px
+      type: 1
   shaderVariantInputDirectory: []
   shaderVariantOutputDirectory: 
   atlasPaths: []

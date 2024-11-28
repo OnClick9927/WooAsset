@@ -12,9 +12,10 @@ namespace WooAsset
             var hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x).hash));
             var builds = new List<EditorBundleData>();
 
-            var raws = context.needBuildAssets.FindAll(x => x.type == AssetType.Raw);
-            context.needBuildAssets.RemoveAll(x => raws.Contains(x));
-            context.assetBuild.Create(context.needBuildAssets, builds, context.buildPkg);
+            var needbuild = new List<EditorAssetData>(context.needBuildAssets);
+            var raws = needbuild.FindAll(x => x.type == AssetType.Raw);
+            needbuild.RemoveAll(x => raws.Contains(x));
+            context.assetBuild.Create(needbuild, builds, context.buildPkg);
 
             builds.RemoveAll(x => x.GetIsEmpty());
             builds.Sort((a, b) =>
