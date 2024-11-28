@@ -67,12 +67,7 @@ namespace WooAsset
         }
         public Type GetSelectType()
         {
-            Type type = realTypes
-               .Where(type => !type.IsAbstract)
-               .ToList()
-               .Find(x => x.FullName == _select);
-
-            return type;
+            return realTypes[typeIndex];
         }
 
         public bool SetType(Type type)
@@ -89,5 +84,6 @@ namespace WooAsset
             }
             return false;
         }
+
     }
 }
