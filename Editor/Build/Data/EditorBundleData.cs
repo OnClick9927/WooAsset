@@ -18,8 +18,8 @@ namespace WooAsset
         [UnityEngine.SerializeField] private long _length;
         [UnityEngine.SerializeField] private bool _raw;
         [UnityEngine.SerializeField] private int _enCode;
-
-
+        internal string bundleHash;
+        internal uint bundleCrc;
 
         public bool loopDependence { get => _loop; private set { _loop = value; } }
         public int usageCount => usage.Count;
@@ -42,6 +42,8 @@ namespace WooAsset
                 assets = assets.ConvertAll(x => x.path),
                 hash = hash,
                 length = length,
+                bundleCrc = bundleCrc,
+                bundleHash = bundleHash,
             };
         }
 

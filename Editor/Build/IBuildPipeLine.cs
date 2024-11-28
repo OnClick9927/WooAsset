@@ -10,6 +10,8 @@ namespace WooAsset
         bool BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
         List<string> GetAllAssetBundles(BundleNameType nameType);
         List<string> GetAllDependencies(string assetBundleName, BundleNameType nameType);
+        uint GetBundleCrc(string directory, string bundleName, BundleNameType nameType);
+        string GetBundleHash(string directory, string bundleName, BundleNameType nameType);
         BuildAssetBundleOptions GetBundleOption(AssetTaskParams param, out string err);
     }
     public class BuildInPipeline : IBuildPipeLine
@@ -33,6 +35,21 @@ namespace WooAsset
         public List<string> GetAllAssetBundles(BundleNameType nameType) => _main.GetAllAssetBundles().ToList();
 
         public List<string> GetAllDependencies(string assetBundleName, BundleNameType nameType) => _main.GetAllDependencies(assetBundleName).ToList();
+
+        public uint GetBundleCrc(string directory, string bundleName, BundleNameType nameType)
+        {
+            var filePath = AssetsEditorTool.CombinePath(directory, bundleName.Split("_").First());
+            if (BuildPipeline.GetCRCForAssetBundle(filePath, out uint crc))
+            {
+                return crc;
+            }
+            return 0;
+        }
+
+        public string GetBundleHash(string directory, string bundleName, BundleNameType nameType)
+        {
+            return _main.GetAssetBundleHash(bundleName).ToString();
+        }
 
         public BuildAssetBundleOptions GetBundleOption(AssetTaskParams param, out string err)
         {

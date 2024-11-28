@@ -25,6 +25,8 @@ namespace WooAsset
         public readonly bool raw;
         public readonly long rawLength;
         private readonly CompressType compress;
+        private readonly uint bundleCrc;
+        private readonly Hash128 bundleHash;
         private readonly Operation dependence;
 
 
@@ -41,6 +43,10 @@ namespace WooAsset
             rawLength = loadArgs.data.length;
             dependence = loadArgs.dependence;
             compress = loadArgs.data.compress;
+            bundleCrc = loadArgs.data.bundleCrc;
+            bundleHash = Hash128.Parse(loadArgs.data.bundleHash);
+
+
 
             _async = loadArgs.async;
             type = AssetsInternal.GetBundleAlwaysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
@@ -72,6 +78,8 @@ namespace WooAsset
             public bool raw => bundle.raw;
             public IAssetEncrypt encrypt => bundle.encrypt;
             protected CompressType compress => bundle.compress;
+            protected uint bundleCrc => bundle.bundleCrc;
+            protected Hash128 bundleHash => bundle.bundleHash;
             public string path => bundle._path;
             public bool async => bundle._async;
             public string bundleName => bundle.bundleName;
@@ -115,6 +123,9 @@ namespace WooAsset
                     buffer = (op as ReadFileOperation).bytes;
                 else if (op is DownLoader)
                     buffer = (op as DownLoader).data;
+
+
+
                 if (op.isErr)
                 {
                     bundle.SetErr(op.error);
@@ -123,6 +134,10 @@ namespace WooAsset
                 }
 
 
+                if (bundle.type == BundleLoadType.FromRequest && AssetsInternal.GetSaveBytesWhenPlaying())
+                {
+                    await AssetsHelper.WriteFile(buffer, path, 0, buffer.Length);
+                }
                 buffer = EncryptBuffer.Decode(bundleName, buffer, encrypt);
                 if (raw)
                 {
@@ -146,10 +161,8 @@ namespace WooAsset
         }
         private class FromFileMode : Mode
         {
-            private ReadFileOperation readFileOperation;
             FileStream filestream;
             private AssetBundleCreateRequest loadOp;
-            private bool fromBytes = false;
             protected override float _progress => async ? loadOp.progress : 0.9f;
 
             public FromFileMode(Bundle bundle) : base(bundle) { }
@@ -204,7 +217,11 @@ namespace WooAsset
                 var fromBytes = false;
                 if (raw || (!raw && !(encrypt is NoneAssetStreamEncrypt)))
                     fromBytes = true;
-                this.downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName, fromBytes);
+
+                if (fromBytes)
+                    this.downloader = AssetsInternal.DownLoadRawBundle(AssetsInternal.GetVersion(), bundleName);
+                else
+                    this.downloader = AssetsInternal.DownLoadBundle(AssetsInternal.GetVersion(), bundleName, bundleCrc, bundleHash);
                 return fromBytes ? this.downloader : null;
             }
 
@@ -237,13 +254,13 @@ namespace WooAsset
 #if UNITY_EDITOR
             if (GetType() == typeof(Bundle))
 #endif
-            if (!raw)
-            {
-                if (value == null)
+                if (!raw)
                 {
-                    SetErr($"Can not Load Bundle {bundleName}");
+                    if (value == null)
+                    {
+                        SetErr($"Can not Load Bundle {bundleName}");
+                    }
                 }
-            }
 
 
             if (raw)
