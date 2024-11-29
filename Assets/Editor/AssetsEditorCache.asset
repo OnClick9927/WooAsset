@@ -712,7 +712,7 @@ MonoBehaviour:
     _raw: 1
     _enCode: 1
   manifest:
-    version: 2024_11_29_21_27_20
+    version: 2024_11_29_22_52_39
     assets:
     - path: Assets/Example/px/Two.prefab
       type: 9

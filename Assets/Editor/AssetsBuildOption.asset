@@ -35,7 +35,7 @@ MonoBehaviour:
   build:
     _select: WooAsset.DefaultAssetsBuild
   mode:
-    _select: WooAsset.NormalAssetsMode
+    _select: WooAsset.AssetsEditorTool+AssetDatabaseMode
   encrypt:
     _select: WooAsset.DefaultAssetStreamEncrypt
   buildInBundleSelector:

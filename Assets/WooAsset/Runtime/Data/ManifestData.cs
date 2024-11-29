@@ -122,9 +122,9 @@ namespace WooAsset
             }
 
             public List<string> segs = new List<string>();
-            public List<TagDataForSer> Tags = new List<TagDataForSer>();
-            public List<BundleDataForSer> Bundles = new List<BundleDataForSer>();
-            public List<AssetDataForSer> Assets = new List<AssetDataForSer>();
+            public List<TagDataForSer> Tags;
+            public List<BundleDataForSer> Bundles;
+            public List<AssetDataForSer> Assets;
             private int GetSegIndex(string seg)
             {
                 var index = this.segs.IndexOf(seg);
@@ -139,6 +139,7 @@ namespace WooAsset
 
             public void Set(List<AssetData> assets, List<BundleData> bundles)
             {
+                Assets = new List<AssetDataForSer>();
                 Tags = GetTags(assets, bundles).ConvertAll(x => new TagDataForSer()
                 {
                     tag = x.tag,
