@@ -2,7 +2,6 @@
 using System.Text;
 using System;
 using System.IO;
-using UnityEngine;
 
 namespace WooAsset
 {
