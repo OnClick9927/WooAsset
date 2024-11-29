@@ -24,6 +24,8 @@ namespace WooAsset
         public static Asset LoadAssetAsync<T>(string path) where T : UnityEngine.Object => LoadAssetAsync(path, typeof(T));
         public static Asset LoadAsset<T>(string path) where T : UnityEngine.Object => LoadAsset(path, typeof(T));
 
+   
+
         public static SubAsset LoadSubAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, true, true, type) as SubAsset;
         public static SubAsset LoadSubAsset(string path, Type type) => AssetsInternal.LoadAsset(path, true, false, type) as SubAsset;
         public static SubAsset LoadSubAssetAsync(string path) => LoadSubAssetAsync(path, typeof(UnityEngine.Object));
@@ -40,6 +42,9 @@ namespace WooAsset
         public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, false, null) as SceneAsset;
         public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => AssetsInternal.UnloadSceneAsync(path, op);
 
+
+
+
         public static void Release(AssetHandle asset) => AssetsInternal.Release(asset.path);
         public static void Release(string assetPath) => AssetsInternal.Release(assetPath);
 
@@ -52,7 +57,13 @@ namespace WooAsset
         public static IReadOnlyList<string> GetAllAssetPaths() => AssetsInternal.GetAllAssetPaths();
         public static IReadOnlyList<string> GetTagAssetPaths(string tag) => AssetsInternal.GetTagAssetPaths(tag);
         public static IReadOnlyList<string> GetAllTags() => AssetsInternal.GetAllTags();
-
+        public static string GetUniqueAssetPathByTag(string tag)
+        {
+            var assets = Assets.GetTagAssetPaths(tag);
+            if (assets == null || assets.Count != 1)
+                return string.Empty;
+            return assets[0];
+        }
         public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => AssetsInternal.GetAllAssetPaths(bundleName);
 
     }
@@ -94,6 +105,7 @@ namespace WooAsset
 
         public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
         public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));
+
         public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => new InstantiateObjectOperation(path, parent);
         public static void Destroy(GameObject gameObject)
         {
