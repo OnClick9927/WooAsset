@@ -58,6 +58,8 @@ namespace WooAsset
             await _test;
             image.sprite = _test.GetAsset<UnityEngine.Sprite>();
             //return;
+
+            Assets.PrepareAssetsByTag("test");
             var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             await Assets.LoadSceneAssetAsync("Assets/Example/Scene/New Scene2.unity");
             var oppp = await Assets.InstantiateAsync("Assets/Example/New Folder/Cube.prefab", null);

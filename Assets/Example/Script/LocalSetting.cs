@@ -34,15 +34,15 @@ namespace WooAsset
         }
         public override bool GetSaveBytesWhenPlaying()
         {
-            return true;
+            return false;
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {
-            return false;
+            return true;
         }
         public override bool GetCachesDownloadedBundles()
         {
-            return true;
+            return false;
         }
         protected override string GetBaseUrl()
         {

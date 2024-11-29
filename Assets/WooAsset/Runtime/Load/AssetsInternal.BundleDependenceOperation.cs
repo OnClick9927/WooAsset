@@ -8,8 +8,6 @@ namespace WooAsset
         {
             public override float progress => isDone ? 1 : _progress;
             private float _progress = 0;
-            private int _index = 0;
-            private int _count;
             public BundleDependenceOperation(BundleData bundleData, bool async)
             {
                 var dps = bundleData.dependence;
