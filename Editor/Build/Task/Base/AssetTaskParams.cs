@@ -83,7 +83,7 @@ namespace WooAsset
                 if (string.IsNullOrEmpty(item.name))
                     return "Pkg name can not be null";
                 if (buildPkgs.FindAll(x => x.name == item.name).Count > 1)
-                    return "same name Kpg";
+                    return "same name pkg";
                 if (item.HasSamePath() || buildPkgs.Any(x => x != item && item.HasSamePath(x)))
                     return "same path in Pkg";
                 var paths = item.paths;

@@ -4,9 +4,8 @@
 namespace WooAsset
 {
     [System.Serializable]
-    public class BundleData : IBufferObject
+    public class BundleData
     {
-        [UnityEngine.SerializeField] internal List<int> bundleDependence;
         public string bundleName;
         public bool raw;
         public CompressType compress;
@@ -16,6 +15,9 @@ namespace WooAsset
         public string bundleHash;
         public uint bundleCrc;
 
+        public List<string> assets;
+        public List<string> dependence;
+
         public void AddAsset(string path)
         {
             if (assets == null)
@@ -24,36 +26,7 @@ namespace WooAsset
             assets.Add(path);
         }
 
-        void IBufferObject.ReadData(BufferReader reader)
-        {
-            raw = reader.ReadBool();
-            enCode = reader.ReadInt32();
-            length = reader.ReadInt64();
 
-            bundleDependence = reader.ReadInt32List();
-            bundleName = reader.ReadUTF8();
-            hash = reader.ReadUTF8();
-            compress = (CompressType)reader.ReadByte();
-            bundleHash = reader.ReadUTF8();
-            bundleCrc = reader.ReadUInt32();
-        }
-
-        void IBufferObject.WriteData(BufferWriter writer)
-        {
-            writer.WriteBool(raw);
-            writer.WriteInt32(enCode);
-            writer.WriteInt64(length);
-
-            writer.WriteInt32List(bundleDependence);
-            writer.WriteUTF8(bundleName);
-            writer.WriteUTF8(hash);
-            writer.WriteByte((byte)compress);
-            writer.WriteUTF8(bundleHash);
-            writer.WriteUInt32(bundleCrc);
-        }
-
-        [System.NonSerialized] public List<string> assets;
-        [System.NonSerialized] public List<string> dependence;
 
         public static void Compare(List<BundleData> old, List<BundleData> src, out List<BundleData> change, out List<BundleData> delete, out List<BundleData> add)
         {
