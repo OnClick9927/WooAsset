@@ -16,7 +16,7 @@ namespace WooAsset
         public static DownLoader DownLoadBundleFile(string version, string bundleName) => AssetsInternal.DownLoadBundleFile(version, bundleName);
         public static Operation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
-        public static Operation InitAsync(string version = "", bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, again, getPkgs);
+        public static Operation InitAsync(string version = "", bool ignoreLoalVersion = false, bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, ignoreLoalVersion, again, getPkgs);
         public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, false, true, type) as Asset;
         public static Asset LoadAsset(string path, Type type) => AssetsInternal.LoadAsset(path, false, false, type) as Asset;
         public static Asset LoadAssetAsync(string path) => LoadAssetAsync(path, typeof(UnityEngine.Object));

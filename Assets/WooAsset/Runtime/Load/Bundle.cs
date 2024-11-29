@@ -134,10 +134,11 @@ namespace WooAsset
                 }
 
 
-                if (bundle.type == BundleLoadType.FromRequest && AssetsInternal.GetSaveBytesWhenPlaying())
-                {
+                if (bundle.type == BundleLoadType.FromRequest
+                    && AssetsInternal.GetCachesDownloadedBundles()
+                    && !AssetsInternal.GetBundleAlwaysFromWebRequest())
                     await AssetsHelper.WriteFile(buffer, path, 0, buffer.Length);
-                }
+
                 buffer = EncryptBuffer.Decode(bundleName, buffer, encrypt);
                 if (raw)
                 {
@@ -148,12 +149,12 @@ namespace WooAsset
                 {
                     if (async)
                     {
-                        loadOp = AssetBundle.LoadFromMemoryAsync(buffer);
+                        loadOp = AssetBundle.LoadFromMemoryAsync(buffer, bundleCrc);
                         await loadOp;
                         End(loadOp.assetBundle);
                     }
                     else
-                        End(AssetBundle.LoadFromMemory(buffer));
+                        End(AssetBundle.LoadFromMemory(buffer, bundleCrc));
                 }
             }
 
@@ -177,9 +178,9 @@ namespace WooAsset
                 {
                     filestream = new BundleStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
                     if (async)
-                        loadOp = AssetBundle.LoadFromStreamAsync(filestream);
+                        loadOp = AssetBundle.LoadFromStreamAsync(filestream, bundleCrc);
                     else
-                        End(AssetBundle.LoadFromStream(filestream));
+                        End(AssetBundle.LoadFromStream(filestream, bundleCrc));
                     return null;
                 }
             }

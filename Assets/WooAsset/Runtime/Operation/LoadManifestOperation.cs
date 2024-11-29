@@ -30,12 +30,12 @@ namespace WooAsset
             InvokeComplete();
         }
         public string GetVersion() => initVersion;
-        public LoadManifestOperation(List<string> loadedBundles, string version, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
+        public LoadManifestOperation(List<string> loadedBundles, string version, bool ignoreLoalVersion, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {
             this.fuzzySearch = fuzzySearch;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
-            Done(version);
+            Done(version, ignoreLoalVersion);
         }
 
 
@@ -51,7 +51,9 @@ namespace WooAsset
                 string fileName = pkg.manifestFileName;
                 string localPath = AssetsInternal.GetBundleLocalPath(fileName);
                 bool _download = AlwaysFromWebRequest || !AssetsHelper.ExistsFile(localPath);
-                ManifestData v;
+                ManifestData sub_mainifest;
+
+            READ_LOCAL_MANIFEST_FAIl:
                 if (_download)
                 {
                     var downloader = await AssetsInternal.DownloadVersion(version.version, fileName) as DownLoader;
@@ -60,16 +62,27 @@ namespace WooAsset
                         SetErr(downloader.error);
                         break;
                     }
-                    v = AssetsHelper.ReadBufferObject<ManifestData>(downloader.data);
+                    sub_mainifest = AssetsHelper.ReadBufferObject<ManifestData>(downloader.data);
                     if (AssetsInternal.GetSaveBytesWhenPlaying())
-                        await AssetsHelper.WriteBufferObject(v, localPath);
+                        await AssetsHelper.WriteBufferObject(sub_mainifest, localPath);
                 }
                 else
                 {
-                    var reader = await AssetsHelper.ReadFile(localPath, true) as ReadFileOperation;
-                    v = AssetsHelper.ReadBufferObject<ManifestData>(reader.bytes);
+                    try
+                    {
+                        var reader = await AssetsHelper.ReadFile(localPath, true) as ReadFileOperation;
+                        sub_mainifest = AssetsHelper.ReadBufferObject<ManifestData>(reader.bytes);
+                    }
+                    catch (Exception)
+                    {
+                        _download = true;
+                        AssetsHelper.Log($"Local ManifestData file broken {pkg.name} Let us download");
+
+                        goto READ_LOCAL_MANIFEST_FAIl;
+                    }
+
                 }
-                ManifestData.Merge(v, _manifest, this.loadedBundles);
+                ManifestData.Merge(sub_mainifest, _manifest, this.loadedBundles);
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }
 
@@ -129,27 +142,41 @@ namespace WooAsset
         }
         private async void FromLocal(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
         {
-            var op = await AssetsHelper.ReadFile(localVersionPath, true);
-            var version = AssetsHelper.ReadBufferObject<VersionData>(op.bytes);
-            if (!string.IsNullOrEmpty(targetVersion) && version.version != targetVersion)
+            VersionData localversion = null;
+
+            bool err = false;
+            try
             {
-                AssetsHelper.Log($"Local version wrong local:{version.version} target:{targetVersion}");
+                var op = await AssetsHelper.ReadFile(localVersionPath, true);
+                localversion = AssetsHelper.ReadBufferObject<VersionData>(op.bytes);
+            }
+            catch (Exception)
+            {
+                err = true;
+                AssetsHelper.Log($"Local version file broken  Let us download");
+            }
+            if (err || (!string.IsNullOrEmpty(targetVersion) && localversion.version != targetVersion))
+            {
+                AssetsHelper.Log($"Local version wrong local:{localversion?.version} target:{targetVersion}");
+
                 DownLoad(localVersionPath, targetVersion, AlwaysFromWebRequest);
             }
             else
-                DoPkgs(version, AlwaysFromWebRequest);
+                DoPkgs(localversion, AlwaysFromWebRequest);
         }
-        private void Done(string targetVersion)
+        private void Done(string targetVersion, bool ignoreLoalVersion)
         {
             _progress = 0f;
             string localVersionPath = AssetsInternal.GetBundleLocalPath(AssetsHelper.VersionDataName);
             bool AlwaysFromWebRequest = AssetsInternal.GetBundleAlwaysFromWebRequest();
             bool download = AlwaysFromWebRequest;
-            if (!download)
-                if (!AssetsHelper.ExistsFile(localVersionPath))
-                    download = true;
 
-            AssetsHelper.Log($"LoadManifest AlwaysFromWebRequest:{AlwaysFromWebRequest}  download:{download}");
+            if (ignoreLoalVersion && string.IsNullOrEmpty(targetVersion))
+                download = true;
+            if (!download && !AssetsHelper.ExistsFile(localVersionPath))
+                download = true;
+
+            AssetsHelper.Log($"LoadManifest AlwaysFromWebRequest:{AlwaysFromWebRequest}  download:{download} ignoreLoalVersion:{ignoreLoalVersion}");
             _progress = 0.1f;
             if (download)
                 DownLoad(localVersionPath, targetVersion, AlwaysFromWebRequest);

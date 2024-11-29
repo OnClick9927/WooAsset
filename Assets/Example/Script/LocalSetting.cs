@@ -38,7 +38,7 @@ namespace WooAsset
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {
-            return true;
+            return false;
         }
         public override bool GetCachesDownloadedBundles()
         {

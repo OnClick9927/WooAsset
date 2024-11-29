@@ -51,7 +51,7 @@ namespace WooAsset
             Debug.LogError("-----------------");
 
 
-            await Assets.InitAsync();
+            await Assets.InitAsync("",true);
             //var asset_svc = await Assets.LoadAsset("Assets/Example/GameObject.prefab");
             //asset_svc.GetAsset<ShaderVariantCollection>().WarmUp();
             var _test = await assetReference.LoadAssetAsync();
