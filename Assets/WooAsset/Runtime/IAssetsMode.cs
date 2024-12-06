@@ -10,7 +10,7 @@ namespace WooAsset
         bool Initialized();
         Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs);
         LoadRemoteVersionsOperation LoadRemoteVersions();
-        Operation CopyToSandBox(string from, string to);
+        Operation CopyToSandBox(string from, string to, bool again);
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
         VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType);
         AssetData GetAssetData(string assetPath);
@@ -30,10 +30,10 @@ namespace WooAsset
         Operation IAssetsMode.InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {
             SetVersion(version);
-            return InitAsync(version,ignoreLoalVersion, again, fuzzySearch, getPkgs);
+            return InitAsync(version, ignoreLoalVersion, again, fuzzySearch, getPkgs);
         }
         bool IAssetsMode.Initialized() => Initialized();
-        Operation IAssetsMode.CopyToSandBox(string from, string to) => CopyToSandBox(from, to);
+        Operation IAssetsMode.CopyToSandBox(string from, string to, bool again) => CopyToSandBox(from, to, again);
         LoadRemoteVersionsOperation IAssetsMode.LoadRemoteVersions() => LoadRemoteVersions();
         Bundle IAssetsMode.CreateBundle(string bundleName, BundleLoadArgs args) => CreateBundle(bundleName, args);
         VersionCompareOperation IAssetsMode.CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => CompareVersion(version, pkgs, compareType);
@@ -42,7 +42,7 @@ namespace WooAsset
         public string version { get; private set; }
         protected void SetVersion(string version) => (this).version = version;
         protected abstract bool Initialized();
-        protected abstract Operation CopyToSandBox(string from, string to);
+        protected abstract Operation CopyToSandBox(string from, string to, bool again);
         protected abstract Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs);
         protected abstract LoadRemoteVersionsOperation LoadRemoteVersions();
         protected abstract Bundle CreateBundle(string bundleName, BundleLoadArgs args);
@@ -68,7 +68,7 @@ namespace WooAsset
         protected virtual IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => manifest.GetAssetsByAssetName(name, result);
 
         protected virtual IReadOnlyList<string> GetAllAssetPaths(string bundleName) => manifest.GetAssets(bundleName);
-    
+
     }
 
 
@@ -85,7 +85,7 @@ namespace WooAsset
             return manifestOp.isDone;
         }
 
-        protected override Operation CopyToSandBox(string from, string to) => new CopyStreamBundlesOperation(from, to);
+        protected override Operation CopyToSandBox(string from, string to, bool again) => new CopyStreamBundlesOperation(from, to, again);
 
         protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
         {

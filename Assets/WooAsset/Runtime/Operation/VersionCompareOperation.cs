@@ -115,8 +115,10 @@ namespace WooAsset
                 List<FileData> local = GetLocalBundles();
                 FileCompareType fileCompareType = compareType == VersionCompareType.FileLength ? FileCompareType.Length : FileCompareType.Hash;
                 FileData.Compare(local, remoteBundles, fileCompareType, out change, out delete, out add);
+                this.delete = new List<string>();
                 for (int j = 0; j < delete.Count; j++)
                     this.delete.Add(delete[j].name);
+
             }
             if (AssetsInternal.GetSaveBytesWhenPlaying())
                 await AssetsHelper.WriteBufferObject(version,
