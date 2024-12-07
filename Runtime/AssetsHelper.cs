@@ -44,7 +44,7 @@ namespace WooAsset
                 return string.Empty;
             }
         }
-        public static string StreamBundlePath => $"Assets/StreamingAssets/{buildTarget}";
+        public static string StreamBundlePath => $"{Application.streamingAssetsPath}/{buildTarget}";
 
 
         public static bool log_Enable = true;
