@@ -30,7 +30,13 @@ namespace WooAsset
             N2One,
             N2MBySize,
             N2MBySizeAndDir,
+
+            N2MByAssetType,
+            N2MBySizeAndDirAndAssetType,
+            N2MByAssetTypeAndSize,
         }
+   
+
         public PackType packType;
         public long size = 2097152;
         public static System.Type GetSelectType(int typeIndex)
@@ -110,7 +116,14 @@ namespace WooAsset
                 case PackType.N2MBySize:
                     EditorBundleTool.N2MBySize(list, result, size); break;
                 case PackType.N2MBySizeAndDir:
-                    EditorBundleTool.N2MBySize(list, result, size); break;
+                    EditorBundleTool.N2MBySizeAndDir(list, result, size); break;
+                case PackType.N2MByAssetType:
+                    EditorBundleTool.N2MByAssetType(list, result); break;
+                case PackType.N2MByAssetTypeAndSize:
+                    EditorBundleTool.N2MByAssetTypeAndSize(list, result, size); break;
+                case PackType.N2MBySizeAndDirAndAssetType:
+                    EditorBundleTool.N2MBySizeAndDirAndAssetType(list, result, size); break;
+
             }
         }
     }

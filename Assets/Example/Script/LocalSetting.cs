@@ -26,7 +26,7 @@ namespace WooAsset
         }
         public override bool NeedCopyStreamBundles()
         {
-            return false;
+            return true;
         }
         public override bool GetAutoUnloadBundle()
         {
@@ -38,7 +38,7 @@ namespace WooAsset
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {
-            return true;
+            return false;
         }
         public override bool GetCachesDownloadedBundles()
         {

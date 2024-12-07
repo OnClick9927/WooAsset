@@ -14,7 +14,8 @@ namespace WooAsset
         {
             float down;
             var packType = (PackType)property.FindPropertyRelative(nameof(EditorBundleDataBuild.packType)).enumValueIndex;
-            if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir)
+            if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir
+                || packType == PackType.N2MBySizeAndDirAndAssetType || packType == PackType.N2MByAssetTypeAndSize)
                 down = 40;
             else
                 down = 20;
@@ -72,7 +73,8 @@ namespace WooAsset
         {
             var packType_pro = property.FindPropertyRelative(nameof(EditorBundleDataBuild.packType));
             var packType = (PackType)packType_pro.enumValueIndex;
-            if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir)
+            if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir
+                   || packType == PackType.N2MBySizeAndDirAndAssetType || packType == PackType.N2MByAssetTypeAndSize)
             {
                 var rs_1 = RectEx.HorizontalSplit(position, 20);
                 EditorGUI.PropertyField(rs_1[0], packType_pro);

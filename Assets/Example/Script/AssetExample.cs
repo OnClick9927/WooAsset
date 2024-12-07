@@ -35,7 +35,7 @@ namespace WooAsset
                 var version = op.Versions.NewestVersion();
                 var down = await Assets.DownloadVersionData(version);
                 var versionData = down.GetVersion();
-                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs());
+                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs(), VersionCompareType.FileHash);
                 List<DownLoader> downloader = new List<DownLoader>();
 
 

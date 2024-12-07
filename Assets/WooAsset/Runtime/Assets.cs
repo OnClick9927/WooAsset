@@ -64,6 +64,29 @@ namespace WooAsset
                 return string.Empty;
             return assets[0];
         }
+        public static IReadOnlyList<string> GetAssetPath(Func<AssetData, bool> fit)
+        {
+            var assets = Assets.GetAllAssetPaths();
+            if (fit == null)
+                return assets;
+            if (assets == null || assets.Count == 0)
+                return null;
+            return assets.Where(x => fit(AssetsInternal.GetAssetData(x))).ToList();
+        }
+        public static string GetUniqueAssetPath(Func<AssetData, bool> fit)
+        {
+            var assets = Assets.GetAllAssetPaths();
+            if (assets == null || assets.Count == 0)
+                return string.Empty;
+            if (fit == null)
+                return assets[0];
+            for (int i = 0; i < assets.Count; i++)
+            {
+                var data = AssetsInternal.GetAssetData(assets[i]);
+                if (fit(data)) return assets[i];
+            }
+            return string.Empty;
+        }
         public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => AssetsInternal.GetAllAssetPaths(bundleName);
 
     }
@@ -121,126 +144,4 @@ namespace WooAsset
         }
     }
 
-    partial class Assets
-    {
-        public class Search
-        {
-
-            private static IEnumerable<string> _ITags(string[] tags)
-            {
-                IEnumerable<string> result = null;
-                for (int i = 0; i < tags.Length; i++)
-                {
-                    var tmp = AssetsInternal.GetTagAssetPaths(tags[i]);
-                    if (result == null)
-                        result = tmp;
-                    else
-                        result = result.Intersect(tmp);
-                }
-                if (result == null) return new List<string>();
-                return result;
-            }
-            public static IEnumerable<string> ITags(params string[] tags)
-            {
-                return _ITags(tags);
-            }
-            private static List<string> _UTags(string[] tags, List<string> result)
-            {
-                result.Clear();
-                if (tags == null || tags.Length == 0) return result;
-                for (int i = 0; i < tags.Length; i++)
-                {
-                    var assets = AssetsInternal.GetTagAssetPaths(tags[i]);
-                    for (int j = 0; j < assets.Count; j++)
-                    {
-                        if (result.Contains(assets[j])) continue;
-                        result.Add(assets[j]);
-                    }
-                }
-                return result;
-            }
-            public static IReadOnlyList<string> UTags(params string[] tags)
-            {
-                return _UTags(tags, new List<string>());
-            }
-            public static IReadOnlyList<string> UNames(params string[] names)
-            {
-                List<string> result = new List<string>();
-                if (names == null || names.Length == 0) return result;
-                List<string> tmp = new List<string>();
-
-                for (int i = 0; i < names.Length; i++)
-                {
-                    var assets_2 = AssetsInternal.GetAssetsByAssetName(names[i], tmp);
-                    for (int j = 0; j < assets_2.Count; j++)
-                    {
-                        if (result.Contains(assets_2[j])) continue;
-                        result.Add(assets_2[j]);
-                    }
-                }
-                return result;
-            }
-            public static IReadOnlyList<string> UNamesUTags(params string[] nameOrTags)
-            {
-                List<string> result = new List<string>();
-                var r_1 = UNames(nameOrTags);
-                var r_2 = UTags(nameOrTags);
-                foreach (var item in r_1)
-                {
-                    if (result.Contains(item)) continue;
-                    result.Add(item);
-                }
-                foreach (var item in r_2)
-                {
-                    if (result.Contains(item)) continue;
-                    result.Add(item);
-                }
-                return result;
-            }
-
-
-
-            public static IEnumerable<string> INameITags(string assetName, params string[] tags)
-            {
-                var result = _ITags(tags);
-                return result.Where(x => AssetsHelper.GetFileName(x).Contains(assetName));
-            }
-            public static IEnumerable<string> ITypeITags(AssetType type, params string[] tags)
-            {
-                var result = _ITags(tags);
-                return result.Where(x => AssetsInternal.GetAssetType(x) == type);
-            }
-            public static IEnumerable<string> ITypeINameITags(AssetType type, string assetName, params string[] tags)
-            {
-                return INameITags(assetName, tags).Where(x => AssetsInternal.GetAssetType(x) == type);
-            }
-
-            public static IEnumerable<string> INameUTags(string assetName, params string[] tags)
-            {
-                var result = _UTags(tags, new List<string>());
-                return result.Where(x => AssetsHelper.GetFileName(x).Contains(assetName)); ;
-            }
-            public static IEnumerable<string> ITypeUTags(AssetType type, params string[] tags)
-            {
-                var result = _UTags(tags, new List<string>());
-                return result.Where(x => AssetsInternal.GetAssetType(x) == type);
-            }
-            public static IEnumerable<string> ITypeINameUTags(AssetType type, string assetName, params string[] tags)
-            {
-                return INameUTags(assetName, tags).Where(x => AssetsInternal.GetAssetType(x) == type);
-            }
-            public static IEnumerable<string> ITypeUNameUTags(AssetType type, params string[] nameOrTags)
-            {
-                return UNamesUTags(nameOrTags).Where(x => AssetsInternal.GetAssetType(x) == type);
-            }
-
-
-            public static IReadOnlyList<string> AssetPathByType(AssetType type)
-            {
-                IReadOnlyList<string> assets = AssetsInternal.GetAllAssetPaths();
-                return assets.Where(x => AssetsInternal.GetAssetType(x) == type).ToList();
-            }
-
-        }
-    }
 }

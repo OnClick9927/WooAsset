@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace WooAsset
 {
@@ -13,6 +14,13 @@ namespace WooAsset
                     AssetsEditorTool.GetFromDictionary(dic, asset.directory).Add(asset);
                 return dic;
             }
+            public static Dictionary<AssetType, List<EditorAssetData>> GroupByAssetType(List<EditorAssetData> list)
+            {
+                Dictionary<AssetType, List<EditorAssetData>> dic = new Dictionary<AssetType, List<EditorAssetData>>();
+                foreach (EditorAssetData asset in list)
+                    AssetsEditorTool.GetFromDictionary(dic, asset.type).Add(asset);
+                return dic;
+            }
             public static void One2One(List<EditorAssetData> assets, List<EditorBundleData> result)
             {
                 foreach (var atlas in assets)
@@ -24,6 +32,8 @@ namespace WooAsset
             {
                 result.Add(EditorBundleData.Create(assets));
             }
+
+
             public static void N2MBySize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
             {
                 var big = assets.FindAll(x => x.length >= size);
@@ -69,6 +79,28 @@ namespace WooAsset
                 foreach (var item in path_dic)
                 {
                     N2MBySize(item.Value, result, size);
+                }
+            }
+
+            public static void N2MByAssetType(List<EditorAssetData> assets, List<EditorBundleData> result)
+            {
+                var path_dic = GroupByAssetType(assets);
+                foreach (var item in path_dic)
+                    N2One(item.Value, result);
+            }
+            public static void N2MByAssetTypeAndSize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
+            {
+                var path_dic = GroupByAssetType(assets);
+                foreach (var item in path_dic)
+                    N2MBySize(item.Value, result, size);
+            }
+
+            public static void N2MBySizeAndDirAndAssetType(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
+            {
+                var path_dic = GroupByDir(assets);
+                foreach (var item in path_dic)
+                {
+                    N2MByAssetTypeAndSize(item.Value, result,size);
                 }
             }
 

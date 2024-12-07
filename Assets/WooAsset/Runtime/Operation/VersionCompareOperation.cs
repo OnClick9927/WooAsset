@@ -82,8 +82,7 @@ namespace WooAsset
                         await reader;
                         local_main = AssetsHelper.ReadBufferObject<ManifestData>(reader.bytes);
                     }
-                    if (add == null)
-                        add = new List<BundleData>();
+                    if (add == null) add = new List<BundleData>();
                     if (delete == null) delete = new List<string>();
                     if (change == null) change = new List<BundleData>();
                     if (local_main == null)
@@ -117,8 +116,13 @@ namespace WooAsset
                 FileData.Compare(local, remoteBundles, fileCompareType, out change, out delete, out add);
                 this.delete = new List<string>();
                 for (int j = 0; j < delete.Count; j++)
+                {
+                    var d = delete[j];
+                    string name = d.name;
+                    if (name == StreamBundlesData.fileName) continue;
+                    if (name.EndsWith(AssetsHelper.versionExt) && name != AssetsHelper.VersionCollectionName) continue;
                     this.delete.Add(delete[j].name);
-
+                }
             }
             if (AssetsInternal.GetSaveBytesWhenPlaying())
                 await AssetsHelper.WriteBufferObject(version,
