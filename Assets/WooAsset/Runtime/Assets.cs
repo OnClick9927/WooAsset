@@ -71,7 +71,7 @@ namespace WooAsset
                 return assets;
             if (assets == null || assets.Count == 0)
                 return null;
-            return assets.Where(x => fit(AssetsInternal.GetAssetData(x))).ToList();
+            return assets.Where(x => fit(Assets.GetAssetData(x))).ToList();
         }
         public static string GetUniqueAssetPath(Func<AssetData, bool> fit)
         {
@@ -82,12 +82,15 @@ namespace WooAsset
                 return assets[0];
             for (int i = 0; i < assets.Count; i++)
             {
-                var data = AssetsInternal.GetAssetData(assets[i]);
+                var data = Assets.GetAssetData(assets[i]);
                 if (fit(data)) return assets[i];
             }
             return string.Empty;
         }
         public static IReadOnlyList<string> GetAllAssetPaths(string bundleName) => AssetsInternal.GetAllAssetPaths(bundleName);
+        public static IReadOnlyList<string> GetAssetsByAssetName(string name) => AssetsInternal.GetAssetsByAssetName(name);
+
+        public static AssetData GetAssetData(string assetPath) => AssetsInternal.GetAssetData(assetPath);
 
     }
 

@@ -36,6 +36,7 @@ namespace WooAsset
 
 
         public bool fuzzySearch => Params.fuzzySearch;
+        public FileNameSearchType fileNameSearchType => Params.fileNameSearchType;
 
 
         public string version;

@@ -34,7 +34,7 @@ namespace WooAsset
                 {
                     asset = asset,
                     tags = Assets.GetAssetTags(path),
-                    assetType = AssetsInternal.GetAssetType(path).ToString(),
+                    assetType = AssetsInternal.GetAssetData(path).type.ToString(),
                 };
                 assets.Add(path, life);
                 onAssetLifeChange?.Invoke();
