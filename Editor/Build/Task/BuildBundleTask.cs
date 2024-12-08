@@ -43,7 +43,7 @@ namespace WooAsset
                 }
                 ManifestData manifest = new ManifestData();
                 manifest.Read(version, _assets, _bundles);
-                manifest.Prepare(false);
+                manifest.Prepare(false, FileNameSearchType.FileName);
                 return manifest;
             }
 
@@ -220,7 +220,7 @@ namespace WooAsset
             ManifestData manifest = new ManifestData();
             foreach (var item in manifests)
                 ManifestData.Merge(item, manifest, null);
-            manifest.Prepare(context.fuzzySearch);
+            manifest.Prepare(context.fuzzySearch,context.fileNameSearchType);
             context.mergedManifest = manifest;
             context.exports = exports;
             if (context.Pipeline == TaskPipelineType.BuildBundle)

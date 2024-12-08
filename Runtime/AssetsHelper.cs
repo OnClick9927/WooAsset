@@ -170,7 +170,6 @@ namespace WooAsset
         public static string GetFileName(string path) => Path.GetFileName(path);
         public static string GetFileNameWithoutExtension(string path) => Path.GetFileNameWithoutExtension(path);
         public static string GetDirectoryName(string path) => Path.GetDirectoryName(path);
-        public static string ToAbsPath(string src) => CombinePath(Directory.GetCurrentDirectory(), src);
         public static string CombinePath(string self, string combine) => Path.Combine(self, combine);
         public static string ToRegularPath(string path) => path.Replace('\\', '/');
 

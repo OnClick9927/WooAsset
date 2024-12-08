@@ -67,10 +67,10 @@ namespace WooAsset
 
 
         [MenuItem(TaskPipelineMenu.EditorSimulate)]
-        public static AssetTask EditorSimulate() => EditorSimulate(false);
-        public static AssetTask EditorSimulate(bool fuzzySearch)
+        public static AssetTask EditorSimulate() => EditorSimulate(false, FileNameSearchType.FileName);
+        public static AssetTask EditorSimulate(bool fuzzySearch, FileNameSearchType fileNameSearchType)
         {
-            var Params = new AssetTaskParams(TaskPipelineType.EditorSimulate) { fuzzySearch = fuzzySearch };
+            var Params = new AssetTaskParams(TaskPipelineType.EditorSimulate) { fuzzySearch = fuzzySearch, fileNameSearchType = fileNameSearchType };
 
             AssetTask task = Execute(stream_common, Params);
             return task;

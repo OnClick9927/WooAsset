@@ -11,6 +11,7 @@ namespace WooAsset
         {
             private BundleData data;
             private EditorBundle bundle;
+            private FileNameSearchType fileNameSearchType;
             private AssetTaskParams param;
             private IAssetsBuild assetBuild => param.assetBuild;
 
@@ -21,8 +22,9 @@ namespace WooAsset
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to, bool again) => Operation.empty;
-            protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
+            protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
             {
+                this.fileNameSearchType = fileNameSearchType;
                 param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
                 data = new BundleData()
                 {
@@ -98,7 +100,17 @@ namespace WooAsset
                     type = assetBuild.GetAssetType(assetPath),
                 };
             }
-            protected override IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => data.assets.FindAll(x => x.Contains(name));
+            protected override IReadOnlyList<string> GetAssetsByAssetName(string name) =>
+
+                data.assets.FindAll(x =>
+                {
+                    var s_name = string.Empty;
+                    if (this.fileNameSearchType == FileNameSearchType.FileNameWithoutExtension)
+                        s_name = AssetsHelper.GetFileNameWithoutExtension(name);
+                    else
+                        s_name = AssetsHelper.GetFileName(name);
+                    return s_name == name;
+                });
             protected override BundleData GetBundleData(string bundleName) => data;
             protected override IReadOnlyList<string> GetAllTags() => tags.Keys.ToArray();
             protected override IReadOnlyList<string> GetTagAssetPaths(string tag)

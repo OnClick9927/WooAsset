@@ -331,7 +331,7 @@ namespace WooAsset
         }
 
 
-        public void Prepare(bool fuzzySearch)
+        public void Prepare(bool fuzzySearch, FileNameSearchType fileNameSearchType)
         {
             var tags = GetTags(this.assets, this.bundles);
             _tags = tags.ToDictionary(x => x.tag);
@@ -344,7 +344,11 @@ namespace WooAsset
             {
                 AssetData asset = assets[i];
                 string path = asset.path;
-                string assetName = AssetsHelper.GetFileName(path);
+                string assetName = string.Empty;
+                if (fileNameSearchType == FileNameSearchType.FileName)
+                    assetName = AssetsHelper.GetFileName(path);
+                else if (fileNameSearchType == FileNameSearchType.FileNameWithoutExtension)
+                    assetName = AssetsHelper.GetFileNameWithoutExtension(path);
                 _guidAssets.Add(asset.guid, asset.path);
                 if (fuzzySearch)
                 {
@@ -387,18 +391,15 @@ namespace WooAsset
         public BundleData GetBundleData(string bundleName) => AssetsHelper.GetOrDefaultFromDictionary(_bundles, bundleName);
         public List<BundleData> GetAllBundleData() => bundles;
 
-        public IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result)
+        public IReadOnlyList<string> GetAssetsByAssetName(string name)
         {
-            result.Clear();
             for (int i = 0; i < allName.Count; i++)
             {
-                if (!name.Contains(allName[i])) continue;
+                if (name != allName[i]) continue;
                 _names.TryGetValue(allName[i], out RTName _name);
-                var assets = _name?.assets;
-                if (assets != null)
-                    result.AddRange(assets);
+                return _name?.assets;
             }
-            return result;
+            return null;
         }
         public string GUIDToAssetPath(string guid) => AssetsHelper.GetOrDefaultFromDictionary(_guidAssets, guid);
         public AssetData GetFuzzyAssetData(string path)

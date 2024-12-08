@@ -8,7 +8,7 @@ namespace WooAsset
     {
         string version { get; }
         bool Initialized();
-        Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs);
+        Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs);
         LoadRemoteVersionsOperation LoadRemoteVersions();
         Operation CopyToSandBox(string from, string to, bool again);
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
@@ -19,7 +19,7 @@ namespace WooAsset
         IReadOnlyList<string> GetAllAssetPaths();
         IReadOnlyList<string> GetTagAssetPaths(string tag);
         IReadOnlyList<string> GetAllTags();
-        IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result);
+        IReadOnlyList<string> GetAssetsByAssetName(string name);
         IReadOnlyList<string> GetAllAssetPaths(string bundleName);
         string GUIDToAssetPath(string guid);
     }
@@ -27,10 +27,10 @@ namespace WooAsset
 
     public abstract class AssetsMode : IAssetsMode
     {
-        Operation IAssetsMode.InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
+        Operation IAssetsMode.InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             SetVersion(version);
-            return InitAsync(version, ignoreLoalVersion, again, fuzzySearch, getPkgs);
+            return InitAsync(version, ignoreLoalVersion, again, fuzzySearch, fileNameSearchType, getPkgs);
         }
         bool IAssetsMode.Initialized() => Initialized();
         Operation IAssetsMode.CopyToSandBox(string from, string to, bool again) => CopyToSandBox(from, to, again);
@@ -43,7 +43,7 @@ namespace WooAsset
         protected void SetVersion(string version) => (this).version = version;
         protected abstract bool Initialized();
         protected abstract Operation CopyToSandBox(string from, string to, bool again);
-        protected abstract Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs);
+        protected abstract Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs);
         protected abstract LoadRemoteVersionsOperation LoadRemoteVersions();
         protected abstract Bundle CreateBundle(string bundleName, BundleLoadArgs args);
         protected abstract VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType);
@@ -53,7 +53,7 @@ namespace WooAsset
         IReadOnlyList<string> IAssetsMode.GetAllAssetPaths() => GetAllAssetPaths();
         IReadOnlyList<string> IAssetsMode.GetTagAssetPaths(string tag) => GetTagAssetPaths(tag);
         IReadOnlyList<string> IAssetsMode.GetAllTags() => GetAllTags();
-        IReadOnlyList<string> IAssetsMode.GetAssetsByAssetName(string name, List<string> result) => GetAssetsByAssetName(name, result);
+        IReadOnlyList<string> IAssetsMode.GetAssetsByAssetName(string name) => GetAssetsByAssetName(name);
         IReadOnlyList<string> IAssetsMode.GetAllAssetPaths(string bundleName) => GetAllAssetPaths(bundleName);
         AssetData IAssetsMode.GetFuzzyAssetData(string path) => GetFuzzyAssetData(path);
 
@@ -65,7 +65,7 @@ namespace WooAsset
         protected virtual IReadOnlyList<string> GetAllAssetPaths() => manifest.allPaths;
         protected virtual IReadOnlyList<string> GetTagAssetPaths(string tag) => manifest.GetTagAssetPaths(tag);
         protected virtual IReadOnlyList<string> GetAllTags() => manifest.allTags;
-        protected virtual IReadOnlyList<string> GetAssetsByAssetName(string name, List<string> result) => manifest.GetAssetsByAssetName(name, result);
+        protected virtual IReadOnlyList<string> GetAssetsByAssetName(string name) => manifest.GetAssetsByAssetName(name);
 
         protected virtual IReadOnlyList<string> GetAllAssetPaths(string bundleName) => manifest.GetAssets(bundleName);
 
@@ -87,7 +87,7 @@ namespace WooAsset
 
         protected override Operation CopyToSandBox(string from, string to, bool again) => new CopyStreamBundlesOperation(from, to, again);
 
-        protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
+        protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             if (again)
             {
@@ -97,7 +97,7 @@ namespace WooAsset
             }
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
-                    , version, ignoreLoalVersion, fuzzySearch, getPkgs);
+                    , version, ignoreLoalVersion, fuzzySearch,fileNameSearchType, getPkgs);
             if (manifestOp.isDone)
                 ManifestOp_completed(manifestOp);
             else

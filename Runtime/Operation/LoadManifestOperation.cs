@@ -15,6 +15,7 @@ namespace WooAsset
         private bool fuzzySearch;
         private Func<VersionData, List<PackageData>> getPkgs;
         private List<string> loadedBundles;
+        private FileNameSearchType fileNameSearchType;
 
         private void SetResult(ManifestData manifest, string version)
         {
@@ -30,11 +31,12 @@ namespace WooAsset
             InvokeComplete();
         }
         public string GetVersion() => initVersion;
-        public LoadManifestOperation(List<string> loadedBundles, string version, bool ignoreLoalVersion, bool fuzzySearch, Func<VersionData, List<PackageData>> getPkgs)
+        public LoadManifestOperation(List<string> loadedBundles, string version, bool ignoreLoalVersion, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             this.fuzzySearch = fuzzySearch;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
+            this.fileNameSearchType = fileNameSearchType;
             Done(version, ignoreLoalVersion);
         }
 
@@ -86,7 +88,7 @@ namespace WooAsset
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }
 
-            _manifest.Prepare(fuzzySearch);
+            _manifest.Prepare(fuzzySearch, fileNameSearchType);
             SetResult(_manifest, version.version);
         }
 

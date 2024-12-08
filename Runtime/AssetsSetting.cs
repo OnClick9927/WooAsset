@@ -16,6 +16,7 @@
         public virtual bool GetBundleAlwaysFromWebRequest() => true;
         public virtual int GetWebRequestTimeout() => 30;
         public virtual bool GetFuzzySearch() => false;
+        public virtual FileNameSearchType GetFileNameSearchType() => FileNameSearchType.FileName;
 
         public virtual int GetWebRequestRetryCount() => 3;
         public virtual bool GetAutoUnloadBundle() => true;
@@ -28,6 +29,8 @@
             if (code == DefaultAssetStreamEncrypt.code) return def;
             return null;
         }
+
+
         NoneAssetStreamEncrypt none = new NoneAssetStreamEncrypt();
         DefaultAssetStreamEncrypt def = new DefaultAssetStreamEncrypt();
 
