@@ -369,7 +369,7 @@ namespace WooAsset
             allPaths = AssetsHelper.ToKeyList(_assets);
             allTags = AssetsHelper.ToKeyList(_tags);
             allBundle = AssetsHelper.ToKeyList(_bundles);
-            allName = AssetsHelper.ToKeyList(_names);
+            //allName = AssetsHelper.ToKeyList(_names);
         }
 
         private Dictionary<string, string> _guidAssets;
@@ -382,7 +382,7 @@ namespace WooAsset
         [NonSerialized] public List<string> allPaths;
         [NonSerialized] public List<string> allTags;
         [NonSerialized] public List<string> allBundle;
-        [NonSerialized] public List<string> allName;
+        //[NonSerialized] public List<string> allName;
         public string GetVersion() => version;
 
         public AssetData GetAssetData(string assetPath) => AssetsHelper.GetOrDefaultFromDictionary(_assets, assetPath);
@@ -393,12 +393,8 @@ namespace WooAsset
 
         public IReadOnlyList<string> GetAssetsByAssetName(string name)
         {
-            for (int i = 0; i < allName.Count; i++)
-            {
-                if (name != allName[i]) continue;
-                _names.TryGetValue(allName[i], out RTName _name);
+            if (_names.TryGetValue(name, out RTName _name))
                 return _name?.assets;
-            }
             return null;
         }
         public string GUIDToAssetPath(string guid) => AssetsHelper.GetOrDefaultFromDictionary(_guidAssets, guid);
