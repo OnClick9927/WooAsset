@@ -145,6 +145,7 @@ namespace WooAsset
 
                     option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
                     option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
+                    option.bundleOptimiser.typeIndex = EditorGUILayout.Popup("Bundle Result Optimizer", option.bundleOptimiser.typeIndex, option.bundleOptimiser.shortTypes);
 
 
                     GUI.enabled = false;

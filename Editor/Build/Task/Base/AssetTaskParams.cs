@@ -20,6 +20,7 @@ namespace WooAsset
         public IAssetEncrypt encrypt;
         public IBuildInBundleSelector buildInBundleSelector;
         public IBuildPipeLine buildPipe;
+        public IBundleOptimizer bundleOptimiser;
         public string version;
 
         public List<TagAssets> tags;
@@ -68,7 +69,7 @@ namespace WooAsset
             encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetEncrypt;
             assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
             buildPipe = Activator.CreateInstance(option.GetBuildPipelineType()) as IBuildPipeLine;
-
+            bundleOptimiser = Activator.CreateInstance(option.GetBundleOptimiserType()) as IBundleOptimizer;
             buildInBundleSelector = Activator.CreateInstance(option.GetBuildInBundleSelectorType()) as IBuildInBundleSelector;
             version = option.version;
             tags = option.tags;

@@ -7,10 +7,9 @@ using System.Linq;
 
 namespace WooAsset
 {
+
     public class AssetsBuildOption : AssetsScriptableObject
     {
-
-
         public string version = "0.0.1";
         public bool copyToStream = false;
         public BuildMode buildMode = BuildMode.Increase;
@@ -34,6 +33,7 @@ namespace WooAsset
         public TypeSelect encrypt = new TypeSelect();
         public TypeSelect buildInBundleSelector = new TypeSelect();
         public TypeSelect buildPipeline = new TypeSelect();
+        public TypeSelect bundleOptimiser = new TypeSelect();
 
 
 
@@ -90,7 +90,11 @@ namespace WooAsset
                 buildPipeline.baseType = typeof(IBuildPipeLine);
                 buildPipeline.Enable();
             }
-
+            if (bundleOptimiser.baseType == null)
+            {
+                bundleOptimiser.baseType = typeof(IBundleOptimizer);
+                bundleOptimiser.Enable();
+            }
             recordIgnore.RemoveAll(x =>
 
        (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
@@ -107,6 +111,8 @@ namespace WooAsset
         public Type GetAssetModeType() => mode.GetSelectType();
         public Type GetBuildInBundleSelectorType() => buildInBundleSelector.GetSelectType();
         public Type GetBuildPipelineType() => buildPipeline.GetSelectType();
+        public Type GetBundleOptimiserType() => bundleOptimiser.GetSelectType();
+
 
         public bool SetAssetBuildType(Type type)
         {
@@ -144,6 +150,16 @@ namespace WooAsset
             }
             return false;
         }
+        public bool SetBundleOptimiserType(Type type)
+        {
+            if (bundleOptimiser.SetType(type))
+            {
+                Save();
+                return true;
+            }
+            return false;
+        }
+
 
 
         public void AddToRecordIgnore(string path, FileType type)

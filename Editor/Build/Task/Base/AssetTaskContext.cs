@@ -33,8 +33,7 @@ namespace WooAsset
         public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
         public IBuildInBundleSelector buildInBundleSelector => Params.buildInBundleSelector;
         public IBuildPipeLine buildPipe => Params.buildPipe;
-
-
+        public IBundleOptimizer bundleOptimiser => Params.bundleOptimiser;
         public bool fuzzySearch => Params.fuzzySearch;
         public FileNameSearchType fileNameSearchType => Params.fileNameSearchType;
 
