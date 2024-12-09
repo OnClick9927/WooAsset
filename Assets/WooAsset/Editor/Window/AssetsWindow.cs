@@ -83,29 +83,29 @@ namespace WooAsset
         private BundlesTree.SearchType preSearchType = BundlesTree.SearchType.AssetByPath;
         private LifeTree.SearchType rtSearchType = LifeTree.SearchType.Asset;
 
-        private AssetsTree col;
-        private BundlesTree pre;
-        private LifeTree rt;
+        private AssetsTree tree_win;
+        private BundlesTree bundle_win;
+        private LifeTree life_win;
         private Editor buildSetting_editor;
 
         public void OnEnable()
         {
-            col = new AssetsTree(collectState, colSearchType);
-            pre = new BundlesTree(previewState, preSearchType);
-            rt = new LifeTree(rtState, rtSearchType);
+            tree_win = new AssetsTree(collectState, colSearchType);
+            bundle_win = new BundlesTree(previewState, preSearchType);
+            life_win = new LifeTree(rtState, rtSearchType);
             buildSetting_editor = Editor.CreateEditor(AssetsEditorTool.option);
-            AssetsEditorTool.LifePart.onAssetLifeChange += rt.Reload;
+            AssetsEditorTool.LifePart.onAssetLifeChange += life_win.Reload;
             AssetsEditorTool.onPipelineFinish += FreshPreview;
 
         }
         public void OnDisable()
         {
             AssetsEditorTool.onPipelineFinish -= FreshPreview;
-            AssetsEditorTool.LifePart.onAssetLifeChange -= rt.Reload;
+            AssetsEditorTool.LifePart.onAssetLifeChange -= life_win.Reload;
 
-            colSearchType = col._searchType;
-            preSearchType = pre._searchType;
-            rtSearchType = rt._searchType;
+            colSearchType = tree_win._searchType;
+            preSearchType = bundle_win._searchType;
+            rtSearchType = life_win._searchType;
         }
         static float scale = 1.1f;
         private void OnGUI()
@@ -129,13 +129,13 @@ namespace WooAsset
                     GUILayout.EndArea();
                     break;
                 case TreeType.Assets:
-                    col.OnGUI(rect);
+                    tree_win.OnGUI(rect);
                     break;
                 case TreeType.Bundles:
-                    pre.OnGUI(rect);
+                    bundle_win.OnGUI(rect);
                     break;
                 case TreeType.AssetLife:
-                    rt.OnGUI(rect);
+                    life_win.OnGUI(rect);
                     break;
                 default:
                     break;
@@ -146,8 +146,9 @@ namespace WooAsset
 
         public void FreshPreview()
         {
-            col.Reload();
-            pre.OnReload();
+            tree_win.Reload();
+            bundle_win.OnReload();
+            life_win.Reload();
         }
 
 
@@ -166,7 +167,13 @@ namespace WooAsset
 
 
                 GUILayout.FlexibleSpace();
-                treeType = (TreeType)GUILayout.Toolbar((int)treeType, System.Enum.GetNames(typeof(TreeType)), EditorStyles.toolbarButton, GUILayout.Width(300));
+                var tmp = (TreeType)GUILayout.Toolbar((int)treeType, System.Enum.GetNames(typeof(TreeType)), EditorStyles.toolbarButton, GUILayout.Width(300));
+                if (tmp!= treeType)
+                {
+                    treeType = tmp;
+                    FreshPreview();
+                }
+                
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndArea();

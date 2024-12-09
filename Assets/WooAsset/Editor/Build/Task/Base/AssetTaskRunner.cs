@@ -81,7 +81,7 @@ namespace WooAsset
         public static AssetTask PreviewAssets()
         {
             var Params = new AssetTaskParams(TaskPipelineType.PreviewAssets);
-            AssetTask task = Execute(collectAssets, Params);
+            AssetTask task = Execute(collectasset, Params);
             return task;
         }
 
@@ -89,7 +89,7 @@ namespace WooAsset
         public static AssetTask PreviewAllAssets()
         {
             var Params = new AssetTaskParams(TaskPipelineType.PreviewAllAssets);
-            AssetTask task = Execute(collectAssets, Params);
+            AssetTask task = Execute(collectAllAssets, Params);
             return task;
         }
 
@@ -119,7 +119,7 @@ namespace WooAsset
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
 
-        private static List<AssetTask> collectAssets = new List<AssetTask>
+        private static List<AssetTask> collectAllAssets = new List<AssetTask>
         {
             new PrepareTask(),
             new CollectAssetsTask(),
@@ -127,7 +127,13 @@ namespace WooAsset
             new AssetsEditorTool.CallPipelineFinishTask(),
         };
 
-
+        private static List<AssetTask> collectasset = new List<AssetTask>
+        {
+            new PrepareTask(),
+            new CollectEachPkgAssetTask(),
+            new SetCacheTask(),
+            new AssetsEditorTool.CallPipelineFinishTask(),
+        };
 
     }
 }

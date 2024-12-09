@@ -3,23 +3,17 @@ using System.Linq;
 
 namespace WooAsset
 {
+
+
     public class CollectAssetsTask : AssetTask
     {
         protected override void OnExecute(AssetTaskContext context)
         {
             List<string> paths = new List<string>();
-            if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.EditorSimulate)
+            if (context.Pipeline != TaskPipelineType.PreviewAllAssets)
                 paths.AddRange(context.buildPkg.paths);
             else
-            {
-                if (context.Pipeline == TaskPipelineType.PreviewAllAssets)
-                    paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
-                else
-                    paths.AddRange(context.buildPkgs.Where(x => x.build == true).SelectMany(x => x.paths));
-
-
-            }
-
+                paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
             var tree = new AssetCollection();
             tree.ReadPaths(paths, context.assetBuild);
             List<EditorAssetData> assets = tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
@@ -41,6 +35,8 @@ namespace WooAsset
             tree.ReadRecord(record_dic);
             tree.ReadAssetTags(tag_dic);
             context.assetsCollection = tree;
+            if (context.buildPkg != null)
+                context.allAssetCollections[context.buildPkg.name] = tree;
             InvokeComplete();
         }
     }

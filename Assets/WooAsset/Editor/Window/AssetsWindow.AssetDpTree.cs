@@ -24,7 +24,7 @@ namespace WooAsset
                 long len = asset.length;
                 foreach (var item in assets)
                 {
-                    len += cache.tree.GetAssetData(item).length;
+                    len += tree.GetAssetData(item).length;
                     CreateItem(item, root, result, 1);
                 }
                 TreeColumns.dependence.headerContent = new UnityEngine.GUIContent($"Dependence \ttotal:{GetSizeString(len)}");

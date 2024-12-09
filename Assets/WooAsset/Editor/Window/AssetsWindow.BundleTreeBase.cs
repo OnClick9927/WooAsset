@@ -1,9 +1,7 @@
 ﻿using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using UnityEditor;
-using UnityEditor.VersionControl;
 
 namespace WooAsset
 {

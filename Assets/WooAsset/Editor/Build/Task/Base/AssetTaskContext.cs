@@ -44,7 +44,9 @@ namespace WooAsset
         public AssetCollection assetsCollection;
         public EditorPackageData buildPkg;
         public List<EditorAssetData> needBuildAssets;
-        public List<EditorBundleData> allBundleBuilds;
+        public Dictionary<string, AssetCollection> allAssetCollections = new Dictionary<string, AssetCollection>();
+
+        public Dictionary<string, List<EditorBundleData>> allBundleBuilds = new Dictionary<string, List<EditorBundleData>>();
         public VersionCollectionData historyVersions;
         public ManifestData manifest;
         public List<PackageExportData> exports;
