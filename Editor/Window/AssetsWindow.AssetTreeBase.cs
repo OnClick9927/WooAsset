@@ -11,6 +11,19 @@ namespace WooAsset
     {
         private abstract class AssetTreeBase : TreeView
         {
+            protected AssetCollection tree
+            {
+                get
+                {
+                    if (this.ping is BundlesTree)
+                        return cache.tree_bundle;
+
+                    if (this.ping is AssetsTree)
+                        return cache.tree_asset;
+
+                    return null;
+                }
+            }
             protected IPing<EditorAssetData> ping;
             public AssetTreeBase(TreeViewState state, IPing<EditorAssetData> ping) : base(state)
             {
@@ -80,7 +93,7 @@ namespace WooAsset
                 if (args.item.id != -1)
                 {
 
-                    EditorAssetData asset = cache.tree.GetAssetData(path);
+                    EditorAssetData asset = tree.GetAssetData(path);
                     var rs = RectEx.VerticalSplit(rect1, 18);
                     GUI.Label(rs[0], Textures.GetMiniThumbnail(path));
 
@@ -96,7 +109,7 @@ namespace WooAsset
                 }
                 else
                 {
-                    GUI.contentColor = new Color(1f,0.2f,0,1);
+                    GUI.contentColor = new Color(1f, 0.2f, 0, 1);
                     GUI.Label(rect1, new GUIContent($"Not Found---> {path}", Textures.err));
                     GUI.contentColor = Color.white;
                 }
@@ -106,7 +119,7 @@ namespace WooAsset
             protected override void DoubleClickedItem(int id)
             {
                 string path = this.FindItem(id, rootItem).displayName;
-                EditorAssetData asset = cache.tree.GetAssetData(path);
+                EditorAssetData asset = tree.GetAssetData(path);
                 this.ping.Ping(asset);
             }
         }

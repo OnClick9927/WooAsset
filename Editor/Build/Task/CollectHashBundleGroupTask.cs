@@ -47,7 +47,11 @@ namespace WooAsset
                 group.SetEncryptCode(code);
             }
 
-            context.allBundleBuilds = builds;
+            context.allBundleBuilds[context.buildPkg.name] = new List<EditorBundleData>(builds);
+
+
+
+
             InvokeComplete();
 
         }

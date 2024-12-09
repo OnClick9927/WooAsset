@@ -54,7 +54,7 @@ namespace WooAsset
             private long totalSize;
             protected override void CreateRows(TreeViewItem root, IList<TreeViewItem> result)
             {
-                var no_parent = cache.tree.GetNoneParent();
+                var no_parent = cache.tree_asset.GetNoneParent();
                 var root_dirs = no_parent.FindAll(x => x.type == AssetType.Directory);
                 var single_files = no_parent.FindAll(x => x.type != AssetType.Directory);
                 totalSize = no_parent.Sum(x => x.length);
@@ -82,9 +82,10 @@ namespace WooAsset
             protected override void SingleClickedItem(int id)
             {
                 var find = this.FindItem(id, this.rootItem);
-                string path = find.displayName;
-                EditorAssetData asset = cache.tree.GetAssetData(path);
                 dpViewType = DpViewType.None;
+                if (find == null) return;
+                string path = find.displayName;
+                EditorAssetData asset = cache.tree_asset.GetAssetData(path);
                 if (asset.usageCount > 0)
                 {
                     dpViewType |= DpViewType.Usage;
@@ -108,7 +109,28 @@ namespace WooAsset
                 var rs = RectEx.HorizontalSplit(rect, 40);
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
                 search.OnGUI(rs1[0]);
-                GUI.Label(rs1[1], $"Total Size {GetSizeString(totalSize)}");
+                GUILayout.BeginArea(rs1[1]);
+                {
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label($"Total Size   {GetSizeString(totalSize)}");
+
+                    GUILayout.FlexibleSpace();
+                    if (!cache.viewAllAssets)
+                    {
+                        var tmp = EditorGUILayout.Popup(cache.index, cache.pkgBundles.Select(x => x.pkgName).ToArray(), GUILayout.Width(100));
+                        if (tmp != cache.index)
+                        {
+                            cache.index = tmp;
+                            SingleClickedItem(-1);
+                            Reload();
+                        }
+                    }
+
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.EndArea();
+                //GUI.Label(rs1[1], $"Total Size {GetSizeString(totalSize)}");
                 if (dpViewType == DpViewType.None)
                 {
                     base.OnGUI(rs[1]);
@@ -168,7 +190,7 @@ namespace WooAsset
                     {
                         foreach (var path in paths)
                         {
-                            var data = cache.tree.GetAssetData(path);
+                            var data = cache.tree_asset.GetAssetData(path);
                             AssetsEditorTool.option.AddAssetTag(path, data.fileType, tag);
                         }
                         AssetsEditorTool.option.Save();
@@ -179,7 +201,7 @@ namespace WooAsset
                     {
                         foreach (var path in paths)
                         {
-                            var data = cache.tree.GetAssetData(path);
+                            var data = cache.tree_asset.GetAssetData(path);
                             AssetsEditorTool.option.RemoveAssetTag(path, data.fileType, tag);
                         }
                         AssetsEditorTool.option.Save();
@@ -191,7 +213,7 @@ namespace WooAsset
                 {
                     foreach (var path in rows)
                     {
-                        var data = cache.tree.GetAssetData(path);
+                        var data = cache.tree_asset.GetAssetData(path);
                         AssetsEditorTool.option.AddToRecordIgnore(path, data.fileType);
                     }
                     AssetsEditorTool.option.Save();
@@ -201,7 +223,7 @@ namespace WooAsset
                 {
                     foreach (var path in rows)
                     {
-                        var data = cache.tree.GetAssetData(path);
+                        var data = cache.tree_asset.GetAssetData(path);
                         AssetsEditorTool.option.RemoveFromRecordIgnore(path, data.fileType);
 
                     }
@@ -215,7 +237,7 @@ namespace WooAsset
 
             protected override void RowGUI(RowGUIArgs args)
             {
-                var asset = cache.tree.GetAssetData(args.label);
+                var asset = cache.tree_asset.GetAssetData(args.label);
                 if (asset == null) return;
 
                 EditorGUI.ProgressBar(args.GetCellRect(5), asset.length / (float)totalSize, "");
@@ -248,8 +270,8 @@ namespace WooAsset
 
             private void LoopCreateForSearch(IList<TreeViewItem> result, TreeViewItem root, EditorAssetData info)
             {
-                var paths = cache.tree.GetSubFolders(info);
-                var filepaths = cache.tree.GetSubFiles(info);
+                var paths = cache.tree_asset.GetSubFolders(info);
+                var filepaths = cache.tree_asset.GetSubFiles(info);
                 if (paths.Count > 0 || filepaths.Count > 0)
                 {
                     BuildDirsForSearch(result, root, paths);
@@ -301,8 +323,8 @@ namespace WooAsset
             {
                 var item = CreateItem(info.path, parent, result, parent.depth + 1);
                 if (item == null) return;
-                var paths = cache.tree.GetSubFolders(info);
-                var filepaths = cache.tree.GetSubFiles(info);
+                var paths = cache.tree_asset.GetSubFolders(info);
+                var filepaths = cache.tree_asset.GetSubFiles(info);
                 if (paths.Count > 0 || filepaths.Count > 0)
                 {
                     if (IsExpanded(item.id))
@@ -323,7 +345,7 @@ namespace WooAsset
             {
                 if (ping_a != null) return;
                 search.SetVelue("");
-                var find = cache.tree.GetAllAssets().Where(x => x != obj && obj.path.Contains(x.path)).ToList();
+                var find = cache.tree_asset.GetAllAssets().Where(x => x != obj && obj.path.Contains(x.path)).ToList();
                 find.Sort((a, b) => { return a.path.Length - b.path.Length > 0 ? 1 : 1; });
                 foreach (var item in find)
                 {

@@ -66,8 +66,28 @@ namespace WooAsset
             {
                 var rs = RectEx.HorizontalSplit(rect, 40);
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
+                GUILayout.BeginArea(rs1[1]);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"Total Size   {GetSizeString(totalSize)}");
+
+                GUILayout.FlexibleSpace();
+
+                if (cache.Pipeline == TaskPipelineType.EditorSimulate
+                    || cache.Pipeline == TaskPipelineType.BuildBundle
+                    || cache.Pipeline == TaskPipelineType.DryBuild)
+                {
+                    var tmp = EditorGUILayout.Popup(cache.index, cache.pkgBundles.Select(x => x.pkgName).ToArray(), GUILayout.Width(100));
+                    if (tmp != cache.index)
+                    {
+                        cache.index = tmp;
+                        SingleClickedItem(-1);
+                        Reload();
+                    }
+                }
+
+                GUILayout.EndHorizontal();
+                GUILayout.EndArea();
                 search.OnGUI(rs1[0]);
-                GUI.Label(rs1[1], $"Total Size   {GetSizeString(totalSize)}");
                 if (dpViewType == DpViewType.None)
                     base.OnGUI(rs[1]);
                 else if (dpViewType.HasFlag(DpViewType.Bundle) || dpViewType.HasFlag(DpViewType.BundleUsage))
@@ -167,7 +187,7 @@ namespace WooAsset
                                 }
                                 else if (_searchType == SearchType.AssetByTag)
                                 {
-                                    if (!GetTagsString(cache.tree.GetAssetData(path)).Contains(searchString)) continue;
+                                    if (!GetTagsString(cache.tree_bundle.GetAssetData(path)).Contains(searchString)) continue;
                                 }
                                 CreateItem(path, root, result);
                             }
@@ -208,7 +228,7 @@ namespace WooAsset
                 else
                 {
                     string path = args.label;
-                    EditorAssetData asset = cache.tree.GetAssetData(path);
+                    EditorAssetData asset = cache.tree_bundle.GetAssetData(path);
                     long length = asset.length;
                     GUI.Label(first, GUIContent(path, Textures.GetMiniThumbnail(path)));
                     DrawCount(args.GetCellRect(1), asset.usageCount);
@@ -234,18 +254,19 @@ namespace WooAsset
                     if (_searchType == SearchType.Bundle)
                         base.DoubleClickedItem(id);
                     else
-                        Ping(cache.tree.GetAssetData(rows[0].displayName));
+                        Ping(cache.tree_bundle.GetAssetData(rows[0].displayName));
                 }
             }
             protected override void SingleClickedItem(int id)
             {
                 var find = this.FindItem(id, this.rootItem);
-                string path = find.displayName;
                 dpViewType = DpViewType.None;
+                if (find == null) return;
+                string path = find.displayName;
 
                 if (find.depth == 1)
                 {
-                    var asset = cache.tree.GetAssetData(path);
+                    var asset = cache.tree_bundle.GetAssetData(path);
                     if (asset.dependence.Count != 0)
                     {
                         assetDp.SetAssetInfo(asset);

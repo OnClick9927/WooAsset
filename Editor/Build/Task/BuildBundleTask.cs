@@ -49,7 +49,7 @@ namespace WooAsset
 
             protected override void OnExecute(AssetTaskContext context)
             {
-                var source = context.allBundleBuilds;
+                var source = context.allBundleBuilds[context.buildPkg.name];
                 var normal = source.FindAll(x => !x.raw);
                 var raws = source.FindAll(x => x.raw);
 
