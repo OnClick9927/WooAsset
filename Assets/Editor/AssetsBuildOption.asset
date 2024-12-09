@@ -49,6 +49,8 @@ MonoBehaviour:
     _select: WooAsset.DefaultBuildInBundleSelector
   buildPipeline:
     _select: WooAsset.BuildInPipeline
+  optimiseBundle:
+    _select: WooAsset.NoneBundleResultOptimizer
   tags:
   - tag: test
     assets:
