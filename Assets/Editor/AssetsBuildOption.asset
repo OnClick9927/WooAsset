@@ -25,18 +25,18 @@ MonoBehaviour:
   serverPort: 8080
   pkgs:
   - build: 1
-    name: px
-    description: 
-    tags: []
-    paths:
-    - Assets/px
-    builds: []
-  - build: 1
     name: Example
     description: 
     tags: []
     paths:
     - Assets/Example
+    builds: []
+  - build: 1
+    name: px
+    description: 
+    tags: []
+    paths:
+    - Assets/px
     builds: []
   recordIgnore: []
   build:
@@ -49,8 +49,9 @@ MonoBehaviour:
     _select: WooAsset.DefaultBuildInBundleSelector
   buildPipeline:
     _select: WooAsset.BuildInPipeline
-  optimiseBundle:
-    _select: WooAsset.NoneBundleResultOptimizer
+  bundleOptimizer:
+    _select: WooAsset.DefaultBundleOptimizer
+  optimizationCount: 1
   tags:
   - tag: test
     assets:

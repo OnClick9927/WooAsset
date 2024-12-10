@@ -20,13 +20,15 @@ namespace WooAsset
         public IAssetEncrypt encrypt;
         public IBuildInBundleSelector buildInBundleSelector;
         public IBuildPipeLine buildPipe;
-        public IBundleOptimizer bundleOptimiser;
+        public IBundleOptimizer bundleOptimizer;
+        public int optimizationCount;
+
         public string version;
 
         public List<TagAssets> tags;
 
-        public List<AssetTask> pipelineStartTasks;
-        public List<AssetTask> pipelineEndTasks;
+        //public List<AssetTask> pipelineStartTasks;
+        //public List<AssetTask> pipelineEndTasks;
         public List<AssetIgnoreData> recordIgnore;
         public bool fuzzySearch;
         public FileNameSearchType fileNameSearchType;
@@ -69,11 +71,12 @@ namespace WooAsset
             encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetEncrypt;
             assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
             buildPipe = Activator.CreateInstance(option.GetBuildPipelineType()) as IBuildPipeLine;
-            bundleOptimiser = Activator.CreateInstance(option.GetBundleOptimiserType()) as IBundleOptimizer;
+            bundleOptimizer = Activator.CreateInstance(option.GetBundleOptimizerType()) as IBundleOptimizer;
             buildInBundleSelector = Activator.CreateInstance(option.GetBuildInBundleSelectorType()) as IBuildInBundleSelector;
             version = option.version;
             tags = option.tags;
             recordIgnore = option.recordIgnore;
+            optimizationCount = option.optimizationCount;
         }
 
         public BuildAssetBundleOptions GetBundleOption(out string err) => buildPipe.GetBundleOption(this, out err);

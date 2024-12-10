@@ -33,8 +33,8 @@ namespace WooAsset
         public TypeSelect encrypt = new TypeSelect();
         public TypeSelect buildInBundleSelector = new TypeSelect();
         public TypeSelect buildPipeline = new TypeSelect();
-        public TypeSelect bundleOptimiser = new TypeSelect();
-
+        public TypeSelect bundleOptimizer = new TypeSelect();
+        public int optimizationCount;
 
 
         public List<TagAssets> tags = new List<TagAssets>();
@@ -90,10 +90,10 @@ namespace WooAsset
                 buildPipeline.baseType = typeof(IBuildPipeLine);
                 buildPipeline.Enable();
             }
-            if (bundleOptimiser.baseType == null)
+            if (bundleOptimizer.baseType == null)
             {
-                bundleOptimiser.baseType = typeof(IBundleOptimizer);
-                bundleOptimiser.Enable();
+                bundleOptimizer.baseType = typeof(IBundleOptimizer);
+                bundleOptimizer.Enable();
             }
             recordIgnore.RemoveAll(x =>
 
@@ -111,7 +111,7 @@ namespace WooAsset
         public Type GetAssetModeType() => mode.GetSelectType();
         public Type GetBuildInBundleSelectorType() => buildInBundleSelector.GetSelectType();
         public Type GetBuildPipelineType() => buildPipeline.GetSelectType();
-        public Type GetBundleOptimiserType() => bundleOptimiser.GetSelectType();
+        public Type GetBundleOptimizerType() => bundleOptimizer.GetSelectType();
 
 
         public bool SetAssetBuildType(Type type)
@@ -150,9 +150,9 @@ namespace WooAsset
             }
             return false;
         }
-        public bool SetBundleOptimiserType(Type type)
+        public bool SetBundleOptimizerType(Type type)
         {
-            if (bundleOptimiser.SetType(type))
+            if (bundleOptimizer.SetType(type))
             {
                 Save();
                 return true;
