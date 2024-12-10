@@ -91,7 +91,7 @@ namespace WooAsset
                                 var bundleName = bundle.hash;
                                 string hash = bundleName.Split('_')[1];
                                 foreach (var item in source)
-                                    item.ReplaceDpendenceHash(bundleName, hash);
+                                    item.ReplaceDependenceHash(bundleName, hash);
                                 bundle.SyncRealHash(hash);
                                 needRenameFiles.Add(bundleName, hash);
                             }

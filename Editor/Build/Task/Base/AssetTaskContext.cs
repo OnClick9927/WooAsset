@@ -29,11 +29,13 @@ namespace WooAsset
         public TaskPipelineType Pipeline => Params.Pipeline;
         public IAssetsBuild assetBuild => Params.assetBuild;
         public IAssetEncrypt encrypt => Params.encrypt;
-        public List<AssetTask> pipelineStartTasks => Params.pipelineStartTasks;
-        public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
+        //public List<AssetTask> pipelineStartTasks => Params.pipelineStartTasks;
+        //public List<AssetTask> pipelineEndTasks => Params.pipelineEndTasks;
         public IBuildInBundleSelector buildInBundleSelector => Params.buildInBundleSelector;
         public IBuildPipeLine buildPipe => Params.buildPipe;
-        public IBundleOptimizer bundleOptimiser => Params.bundleOptimiser;
+        public IBundleOptimizer bundleOptimiser => Params.bundleOptimizer;
+        public int optimizationCount => Params.optimizationCount;
+
         public bool fuzzySearch => Params.fuzzySearch;
         public FileNameSearchType fileNameSearchType => Params.fileNameSearchType;
 

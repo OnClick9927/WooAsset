@@ -77,11 +77,13 @@ namespace WooAsset
             if (!ContainsAsset(assetPath)) return;
             EditorAssetData _find = assets.Find(x => x.path == assetPath);
             assets.Remove(_find);
-            length -= _find.length;
+            CalcLength();
 
         }
         public bool ContainsAsset(string assetPath) => assets.Find(x => x.path == assetPath) != null;
         public IReadOnlyList<string> GetAssets() => assets.ConvertAll(x => x.path).ToList();
+        public IReadOnlyList<EditorAssetData> GetAssetsRaw() => assets;
+
         public AssetBundleBuild ToAssetBundleBuild()
         {
             return new AssetBundleBuild()
@@ -91,7 +93,7 @@ namespace WooAsset
             };
         }
         public void SyncRealHash(string hash) => this.hash = hash;
-        private void CalcLength()
+        public void CalcLength()
         {
             length = 0;
             foreach (var item in assets)
@@ -122,6 +124,12 @@ namespace WooAsset
             usage.AddRange(result);
         }
 
+        public void AddAssetData(EditorAssetData assetData)
+        {
+            if (assets.Find(x => x.path == assetData.path) != null) return;
+            assets.Add(assetData);
+            CalcLength();
+        }
         public static EditorBundleData Create(List<EditorAssetData> assets)
         {
             EditorBundleData group = new EditorBundleData();
@@ -153,7 +161,7 @@ namespace WooAsset
         public void SetEncryptCode(int code) => _enCode = code;
         public int GetEncryptCode() => _enCode;
 
-        internal void ReplaceDpendenceHash(string from, string to)
+        internal void ReplaceDependenceHash(string from, string to)
         {
             if (usage.Remove(from))
                 usage.Add(to);

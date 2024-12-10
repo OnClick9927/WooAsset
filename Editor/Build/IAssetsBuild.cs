@@ -72,13 +72,6 @@ namespace WooAsset
         public virtual void Create(List<EditorAssetData> assets, List<EditorBundleData> result, EditorPackageData pkg)
         {
             var builds = pkg.builds;
-            List<EditorAssetData> Shaders = assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant);
-            assets.RemoveAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant);
-            EditorBundleTool.N2One(Shaders, result);
-            List<EditorAssetData> Scenes = assets.FindAll(x => x.type == AssetType.Scene);
-            assets.RemoveAll(x => x.type == AssetType.Scene);
-            EditorBundleTool.One2One(Scenes, result);
-
             if (builds == null || builds.Count == 0)
             {
                 var tagAssets = assets.FindAll(x => x.tags != null && x.tags.Count != 0);

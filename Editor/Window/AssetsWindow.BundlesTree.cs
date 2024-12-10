@@ -68,7 +68,7 @@ namespace WooAsset
                 var rs1 = RectEx.HorizontalSplit(rs[0], 20);
                 GUILayout.BeginArea(rs1[1]);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label($"Total Size   {GetSizeString(totalSize)}");
+                GUILayout.Label($"Total Size   {GetSizeString(totalSize)}   Total Count  {totalCount}");
 
                 GUILayout.FlexibleSpace();
 
@@ -198,13 +198,16 @@ namespace WooAsset
             }
 
             private long totalSize;
+            private long totalCount;
 
             protected override void CreateRows(TreeViewItem root, IList<TreeViewItem> result)
             {
                 totalSize = 0;
+                totalCount = 0;
                 if (groups != null)
                 {
                     totalSize = groups.Sum(x => x.length);
+                    totalCount = groups.Count;
                     InnerBuildRows(root, result);
                 }
             }

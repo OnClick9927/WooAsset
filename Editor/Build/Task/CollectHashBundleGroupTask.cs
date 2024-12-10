@@ -2,26 +2,34 @@
 using System.Drawing.Drawing2D;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
+using static UnityEngine.Networking.UnityWebRequest;
+using static WooAsset.AssetsEditorTool;
 
 namespace WooAsset
 {
     public class CollectHashBundleGroupTask : AssetTask
     {
-        private List<EditorBundleData> Sort(List<EditorBundleData> builds)
+
+        private List<EditorBundleData> RemoveEmpty(List<EditorBundleData> builds)
         {
             builds.RemoveAll(x => x.GetIsEmpty());
+            return builds;
+        }
+        private List<EditorBundleData> Sort(List<EditorBundleData> builds)
+        {
             builds.Sort((a, b) =>
             {
                 return a.length > b.length ? -1 : 1;
             });
             return builds;
         }
-        private List<EditorBundleData> HashDP(List<EditorBundleData> builds, Dictionary<string, List<string>> hashMap, bool logLoop)
+        private List<EditorBundleData> HashLengthDULoop(List<EditorBundleData> builds, Dictionary<string, List<string>> hashMap, bool logLoop)
         {
             for (int i = 0; i < builds.Count; i++)
             {
                 EditorBundleData build = builds[i];
                 build.CalculateHash(hashMap);
+                build.CalcLength();
             }
 
 
@@ -39,33 +47,54 @@ namespace WooAsset
         protected override void OnExecute(AssetTaskContext context)
         {
 
-            List<EditorAssetData> assets = context.assetsCollection.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
+            List<EditorAssetData> assets = new List<EditorAssetData>(context.needBuildAssets);
             var hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x).hash));
-            var builds = new List<EditorBundleData>();
 
-            var needbuild = new List<EditorAssetData>(context.needBuildAssets);
-            var raws = needbuild.FindAll(x => x.type == AssetType.Raw);
-            needbuild.RemoveAll(x => raws.Contains(x));
-            context.assetBuild.Create(needbuild, builds, context.buildPkg);
-            builds = Sort(builds);
-            builds = HashDP(builds, hashMap, false);
-            var _assets = new List<EditorAssetData>(context.needBuildAssets).Where(x => x.type != AssetType.Raw).ToList();
-            builds = context.bundleOptimiser.Optimise(builds, _assets, context.buildPkg);        
+            List<EditorBundleData> result = new List<EditorBundleData>();
+            EditorBundleTool.N2One(assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant), result);
+            EditorBundleTool.One2One(assets.FindAll(x => x.type == AssetType.Scene), result);
+            var raws = assets.FindAll(x => x.type == AssetType.Raw);
             foreach (var asset in raws)
-                builds.Add(EditorBundleData.CreateRaw(asset));
-            
-            builds = Sort(builds);
-            builds = HashDP(builds, hashMap, true);
+                result.Add(EditorBundleData.CreateRaw(asset));
+
+            assets.RemoveAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant
+            || x.type == AssetType.Scene || x.type == AssetType.Raw);
 
 
-            foreach (EditorBundleData group in builds)
+
+
+            {
+
+                var builds = new List<EditorBundleData>();
+
+                context.assetBuild.Create(new List<EditorAssetData>(assets), builds, context.buildPkg);
+                builds = RemoveEmpty(builds);
+                builds = HashLengthDULoop(builds, hashMap, false);
+
+                for (int i = 0; i < context.optimizationCount; i++)
+                {
+                    builds = context.bundleOptimiser.Optimize(builds, context.buildPkg, context.assetBuild);
+                    builds = RemoveEmpty(builds);
+                    builds = HashLengthDULoop(builds, hashMap, false);
+                }
+
+                result.AddRange(builds);
+            }
+
+            result = RemoveEmpty(result);
+            result = Sort(result);
+            result = HashLengthDULoop(result, hashMap, true);
+
+
+
+            foreach (EditorBundleData group in result)
             {
                 var en = context.assetBuild.GetBundleEncrypt(context.buildPkg, group, context.encrypt);
                 int code = context.assetBuild.GetEncryptCode(en);
                 group.SetEncryptCode(code);
             }
 
-            context.allBundleBuilds[context.buildPkg.name] = new List<EditorBundleData>(builds);
+            context.allBundleBuilds[context.buildPkg.name] = new List<EditorBundleData>(result);
 
 
 
