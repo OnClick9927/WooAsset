@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static UnityEditor.ObjectChangeEventStream;
 
 namespace WooAsset
 {
