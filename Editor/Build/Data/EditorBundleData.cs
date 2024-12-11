@@ -110,6 +110,7 @@ namespace WooAsset
                    .SelectMany(x => x.dependence)
                    .Distinct()
                    .Select(assetPath => source.Find(y => y.ContainsAsset(assetPath)))
+                   .Where(x => x != null)
                    .Distinct()
                    .Where(x => x.hash != hash)
                    .Select(x => x.hash);
