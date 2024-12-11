@@ -1,30 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
-using static UnityEngine.Networking.UnityWebRequest;
 using static WooAsset.AssetsEditorTool;
 
 namespace WooAsset
 {
-    public class CollectHashBundleGroupTask : AssetTask
-    {
 
-        private List<EditorBundleData> RemoveEmpty(List<EditorBundleData> builds)
+    public interface ICalcEditorBundleList
+    {
+        List<EditorBundleData> Calc(List<EditorBundleData> builds);
+    }
+    public class CollectHashBundleGroupTask : AssetTask, ICalcEditorBundleList
+    {
+        List<EditorBundleData> ICalcEditorBundleList.Calc(List<EditorBundleData> builds)
         {
             builds.RemoveAll(x => x.GetIsEmpty());
-            return builds;
-        }
-        private List<EditorBundleData> Sort(List<EditorBundleData> builds)
-        {
-            builds.Sort((a, b) =>
-            {
-                return a.length > b.length ? -1 : 1;
-            });
-            return builds;
-        }
-        private List<EditorBundleData> HashLengthDULoop(List<EditorBundleData> builds, Dictionary<string, List<string>> hashMap, bool logLoop)
-        {
+
             for (int i = 0; i < builds.Count; i++)
             {
                 EditorBundleData build = builds[i];
@@ -39,16 +29,16 @@ namespace WooAsset
                 group.FindUsage(builds);
 
             foreach (EditorBundleData group in builds)
-                if (group.CheckLoop(builds) && logLoop)
-                    AssetsEditorTool.LogError($"Bundle Contains Loop {group.hash}");
-
+                group.CheckLoop(builds);
             return builds;
         }
+        private Dictionary<string, List<string>> hashMap;
+
         protected override void OnExecute(AssetTaskContext context)
         {
 
             List<EditorAssetData> assets = new List<EditorAssetData>(context.needBuildAssets);
-            var hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x).hash));
+            hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x).hash));
 
             List<EditorBundleData> result = new List<EditorBundleData>();
             EditorBundleTool.N2One(assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant), result);
@@ -68,23 +58,28 @@ namespace WooAsset
                 var builds = new List<EditorBundleData>();
 
                 context.assetBuild.Create(new List<EditorAssetData>(assets), builds, context.buildPkg);
-                builds = RemoveEmpty(builds);
-                builds = HashLengthDULoop(builds, hashMap, false);
+                builds = (this as ICalcEditorBundleList).Calc(builds);
 
                 for (int i = 0; i < context.optimizationCount; i++)
                 {
-                    builds = context.bundleOptimiser.Optimize(builds, context.buildPkg, context.assetBuild);
-                    builds = RemoveEmpty(builds);
-                    builds = HashLengthDULoop(builds, hashMap, false);
+                    builds = context.bundleOptimiser.Optimize(builds, this, context.buildPkg,context.assetBuild);
+                    builds = (this as ICalcEditorBundleList).Calc(builds);
                 }
 
                 result.AddRange(builds);
             }
 
-            result = RemoveEmpty(result);
-            result = Sort(result);
-            result = HashLengthDULoop(result, hashMap, true);
+            result = (this as ICalcEditorBundleList).Calc(result);
+            result.Sort((a, b) =>
+            {
+                return a.length > b.length ? -1 : 1;
+            });
 
+            foreach (var asset in result)
+            {
+                if (asset.loopDependence)
+                    AssetsEditorTool.LogError($"Bundle Contains Loop {asset.hash}");
+            }
 
 
             foreach (EditorBundleData group in result)
@@ -96,11 +91,10 @@ namespace WooAsset
 
             context.allBundleBuilds[context.buildPkg.name] = new List<EditorBundleData>(result);
 
-
-
-
             InvokeComplete();
 
         }
+
+
     }
 }
