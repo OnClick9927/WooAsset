@@ -43,7 +43,7 @@ namespace WooAsset
         protected void SetVersion(string version) => (this).version = version;
         protected abstract bool Initialized();
         protected abstract Operation CopyToSandBox(string from, string to, bool again);
-        protected abstract Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs);
+        protected abstract Operation InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs);
         protected abstract LoadRemoteVersionsOperation LoadRemoteVersions();
         protected abstract Bundle CreateBundle(string bundleName, BundleLoadArgs args);
         protected abstract VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType);
@@ -87,7 +87,7 @@ namespace WooAsset
 
         protected override Operation CopyToSandBox(string from, string to, bool again) => new CopyStreamBundlesOperation(from, to, again);
 
-        protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
+        protected override Operation InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             if (again)
             {
@@ -97,7 +97,7 @@ namespace WooAsset
             }
             if (manifestOp == null)
                 manifestOp = new LoadManifestOperation(AssetsInternal.GetLoadedBundleNames().ToList()
-                    , version, ignoreLoalVersion, fuzzySearch,fileNameSearchType, getPkgs);
+                    , version, ignoreLocalVersion, fuzzySearch,fileNameSearchType, getPkgs);
             if (manifestOp.isDone)
                 ManifestOp_completed(manifestOp);
             else
