@@ -22,7 +22,7 @@ namespace WooAsset
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to, bool again) => Operation.empty;
-            protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
+            protected override Operation InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
             {
                 this.fileNameSearchType = fileNameSearchType;
                 param = new AssetTaskParams(TaskPipelineType.EditorSimulate);

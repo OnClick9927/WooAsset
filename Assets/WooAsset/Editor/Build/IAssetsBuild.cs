@@ -21,10 +21,22 @@ namespace WooAsset
         public virtual List<string> GetAssetTags(string path) => null;
         public virtual string GetVersion(string settingVersion, AssetTaskContext context) => settingVersion;
         protected virtual AssetType CoverAssetType(string path, AssetType type) => type;
-        public AssetType GetAssetType(string path)
+
+        protected virtual bool IsIgnorePath(string path)
         {
             var list = AssetsEditorTool.ToRegularPath(path).Split('/').ToList();
-            if (!list.Contains("Assets") || list.Contains("Editor") || list.Contains("Resources")) return AssetType.Ignore;
+            if (!list.Contains("Assets") ||
+                list.Contains("Editor") ||
+                list.Contains("Resources") ||
+                list.Contains("Editor Default Resources") ||
+                list.Contains("Gizmos")
+                )
+                return true;
+            return false;
+        }
+        public AssetType GetAssetType(string path)
+        {
+            if (IsIgnorePath(path)) return AssetType.Ignore;
             AssetType _type = AssetType.None;
             if (AssetsEditorTool.IsDirectory(path))
                 _type = AssetType.Directory;
