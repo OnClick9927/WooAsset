@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 namespace WooAsset
@@ -61,11 +59,10 @@ namespace WooAsset
 
     public class GroupOperation<T> : Operation where T : Operation
     {
-        public override float progress => isDone ? 1 : (float)_index / _count;
+        public override float progress => isDone ? 1 : _count == 0 ? 0 : (float)_index / _count;
         private int _count;
         private int _index;
         public int count => _count;
-
         public void Done(List<T> ops)
         {
             if (ops != null && ops.Count != 0)
@@ -73,33 +70,30 @@ namespace WooAsset
                 _count = ops.Count;
                 for (int i = 0; i < ops.Count; i++)
                 {
-                    var bundle = ops[i];
-                    if (bundle.isDone)
+                    var op = ops[i];
+                    if (op.isDone)
                         _index++;
                     else
-                    {
-                        bundle.completed += Op_completed;
-                    }
+                        op.completed += Op_completed;
                 }
             }
             CheckComplete();
-
         }
-        protected virtual void BeforeInvokeComplete()
-        {
-
-        }
+        protected virtual void BeforeInvokeComplete() { }
         private void CheckComplete()
         {
             if (_index >= _count)
-            {
-                BeforeInvokeComplete();
                 InvokeComplete();
-            }
+        }
+        public new void InvokeComplete()
+        {
+            BeforeInvokeComplete();
+            base.InvokeComplete();
         }
         private void Op_completed(Operation operation)
         {
             _index++;
+            //AssetsHelper.LogError(progress.ToString());
             operation.completed -= Op_completed;
             if (operation.isErr)
                 SetErr(operation.error);

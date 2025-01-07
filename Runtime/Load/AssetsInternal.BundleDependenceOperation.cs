@@ -12,7 +12,7 @@ namespace WooAsset
             {
                 var dps = bundleData.dependence;
                 if (dps == null)
-                    base.Done(null);
+                   InvokeComplete();
                 else
                 {
                     List<Bundle> _bundles = new List<Bundle>();

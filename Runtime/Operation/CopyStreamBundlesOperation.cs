@@ -6,14 +6,14 @@ namespace WooAsset
     {
         private readonly string srcPath;
         private readonly string destPath;
-        string destlistPath, srclistPath;
+        string tarFilePath, srcFilePath;
         StreamBundlesData streamBundlesData;
-        public CopyStreamBundlesOperation(string srcPath, string destPath, bool again)
+        public CopyStreamBundlesOperation(string srcPath, string targetPath, bool again)
         {
             this.srcPath = srcPath;
-            this.destPath = destPath;
-            destlistPath = AssetsHelper.CombinePath(destPath, StreamBundlesData.fileName);
-            srclistPath = AssetsHelper.CombinePath(srcPath, StreamBundlesData.fileName);
+            this.destPath = targetPath;
+            tarFilePath = AssetsHelper.CombinePath(targetPath, StreamBundlesData.fileName);
+            srcFilePath = AssetsHelper.CombinePath(srcPath, StreamBundlesData.fileName);
             Copy(again);
         }
 
@@ -22,45 +22,43 @@ namespace WooAsset
             if (streamBundlesData != null)
             {
                 var writer = AssetsHelper.WriteBufferObject(streamBundlesData);
-                await AssetsHelper.WriteFile(writer.buffer, destlistPath, 0, writer.length);
+                await AssetsHelper.WriteFile(writer.buffer, tarFilePath, 0, writer.length);
             }
         }
         protected virtual async void Copy(bool again)
         {
             if (AssetsInternal.NeedCopyStreamBundles())
             {
-                if (again || !AssetsHelper.ExistsFile(destlistPath))
+                if (again || !AssetsHelper.ExistsFile(tarFilePath))
                 {
 
-                    DownLoader downloader = await AssetsInternal.DownloadBytes(AssetsInternal.GetStreamingFileUrl(srclistPath));
+                    DownLoader downloader = await AssetsInternal.DownloadBytes(AssetsInternal.GetStreamingFileUrl(srcFilePath));
                     if (!downloader.isErr)
                     {
                         streamBundlesData = AssetsHelper.ReadBufferObject<StreamBundlesData>(downloader.data);
-                        List<DownLoader> ds = new List<DownLoader>();
+                        List<DownLoader> downloaders = new List<DownLoader>();
                         foreach (var fileName in streamBundlesData.fileNames)
                         {
                             string dest = AssetsHelper.CombinePath(destPath, fileName).Replace(StreamBundlesData.fileExt, "");
                             if (AssetsHelper.ExistsFile(dest)) continue;
                             string src = AssetsHelper.CombinePath(srcPath, fileName);
-                            ds.Add(AssetsInternal.DownLoadFile(AssetsInternal.GetStreamingFileUrl(src), dest));
+                            downloaders.Add(AssetsInternal.DownLoadFile(AssetsInternal.GetStreamingFileUrl(src), dest));
                         }
 
-                        base.Done(ds);
+                        base.Done(downloaders);
 
+                    }
+                    else
+                    {
+                        SetErr(downloader.error);
+                        InvokeComplete();
                     }
                 }
                 else
-                {
-                    base.Done(null);
-                }
-
-
+                    InvokeComplete();
             }
             else
-            {
-                base.Done(null);
-            }
-
+                InvokeComplete();
         }
     }
 

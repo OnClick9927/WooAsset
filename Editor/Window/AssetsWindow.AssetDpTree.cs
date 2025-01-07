@@ -18,7 +18,7 @@ namespace WooAsset
             }
             public AssetDpTree(TreeViewState state, IPing<EditorAssetData> ping) : base(state, ping) { }
 
-            protected override MultiColumnHeaderState.Column GetFirtColumn() => TreeColumns.dependence;
+            protected override MultiColumnHeaderState.Column GetFirstColumn() => TreeColumns.dependence;
             private void Build(TreeViewItem root, List<string> assets, IList<TreeViewItem> result)
             {
                 long len = asset.length;

@@ -46,7 +46,7 @@ namespace WooAsset
                 search.onValueChange += (value) => { this.searchString = value.ToLower(); };
                 search.onModeChange += (value) => { this._searchType = (SearchType)value; this.Reload(); };
             }
-            protected override MultiColumnHeaderState.Column GetFirtColumn() => TreeColumns.emptyTitle;
+            protected override MultiColumnHeaderState.Column GetFirstColumn() => TreeColumns.emptyTitle;
 
             protected override void SearchChanged(string newSearch) => Reload();
 

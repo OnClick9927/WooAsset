@@ -19,7 +19,7 @@ namespace WooAsset
 
             }
             public AssetUsageTree(TreeViewState state, IPing<EditorAssetData> ping) : base(state, ping) { }
-            protected override MultiColumnHeaderState.Column GetFirtColumn() => TreeColumns.usage;
+            protected override MultiColumnHeaderState.Column GetFirstColumn() => TreeColumns.usage;
             private void Build(TreeViewItem root, List<string> assets, IList<TreeViewItem> result)
             {
                 foreach (var item in assets)

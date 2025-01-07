@@ -1,7 +1,7 @@
 {
   "name": "com.woo.wooasset",
   "displayName": "WooAsset",
-  "version": "1.8.40",
+  "version": "1.8.41",
   "unity": "2019.4",
   "description": "WooAsset",
   "type": "library",

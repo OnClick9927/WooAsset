@@ -32,7 +32,7 @@ namespace WooAsset
 
                 this.multiColumnHeader = new MultiColumnHeader(new MultiColumnHeaderState(new MultiColumnHeaderState.Column[]
                 {
-                    GetFirtColumn(),
+                    GetFirstColumn(),
                     TreeColumns.record,
 
                     TreeColumns.usageCount,
@@ -45,7 +45,7 @@ namespace WooAsset
                 this.multiColumnHeader.ResizeToFit();
                 Reload();
             }
-            protected abstract MultiColumnHeaderState.Column GetFirtColumn();
+            protected abstract MultiColumnHeaderState.Column GetFirstColumn();
             protected abstract void CreateRows(TreeViewItem root, IList<TreeViewItem> result);
             protected override IList<TreeViewItem> BuildRows(TreeViewItem root)
             {
@@ -81,7 +81,7 @@ namespace WooAsset
                 result.Add(_item);
                 return _item;
             }
-
+     
 
             protected override void RowGUI(RowGUIArgs args)
             {
