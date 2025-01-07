@@ -1,0 +1,15 @@
+.vs/
+*.csproj
+*.sln
+.vsconfig
+Library/
+Temp/
+ProjectSettings/
+Logs/
+obj/
+*.csproj
+UserSettings/
+Assets/StreamingAssets
+Assets/StreamingAssets.meta
+DLC/
+Export/

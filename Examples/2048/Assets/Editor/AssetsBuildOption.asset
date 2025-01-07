@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e92f35693393261449628fc0c28902e5, type: 3}
+  m_Name: AssetsBuildOption
+  m_EditorClassIdentifier: 
+  version: 0.0.1
+  copyToStream: 1
+  buildMode: 0
+  typeTreeOption: 1
+  bundleNameType: 2
+  compress: 1
+  MaxCacheVersionCount: 8
+  cleanHistory: 1
+  buildInAssets: []
+  enableServer: 0
+  serverPort: 8080
+  pkgs:
+  - build: 1
+    name: Project
+    description: p
+    tags: []
+    paths:
+    - Assets/Project
+    builds: []
+  recordIgnore: []
+  build:
+    types:
+    - WooAsset.DefaultAssetsBuild
+    shortTypes:
+    - DefaultAssetsBuild
+    typeIndex: 0
+  mode:
+    types:
+    - WooAsset.AssetsEditorTool+AssetDatabaseMode
+    - WooAsset.AssetsEditorTool+RudeMode
+    - WooAsset.NormalAssetsMode
+    shortTypes:
+    - AssetDatabaseMode
+    - RudeMode
+    - NormalAssetsMode
+    typeIndex: 1
+  encrypt:
+    types:
+    - WooAsset.NoneAssetStreamEncrypt
+    - WooAsset.DefaultAssetStreamEncrypt
+    shortTypes:
+    - NoneAssetStreamEncrypt
+    - DefaultAssetStreamEncrypt
+    typeIndex: 0
+  tags: []
+  shaderVariantDirectory: 
+  atlasPaths: []
+  packSetting:
+    blockOffset: 1
+    enableRotation: 0
+    enableTightPacking: 0
+    padding: 2
+  textureSetting:
+    readable: 1
+    generateMipMaps: 0
+    sRGB: 1
+    filterMode: 1
+    anisoLevel: 1
+  PlatformSetting:
+    m_Name: DefaultTexturePlatform
+    m_Overridden: 0
+    m_MaxTextureSize: 2048
+    m_ResizeAlgorithm: 0
+    m_TextureFormat: -1
+    m_TextureCompression: 1
+    m_CompressionQuality: 50
+    m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    m_CrunchedCompression: 1
+    m_AllowsAlphaSplitting: 0
+    m_AndroidETC2FallbackOverride: 0
