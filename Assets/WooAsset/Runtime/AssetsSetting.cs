@@ -3,6 +3,7 @@
 
     public abstract class AssetsSetting
     {
+       
         public virtual bool CheckVersionByVersionCollection() => false;
         public virtual bool NeedCopyStreamBundles() => true;
         public virtual string GetStreamingFileUrl(string url)
@@ -22,11 +23,13 @@
         public virtual bool GetCachesDownloadedBundles() => false;
         public virtual bool GetSaveBytesWhenPlaying() => true;
         public virtual bool GetBundleAlwaysFromWebRequest() => true;
+        public virtual int GetWebRequestRetryCount() => 3;
         public virtual int GetWebRequestTimeout() => 30;
+        public virtual int GetWebRequestCountAtSameTime() => 30;
+
         public virtual bool GetFuzzySearch() => false;
         public virtual FileNameSearchType GetFileNameSearchType() => FileNameSearchType.FileName;
 
-        public virtual int GetWebRequestRetryCount() => 3;
         public virtual bool GetAutoUnloadBundle() => true;
 
         public virtual IAssetLife GetAssetLife() => new LRULife(1024 * 1024 * 1024);

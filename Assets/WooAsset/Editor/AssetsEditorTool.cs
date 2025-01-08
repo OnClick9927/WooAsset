@@ -38,6 +38,7 @@ namespace WooAsset
                 case PlayModeStateChange.ExitingEditMode:
                     break;
                 case PlayModeStateChange.EnteredPlayMode:
+                    DownLoader.ClearQueue();
                     break;
                 case PlayModeStateChange.ExitingPlayMode:
                     AssetsServer.Stop();

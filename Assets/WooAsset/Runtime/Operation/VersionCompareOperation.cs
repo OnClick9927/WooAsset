@@ -55,7 +55,7 @@ namespace WooAsset
                 string local_path = AssetsInternal.GetBundleLocalPath(fileName);
 
                 ManifestData remote_main, local_main = null;
-                DownLoader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
+                BytesDownLoader downloader = AssetsInternal.DownloadVersion(version.version, fileName);
                 await downloader;
                 if (downloader.isErr)
                 {

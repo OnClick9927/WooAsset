@@ -53,9 +53,11 @@ namespace WooAsset
             IAssetLife life = setting.GetAssetLife();
             if (life != null)
                 AddAssetLife(life);
+            DownLoader.RequestCountAtSameTime = setting.GetWebRequestCountAtSameTime();
         }
         private static int GetWebRequestTimeout() => setting.GetWebRequestTimeout();
         private static int GetWebRequestRetryCount() => setting.GetWebRequestRetryCount();
+
         private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, bundleName);
 
         private static string GetUrlFromBundleName(string version, string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, version, bundleName);
@@ -148,8 +150,8 @@ namespace WooAsset
         public static LoadVersionDataOperation DownloadVersionData(string version) => new LoadVersionDataOperation(version);
         public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => mode.CompareVersion(version, pkgs, compareType);
 
-        public static DownLoader DownLoadRawBundle(string version, string bundleName) => DownloadBytes(GetUrlFromBundleName(version, bundleName));
-        public static DownLoader DownLoadBundle(string version, string bundleName, uint crc, Hash128 hash)
+        public static BytesDownLoader DownLoadRawBundle(string version, string bundleName) => DownloadBytes(GetUrlFromBundleName(version, bundleName));
+        public static BundleDownLoader DownLoadBundle(string version, string bundleName, uint crc, Hash128 hash)
         {
             return new BundleDownLoader(GetUrlFromBundleName(version, bundleName), AssetsInternal.GetCachesDownloadedBundles(), crc, hash, GetWebRequestTimeout(), GetWebRequestRetryCount());
         }
@@ -157,11 +159,11 @@ namespace WooAsset
         public static DownLoader DownLoadBundleFile(string version, string bundleName) =>
             DownLoadFile(GetUrlFromBundleName(version, bundleName), GetBundleLocalPath(bundleName));
 
-        public static DownLoader DownloadVersion(string version, string bundleName) => DownLoadRawBundle(version, bundleName);
-        public static DownLoader DownloadRemoteVersion() =>
+        public static BytesDownLoader DownloadVersion(string version, string bundleName) => DownLoadRawBundle(version, bundleName);
+        public static BytesDownLoader DownloadRemoteVersion() =>
             DownloadBytes(GetUrlFromBundleName(AssetsHelper.VersionCollectionName));
         public static DownLoader DownLoadFile(string url, string path) => new FileDownLoader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static DownLoader DownloadBytes(string url) => new DownLoader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static BytesDownLoader DownloadBytes(string url) => new BytesDownLoader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
     }
 
 }

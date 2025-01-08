@@ -58,7 +58,7 @@ namespace WooAsset
             READ_LOCAL_MANIFEST_FAIl:
                 if (_download)
                 {
-                    var downloader = await AssetsInternal.DownloadVersion(version.version, fileName) as DownLoader;
+                    var downloader = await AssetsInternal.DownloadVersion(version.version, fileName);
                     if (downloader.isErr)
                     {
                         SetErr(downloader.error);
