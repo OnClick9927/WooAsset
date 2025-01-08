@@ -2,7 +2,7 @@
 {
     public class LoadRemoteVersionsOperation : Operation
     {
-        private DownLoader downloader;
+        private BytesDownLoader downloader;
         private VersionCollectionData remote;
         public VersionCollectionData Versions => remote;
         public override float progress => isDone ? 1 : downloader.progress;

@@ -122,7 +122,7 @@ namespace WooAsset
                 if (op is ReadFileOperation)
                     buffer = (op as ReadFileOperation).bytes;
                 else if (op is DownLoader)
-                    buffer = (op as DownLoader).data;
+                    buffer = (op as BytesDownLoader).data;
 
 
 

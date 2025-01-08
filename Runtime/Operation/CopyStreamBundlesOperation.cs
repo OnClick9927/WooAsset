@@ -32,7 +32,7 @@ namespace WooAsset
                 if (again || !AssetsHelper.ExistsFile(tarFilePath))
                 {
 
-                    DownLoader downloader = await AssetsInternal.DownloadBytes(AssetsInternal.GetStreamingFileUrl(srcFilePath));
+                    BytesDownLoader downloader = await AssetsInternal.DownloadBytes(AssetsInternal.GetStreamingFileUrl(srcFilePath));
                     if (!downloader.isErr)
                     {
                         streamBundlesData = AssetsHelper.ReadBufferObject<StreamBundlesData>(downloader.data);

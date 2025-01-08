@@ -1,22 +1,73 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace WooAsset
 {
-    public class DownLoader : LoopOperation
+    public abstract class DownLoader : LoopOperation
     {
+        private class DownLoaderQueue
+        {
+            private Queue<DownLoader> queue;
+            private int count = 0;
+            public void Run(DownLoader downLoader)
+            {
+                if (count < RequestCountAtSameTime)
+                {
+                    count++;
+                    downLoader._state = State.Run;
+                }
+                else
+                {
+                    if (queue == null)
+                        queue = new Queue<DownLoader>();
+                    queue.Enqueue(downLoader);
+                    downLoader._state = State.Wait;
+                }
+            }
+            public void DownLoadEnd(DownLoader downLoader)
+            {
+                count--;
+                if (queue == null || queue.Count == 0) return;
+                var dequeue = queue.Dequeue();
+                Run(dequeue);
+            }
+
+            public void Clear()
+            {
+                count = 0;
+            }
+        }
+
+
+        static DownLoaderQueue _queue;
+        static DownLoaderQueue queue
+        {
+            get
+            {
+                if (_queue == null)
+                    _queue = new DownLoaderQueue();
+                return _queue;
+            }
+        }
+        public static void ClearQueue() => queue.Clear();
         public string url { get; protected set; }
         public int timeout { get; protected set; }
-        public byte[] data { get; protected set; }
 
         public override float progress { get { return _progress; } }
         private float _progress;
         protected int retry;
         private int _retry = 0;
         private UnityWebRequest request;
+        public static int RequestCountAtSameTime;
+        private enum State
+        {
+            Wait, Run
+        }
+        private State _state;
         protected DownLoader() { }
         public DownLoader(string url, int timeout, int retry)
         {
@@ -24,21 +75,17 @@ namespace WooAsset
             this.retry = retry;
             this.url = url;
         }
-        protected virtual UnityWebRequest GetRequest()
+        protected override void AddToLoop()
         {
-
-            return UnityWebRequest.Get(url);
-
+            base.AddToLoop();
+            queue.Run(this);
         }
-        protected virtual void OnRequestEnd(UnityWebRequest req)
-        {
-            var data = req.downloadHandler.data;
-            this.data = new byte[data.Length];
-            Array.Copy(data, this.data, data.Length);
-        }
+        protected abstract UnityWebRequest GetRequest();
+        protected abstract void OnRequestEnd(UnityWebRequest request);
 
         protected override void OnUpdate()
         {
+            if (_state == State.Wait) return;
             if (request == null)
             {
                 request = GetRequest();
@@ -79,13 +126,31 @@ namespace WooAsset
                     OnRequestEnd(request);
                     request.Dispose();
                     InvokeComplete();
-
+                    queue.DownLoadEnd(this);
                 }
             }
             else
             {
                 _progress = request.downloadProgress;
             }
+        }
+
+
+    }
+
+    public class BytesDownLoader : DownLoader
+    {
+        public byte[] data { get; protected set; }
+        public BytesDownLoader(string url, int timeout, int retry) : base(url, timeout, retry)
+        {
+
+        }
+        protected override UnityWebRequest GetRequest() => UnityWebRequest.Get(url);
+        protected override void OnRequestEnd(UnityWebRequest request)
+        {
+            var data = request.downloadHandler.data;
+            this.data = new byte[data.Length];
+            Array.Copy(data, this.data, data.Length);
         }
     }
     public class FileDownLoader : DownLoader
@@ -99,7 +164,7 @@ namespace WooAsset
         {
             return new UnityWebRequest(url, "Get", new DownloadHandlerFile(path), null);
         }
-        protected override void OnRequestEnd(UnityWebRequest req)
+        protected override void OnRequestEnd(UnityWebRequest request)
         {
         }
 
@@ -135,11 +200,7 @@ namespace WooAsset
 
             return new UnityWebRequest(url, "Get", download, null); ;
         }
-        protected override void OnRequestEnd(UnityWebRequest req)
-        {
-
-            this.bundle = (req.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
-        }
+        protected override void OnRequestEnd(UnityWebRequest request) => this.bundle = (request.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
     }
 }
 
