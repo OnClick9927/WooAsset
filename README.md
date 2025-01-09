@@ -50,7 +50,7 @@
       <div align="center">
         <image src="https://img.tapimg.com/market/images/0911f4199421cf4a0d2d94081235a50a.png/appicon_m?t=1" style="width:64px;height:64px;"></image>
         <br>
-        <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说</a>
+        <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说:御兽</a>
       </div>
     </td>
 
