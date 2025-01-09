@@ -48,9 +48,9 @@
 <tr>
     <td>
       <div align="center">
-        <image src="http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png" style="width:64px;height:64px;"></image>
+        <image src="https://img.tapimg.com/market/images/c302d02e54a8185c292964aed5e3dc57.png?imageView2/0/w/1080/h/608/format/jpg/interlace/1/ignore-error/1&t=1" style="width:64px;height:64px;"></image>
         <br>
-        <a  href="http://yxwlgame.com/simplexx_home/" target="_blank">简单修仙</a>
+        <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说</a>
       </div>
     </td>
 
