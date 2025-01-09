@@ -48,7 +48,7 @@
 <tr>
     <td>
       <div align="center">
-        <image src="https://img.tapimg.com/market/images/c302d02e54a8185c292964aed5e3dc57.png?imageView2/0/w/1080/h/608/format/jpg/interlace/1/ignore-error/1&t=1" style="width:64px;height:64px;"></image>
+        <image src="https://img.tapimg.com/market/images/0911f4199421cf4a0d2d94081235a50a.png/appicon_m?t=1" style="width:64px;height:64px;"></image>
         <br>
         <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说</a>
       </div>
