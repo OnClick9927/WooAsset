@@ -39,7 +39,7 @@ namespace WooAsset
         public override int Read(byte[] array, int offset, int count)
         {
             var index = base.Read(array, offset, count);
-            EncryptBuffer.Decode(bundleName, array, offset, count, encrypt);
+            encrypt.Decode(bundleName, array, offset, count);
 
             return index;
         }

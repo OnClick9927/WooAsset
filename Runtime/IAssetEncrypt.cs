@@ -1,4 +1,6 @@
-﻿namespace WooAsset
+﻿using System;
+
+namespace WooAsset
 {
     public interface IAssetEncrypt
     {
@@ -7,21 +9,6 @@
         byte[] Decode(string bundleName, byte[] buffer, int offset, int length);
 
 
-    }
-    public class EncryptBuffer
-    {
-        public static byte[] Encode(string bundleName, byte[] buffer, IAssetEncrypt en)
-        {
-            return en.Encode(bundleName, buffer);
-        }
-        public static byte[] Decode(string bundleName, byte[] buffer, int offset, int length, IAssetEncrypt en)
-        {
-            return en.Decode(bundleName, buffer, offset, length);
-        }
-        public static byte[] Decode(string bundleName, byte[] buffer, IAssetEncrypt en)
-        {
-            return en.Decode(bundleName, buffer);
-        }
     }
     public class NoneAssetStreamEncrypt : IAssetEncrypt
     {
@@ -62,6 +49,34 @@
         byte[] IAssetEncrypt.Encode(string bundleName, byte[] buffer)
         {
             return ((IAssetEncrypt)this).Decode(bundleName, buffer);
+        }
+    }
+
+    public class OffsetAssetStreamEncrypt : IAssetEncrypt
+    {
+        public const int code = 3;
+
+        public virtual ulong GetOffset(string bundleName) => 8;
+        public byte[] Decode(string bundleName, byte[] buffer)
+        {
+            ulong offset = GetOffset(bundleName);
+            Array.Copy(buffer, (int)offset, buffer, 0, buffer.Length - (int)offset);
+            return buffer;
+        }
+
+        public byte[] Decode(string bundleName, byte[] buffer, int offset, int length)
+        {
+            return null;
+        }
+
+        public byte[] Encode(string bundleName, byte[] buffer)
+        {
+            ulong offset = GetOffset(bundleName);
+            byte[] tmp = new byte[(int)offset + buffer.Length];
+            for (int i = 0; i < (int)offset; i++)
+                tmp[i] = (byte)bundleName[i % bundleName.Length];
+            Array.Copy(buffer, 0, tmp, (int)offset, buffer.Length);
+            return tmp;
         }
     }
 }
