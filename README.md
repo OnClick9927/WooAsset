@@ -18,7 +18,7 @@
   * 支持资源模糊搜索
   * 支持选择版本运行
   * 支持资源懒卸载/内存大小控制/自动卸载
-  * 支持下载重试、等待时常控制
+  * 支持下载重试、等待时常控制、速度限制
   * 支持加载流程个性化
   * 支持有/无服务器告知最新版本
 
@@ -48,9 +48,9 @@
 <tr>
     <td>
       <div align="center">
-        <image src="http://yxwlgame.com/wp-content/uploads/2023/07/游戏图标.png" style="width:64px;height:64px;"></image>
+        <image src="https://img.tapimg.com/market/images/0911f4199421cf4a0d2d94081235a50a.png/appicon_m?t=1" style="width:64px;height:64px;"></image>
         <br>
-        <a  href="http://yxwlgame.com/simplexx_home/" target="_blank">简单修仙</a>
+        <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说:御兽</a>
       </div>
     </td>
 
