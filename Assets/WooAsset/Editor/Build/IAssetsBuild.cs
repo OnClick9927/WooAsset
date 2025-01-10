@@ -147,17 +147,23 @@ namespace WooAsset
         public virtual IAssetEncrypt GetBundleEncrypt(EditorPackageData pkg, EditorBundleData data, IAssetEncrypt en) => en;
         public virtual int GetEncryptCode(IAssetEncrypt en)
         {
-            if (en is NoneAssetStreamEncrypt) return NoneAssetStreamEncrypt.code;
-            if (en is DefaultAssetStreamEncrypt) return DefaultAssetStreamEncrypt.code;
+            foreach (var item in map)
+                if (item.Value.GetType() == en.GetType())
+                    return item.Key;
             return -1;
         }
-        NoneAssetStreamEncrypt none = new NoneAssetStreamEncrypt();
-        DefaultAssetStreamEncrypt def = new DefaultAssetStreamEncrypt();
+        private Dictionary<int, IAssetEncrypt> map = new Dictionary<int, IAssetEncrypt>()
+        {
+            {NoneAssetStreamEncrypt.code,new NoneAssetStreamEncrypt() },
+            {DefaultAssetStreamEncrypt.code,new DefaultAssetStreamEncrypt() },
+            {OffsetAssetStreamEncrypt.code,new OffsetAssetStreamEncrypt() },
+        };
+
         public virtual IAssetEncrypt GetEncryptByCode(int code)
         {
-            if (code == NoneAssetStreamEncrypt.code) return none;
-            if (code == DefaultAssetStreamEncrypt.code) return def;
-            return null;
+            IAssetEncrypt en = null;
+            map.TryGetValue(code, out en);
+            return en;
         }
 
     }

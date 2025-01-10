@@ -16,7 +16,7 @@ MonoBehaviour:
   copyToStream: 1
   buildMode: 0
   typeTreeOption: 0
-  bundleNameType: 0
+  bundleNameType: 1
   compress: 2
   MaxCacheVersionCount: 8
   cleanHistory: 1
@@ -37,7 +37,7 @@ MonoBehaviour:
   mode:
     _select: WooAsset.NormalAssetsMode
   encrypt:
-    _select: WooAsset.DefaultAssetStreamEncrypt
+    _select: WooAsset.OffsetAssetStreamEncrypt
   buildInBundleSelector:
     _select: WooAsset.DefaultBuildInBundleSelector
   buildPipeline:

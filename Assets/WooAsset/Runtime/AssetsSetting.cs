@@ -1,14 +1,15 @@
-﻿namespace WooAsset
+﻿using System.Collections.Generic;
+
+namespace WooAsset
 {
 
     public abstract class AssetsSetting
     {
-       
+
         public virtual bool CheckVersionByVersionCollection() => false;
         public virtual bool NeedCopyStreamBundles() => true;
         public virtual string GetStreamingFileUrl(string url)
         {
-
 #if UNITY_STANDALONE_OSX || UNITY_IOS
         return $"file://{url}";
 #else
@@ -36,14 +37,21 @@
 
         public virtual IAssetEncrypt GetEncrypt(int code)
         {
-            if (code == NoneAssetStreamEncrypt.code) return none;
-            if (code == DefaultAssetStreamEncrypt.code) return def;
-            return null;
+
+            IAssetEncrypt en = null;
+            map.TryGetValue(code, out en);
+            return en;
         }
+        private Dictionary<int, IAssetEncrypt> map = new Dictionary<int, IAssetEncrypt>()
+        {
+            {NoneAssetStreamEncrypt.code,new NoneAssetStreamEncrypt() },
+            {DefaultAssetStreamEncrypt.code,new DefaultAssetStreamEncrypt() },
+            {OffsetAssetStreamEncrypt.code,new OffsetAssetStreamEncrypt() },
+
+        };
 
 
-        NoneAssetStreamEncrypt none = new NoneAssetStreamEncrypt();
-        DefaultAssetStreamEncrypt def = new DefaultAssetStreamEncrypt();
+
 
     }
 }

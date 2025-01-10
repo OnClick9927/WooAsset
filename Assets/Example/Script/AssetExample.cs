@@ -20,11 +20,14 @@ namespace WooAsset
         public Image image2;
         public AssetReference<UnityEngine.Sprite> assetReference;
         public Slider slider;
-
-        private async void Start()
+        private void Awake()
         {
             Assets.SetAssetsSetting(new LocalSetting());
-            await Task.Delay(2000);
+
+        }
+        private async void Start()
+        {
+            //await Task.Delay(2000);
             Debug.LogError("-----------------");
 
             {
@@ -43,27 +46,27 @@ namespace WooAsset
 
             }
             Debug.LogError("-----------------");
-            return;
-            var op = await Assets.LoadRemoteVersions();
-            if (op.Versions != null)
-            {
-                var version = op.Versions.NewestVersion();
-                var down = await Assets.DownloadVersionData(version);
-                var versionData = down.GetVersion();
-                var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs(), VersionCompareType.FileHash);
-                List<DownLoader> downloader = new List<DownLoader>();
+            ////return;
+            //var op = await Assets.LoadRemoteVersions();
+            //if (op.Versions != null)
+            //{
+            //    var version = op.Versions.NewestVersion();
+            //    var down = await Assets.DownloadVersionData(version);
+            //    var versionData = down.GetVersion();
+            //    var compare = await Assets.CompareVersion(versionData, versionData.GetAllPkgs(), VersionCompareType.FileHash);
+            //    List<DownLoader> downloader = new List<DownLoader>();
 
 
 
-                for (int i = 0; i < compare.add.Count; i++)
-                    downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName));
-                for (int i = 0; i < compare.change.Count; i++)
-                    downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName));
-                GroupOperation<DownLoader> op2 = new GroupOperation<DownLoader>();
-                op2.Done(downloader);
-                await op2;
-            }
-            Debug.LogError("-----------------");
+            //    for (int i = 0; i < compare.add.Count; i++)
+            //        downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.add[i].bundleName));
+            //    for (int i = 0; i < compare.change.Count; i++)
+            //        downloader.Add(Assets.DownLoadBundleFile(versionData.version, compare.change[i].bundleName));
+            //    GroupOperation<DownLoader> op2 = new GroupOperation<DownLoader>();
+            //    op2.Done(downloader);
+            //    await op2;
+            //}
+            //Debug.LogError("-----------------");
 
 
             await Assets.InitAsync("", true);

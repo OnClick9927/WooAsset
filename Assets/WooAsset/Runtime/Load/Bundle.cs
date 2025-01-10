@@ -138,8 +138,7 @@ namespace WooAsset
                     && AssetsInternal.GetCachesDownloadedBundles()
                     && !AssetsInternal.GetBundleAlwaysFromWebRequest())
                     await AssetsHelper.WriteFile(buffer, path, 0, buffer.Length);
-
-                buffer = EncryptBuffer.Decode(bundleName, buffer, encrypt);
+                buffer = encrypt.Decode(bundleName, buffer);
                 if (raw)
                 {
                     rawObject = RawObject.Create(path, buffer);
@@ -170,17 +169,29 @@ namespace WooAsset
 
             protected override Operation BeforeLoad()
             {
-                if (raw || (compress != CompressType.LZMA && !(encrypt is NoneAssetStreamEncrypt)))
+                if (raw || (compress != CompressType.LZMA && !(encrypt is NoneAssetStreamEncrypt) && !(typeof(OffsetAssetStreamEncrypt).IsAssignableFrom(encrypt.GetType()))))
                 {
                     return AssetsHelper.ReadFile(path, async);
                 }
                 else
                 {
-                    filestream = new BundleStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
-                    if (async)
-                        loadOp = AssetBundle.LoadFromStreamAsync(filestream, bundleCrc);
+                    if (typeof(OffsetAssetStreamEncrypt).IsAssignableFrom(encrypt.GetType()))
+                    {
+                        var en = encrypt as OffsetAssetStreamEncrypt;
+                        ulong offset = en.GetOffset(bundleName);
+                        if (async)
+                            loadOp = AssetBundle.LoadFromFileAsync(path, bundleCrc, offset);
+                        else
+                            End(AssetBundle.LoadFromFile(path, bundleCrc, offset));
+                    }
                     else
-                        End(AssetBundle.LoadFromStream(filestream, bundleCrc));
+                    {
+                        filestream = new BundleStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bundleName, encrypt);
+                        if (async)
+                            loadOp = AssetBundle.LoadFromStreamAsync(filestream, bundleCrc);
+                        else
+                            End(AssetBundle.LoadFromStream(filestream, bundleCrc));
+                    }
                     return null;
                 }
             }

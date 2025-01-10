@@ -135,7 +135,7 @@ namespace WooAsset
                         var bundleName = bundle.hash;
                         var bytes_src = AssetsEditorTool.ReadFileSync(AssetsEditorTool.CombinePath(context.historyPath, bundleName));
                         var en = context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode());
-                        var bytes = EncryptBuffer.Encode(bundleName, bytes_src, en);
+                        var bytes = en.Encode(bundleName, bytes_src);
                         AssetsEditorTool.WriteFileSync(AssetsEditorTool.CombinePath(context.outputPath, bundleName), bytes);
                     }
 
