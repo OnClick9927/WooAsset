@@ -129,7 +129,7 @@ namespace WooAsset
 
 
         public static bool GetIsAssetLoaded(string assetPath) => assets.Find(assetPath) != null;
-        public static Operation CopyToSandBox(bool again) => mode.CopyToSandBox(AssetsHelper.StreamBundlePath, localSaveDir, again);
+        public static Operation CopyToSandBox() => mode.CopyToSandBox(AssetsHelper.StreamBundlePath, localSaveDir);
         public static string GUIDToAssetPath(string guid) => mode.GUIDToAssetPath(guid);
         public static int GetLoadedBundleCount() => bundles.GetCount();
         public static IEnumerable<string> GetLoadedBundleNames() => bundles.GetKeys();
