@@ -1029,7 +1029,7 @@ MonoBehaviour:
         record: 1
         guid: e3265ab4bf004d28a9537516768c1c75
   manifest:
-    version: 2025_01_10_14_31_13
+    version: 2025_01_13_13_54_04
     assets:
     - path: Assets/Example/px/Two.prefab
       type: 9

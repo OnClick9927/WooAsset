@@ -22,6 +22,8 @@ namespace WooAsset
 
         protected void InvokeComplete()
         {
+            if (_isDone)
+                return;
             _isDone = true;
             completed?.Invoke(this);
         }
@@ -88,6 +90,7 @@ namespace WooAsset
         }
         public new void InvokeComplete()
         {
+            if (isDone) return;
             BeforeInvokeComplete();
             base.InvokeComplete();
         }

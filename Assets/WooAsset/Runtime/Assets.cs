@@ -14,7 +14,7 @@ namespace WooAsset
         public static LoadVersionDataOperation DownloadVersionData(string version) => AssetsInternal.DownloadVersionData(version);
 
         public static DownLoader DownLoadBundleFile(string version, string bundleName) => AssetsInternal.DownLoadBundleFile(version, bundleName);
-        public static Operation CopyToSandBox(bool again = false) => AssetsInternal.CopyToSandBox(again);
+        public static Operation CopyToSandBox() => AssetsInternal.CopyToSandBox();
         public static bool Initialized() => AssetsInternal.Initialized();
         public static Operation InitAsync(string version = "", bool ignoreLoalVersion = false, bool again = false, Func<VersionData, List<PackageData>> getPkgs = null) => AssetsInternal.InitAsync(version, ignoreLoalVersion, again, getPkgs);
         public static Asset LoadAssetAsync(string path, Type type) => AssetsInternal.LoadAsset(path, false, true, type) as Asset;

@@ -6,9 +6,11 @@ namespace WooAsset
     {
         internal class CopyToStreamCMD : CopyDirectoryCMD
         {
+            private string version;
 
-            public CopyToStreamCMD(string srcPath, string targetPath) : base(srcPath, targetPath)
+            public CopyToStreamCMD(string srcPath,string version, string targetPath) : base(srcPath, targetPath)
             {
+                this.version = version;
             }
 
             public void Execute(string[] files)
@@ -22,6 +24,7 @@ namespace WooAsset
                 AssetsEditorTool.WriteBufferObjectSync(new StreamBundlesData()
                 {
                     fileNames = list.ToArray(),
+                    version = this.version,
                 },
                 AssetsEditorTool.CombinePath(targetPath, StreamBundlesData.fileName));
                 base.Execute();
