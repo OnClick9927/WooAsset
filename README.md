@@ -53,7 +53,14 @@
         <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说:御兽</a>
       </div>
     </td>
-
+   <td>
+      <div align="center">
+        <image src="https://github.com/user-attachments/assets/2b7a2a13-1c1a-4910-9add-fcb2411ceb60" style="width:64px;height:64px;"></image>
+        <br>
+        <a  href="https://www.taptap.cn/app/736704" target="_blank">NoPicGame
+ <br>纯Shader的游戏 </a>
+      </div>
+    </td>
    <td>
       <div align="center">
         <image src="https://github.com/OnClick9927/OnClick9927.github.io/blob/main/source/Webs/Bubble1Up/bubble_icon.png?raw=true" style="width:64px;height:64px;"></image>
