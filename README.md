@@ -65,7 +65,8 @@
       <div align="center">
         <image src="https://github.com/OnClick9927/OnClick9927.github.io/blob/main/source/Webs/Bubble1Up/bubble_icon.png?raw=true" style="width:64px;height:64px;"></image>
         <br>
-        <a  href="https://onclick9927.github.io/2024/09/06/Doc/WooAsset/12-WooAsset-%E4%BE%8B%E5%AD%90WebGL%202/" target="_blank">Bubble 1 Up</a>
+        <a  href="https://onclick9927.github.io/2024/09/06/Doc/WooAsset/12-WooAsset-%E4%BE%8B%E5%AD%90WebGL%202/" target="_blank">Bubble 1 Up
+         <br>2025 GGJ 上海椰岛站作品 </a>
       </div>
     </td>
 
