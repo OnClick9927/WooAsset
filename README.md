@@ -53,6 +53,25 @@
         <a  href="https://www.taptap.cn/app/736704" target="_blank">法宝传说:御兽</a>
       </div>
     </td>
+   <td>
+      <div align="center">
+        <image src="https://github.com/user-attachments/assets/2b7a2a13-1c1a-4910-9add-fcb2411ceb60" style="width:64px;height:64px;"></image>
+        <br>
+        <a  href="https://onclick9927.github.io/2024/09/06/Doc/WooAsset/13-WooAsset-%E4%BE%8B%E5%AD%90WebGL%203/" target="_blank">NoPicGame
+ </a>
+      </div>
+    </td>
+   <td>
+      <div align="center">
+        <image src="https://github.com/OnClick9927/OnClick9927.github.io/blob/main/source/Webs/Bubble1Up/bubble_icon.png?raw=true" style="width:64px;height:64px;"></image>
+        <br>
+        <a  href="https://onclick9927.github.io/2024/09/06/Doc/WooAsset/12-WooAsset-%E4%BE%8B%E5%AD%90WebGL%202/" target="_blank">Bubble 1 Up
+          </a>
+      </div>
+    </td>
+
+  <td>
+
 
   <td>
       <div align="center">
