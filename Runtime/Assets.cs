@@ -91,7 +91,29 @@ namespace WooAsset
         public static IReadOnlyList<string> GetAssetsByAssetName(string name) => AssetsInternal.GetAssetsByAssetName(name);
 
         public static AssetData GetAssetData(string assetPath) => AssetsInternal.GetAssetData(assetPath);
+        public static string GetRawAssetLocalPath(string assetPath)
+        {
+            var data = GetAssetData(assetPath);
+            return AssetsInternal.GetBundleLocalPath(data.bundleName);
+        }
+        public static string GetRawAssetRemoteUrl(string assetPath)
+        {
+            var data = GetAssetData(assetPath);
+            return AssetsInternal.GetUrlFromBundleName(AssetsInternal.GetVersion(), data.bundleName);
+        }
+        public static string GetRawAssetUrlOrPath(string assetPath)
+        {
+            if (AssetsInternal.isNormalMode)
+            {
+                var data = GetAssetData(assetPath);
+                var type = Bundle.GetLoadType(data.bundleName);
+                if (type == Bundle.BundleLoadType.FromFile)
+                    return AssetsInternal.GetBundleLocalPath(data.bundleName);
+                return AssetsInternal.GetUrlFromBundleName(AssetsInternal.GetVersion(), data.bundleName);
+            }
+            return assetPath;
 
+        }
     }
 
     partial class Assets
@@ -132,7 +154,8 @@ namespace WooAsset
         public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
         public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));
 
-        public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => new InstantiateObjectOperation(path, parent);
+        public static InstantiateObjectOperation InstantiateAsync(Asset asset, Transform parent) => new InstantiateObjectOperation(asset, parent);
+        public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => InstantiateAsync(Assets.LoadAssetAsync<GameObject>(path), parent);
         public static void Destroy(GameObject gameObject)
         {
 #if UNITY_EDITOR

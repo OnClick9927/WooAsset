@@ -25,7 +25,7 @@ namespace WooAsset
             var _op = option;
             AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetsMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
-            if (_op.enableServer && AssetsInternal.mode is NormalAssetsMode)
+            if (_op.enableServer && AssetsInternal.isNormalMode)
                 AssetsServer.Run(_op.serverPort, ServerDirectory);
         }
 

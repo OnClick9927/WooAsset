@@ -9,7 +9,7 @@ namespace WooAsset
 
     public class Bundle : AssetOperation
     {
-        private enum BundleLoadType
+        public enum BundleLoadType
         {
             FromFile,
             FromRequest,
@@ -35,6 +35,18 @@ namespace WooAsset
         public AssetBundle value { get; private set; }
 
         private Mode mode;
+
+        public static BundleLoadType GetLoadType(string bundleName)
+        {
+            var type = AssetsInternal.GetBundleAlwaysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
+            var _path = AssetsInternal.GetBundleLocalPath(bundleName);
+            if (type == BundleLoadType.FromFile && !AssetsHelper.ExistsFile(_path))
+            {
+                type = BundleLoadType.FromRequest;
+            }
+            return type;
+        }
+
         public Bundle(BundleLoadArgs loadArgs)
         {
             bundleName = loadArgs.bundleName;
@@ -45,15 +57,11 @@ namespace WooAsset
             compress = loadArgs.data.compress;
             bundleCrc = loadArgs.data.bundleCrc;
             bundleHash = Hash128.Parse(loadArgs.data.bundleHash);
-
-
-
-            _async = loadArgs.async;
-            type = AssetsInternal.GetBundleAlwaysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
             _path = AssetsInternal.GetBundleLocalPath(bundleName);
-            if (type == BundleLoadType.FromFile && !AssetsHelper.ExistsFile(_path))
+            _async = loadArgs.async;
+            type = GetLoadType(bundleName);
+            if (type == BundleLoadType.FromRequest)
             {
-                type = BundleLoadType.FromRequest;
                 _async = true;
             }
         }
