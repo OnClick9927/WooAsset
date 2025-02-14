@@ -14,7 +14,8 @@ namespace WooAsset
         public string guid;
         private string _path = string.Empty;
         private bool set;
-        private string path
+
+        public string path
         {
             get
             {
