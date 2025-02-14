@@ -9,13 +9,14 @@ namespace WooAsset
         public GameObject gameObject { get; private set; }
 
         private GameObjectBridge bridge;
-        public InstantiateObjectOperation(string path, Transform parent)
+    
+        public InstantiateObjectOperation(Asset asset, Transform parent)
         {
-            Done(path, parent);
+            Done(asset, parent);
         }
-        private async void Done(string path, Transform parent)
+        private async void Done(Asset asset, Transform parent)
         {
-            var asset = await Assets.LoadAssetAsync(path, typeof(GameObject));
+            await asset;
             Create(asset, parent);
         }
         private void Create(Asset asset, Transform parent)
@@ -25,7 +26,7 @@ namespace WooAsset
                 GameObject prefab = asset.GetAsset<GameObject>();
                 if (prefab == null)
                 {
-                    SetErr("The asset has broken");
+                    SetErr($"could not load gameObject from : {asset.path}");
                 }
                 else
                 {
@@ -36,10 +37,8 @@ namespace WooAsset
             }
             else
             {
-                SetErr("The asset has broken");
+                SetErr(asset.error);
             }
-
-
             this.InvokeComplete();
         }
         public void Destroy()

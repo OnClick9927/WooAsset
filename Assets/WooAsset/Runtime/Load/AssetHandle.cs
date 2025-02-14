@@ -32,7 +32,7 @@ namespace WooAsset
         public AssetData data => loadArgs.data;
 
         public AssetType assetType => data.type;
-        public virtual string path => data.path;
+        public string path => data.path;
         public string bundleName => data.bundleName;
         private AssetLoadArgs loadArgs;
 

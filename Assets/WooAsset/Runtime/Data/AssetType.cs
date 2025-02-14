@@ -3,36 +3,37 @@
     [System.Serializable]
     public enum AssetType
     {
-        None,
-        Ignore,
-        Directory,
-        Sprite,
-        Texture,
+        None = 0,
+        Ignore = 1,
+        Directory = 2,
 
-        VideoClip,
-        Scene,
-        Material,
-        Mesh,
-        GameObject,
-        Font,
+        AnimatorController = 13,
+        Raw = 16,
 
-        Animation,
-        AnimationClip,
-        AnimatorController,
+        Sprite = 3,
+        Texture = 4,
 
-        ScriptObject,
-        TextAsset,
-        Raw,
-        PhysicMaterial,
+        VideoClip = 5,
+        Scene = 6,
+        Material = 7,
+        Mesh = 8,
+        GameObject = 9,
+        Font = 10,
 
-        GUISkin,
+        AnimationClip = 12,
 
-        AudioMixer,
-        AudioClip,
+        ScriptObject = 14,
+        TextAsset = 15,
+        PhysicMaterial = 17,
+
+        GUISkin = 18,
+
+        AudioMixer = 19,
+        AudioClip = 20,
 
 
-        Shader,
-        ShaderVariant,
-        ComputeShader,
+        Shader = 21,
+        ShaderVariant = 22,
+        ComputeShader = 23,
     }
 }

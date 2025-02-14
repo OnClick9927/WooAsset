@@ -50,7 +50,6 @@ namespace WooAsset
                 else if (type == typeof(SpriteAtlas)) _type = AssetType.Ignore;
                 else if (type == typeof(UnityEditor.SceneAsset)) _type = AssetType.Scene;
                 else if (type == typeof(GameObject)) _type = AssetType.GameObject;
-                else if (type == typeof(Animation)) _type = AssetType.Animation;
                 else if (type == typeof(AnimationClip)) _type = AssetType.AnimationClip;
                 else if (type == typeof(AnimatorController)) _type = AssetType.AnimatorController;
                 else if (type == typeof(Font)) _type = AssetType.Font;
@@ -108,7 +107,6 @@ namespace WooAsset
                     AssetType.AudioClip,
                     AssetType.VideoClip,
                     AssetType.GameObject,
-                    AssetType.Animation,
                     AssetType.AnimationClip,
                     AssetType.AnimatorController,
                     AssetType.ScriptObject,

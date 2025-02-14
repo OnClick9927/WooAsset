@@ -89,22 +89,21 @@ namespace WooAsset
                     case AssetType.Sprite: return typeof(UnityEngine.Sprite);
                     case AssetType.Shader: return typeof(UnityEngine.Shader);
                     case AssetType.ShaderVariant: return typeof(UnityEngine.ShaderVariantCollection);
+                    case AssetType.GameObject: return typeof(UnityEngine.GameObject);
+                    case AssetType.VideoClip: return typeof(UnityEngine.Video.VideoClip);
+                    case AssetType.AudioClip: return typeof(UnityEngine.AudioClip);
+                    case AssetType.TextAsset: return typeof(UnityEngine.TextAsset);
+                    case AssetType.Mesh: return typeof(UnityEngine.Mesh);
+                    case AssetType.Material: return typeof(UnityEngine.Material);
+                    case AssetType.Font: return typeof(UnityEngine.Font);
+                    case AssetType.AnimationClip: return typeof(UnityEngine.AnimationClip);
+                    case AssetType.AnimatorController:
                     case AssetType.None:
                     case AssetType.Ignore:
                     case AssetType.Directory:
-                    case AssetType.Mesh:
                     case AssetType.Texture:
-                    case AssetType.TextAsset:
-                    case AssetType.VideoClip:
-                    case AssetType.AudioClip:
                     case AssetType.Scene:
-                    case AssetType.Material:
-                    case AssetType.GameObject:
-                    case AssetType.Font:
-                    case AssetType.Animation:
-                    case AssetType.AnimationClip:
-                    case AssetType.AnimatorController:
-                    case AssetType.ScriptObject:
+                    case AssetType.ScriptObject: 
                     default:
                         return type;
                 }

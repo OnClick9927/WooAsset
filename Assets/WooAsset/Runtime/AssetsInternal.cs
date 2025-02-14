@@ -15,6 +15,8 @@ namespace WooAsset
         private static MixedAssetLife mixedlife;
         private static IAssetsMode _defaultMode = new NormalAssetsMode();
         public static IAssetsMode mode { get; set; }
+
+        public static bool isNormalMode => mode != null && mode is NormalAssetsMode;
         private static string localSaveDir;
 
 
@@ -60,7 +62,7 @@ namespace WooAsset
 
         private static string GetUrlFromBundleName(string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, bundleName);
 
-        private static string GetUrlFromBundleName(string version, string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, version, bundleName);
+        public static string GetUrlFromBundleName(string version, string bundleName) => setting.GetUrlByBundleName(AssetsHelper.buildTarget, version, bundleName);
 
         private static bool GetFuzzySearch() => setting.GetFuzzySearch();
         private static FileNameSearchType GetFileNameSearchType() => setting.GetFileNameSearchType();
@@ -87,7 +89,7 @@ namespace WooAsset
     partial class AssetsInternal
     {
         public static bool Initialized() => mode.Initialized();
-        public static Operation InitAsync(string version, bool ignoreLoalVersion, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, ignoreLoalVersion, again, GetFuzzySearch(),GetFileNameSearchType(), getPkgs);
+        public static Operation InitAsync(string version, bool ignoreLoalVersion, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, ignoreLoalVersion, again, GetFuzzySearch(), GetFileNameSearchType(), getPkgs);
         public static string GetVersion() => Initialized() ? mode.version : string.Empty;
 
 
