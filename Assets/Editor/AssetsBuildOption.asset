@@ -54,8 +54,9 @@ MonoBehaviour:
       type: 0
     - path: Assets/Example/px
       type: 1
-  shaderVariantInputDirectory: []
-  shaderVariantOutputDirectory: 
+  shaderVariantInputDirectory:
+  - Assets/Example
+  shaderVariantOutputDirectory: Assets/Example
   atlasPaths: []
   packSetting:
     blockOffset: 1
