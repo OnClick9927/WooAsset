@@ -8,7 +8,7 @@ using static WooAsset.EditorBundleDataBuild;
 namespace WooAsset
 {
     [CustomPropertyDrawer(typeof(EditorBundleDataBuild))]
-    public class EditorBundleDataBuildDrawer : PropertyDrawer
+    class EditorBundleDataBuildDrawer : PropertyDrawer
     {
         private float GetPropertyHeightDown(SerializedProperty property)
         {
@@ -95,7 +95,7 @@ namespace WooAsset
 
             var rss = RectEx.VerticalSplit(rs[0], rs[0].width - 20, 2);
             var rsss = RectEx.VerticalSplit(rss[0], rss[0].width - 100);
-            var index = EditorGUI.Popup(rsss[0], "Selector", index_property.intValue, EditorBundleDataBuild.shortTypes);
+            var index = EditorGUI.Popup(rsss[0], "", index_property.intValue, EditorBundleDataBuild.shortTypes);
             if (index != index_property.intValue)
                 index_property.intValue = index;
             var type_property = param_property.FindPropertyRelative(nameof(AssetSelectorParam.type));
@@ -143,8 +143,27 @@ namespace WooAsset
         }
         private void DrawUp(Rect position, SerializedProperty property)
         {
-            var _pos = position;
+            var _rs = RectEx.HorizontalSplit(position, 20);
+
+
             var selector_property = property.FindPropertyRelative(nameof(EditorBundleDataBuild.selectors));
+            var rs_first = RectEx.VerticalSplit(_rs[0], _rs[0].width - 20);
+
+            GUI.Label(rs_first[0], nameof(EditorBundleDataBuild.selectors));
+
+            if (GUI.Button(rs_first[1], EditorGUIUtility.TrIconContent("d_Toolbar Plus"), EditorStyles.iconButton))
+            {
+                selector_property.InsertArrayElementAtIndex(0);
+            }
+
+
+
+            var _pos = RectEx.Zoom(_rs[1], TextAnchor.MiddleRight,new Vector2(-50,0));
+
+
+
+
+
             var size = selector_property.arraySize;
             for (int i = size - 1; i >= 0; i--)
             {
@@ -156,10 +175,7 @@ namespace WooAsset
                 _pos = rs[1];
             }
 
-            if (GUI.Button(RectEx.VerticalSplit(_pos, _pos.width - 20)[1], EditorGUIUtility.TrIconContent("d_Toolbar Plus"), EditorStyles.iconButton))
-            {
-                selector_property.InsertArrayElementAtIndex(0);
-            }
+
 
 
         }
