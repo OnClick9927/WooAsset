@@ -120,35 +120,33 @@ namespace WooAsset
                     BeginGUI("Build");
 
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.pkgs)));
-                    if (option.copyToStream)
-                    {
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
-                    }
-
-
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.version)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.copyToStream)));
-                    if (option.copyToStream)
-                        option.buildInBundleSelector.typeIndex = EditorGUILayout.Popup("Build-In Bundle Selector", option.buildInBundleSelector.typeIndex, option.buildInBundleSelector.shortTypes);
-
-                    option.buildPipeline.typeIndex = EditorGUILayout.Popup("Build Pipeline", option.buildPipeline.typeIndex, option.buildPipeline.shortTypes);
-
-
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildMode)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.bundleNameType)));
-
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.typeTreeOption)));
-
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.compress)));
+                    GUILayout.Space(10);
 
+                    option.buildPipeline.typeIndex = EditorGUILayout.Popup("Build Pipeline", option.buildPipeline.typeIndex, option.buildPipeline.shortTypes);
                     option.build.typeIndex = EditorGUILayout.Popup("Asset Build", option.build.typeIndex, option.build.shortTypes);
                     option.encrypt.typeIndex = EditorGUILayout.Popup("Encrypt", option.encrypt.typeIndex, option.encrypt.shortTypes);
-                    option.bundleOptimizer.typeIndex = EditorGUILayout.Popup("Bundle Result Optimizer", option.bundleOptimizer.typeIndex, option.bundleOptimizer.shortTypes);
+
+
+
+                    MidGUI("Bundle Result Optimize");
+
+                    option.bundleOptimizer.typeIndex = EditorGUILayout.Popup("Optimizer", option.bundleOptimizer.typeIndex, option.bundleOptimizer.shortTypes);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.optimizationCount)));
+                    MidGUI("Built-in Asset Select");
 
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.copyToStream)));
+                    GUI.enabled = option.copyToStream;
+                    option.buildInBundleSelector.typeIndex = EditorGUILayout.Popup("Selector", option.buildInBundleSelector.typeIndex, option.buildInBundleSelector.shortTypes);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
 
+                    MidGUI("Default");
                     GUI.enabled = false;
                     EditorGUILayout.EnumPopup(nameof(AssetsEditorTool.BuildTarget), AssetsEditorTool.BuildTarget);
                     EditorGUILayout.TextField(nameof(AssetsEditorTool.BuildTargetName), AssetsEditorTool.BuildTargetName);

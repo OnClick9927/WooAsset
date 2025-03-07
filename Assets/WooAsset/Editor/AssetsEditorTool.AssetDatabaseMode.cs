@@ -29,7 +29,7 @@ namespace WooAsset
             protected override ManifestData manifest => Initialized() ? cache.manifest : null;
             protected override bool Initialized() => _task != null && _task.isDone;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;
-            protected override Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
+            protected override Operation InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
             {
                 if (_task == null)
                     _task = AssetTaskRunner.EditorSimulate(fuzzySearch, fileNameSearchType);
