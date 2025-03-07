@@ -4,7 +4,7 @@
     {
         protected override void OnExecute(AssetTaskContext context)
         {
-            string err = context.Params.CheckLeagal();
+            string err = context.Params.CheckLegal();
             if (!string.IsNullOrEmpty(err))
             {
                 SetErr(err);

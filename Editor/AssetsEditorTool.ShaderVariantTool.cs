@@ -105,9 +105,9 @@ namespace WooAsset
                 go.transform.parent = root;
             }
 
-            public async static Task Execute()
+            public async static Task Execute(string output, string[] input)
             {
-                string _savePath = AssetsEditorTool.option.shaderVariantOutputDirectory;
+                string _savePath = output;
                 if (!AssetsEditorTool.ExistsDirectory(_savePath))
                 {
                     AssetsEditorTool.LogError("ShaderVariantDirectory Not Exist,CheckSetting");
@@ -123,7 +123,7 @@ namespace WooAsset
                 await Task.Delay((int)SleepMilliseconds);
                 ShaderVariantCollectionHelper.ClearCurrentShaderVariantCollection();
                 await Task.Delay((int)SleepMilliseconds);
-                List<string> _allMaterials = AssetDatabase.FindAssets("t:Material", option.pkgs.SelectMany(x => x.paths).Concat(option.shaderVariantInputDirectory).ToArray())
+                List<string> _allMaterials = AssetDatabase.FindAssets("t:Material", input)
                     .ToList()
                     .ConvertAll(x => AssetDatabase.GUIDToAssetPath(x));
                 await Task.Delay((int)SleepMilliseconds);

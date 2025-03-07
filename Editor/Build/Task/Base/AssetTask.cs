@@ -24,5 +24,11 @@ namespace WooAsset
         protected AssetTaskContext context;
         protected abstract void OnExecute(AssetTaskContext context);
 
+        protected new void SetErr(string err)
+        {
+            base.error = err;
+
+        }
+
     }
 }

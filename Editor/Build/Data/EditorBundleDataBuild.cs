@@ -35,7 +35,7 @@ namespace WooAsset
             N2MBySizeAndDirAndAssetType,
             N2MByAssetTypeAndSize,
         }
-   
+
 
         public PackType packType;
         public long size = 2097152;
@@ -85,28 +85,22 @@ namespace WooAsset
                       return new { param = param, selector = Activator.CreateInstance(GetSelectType(param.typeIndex)) as IAssetSelector };
                   }).Select(x =>
                   {
-                      var selects = x.selector.Select(assets, x.param);
-                      return new { x.param.type, selects };
+                      var _assets = x.selector.Select(assets, x.param);
+                      return new { x.param.type, _assets };
                   });
 
 
-            var union = _result.Where(x => x.type == AssetSelectorParam.SelectType.Union).SelectMany(x => x.selects);
+            var union = _result.Where(x => x.type == AssetSelectorParam.SelectType.Union).SelectMany(x => x._assets);
             if (union.Count() == 0)
                 union = new List<EditorAssetData>(assets);
-            var intersect = _result.Where(x => x.type == AssetSelectorParam.SelectType.Intersect).Select(x => x.selects);
             selected = selected.Union(union);
 
-
-
+            var intersect = _result.Where(x => x.type == AssetSelectorParam.SelectType.Intersect).Select(x => x._assets);
             foreach (var item in intersect)
                 selected = selected.Intersect(item);
 
-
-
-
-
-            assets.RemoveAll(x => selected.Contains(x));
             var list = selected.Distinct().ToList();
+            assets.RemoveAll(x => list.Contains(x));
             switch (packType)
             {
                 case PackType.One2One:

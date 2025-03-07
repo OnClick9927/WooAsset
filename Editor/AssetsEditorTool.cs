@@ -118,9 +118,8 @@ namespace WooAsset
         }
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
-        public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute();
+        public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute(option.atlasPaths, option.PlatformSetting, option.textureSetting, option.packSetting);
         [MenuItem(TaskPipelineMenu.ShaderVariant)]
-        public static async Task SpriteShaderVariant() => await ShaderVariantTool.Execute();
-
+        public static async Task SpriteShaderVariant() => await ShaderVariantTool.Execute(option.shaderVariantOutputDirectory, option.pkgs.SelectMany(x => x.paths).Concat(option.shaderVariantInputDirectory).ToArray());
     }
 }

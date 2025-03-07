@@ -7,6 +7,8 @@ namespace WooAsset
     class TagAssetsDawer : UnityEditor.PropertyDrawer
     {
         static GUIContent empty = new GUIContent();
+        static GUIContent assest = new GUIContent("Assets");
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var assets = property.FindPropertyRelative(nameof(TagAssets.assets));
@@ -28,7 +30,7 @@ namespace WooAsset
                 EditorGUI.PropertyField(rss[0], tag, empty);
             }
             //GUI.enabled = false;
-            EditorGUI.PropertyField(rs[1], assets, empty);
+            EditorGUI.PropertyField(rs[1], assets, TagAssetsDawer.assest);
             //GUI.enabled = true;
 
         }
