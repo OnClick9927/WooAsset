@@ -27,7 +27,7 @@ namespace WooAsset
 
 
 
-        public List<AssetIgnoreData> recordIgnore = new List<AssetIgnoreData>();
+        public List<FileRecordData> recordIgnore = new List<FileRecordData>();
         public TypeSelect build = new TypeSelect();
         public TypeSelect mode = new TypeSelect();
         public TypeSelect encrypt = new TypeSelect();
@@ -165,7 +165,7 @@ namespace WooAsset
         public void AddToRecordIgnore(string path, FileType type)
         {
             if (recordIgnore.Any(x => x.path == path && x.type == type)) return;
-            recordIgnore.Add(new AssetIgnoreData() { type = type, path = path });
+            recordIgnore.Add(new FileRecordData() { type = type, path = path });
         }
         public void RemoveFromRecordIgnore(string path, FileType type) => recordIgnore.RemoveAll(x => x.path == path && x.type == type);
 
@@ -193,28 +193,5 @@ namespace WooAsset
             assets.Remove(type, path);
 
         }
-
-        public SpriteAtlasPackingSettings GetPackingSetting()
-        {
-            return new SpriteAtlasPackingSettings()
-            {
-                blockOffset = packSetting.blockOffset,
-                enableRotation = packSetting.enableRotation,
-                enableTightPacking = packSetting.enableTightPacking,
-                padding = packSetting.padding,
-            };
-        }
-        public SpriteAtlasTextureSettings GetTextureSetting()
-        {
-            return new SpriteAtlasTextureSettings()
-            {
-                readable = textureSetting.readable,
-                generateMipMaps = textureSetting.generateMipMaps,
-                filterMode = textureSetting.filterMode,
-                anisoLevel = textureSetting.anisoLevel,
-                sRGB = textureSetting.sRGB,
-            };
-        }
-
     }
 }

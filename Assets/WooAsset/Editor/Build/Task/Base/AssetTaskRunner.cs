@@ -23,10 +23,13 @@ namespace WooAsset
             {
                 for (int i = 0; i < tasks.Count; i++)
                 {
-                    await Execute(tasks[i], context);
-                    if (tasks[i].isErr)
+                    var task = tasks[i];
+                    await Execute(task, context);
+                    if (task.isErr)
                     {
-                        SetErr($"{context.Pipeline} Err: {tasks[i].GetType()}");
+                        var err = $"{context.Pipeline}\t\t-->{task.GetType().Name} \t\t {task.error}";
+                        AssetsHelper.LogError(err);
+                        SetErr(err);
                         break;
                     }
                 }

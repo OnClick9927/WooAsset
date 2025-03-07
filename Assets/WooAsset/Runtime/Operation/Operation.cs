@@ -15,7 +15,7 @@ namespace WooAsset
         public abstract float progress { get; }
 
         private string _err;
-        public string error { get { return _err; } }
+        public string error { get { return _err; }protected set { _err = value; } }
         public bool isErr { get { return !string.IsNullOrEmpty(error); } }
 
         public event Action<Operation> completed;

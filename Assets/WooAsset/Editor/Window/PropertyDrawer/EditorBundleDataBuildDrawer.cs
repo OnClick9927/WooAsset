@@ -10,16 +10,19 @@ namespace WooAsset
     [CustomPropertyDrawer(typeof(EditorBundleDataBuild))]
     class EditorBundleDataBuildDrawer : PropertyDrawer
     {
-        private float GetPropertyHeightDown(SerializedProperty property)
+        static GUIContent selectors = new GUIContent("Selectors");
+        static GUIStyle selectors_style;
+
+        private float GetPropertyHeightRight(SerializedProperty property)
         {
-            float down;
+            float height;
             var packType = (PackType)property.FindPropertyRelative(nameof(EditorBundleDataBuild.packType)).enumValueIndex;
             if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir
                 || packType == PackType.N2MBySizeAndDirAndAssetType || packType == PackType.N2MByAssetTypeAndSize)
-                down = 40;
+                height = 40;
             else
-                down = 20;
-            return down;
+                height = 20;
+            return height+20;
         }
         private static Dictionary<int, AssetSelectorAttribute> map = new Dictionary<int, AssetSelectorAttribute>();
         private AssetSelectorAttribute Getattribute(int index)
@@ -37,21 +40,21 @@ namespace WooAsset
         {
             var index_property = param_property.FindPropertyRelative(nameof(AssetSelectorParam.typeIndex));
 
-            float down = 20;
+            float height = 20;
 
             var attr = Getattribute(index_property.intValue);
             AssetSelectorParamType paramType = attr.type;
             if (paramType.HasFlag(AssetSelectorParamType.AssetType))
-                down += 20;
+                height += 20;
             if (paramType.HasFlag(AssetSelectorParamType.Path))
-                down += 20;
+                height += 20;
             if (paramType.HasFlag(AssetSelectorParamType.UserData))
-                down += 20;
+                height += 20;
             if (paramType.HasFlag(AssetSelectorParamType.Tag))
-                down += 20;
-            return (down);
+                height += 20;
+            return height;
         }
-        private float GetPropertyHeightUp(SerializedProperty property)
+        private float GetPropertyHeightLeft(SerializedProperty property)
         {
             var typeIndex = property.FindPropertyRelative(nameof(EditorBundleDataBuild.selectors));
             var size = typeIndex.arraySize;
@@ -65,36 +68,51 @@ namespace WooAsset
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            float down = GetPropertyHeightDown(property);
-            float up = GetPropertyHeightUp(property);
-            return up + down + 10;
+            float down = GetPropertyHeightRight(property);
+            float up = GetPropertyHeightLeft(property);
+            return Mathf.Max(down, up) + 5;
         }
-        private void DrawDwon(Rect position, SerializedProperty property)
+
+        private void DrawRightProperty(Rect position, SerializedProperty property)
         {
+            var rs = RectEx.VerticalSplit(position, 80);
+            GUI.Label(rs[0], property.displayName);
+            EditorGUI.PropertyField(rs[1], property, empty);
+
+        }
+        private void DrawRight(Rect position, SerializedProperty property)
+        {
+            position = RectEx.HorizontalSplit(position, 60)[0];
             var packType_pro = property.FindPropertyRelative(nameof(EditorBundleDataBuild.packType));
             var packType = (PackType)packType_pro.enumValueIndex;
+            var rs_1 = RectEx.HorizontalSplit(position, 20);
+            GUI.Label(rs_1[0], "Pack", selectors_style);
+            position = rs_1[1];
+            rs_1 = RectEx.HorizontalSplit(position, 20);
+            DrawRightProperty(rs_1[0], packType_pro);
             if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir
                    || packType == PackType.N2MBySizeAndDirAndAssetType || packType == PackType.N2MByAssetTypeAndSize)
             {
-                var rs_1 = RectEx.HorizontalSplit(position, 20);
-                EditorGUI.PropertyField(rs_1[0], packType_pro);
-                EditorGUI.PropertyField(rs_1[1], property.FindPropertyRelative(nameof(EditorBundleDataBuild.size)));
+                DrawRightProperty(rs_1[1], property.FindPropertyRelative(nameof(EditorBundleDataBuild.size)));
             }
-            else
-            {
-                EditorGUI.PropertyField(position, packType_pro);
-            }
-
         }
-
+        static GUIContent empty = new GUIContent();
+        private void DrawFlag(ref Rect position, SerializedProperty param_property, string propertyPath, AssetSelectorParamType type)
+        {
+            var rs = RectEx.HorizontalSplit(position, 20);
+            position = rs[1];
+            var _property = param_property.FindPropertyRelative(propertyPath);
+            var _rs = RectEx.VerticalSplit(rs[0], 80);
+            GUI.Label(_rs[0], type.ToString());
+            EditorGUI.PropertyField(_rs[1], _property, empty);
+        }
         private void DrawElement(Rect position, SerializedProperty param_property, SerializedProperty selector_property, int array_index)
         {
             var rs = RectEx.HorizontalSplit(position, 20);
-
+            position = RectEx.Zoom(rs[1], TextAnchor.MiddleCenter, new Vector2(-40, 0));
             var index_property = param_property.FindPropertyRelative(nameof(AssetSelectorParam.typeIndex));
-
             var rss = RectEx.VerticalSplit(rs[0], rs[0].width - 20, 2);
-            var rsss = RectEx.VerticalSplit(rss[0], rss[0].width - 100);
+            var rsss = RectEx.VerticalSplit(rss[0], rss[0].width - 80);
             var index = EditorGUI.Popup(rsss[0], "", index_property.intValue, EditorBundleDataBuild.shortTypes);
             if (index != index_property.intValue)
                 index_property.intValue = index;
@@ -112,57 +130,51 @@ namespace WooAsset
 
 
             var attr = Getattribute(index_property.intValue);
-            position = RectEx.Zoom(rs[1], TextAnchor.MiddleRight, new Vector2(-50, 0));
             AssetSelectorParamType paramType = attr.type;
-            //var param = property.FindPropertyRelative(nameof(EditorBundleDataBuild.param));
             if (paramType.HasFlag(AssetSelectorParamType.AssetType))
             {
-                rs = RectEx.HorizontalSplit(position, 20);
-                EditorGUI.PropertyField(rs[0], param_property.FindPropertyRelative(nameof(AssetSelectorParam.assetType)));
-                position = rs[1];
+                DrawFlag(ref position, param_property, nameof(AssetSelectorParam.assetType), AssetSelectorParamType.AssetType);
             }
             if (paramType.HasFlag(AssetSelectorParamType.Path))
             {
-                rs = RectEx.HorizontalSplit(position, 20);
-                EditorGUI.PropertyField(rs[0], param_property.FindPropertyRelative(nameof(AssetSelectorParam.path)));
-                position = rs[1];
+                DrawFlag(ref position, param_property, nameof(AssetSelectorParam.path), AssetSelectorParamType.Path);
             }
             if (paramType.HasFlag(AssetSelectorParamType.Tag))
             {
-                rs = RectEx.HorizontalSplit(position, 20);
-                EditorGUI.PropertyField(rs[0], param_property.FindPropertyRelative(nameof(AssetSelectorParam.tag)));
-                position = rs[1];
+                DrawFlag(ref position, param_property, nameof(AssetSelectorParam.tag), AssetSelectorParamType.Tag);
             }
             if (paramType.HasFlag(AssetSelectorParamType.UserData))
             {
-                rs = RectEx.HorizontalSplit(position, 20);
-                EditorGUI.PropertyField(rs[0], param_property.FindPropertyRelative(nameof(AssetSelectorParam.userData)));
-                position = rs[1];
+                DrawFlag(ref position, param_property, nameof(AssetSelectorParam.userData), AssetSelectorParamType.UserData);
             }
 
         }
-        private void DrawUp(Rect position, SerializedProperty property)
+        private void DrawLeft(Rect position, SerializedProperty property)
         {
+
             var _rs = RectEx.HorizontalSplit(position, 20);
 
 
             var selector_property = property.FindPropertyRelative(nameof(EditorBundleDataBuild.selectors));
             var rs_first = RectEx.VerticalSplit(_rs[0], _rs[0].width - 20);
+            if (selectors_style == null)
+                selectors_style = new GUIStyle(EditorStyles.toolbar)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontSize = 12,
+                    fontStyle = FontStyle.Bold
+                };
 
-            GUI.Label(rs_first[0], nameof(EditorBundleDataBuild.selectors));
+            GUI.Label(_rs[0], selectors, selectors_style);
 
-            if (GUI.Button(rs_first[1], EditorGUIUtility.TrIconContent("d_Toolbar Plus"), EditorStyles.iconButton))
+            if (GUI.Button(rs_first[1], EditorGUIUtility.TrIconContent("d_Toolbar Plus"), EditorStyles.toolbarButton))
             {
                 selector_property.InsertArrayElementAtIndex(0);
             }
 
 
 
-            var _pos = RectEx.Zoom(_rs[1], TextAnchor.MiddleRight,new Vector2(-50,0));
-
-
-
-
+            var _pos = _rs[1];
 
             var size = selector_property.arraySize;
             for (int i = size - 1; i >= 0; i--)
@@ -175,22 +187,19 @@ namespace WooAsset
                 _pos = rs[1];
             }
 
-
-
-
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            position = RectEx.Zoom(position, TextAnchor.MiddleCenter, -8);
-            var rs = RectEx.HorizontalSplit(position, position.height - GetPropertyHeightDown(property));
+            //position = RectEx.Zoom(position, TextAnchor.MiddleCenter, -8);
+            var rs = RectEx.VerticalSplit(position, position.width -300, 10);
 
 
-            GUI.Box(rs[0], "", EditorStyles.helpBox);
-            GUI.Box(rs[1], "");
+            //GUI.Box(rs[0], "", EditorStyles.helpBox);
+            GUI.Box(position, "", EditorStyles.helpBox);
 
-            DrawDwon(rs[1], property);
-            DrawUp(rs[0], property);
+            DrawLeft(rs[0], property);
+            DrawRight(rs[1], property);
 
         }
     }

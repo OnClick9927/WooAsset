@@ -7,26 +7,16 @@ namespace WooAsset
     public class TagAssets
     {
         public string tag;
-        [System.Serializable]
-        public class TagData
-        {
-            public string path;
-            public FileType type;
-        }
         public void Add(FileType type, string path)
         {
             if (!assets.Any(x => x.type == type && x.path == path))
-                assets.Add(new TagAssets.TagData()
+                assets.Add(new FileRecordData()
                 {
                     type = type,
                     path = path
                 });
         }
-        public bool FitAssetTag(string path)
-        {
-            return assets.Any(x => (x.type == FileType.File && x.path == path)
-            || (x.type == FileType.Directory && path.StartsWith(x.path)));
-        }
+        public bool FitAssetTag(string path) => assets.Any(x => x.Fit(path));
         public void Remove(FileType type, string path)
         {
             if (type == FileType.File)
@@ -34,6 +24,6 @@ namespace WooAsset
             else
                 assets.RemoveAll(x => x.path.StartsWith(path));
         }
-        public List<TagData> assets = new List<TagData>();
+        public List<FileRecordData> assets = new List<FileRecordData>();
     }
 }

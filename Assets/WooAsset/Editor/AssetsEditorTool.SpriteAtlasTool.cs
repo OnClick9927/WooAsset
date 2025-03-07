@@ -13,7 +13,7 @@ namespace WooAsset
         private class SpriteAtlasTool
         {
 
-            static void BuildAtlas(string directory, List<string> sprites)
+            static void BuildAtlas(string directory, List<string> sprites, TextureImporterPlatformSettings PlatformSetting, SpriteAtlasTextureSettings textureSettings, SpriteAtlasPackingSettings packingSettings)
             {
                 List<Texture> textures = sprites.SelectMany(x => AssetDatabase.LoadAllAssetsAtPath(x)
                 .Select(x => x as Texture).ToList()).ToList();
@@ -24,23 +24,23 @@ namespace WooAsset
                 string file_path = $"{directory}.spriteatlas";
                 SpriteAtlas asset = new SpriteAtlas();
 
-                asset.SetPlatformSettings(option.PlatformSetting);
-                asset.SetTextureSettings(option.GetTextureSetting());
-                asset.SetPackingSettings(option.GetPackingSetting());
+                asset.SetPlatformSettings(PlatformSetting);
+                asset.SetTextureSettings(textureSettings);
+                asset.SetPackingSettings(packingSettings);
                 AssetDatabase.CreateAsset(asset, file_path);
                 asset.Add(textures.ToArray());
                 EditorUtility.SetDirty(asset);
                 AssetDatabase.SaveAssets();
 
             }
-            public static async Task Execute()
+            public static async Task Execute(List<string> paths, TextureImporterPlatformSettings PlatformSetting, SpriteAtlasTextureSettings textureSettings, SpriteAtlasPackingSettings packingSettings)
             {
                 if (EditorSettings.spritePackerMode == SpritePackerMode.Disabled)
                 {
                     AssetsEditorTool.LogError("SpritePackerMode is Disabled");
                     return;
                 }
-                var atlasPaths = option.atlasPaths.ToArray();
+                var atlasPaths = paths.ToArray();
                 AssetDatabase.FindAssets("t:SpriteAtlas", atlasPaths)
                         .Select(x => AssetDatabase.GUIDToAssetPath(x))
                         .ToList()
@@ -56,11 +56,12 @@ namespace WooAsset
                     .Select(x => new { dir = AssetsEditorTool.GetDirectoryName(x), path = x })
                     .GroupBy(x => x.dir).ToDictionary(x => x.Key, x => x.Select(y => y.path).ToList());
                 foreach (var item in data)
-                    BuildAtlas(item.Key, item.Value);
+                    BuildAtlas(item.Key, item.Value, PlatformSetting, textureSettings, packingSettings);
                 AssetDatabase.Refresh();
                 SpriteAtlasUtility.PackAllAtlases(BuildTarget, false);
                 await Task.Delay(1000);
                 AssetsEditorTool.Log("build atlas succeed");
+                
             }
         }
 

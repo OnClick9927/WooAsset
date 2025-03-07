@@ -1,7 +1,7 @@
 ﻿namespace WooAsset
 {
     [System.Serializable]
-    public class AssetIgnoreData
+    public class FileRecordData
     {
         public FileType type;
         public string path;

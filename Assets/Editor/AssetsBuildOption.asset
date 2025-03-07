@@ -50,16 +50,16 @@ MonoBehaviour:
   tags:
   - tag: test
     assets:
-    - path: Assets/Example/px/2.png
-      type: 0
-    - path: Assets/Example/px
-      type: 1
+    - type: 0
+      path: Assets/Example/px/2.png
+    - type: 1
+      path: Assets/Example/px
   - tag: test
     assets:
-    - path: Assets/Example/px/2.png
-      type: 0
-    - path: Assets/Example/px
-      type: 1
+    - type: 0
+      path: Assets/Example/px/2.png
+    - type: 1
+      path: Assets/Example/px
   shaderVariantInputDirectory:
   - Assets/Example
   shaderVariantOutputDirectory: Assets/Example

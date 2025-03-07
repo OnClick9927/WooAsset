@@ -29,7 +29,7 @@ namespace WooAsset
 
         //public List<AssetTask> pipelineStartTasks;
         //public List<AssetTask> pipelineEndTasks;
-        public List<AssetIgnoreData> recordIgnore;
+        public List<FileRecordData> recordIgnore;
         public bool fuzzySearch;
         public FileNameSearchType fileNameSearchType;
         public readonly TaskPipelineType Pipeline;
@@ -81,24 +81,34 @@ namespace WooAsset
 
         public BuildAssetBundleOptions GetBundleOption(out string err) => buildPipe.GetBundleOption(this, out err);
 
-        public string CheckLeagal()
+        public string CheckLegal()
         {
             for (int i = 0; i < buildPkgs.Count; i++)
             {
-                var item = buildPkgs[i];
-                if (string.IsNullOrEmpty(item.name))
+                var pkg = buildPkgs[i];
+                if (string.IsNullOrEmpty(pkg.name))
                     return "Pkg name can not be null";
-                if (buildPkgs.FindAll(x => x.name == item.name).Count > 1)
+                if (buildPkgs.FindAll(x => x.name == pkg.name).Count > 1)
                     return "same name pkg";
-                if (item.HasSamePath() || buildPkgs.Any(x => x != item && item.HasSamePath(x)))
+                if (pkg.HasSamePath() || buildPkgs.Any(x => x != pkg && pkg.HasSamePath(x)))
                     return "same path in Pkg";
-                var paths = item.paths;
+                var paths = pkg.paths;
                 for (int j = 0; j < paths.Count; j++)
                 {
                     if (!AssetsEditorTool.ExistsDirectory(paths[j]))
                         return $"Pkg path not exist {paths[j]}";
                 }
-
+                if (pkg.builds != null && pkg.builds.Count > 0)
+                {
+                    for (int j = 0; j < pkg.builds.Count; j++)
+                    {
+                        var build = pkg.builds[j];
+                        if (build.selectors.Count(x => x.type == AssetSelectorParam.SelectType.Union) == 0)
+                        {
+                            return $"Pkg-->{pkg.name} Build at-->{j} :  at least one Union ";
+                        }
+                    }
+                }
             }
             return string.Empty;
         }
