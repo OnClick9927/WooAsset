@@ -8,7 +8,7 @@ namespace WooAsset
     {
         string version { get; }
         bool Initialized();
-        Operation InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs);
+        Operation InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs);
         LoadRemoteVersionsOperation LoadRemoteVersions();
         Operation CopyToSandBox(string from, string to);
         Bundle CreateBundle(string bundleName, BundleLoadArgs args);
@@ -27,10 +27,10 @@ namespace WooAsset
 
     public abstract class AssetsMode : IAssetsMode
     {
-        Operation IAssetsMode.InitAsync(string version, bool ignoreLoalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
+        Operation IAssetsMode.InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             SetVersion(version);
-            return InitAsync(version, ignoreLoalVersion, again, fuzzySearch, fileNameSearchType, getPkgs);
+            return InitAsync(version, ignoreLocalVersion, again, fuzzySearch, fileNameSearchType, getPkgs);
         }
         bool IAssetsMode.Initialized() => Initialized();
         Operation IAssetsMode.CopyToSandBox(string from, string to) => CopyToSandBox(from, to);

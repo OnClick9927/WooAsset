@@ -89,7 +89,7 @@ namespace WooAsset
     partial class AssetsInternal
     {
         public static bool Initialized() => mode.Initialized();
-        public static Operation InitAsync(string version, bool ignoreLoalVersion, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, ignoreLoalVersion, again, GetFuzzySearch(), GetFileNameSearchType(), getPkgs);
+        public static Operation InitAsync(string version, bool ignoreLocalVersion, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, ignoreLocalVersion, again, GetFuzzySearch(), GetFileNameSearchType(), getPkgs);
         public static string GetVersion() => Initialized() ? mode.version : string.Empty;
 
 

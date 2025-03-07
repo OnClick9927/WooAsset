@@ -31,13 +31,13 @@ namespace WooAsset
             InvokeComplete();
         }
         public string GetVersion() => initVersion;
-        public LoadManifestOperation(List<string> loadedBundles, string version, bool ignoreLoalVersion, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
+        public LoadManifestOperation(List<string> loadedBundles, string version, bool ignoreLocalVersion, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             this.fuzzySearch = fuzzySearch;
             this.getPkgs = getPkgs;
             this.loadedBundles = loadedBundles;
             this.fileNameSearchType = fileNameSearchType;
-            Done(version, ignoreLoalVersion);
+            Done(version, ignoreLocalVersion);
         }
 
 
@@ -166,19 +166,19 @@ namespace WooAsset
             else
                 DoPkgs(localversion, AlwaysFromWebRequest);
         }
-        private void Done(string targetVersion, bool ignoreLoalVersion)
+        private void Done(string targetVersion, bool ignoreLocalVersion)
         {
             _progress = 0f;
             string localVersionPath = AssetsInternal.GetBundleLocalPath(AssetsHelper.VersionDataName);
             bool AlwaysFromWebRequest = AssetsInternal.GetBundleAlwaysFromWebRequest();
             bool download = AlwaysFromWebRequest;
 
-            if (ignoreLoalVersion && string.IsNullOrEmpty(targetVersion))
+            if (ignoreLocalVersion && string.IsNullOrEmpty(targetVersion))
                 download = true;
             if (!download && !AssetsHelper.ExistsFile(localVersionPath))
                 download = true;
 
-            AssetsHelper.Log($"LoadManifest AlwaysFromWebRequest:{AlwaysFromWebRequest}  download:{download} ignoreLoalVersion:{ignoreLoalVersion}");
+            AssetsHelper.Log($"LoadManifest AlwaysFromWebRequest:{AlwaysFromWebRequest}  download:{download} ignoreLocalVersion:{ignoreLocalVersion}");
             _progress = 0.1f;
             if (download)
                 DownLoad(localVersionPath, targetVersion, AlwaysFromWebRequest);
