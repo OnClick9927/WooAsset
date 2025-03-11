@@ -24,13 +24,14 @@ MonoBehaviour:
   enableServer: 1
   serverPort: 8080
   pkgs:
-  - build: 1
-    name: Example
+  - name: Example
     description: 
     tags: []
     paths:
-    - Assets/Example
+    - 
+    - 
     builds: []
+    build: 1
   recordIgnore:
   - type: 1
     path: Assets/Example

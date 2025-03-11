@@ -16,7 +16,7 @@ namespace WooAsset
                     AssetsEditorTool.VersionDataName,
                     AssetsEditorTool.VersionCollectionName,
                 }
-                .Concat(context.buildPkgs.Select(x => AssetsEditorTool.GetManifestFileName(x.name)))
+                .Concat(context.buildPkgs.Select(x => x.manifestFileName))
                 .ToList();
                 var cmd = new CopyToStreamCMD(context.outputPath, context.version, context.streamBundleDirectory);
                 var files = context.buildInBundleSelector.Select(cmd.files, context.buildInAssets,
