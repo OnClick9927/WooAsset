@@ -11,7 +11,6 @@ namespace WooAsset
     class EditorBundleDataBuildDrawer : PropertyDrawer
     {
         static GUIContent selectors = new GUIContent("Selectors");
-        static GUIStyle selectors_style;
 
         private float GetPropertyHeightRight(SerializedProperty property)
         {
@@ -22,7 +21,7 @@ namespace WooAsset
                 height = 40;
             else
                 height = 20;
-            return height+20;
+            return height + 20;
         }
         private static Dictionary<int, AssetSelectorAttribute> map = new Dictionary<int, AssetSelectorAttribute>();
         private AssetSelectorAttribute Getattribute(int index)
@@ -56,14 +55,16 @@ namespace WooAsset
         }
         private float GetPropertyHeightLeft(SerializedProperty property)
         {
-            var typeIndex = property.FindPropertyRelative(nameof(EditorBundleDataBuild.selectors));
-            var size = typeIndex.arraySize;
+            var selectors = property.FindPropertyRelative(nameof(EditorBundleDataBuild.selectors));
+
+            var size = selectors.arraySize;
             float down = 20;
-            for (int i = 0; i < size; i++)
-            {
-                var param_property = typeIndex.GetArrayElementAtIndex(i);
-                down += GetElementHeight(param_property);
-            }
+            if (selectors.isExpanded)
+                for (int i = 0; i < size; i++)
+                {
+                    var param_property = selectors.GetArrayElementAtIndex(i);
+                    down += GetElementHeight(param_property);
+                }
             return down;
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -86,7 +87,7 @@ namespace WooAsset
             var packType_pro = property.FindPropertyRelative(nameof(EditorBundleDataBuild.packType));
             var packType = (PackType)packType_pro.enumValueIndex;
             var rs_1 = RectEx.HorizontalSplit(position, 20);
-            GUI.Label(rs_1[0], "Pack", selectors_style);
+            GUI.Label(rs_1[0], "Pack", EditorStyles.toolbarButton);
             position = rs_1[1];
             rs_1 = RectEx.HorizontalSplit(position, 20);
             DrawRightProperty(rs_1[0], packType_pro);
@@ -106,29 +107,20 @@ namespace WooAsset
             GUI.Label(_rs[0], type.ToString());
             EditorGUI.PropertyField(_rs[1], _property, empty);
         }
-        private void DrawElement(Rect position, SerializedProperty param_property, SerializedProperty selector_property, int array_index)
+        private void DrawElement(Rect position, SerializedProperty param_property)
         {
             var rs = RectEx.HorizontalSplit(position, 20);
             position = RectEx.Zoom(rs[1], TextAnchor.MiddleCenter, new Vector2(-40, 0));
             var index_property = param_property.FindPropertyRelative(nameof(AssetSelectorParam.typeIndex));
-            var rss = RectEx.VerticalSplit(rs[0], rs[0].width - 20, 2);
-            var rsss = RectEx.VerticalSplit(rss[0], rss[0].width - 80);
-            var index = EditorGUI.Popup(rsss[0], "", index_property.intValue, EditorBundleDataBuild.shortTypes);
+            var rss = RectEx.VerticalSplit(rs[0], rs[0].width - 80, 2);
+            //var rsss = RectEx.VerticalSplit(rss[0], rss[0].width - 80);
+            var index = EditorGUI.Popup(rss[0], "", index_property.intValue, EditorBundleDataBuild.shortTypes);
             if (index != index_property.intValue)
                 index_property.intValue = index;
             var type_property = param_property.FindPropertyRelative(nameof(AssetSelectorParam.type));
-            var _index = EditorGUI.Popup(rsss[1], type_property.intValue, type_property.enumDisplayNames);
+            var _index = EditorGUI.Popup(rss[1], type_property.intValue, type_property.enumDisplayNames);
             if (_index != type_property.intValue)
                 type_property.intValue = _index;
-
-
-            if (GUI.Button(rss[1], EditorGUIUtility.TrIconContent("d_Toolbar Minus"), EditorStyles.iconButton))
-            {
-                selector_property.DeleteArrayElementAtIndex(array_index);
-            }
-
-
-
             var attr = Getattribute(index_property.intValue);
             AssetSelectorParamType paramType = attr.type;
             if (paramType.HasFlag(AssetSelectorParamType.AssetType))
@@ -151,48 +143,19 @@ namespace WooAsset
         }
         private void DrawLeft(Rect position, SerializedProperty property)
         {
-
-            var _rs = RectEx.HorizontalSplit(position, 20);
-
-
             var selector_property = property.FindPropertyRelative(nameof(EditorBundleDataBuild.selectors));
-            var rs_first = RectEx.VerticalSplit(_rs[0], _rs[0].width - 20);
-            if (selectors_style == null)
-                selectors_style = new GUIStyle(EditorStyles.toolbar)
-                {
-                    alignment = TextAnchor.MiddleLeft,
-                    fontSize = 12,
-                    fontStyle = FontStyle.Bold
-                };
-
-            GUI.Label(_rs[0], selectors, selectors_style);
-
-            if (GUI.Button(rs_first[1], EditorGUIUtility.TrIconContent("d_Toolbar Plus"), EditorStyles.toolbarButton))
+            EditorPackageDataDawer.DrawArray(position, selectors, selector_property, (p) =>
             {
-                selector_property.InsertArrayElementAtIndex(0);
-            }
+                return GetElementHeight(p);
+            }, DrawElement);
 
-
-
-            var _pos = _rs[1];
-
-            var size = selector_property.arraySize;
-            for (int i = size - 1; i >= 0; i--)
-            {
-                var index = i;
-                var param_property = selector_property.GetArrayElementAtIndex(index);
-                var height = GetElementHeight(param_property);
-                var rs = RectEx.HorizontalSplit(_pos, height);
-                DrawElement(rs[0], param_property, selector_property, i);
-                _pos = rs[1];
-            }
 
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             //position = RectEx.Zoom(position, TextAnchor.MiddleCenter, -8);
-            var rs = RectEx.VerticalSplit(position, position.width -300, 10);
+            var rs = RectEx.VerticalSplit(position, position.width - 300, 10);
 
 
             //GUI.Box(rs[0], "", EditorStyles.helpBox);

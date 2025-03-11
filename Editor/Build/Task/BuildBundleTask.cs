@@ -162,7 +162,7 @@ namespace WooAsset
                         }
                     }
 
-                    var mainfestName = AssetsEditorTool.GetManifestFileName(context.buildPkg.name);
+                    var mainfestName = context.buildPkg.manifestFileName;
 
                     AssetsEditorTool.WriteBufferObjectSync(manifest,
                            AssetsEditorTool.CombinePath(context.outputPath,
