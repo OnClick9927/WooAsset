@@ -26,7 +26,7 @@ namespace WooAsset
                 foreach (EditorBundleData build in builds)
                     build.FindUsage(builds);
             }
-            public static ManifestData BuildManifest(string version, List<EditorBundleData> groups, AssetCollection tree, CompressType compress)
+            public static ManifestData BuildManifest(string version, List<EditorBundleData> groups, EditorAssetCollection tree, CompressType compress)
             {
                 List<AssetData> _assets = new List<AssetData>();
                 List<BundleData> _bundles = new List<BundleData>();

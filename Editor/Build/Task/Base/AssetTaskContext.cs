@@ -42,10 +42,10 @@ namespace WooAsset
 
         public string version;
         public BuildAssetBundleOptions BuildOption;
-        public AssetCollection assetsCollection;
+        public EditorAssetCollection assetsCollection;
         public EditorPackageData buildPkg;
         public List<EditorAssetData> needBuildAssets;
-        public Dictionary<string, AssetCollection> allAssetCollections = new Dictionary<string, AssetCollection>();
+        public Dictionary<string, EditorAssetCollection> allAssetCollections = new Dictionary<string, EditorAssetCollection>();
 
         public Dictionary<string, List<EditorBundleData>> allBundleBuilds = new Dictionary<string, List<EditorBundleData>>();
         public VersionCollectionData historyVersions;

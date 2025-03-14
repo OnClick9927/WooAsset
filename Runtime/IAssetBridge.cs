@@ -45,20 +45,34 @@ namespace WooAsset
         }
     }
 
-    public class AssetsCollection
+    public class AssetCollection
     {
-        private Queue<AssetHandle> queue = new Queue<AssetHandle>();
-        internal void Add(AssetHandle handle)
+        private Dictionary<string, AssetHandle> map = new Dictionary<string, AssetHandle>();
+        private void Add(AssetHandle handle)
         {
-            queue.Enqueue(handle);
+            map.Add(handle.path, handle);
         }
-        internal void Clear()
+        public AssetHandle Get(string path, System.Func<AssetHandle> create)
         {
-            var count = queue.Count;
-            for (int i = 0; i < count; i++)
+            AssetHandle handle = Find(path);
+            if (handle == null)
             {
-                Assets.Release(queue.Dequeue());
+                handle = create?.Invoke();
+                Add(handle);
             }
+            return handle;
+        }
+        public AssetHandle Find(string path)
+        {
+            AssetHandle handle = null;
+            map.TryGetValue(path, out handle);
+            return handle;
+        }
+        public void Clear()
+        {
+            foreach (AssetHandle handle in map.Values)
+                Assets.Release(handle);
+            map.Clear();
         }
     }
 

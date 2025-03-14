@@ -6,7 +6,7 @@ namespace WooAsset
     public class AssetsEditorCache : AssetsScriptableObject
     {
 
-        public AssetCollection tree_asset_all = new AssetCollection();
+        public EditorAssetCollection tree_asset_all = new EditorAssetCollection();
 
 
 
@@ -15,7 +15,7 @@ namespace WooAsset
         {
             public string pkgName;
             public List<EditorBundleData> previewBundles = new List<EditorBundleData>();
-            public AssetCollection tree = new AssetCollection();
+            public EditorAssetCollection tree = new EditorAssetCollection();
 
         }
 
@@ -41,7 +41,7 @@ namespace WooAsset
         public List<PkgBundles> pkgBundles = new List<PkgBundles>();
 
         private List<EditorBundleData> previewBundles_noerr = new List<EditorBundleData>();
-        private AssetCollection tree_bundle_noerr = new AssetCollection();
+        private EditorAssetCollection tree_bundle_noerr = new EditorAssetCollection();
 
         public List<EditorBundleData> previewBundles
         {
@@ -53,7 +53,7 @@ namespace WooAsset
 
             }
         }
-        public AssetCollection tree_bundle
+        public EditorAssetCollection tree_bundle
         {
             get
             {
@@ -64,7 +64,7 @@ namespace WooAsset
             }
 
         }
-        public AssetCollection tree_asset
+        public EditorAssetCollection tree_asset
         {
             get
             {
