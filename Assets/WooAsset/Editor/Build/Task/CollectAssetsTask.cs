@@ -14,7 +14,7 @@ namespace WooAsset
                 paths.AddRange(context.buildPkg.paths);
             else
                 paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
-            var tree = new AssetCollection();
+            var tree = new EditorAssetCollection();
             tree.ReadPaths(paths, context.assetBuild);
             List<EditorAssetData> assets = tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
             context.needBuildAssets = assets;

@@ -6,7 +6,7 @@ using System.Linq;
 namespace WooAsset
 {
     [System.Serializable]
-    public class AssetCollection
+    public class EditorAssetCollection
     {
         [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         private IAssetsBuild assetBuild;

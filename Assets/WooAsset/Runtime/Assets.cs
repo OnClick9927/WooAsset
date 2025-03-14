@@ -151,7 +151,7 @@ namespace WooAsset
             find.Release();
         }
 
-        public static AssetsCollection CreateAssetsCollection() { return new AssetsCollection(); }
+        public static AssetCollection CreateAssetCollection() { return new AssetCollection(); }
 
         public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
         public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));

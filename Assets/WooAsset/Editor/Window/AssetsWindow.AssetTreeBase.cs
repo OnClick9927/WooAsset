@@ -11,7 +11,7 @@ namespace WooAsset
     {
         private abstract class AssetTreeBase : TreeView
         {
-            protected AssetCollection tree
+            protected EditorAssetCollection tree
             {
                 get
                 {
