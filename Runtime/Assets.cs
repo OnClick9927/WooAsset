@@ -118,8 +118,48 @@ namespace WooAsset
 
     partial class Assets
     {
-      
+
+        static Dictionary<string, WooAsset.AssetCollection> assetCollections = new Dictionary<string, AssetCollection>();
+        public static IAssetCollection FindAssetCollection(string key)
+        {
+            WooAsset.AssetCollection collection = null;
+            assetCollections.TryGetValue(key, out collection);
+            return collection;
+        }
+        public static IAssetCollection GetAssetCollection(string key)
+        {
+            WooAsset.AssetCollection collection = null;
+            if (!assetCollections.TryGetValue(key, out collection))
+            {
+                collection = new WooAsset.AssetCollection();
+                assetCollections.Add(key, collection);
+            }
+
+            return collection;
+        }
+        public static void ClearAssetCollection(string key)
+        {
+            FindAssetCollection(key)?.Clear();
+        }
+        public static void ClearAllAssetCollection()
+        {
+            foreach (var item in assetCollections.Values)
+            {
+                item.Clear();
+            }
+        }
+
+
+
+
+
+
+
+
         private static List<IAssetBridge> m_Assets = new List<IAssetBridge>();
+
+
+
         public static void ReleaseUselessBridges()
         {
             m_Assets.RemoveAll(x =>
@@ -151,7 +191,6 @@ namespace WooAsset
             find.Release();
         }
 
-        public static AssetCollection CreateAssetCollection() { return new AssetCollection(); }
 
         public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
         public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));
