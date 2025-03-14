@@ -118,6 +118,7 @@ namespace WooAsset
 
     partial class Assets
     {
+      
         private static List<IAssetBridge> m_Assets = new List<IAssetBridge>();
         public static void ReleaseUselessBridges()
         {
@@ -150,6 +151,7 @@ namespace WooAsset
             find.Release();
         }
 
+        public static AssetsCollection CreateAssetsCollection() { return new AssetsCollection(); }
 
         public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
         public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));

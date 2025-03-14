@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace WooAsset
 {
@@ -22,15 +23,18 @@ namespace WooAsset
         {
         }
     }
-    public abstract class AssetBridge : IAssetBridge
+    public abstract class AssetBridge<T> : IAssetBridge where T : class
     {
         private AssetHandle handle;
-        protected AssetBridge(AssetHandle handle)
+
+        public T context;
+        protected AssetBridge(T context, AssetHandle handle)
         {
+            this.context = context;
             this.handle = handle;
         }
-
         protected abstract bool CouldRelease();
+
         bool IAssetBridge.CouldRelease()
         {
             return CouldRelease();
@@ -40,12 +44,22 @@ namespace WooAsset
             Assets.Release(handle);
         }
     }
-    public abstract class AssetBridge<T> : AssetBridge where T : class
+
+    public class AssetsCollection
     {
-        public T context;
-        protected AssetBridge(T context, AssetHandle handle) : base(handle)
+        private Queue<AssetHandle> queue = new Queue<AssetHandle>();
+        internal void Add(AssetHandle handle)
         {
-            this.context = context;
+            queue.Enqueue(handle);
+        }
+        internal void Clear()
+        {
+            var count = queue.Count;
+            for (int i = 0; i < count; i++)
+            {
+                Assets.Release(queue.Dequeue());
+            }
         }
     }
+
 }
