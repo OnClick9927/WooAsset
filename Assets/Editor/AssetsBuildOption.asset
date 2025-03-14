@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
   version: 0.0.1
-  copyToStream: 0
+  copyToStream: 1
   buildMode: 0
   typeTreeOption: 0
-  bundleNameType: 1
+  bundleNameType: 0
   compress: 2
   MaxCacheVersionCount: 8
   cleanHistory: 1
@@ -28,19 +28,16 @@ MonoBehaviour:
     description: 
     tags: []
     paths:
-    - 
-    - 
+    - Assets/Example
     builds: []
     build: 1
-  recordIgnore:
-  - type: 1
-    path: Assets/Example
+  recordIgnore: []
   build:
     _select: WooAsset.DefaultAssetsBuild
   mode:
     _select: WooAsset.NormalAssetsMode
   encrypt:
-    _select: WooAsset.OffsetAssetStreamEncrypt
+    _select: WooAsset.DefaultAssetStreamEncrypt
   buildInBundleSelector:
     _select: WooAsset.DefaultBuildInBundleSelector
   buildPipeline:
