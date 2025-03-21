@@ -1,0 +1,18 @@
+{
+    "name": "WooAsset.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:dfdb65dcd8bdaa64ca3eb817ef15afcc"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
