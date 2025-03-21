@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e92f35693393261449628fc0c28902e5, type: 3}
+  m_Name: AssetsBuildOption
+  m_EditorClassIdentifier: 
+  version: 0.0.1
+  copyToStream: 1
+  buildMode: 0
+  typeTreeOption: 0
+  bundleNameType: 0
+  compress: 2
+  MaxCacheVersionCount: 8
+  cleanHistory: 1
+  buildInAssets: []
+  enableServer: 1
+  serverPort: 8080
+  pkgs:
+  - name: Example
+    description: 
+    tags: []
+    paths:
+    - Assets/Example
+    builds: []
+    build: 1
+  recordIgnore: []
+  build:
+    _select: WooAsset.DefaultAssetsBuild
+  mode:
+    _select: WooAsset.NormalAssetsMode
+  encrypt:
+    _select: WooAsset.DefaultAssetStreamEncrypt
+  buildInBundleSelector:
+    _select: WooAsset.DefaultBuildInBundleSelector
+  buildPipeline:
+    _select: WooAsset.BuildInPipeline
+  bundleOptimizer:
+    _select: WooAsset.NoneBundleOptimizer
+  optimizationCount: 1
+  tags:
+  - tag: test
+    assets:
+    - type: 0
+      path: Assets/Example/px/2.png
+    - type: 1
+      path: Assets/Example/px
+  - tag: test
+    assets:
+    - type: 0
+      path: Assets/Example/px/2.png
+    - type: 1
+      path: Assets/Example/px
+  shaderVariantInputDirectory:
+  - Assets/Example
+  shaderVariantOutputDirectory: Assets/Example
+  atlasPaths: []
+  packSetting:
+    blockOffset: 1
+    enableRotation: 0
+    enableTightPacking: 0
+    padding: 2
+  textureSetting:
+    readable: 1
+    generateMipMaps: 0
+    sRGB: 1
+    filterMode: 1
+    anisoLevel: 1
+  PlatformSetting:
+    m_Name: DefaultTexturePlatform
+    m_Overridden: 0
+    m_MaxTextureSize: 2048
+    m_ResizeAlgorithm: 0
+    m_TextureFormat: -1
+    m_TextureCompression: 1
+    m_CompressionQuality: 50
+    m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    m_CrunchedCompression: 1
+    m_AllowsAlphaSplitting: 0
+    m_AndroidETC2FallbackOverride: 0
