@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using static WooAsset.FileData;
 
 
@@ -10,7 +11,7 @@ namespace WooAsset
         FileLength,
         FileHash,
     }
-    public class VersionCompareOperation : Operation
+    public class VersionCompareOperation : Operation, IEqualityComparer<BundleData>
     {
         private static List<FileData> GetLocalBundles()
         {
@@ -128,7 +129,28 @@ namespace WooAsset
                 await AssetsHelper.WriteBufferObject(version,
                   AssetsInternal.GetBundleLocalPath(AssetsHelper.VersionDataName)
                   );
+
+            add = add.Distinct(this).ToList();
+            change = change.Distinct(this).ToList();
             InvokeComplete();
+        }
+
+        bool IEqualityComparer<BundleData>.Equals(BundleData x, BundleData y)
+        {
+            return x.bundleName == y.bundleName && x.bundleHash == y.bundleHash && x.bundleCrc == y.bundleCrc
+                && x.enCode == y.enCode && x.hash == y.hash && x.compress == y.compress && x.raw == y.raw && x.length == y.length;
+        }
+
+        int IEqualityComparer<BundleData>.GetHashCode(BundleData obj)
+        {
+            return obj.bundleName.GetHashCode()
+                + obj.bundleHash.GetHashCode()
+                + obj.bundleCrc.GetHashCode()
+                + obj.enCode.GetHashCode()
+                + obj.hash.GetHashCode()
+                + obj.compress.GetHashCode()
+                + obj.raw.GetHashCode()
+                + obj.length.GetHashCode();
         }
     }
 

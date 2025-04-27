@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System;
-using UnityEditor.U2D;
 using UnityEditor;
 using Object = UnityEngine.Object;
 using System.Linq;
@@ -10,12 +9,15 @@ namespace WooAsset
 
     public class AssetsBuildOption : AssetsScriptableObject
     {
+
+    
         public string version = "0.0.1";
         public bool copyToStream = false;
         public BuildMode buildMode = BuildMode.Increase;
 
         public TypeTreeOption typeTreeOption = TypeTreeOption.IgnoreTypeTreeChanges;
         public BundleNameType bundleNameType = BundleNameType.Hash;
+        public BundleNameCalculateType bundleNameCalculate = BundleNameCalculateType.Assets_And_Dependences;
         public CompressType compress = CompressType.LZ4;
         public int MaxCacheVersionCount = 8;
         public bool cleanHistory = true;

@@ -38,15 +38,19 @@ namespace WooAsset
         {
 
             List<EditorAssetData> assets = new List<EditorAssetData>(context.needBuildAssets);
-            var _hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x)));
-            foreach (var path in _hashMap.Keys.ToList())
+            if (context.bundleNameCalculateType == BundleNameCalculateType.Assets_And_Dependences)
             {
-                if (_hashMap[path].Count == 0)
+                var _hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x)));
+                foreach (var path in _hashMap.Keys.ToList())
                 {
-                    _hashMap.Remove(path);
+                    if (_hashMap[path].Count == 0)
+                    {
+                        _hashMap.Remove(path);
+                    }
                 }
+                hashMap = _hashMap.ToDictionary(x => x.Key, y => y.Value.Select(z => z.hash).ToList());
             }
-            hashMap = _hashMap.ToDictionary(x => x.Key, y => y.Value.Select(z => z.hash).ToList());
+
             List<EditorBundleData> result = new List<EditorBundleData>();
             EditorBundleTool.N2One(assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant), result);
             EditorBundleTool.One2One(assets.FindAll(x => x.type == AssetType.Scene), result);
