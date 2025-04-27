@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
   version: 0.0.1
-  copyToStream: 1
+  copyToStream: 0
   buildMode: 0
   typeTreeOption: 0
   bundleNameType: 0
@@ -24,11 +24,18 @@ MonoBehaviour:
   enableServer: 1
   serverPort: 8080
   pkgs:
-  - name: Example
+  - name: pkg1
     description: 
     tags: []
     paths:
-    - Assets/Example
+    - Assets/Example/pkg1
+    builds: []
+    build: 1
+  - name: pkg2
+    description: 
+    tags: []
+    paths:
+    - Assets/Example/pkg2
     builds: []
     build: 1
   recordIgnore: []
@@ -47,21 +54,15 @@ MonoBehaviour:
   optimizationCount: 1
   tags:
   - tag: test
-    assets:
-    - type: 0
-      path: Assets/Example/px/2.png
-    - type: 1
-      path: Assets/Example/px
+    assets: []
   - tag: test
-    assets:
-    - type: 0
-      path: Assets/Example/px/2.png
-    - type: 1
-      path: Assets/Example/px
+    assets: []
   shaderVariantInputDirectory:
-  - Assets/Example
-  shaderVariantOutputDirectory: Assets/Example
-  atlasPaths: []
+  - Assets/Example/pkg1
+  - Assets/TextMesh Pro
+  shaderVariantOutputDirectory: Assets/Example/pkg1
+  atlasPaths:
+  - Assets/Example/pkg1/px
   packSetting:
     blockOffset: 1
     enableRotation: 0

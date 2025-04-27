@@ -39,6 +39,8 @@ namespace WooAsset
                     TreeColumns.dependenceCount,
                     TreeColumns.type,
                     TreeColumns.size,
+                    TreeColumns.iN_Pkgs,
+
                     TreeColumns.tag,
                 }));
                 //this.rowHeight = 20;
@@ -81,7 +83,7 @@ namespace WooAsset
                 result.Add(_item);
                 return _item;
             }
-     
+
 
             protected override void RowGUI(RowGUIArgs args)
             {
@@ -105,7 +107,9 @@ namespace WooAsset
                     DrawCount(args.GetCellRect(3), asset.dependence.Count);
                     GUI.Label(args.GetCellRect(4), asset.type.ToString());
                     GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
-                    EditorGUI.SelectableLabel(args.GetCellRect(6), GetTagsString(asset));
+                    if (asset.in_pkgs.Count != 1)
+                        EditorGUI.SelectableLabel(args.GetCellRect(6), string.Join(",", asset.in_pkgs));
+                    EditorGUI.SelectableLabel(args.GetCellRect(7), GetTagsString(asset));
                 }
                 else
                 {

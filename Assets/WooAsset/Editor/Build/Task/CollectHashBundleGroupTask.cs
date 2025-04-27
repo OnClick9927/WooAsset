@@ -38,8 +38,15 @@ namespace WooAsset
         {
 
             List<EditorAssetData> assets = new List<EditorAssetData>(context.needBuildAssets);
-            hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x).hash));
-
+            var _hashMap = assets.ToDictionary(x => x.path, y => y.dependence.ConvertAll(x => context.assetsCollection.GetAssetData(x)));
+            foreach (var path in _hashMap.Keys.ToList())
+            {
+                if (_hashMap[path].Count == 0)
+                {
+                    _hashMap.Remove(path);
+                }
+            }
+            hashMap = _hashMap.ToDictionary(x => x.Key, y => y.Value.Select(z => z.hash).ToList());
             List<EditorBundleData> result = new List<EditorBundleData>();
             EditorBundleTool.N2One(assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant), result);
             EditorBundleTool.One2One(assets.FindAll(x => x.type == AssetType.Scene), result);
@@ -62,7 +69,7 @@ namespace WooAsset
 
                 for (int i = 0; i < context.optimizationCount; i++)
                 {
-                    builds = context.bundleOptimiser.Optimize(builds, this, context.buildPkg,context.assetBuild);
+                    builds = context.bundleOptimiser.Optimize(builds, this, context.buildPkg, context.assetBuild);
                     builds = (this as ICalcEditorBundleList).Calc(builds);
                 }
 

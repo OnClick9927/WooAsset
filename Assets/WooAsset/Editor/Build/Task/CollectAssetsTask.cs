@@ -3,7 +3,26 @@ using System.Linq;
 
 namespace WooAsset
 {
+    public class CollectAssetCrossTask : AssetTask
+    {
+        protected override void OnExecute(AssetTaskContext context)
+        {
 
+            var trees = context.allAssetCollections.ToList();
+            foreach (var item in context.allAssetCollections)
+            {
+                var pkg_name = item.Key;
+                var tree = item.Value;
+                var all = tree.GetAllAssets();
+
+                foreach (var asset in all)
+                {
+                    asset.in_pkgs = trees.Where(x => x.Value.GetAssetData(asset.path) != null).Select(x => x.Key).ToList() ;
+                }
+            }
+            InvokeComplete();
+        }
+    }
 
     public class CollectAssetsTask : AssetTask
     {
