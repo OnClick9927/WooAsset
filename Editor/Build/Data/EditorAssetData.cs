@@ -15,6 +15,7 @@ namespace WooAsset
         public List<string> usage = new List<string>();
         public bool record;
         public string guid;
+        public List<string> in_pkgs;
 
         public int usageCount { get { return usage.Count; } }
         public static EditorAssetData Create(string path, AssetType _type)

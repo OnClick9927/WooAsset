@@ -86,6 +86,7 @@ namespace WooAsset
         {
             new PrepareTask(),
             new BuildBundleTask(),
+            new CollectAssetCrossTask(),
             new CopyToBundlesToServerTask(),
             new CopyBundlesToStreamTask(),
             new BuildExportTask(),
@@ -105,6 +106,7 @@ namespace WooAsset
         {
             new PrepareTask(),
             new CollectEachPkgAssetTask(),
+            new CollectAssetCrossTask(),
             new SetCacheTask(),
             new AssetsEditorTool.CallPipelineFinishTask(),
         };

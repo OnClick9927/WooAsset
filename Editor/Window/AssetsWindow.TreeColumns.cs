@@ -64,6 +64,15 @@ namespace WooAsset
                 allowToggleVisibility = false,
                 autoResize = true,
             };
+            public static MultiColumnHeaderState.Column iN_Pkgs = new MultiColumnHeaderState.Column()
+            {
+                headerContent = new UnityEngine.GUIContent("Pkgs"),
+                width = 100,
+                minWidth = 80,
+                maxWidth = 200,
+                allowToggleVisibility = false,
+                autoResize = true,
+            };
             public static MultiColumnHeaderState.Column type = new MultiColumnHeaderState.Column()
             {
                 headerContent = new UnityEngine.GUIContent("Type"),
