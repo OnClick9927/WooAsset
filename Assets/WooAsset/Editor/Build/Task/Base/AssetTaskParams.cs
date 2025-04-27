@@ -12,6 +12,7 @@ namespace WooAsset
         public List<EditorPackageData> buildPkgs;
         public TypeTreeOption typeTreeOption;
         public bool cleanHistory;
+        public BundleNameCalculateType bundleNameCalculateType;
         public BundleNameType bundleNameType;
         public List<string> buildInAssets;
         public BuildMode buildMode;
@@ -65,6 +66,7 @@ namespace WooAsset
             typeTreeOption = option.typeTreeOption;
             cleanHistory = option.cleanHistory;
             bundleNameType = option.bundleNameType;
+            bundleNameCalculateType = option.bundleNameCalculate;
             buildInAssets = option.buildInAssets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
             buildMode = option.buildMode;
             copyToStream = option.copyToStream;

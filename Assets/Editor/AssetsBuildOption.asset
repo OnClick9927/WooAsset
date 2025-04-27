@@ -17,6 +17,7 @@ MonoBehaviour:
   buildMode: 0
   typeTreeOption: 0
   bundleNameType: 0
+  bundleNameCalculate: 0
   compress: 2
   MaxCacheVersionCount: 8
   cleanHistory: 1

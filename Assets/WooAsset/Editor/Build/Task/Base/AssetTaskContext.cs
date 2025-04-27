@@ -23,6 +23,8 @@ namespace WooAsset
         public TypeTreeOption typeTreeOption => Params.typeTreeOption;
         public bool cleanHistory => Params.cleanHistory;
         public BundleNameType bundleNameType => Params.bundleNameType;
+        public BundleNameCalculateType bundleNameCalculateType => Params.bundleNameCalculateType;
+
         public List<string> buildInAssets => Params.buildInAssets;
         public BuildMode buildMode => Params.buildMode;
         public bool copyToStream => Params.copyToStream;
