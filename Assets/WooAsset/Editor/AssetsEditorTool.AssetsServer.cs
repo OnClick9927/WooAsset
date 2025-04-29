@@ -7,6 +7,10 @@ namespace WooAsset
     {
         public class AssetsServer
         {
+            private static void ServerLog(string msg)
+            {
+                UnityEngine.Debug.Log($"<color=#0FA>AssetsServer: </color>{msg}");
+            }
             private class GetOperation : Operation
             {
                 public override float progress { get { return isDone ? 1 : 0; } }
@@ -16,7 +20,7 @@ namespace WooAsset
                     var rawUrl = request.RawUrl.Remove(0, 1);
 
                     string filePath = AssetsEditorTool.CombinePath(folder, rawUrl);
-                    AssetsEditorTool.Log($"Client DownLoad {rawUrl}");
+                    ServerLog($"Client DownLoad {rawUrl}");
                     WriteToClient(filePath, context);
                 }
                 public async void WriteToClient(string filePath, HttpListenerContext context)
@@ -50,7 +54,7 @@ namespace WooAsset
             {
                 _dir = directory;
                 _port = port;
-                AssetsEditorTool.Log($"Server Start {_dir}:{_port}");
+                ServerLog($"Server Start {_dir}:{_port}");
                 httpListener = new HttpListener();
                 httpListener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
                 httpListener.Prefixes.Add(string.Format("http://*:{0}/", port));
@@ -77,7 +81,7 @@ namespace WooAsset
                 {
                     httpListener?.Close();
                     httpListener = null;
-                    AssetsEditorTool.Log($"Server Stop {_dir}:{_port}");
+                    ServerLog($"Server Stop {_dir}:{_port}");
                 }
             }
         }

@@ -69,6 +69,15 @@ namespace WooAsset
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
             await Task.Delay(1000);
             await Assets.UnloadSceneAsync("Assets/Example/pkg2/Scene/New Scene2.unity", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+            await Task.Delay(1000);
+
+
+            sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/pkg2/Scene/New Scene2.unity");
+
+            await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
+            await Task.Delay(1000);
+            await Assets.UnloadSceneAsync("Assets/Example/pkg2/Scene/New Scene2.unity", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
         }
 
     }

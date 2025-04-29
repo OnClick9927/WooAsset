@@ -299,7 +299,7 @@ MonoBehaviour:
       usage: []
       dependence: []
       _loop: 0
-      _hash: 79dd775a8d2099ff06b025e744be4eb3
+      _hash: 9a898ce7a80940d73902cd443f6768ac
       _length: 9853
       _raw: 0
       _enCode: 1
@@ -323,7 +323,7 @@ MonoBehaviour:
       dependence:
       - 4cc4b478852ff3adefb36dbc0defb0f4
       _loop: 0
-      _hash: 61b881028a08c0e3e8fff0ddb315f630
+      _hash: 9bb219884efaa75df2dc332ff4791a71
       _length: 2818
       _raw: 0
       _enCode: 1
@@ -344,7 +344,7 @@ MonoBehaviour:
         - pkg1
         - pkg2
       usage:
-      - 61b881028a08c0e3e8fff0ddb315f630
+      - 9bb219884efaa75df2dc332ff4791a71
       dependence: []
       _loop: 0
       _hash: 4cc4b478852ff3adefb36dbc0defb0f4
@@ -543,7 +543,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
       usage:
-      - eaadfc7120cd35d69df1e40fea8923b3
+      - 754ceb230f8b21ee49598c4bc26b763a
       dependence: []
       _loop: 0
       _hash: 243a4650079c87e8c8a518635f6d055d
@@ -567,7 +567,7 @@ MonoBehaviour:
         - pkg1
         - pkg2
       usage:
-      - eaadfc7120cd35d69df1e40fea8923b3
+      - 754ceb230f8b21ee49598c4bc26b763a
       dependence: []
       _loop: 0
       _hash: bf1f5a88f21c062b8e99107f99927599
@@ -590,7 +590,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
       usage:
-      - eaadfc7120cd35d69df1e40fea8923b3
+      - 754ceb230f8b21ee49598c4bc26b763a
       dependence: []
       _loop: 0
       _hash: 81760e582f4d4439068c4d1ca75baf02
@@ -621,12 +621,12 @@ MonoBehaviour:
       dependence:
       - 243a4650079c87e8c8a518635f6d055d
       - 4cc4b478852ff3adefb36dbc0defb0f4
-      - 61b881028a08c0e3e8fff0ddb315f630
       - 81760e582f4d4439068c4d1ca75baf02
+      - 9bb219884efaa75df2dc332ff4791a71
       - bf1f5a88f21c062b8e99107f99927599
       - da4dc35176a2d52140d21c508ced13db
       _loop: 0
-      _hash: eaadfc7120cd35d69df1e40fea8923b3
+      _hash: 754ceb230f8b21ee49598c4bc26b763a
       _length: 21636
       _raw: 0
       _enCode: 1
@@ -647,7 +647,7 @@ MonoBehaviour:
         - pkg1
         - pkg2
       usage:
-      - eaadfc7120cd35d69df1e40fea8923b3
+      - 754ceb230f8b21ee49598c4bc26b763a
       dependence: []
       _loop: 0
       _hash: da4dc35176a2d52140d21c508ced13db
@@ -672,11 +672,11 @@ MonoBehaviour:
         - pkg1
         - pkg2
       usage:
-      - eaadfc7120cd35d69df1e40fea8923b3
+      - 754ceb230f8b21ee49598c4bc26b763a
       dependence:
       - 4cc4b478852ff3adefb36dbc0defb0f4
       _loop: 0
-      _hash: 61b881028a08c0e3e8fff0ddb315f630
+      _hash: 9bb219884efaa75df2dc332ff4791a71
       _length: 2818
       _raw: 0
       _enCode: 1
@@ -698,8 +698,8 @@ MonoBehaviour:
         - pkg1
         - pkg2
       usage:
-      - eaadfc7120cd35d69df1e40fea8923b3
-      - 61b881028a08c0e3e8fff0ddb315f630
+      - 754ceb230f8b21ee49598c4bc26b763a
+      - 9bb219884efaa75df2dc332ff4791a71
       dependence: []
       _loop: 0
       _hash: 4cc4b478852ff3adefb36dbc0defb0f4
@@ -909,7 +909,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
   manifest:
-    version: 2025_04_27_16_06_00
+    version: 2025_04_29_20_33_13
     assets:
     - path: Assets/Example/pkg1/px/2.png
       type: 3
@@ -930,17 +930,17 @@ MonoBehaviour:
       type: 22
       guid: 8509778ade282b04aa4076d291359936
       tags: []
-      bundleName: 79dd775a8d2099ff06b025e744be4eb3
+      bundleName: 9a898ce7a80940d73902cd443f6768ac
     - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       type: 21
       guid: fe393ace9b354375a9cb14cdbbc28be4
       tags: []
-      bundleName: 79dd775a8d2099ff06b025e744be4eb3
+      bundleName: 9a898ce7a80940d73902cd443f6768ac
     - path: Assets/Example/pkg1/Cube.prefab
       type: 9
       guid: faee63170bb43064c8285f3e474e739a
       tags: []
-      bundleName: 61b881028a08c0e3e8fff0ddb315f630
+      bundleName: 9bb219884efaa75df2dc332ff4791a71
     - path: Assets/Example/pkg1/New Material.mat
       type: 7
       guid: 53c7d5590ab282b48b54fe2a05c094c6
@@ -975,7 +975,7 @@ MonoBehaviour:
       type: 6
       guid: 7623efd24e38a4e46948380b33aadb32
       tags: []
-      bundleName: eaadfc7120cd35d69df1e40fea8923b3
+      bundleName: 754ceb230f8b21ee49598c4bc26b763a
     bundles:
     - bundleName: 76c9c9307a3f5a429af261ace614ff50
       raw: 0
@@ -990,26 +990,26 @@ MonoBehaviour:
       - Assets/Example/pkg1/px/1.png
       - Assets/Example/pkg1/px/3.png
       dependence: []
-    - bundleName: 79dd775a8d2099ff06b025e744be4eb3
+    - bundleName: 9a898ce7a80940d73902cd443f6768ac
       raw: 0
       compress: 2
       enCode: 1
-      hash: fe4e56eb0247f85f3c9db4d313b9cdc6
+      hash: 38888dcf4e3ad257659802d8033847f1
       length: 112864
       bundleHash: 5095488be118d169521df0bc86d5e58a
-      bundleCrc: 458503087
+      bundleCrc: 888651119
       assets:
       - Assets/Example/pkg1/shadervariants.shadervariants
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       dependence: []
-    - bundleName: 61b881028a08c0e3e8fff0ddb315f630
+    - bundleName: 9bb219884efaa75df2dc332ff4791a71
       raw: 0
       compress: 2
       enCode: 1
-      hash: b1e6ccdd717b863ea1f677b81d0db4ad
+      hash: 21cf03537707c1b4e00fc044550367a1
       length: 8256
       bundleHash: 769de0465f2580ed732a2128effd1157
-      bundleCrc: 1067079815
+      bundleCrc: 2504734976
       assets:
       - Assets/Example/pkg1/Cube.prefab
       dependence:
@@ -1071,21 +1071,21 @@ MonoBehaviour:
       assets:
       - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
       dependence: []
-    - bundleName: eaadfc7120cd35d69df1e40fea8923b3
+    - bundleName: 754ceb230f8b21ee49598c4bc26b763a
       raw: 0
       compress: 2
       enCode: 1
-      hash: b365a4f5455a70ea4db9efa766003d6b
+      hash: a277cd874a2b443886668500f8feeb8f
       length: 1237456
-      bundleHash: 190c31e623fc3fd238387056761f544c
-      bundleCrc: 3030100369
+      bundleHash: 8fca704a5dbb63eb28cdddfe29f8a288
+      bundleCrc: 2101504821
       assets:
       - Assets/Example/pkg2/Scene/New Scene2.unity
       dependence:
       - 243a4650079c87e8c8a518635f6d055d
       - 4cc4b478852ff3adefb36dbc0defb0f4
-      - 61b881028a08c0e3e8fff0ddb315f630
       - 81760e582f4d4439068c4d1ca75baf02
+      - 9bb219884efaa75df2dc332ff4791a71
       - bf1f5a88f21c062b8e99107f99927599
       - da4dc35176a2d52140d21c508ced13db
     - bundleName: da4dc35176a2d52140d21c508ced13db

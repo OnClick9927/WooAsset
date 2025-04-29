@@ -4,22 +4,42 @@ namespace WooAsset
 {
     partial class AssetsInternal
     {
-        private class BundleMap : NameMap<Bundle>
+        private class BundleMap : NameMap<Bundle, BundleLoadArgs>
         {
-            protected override Bundle CreateNew(IAssetArgs args) => AssetsInternal.CreateBundle((BundleLoadArgs)args);
+            protected override Bundle CreateNew(BundleLoadArgs args) => AssetsInternal.CreateBundle((BundleLoadArgs)args);
 
             public Bundle LoadBundle(string bundleName, bool async)
             {
                 var data = GetBundleData(bundleName);
                 BundleLoadArgs args = default;
-
-                //var bundle = Find(bundleName);
-                //if (bundle != null)
-                //    args = bundle.loadArgs;
-                //else
-                args = new BundleLoadArgs(data, async, GetEncrypt(data.enCode)
-                    , new BundleDependenceOperation(data, async));
+                args = new BundleLoadArgs(data, async, GetEncrypt(data.enCode));
                 return LoadAsync(args);
+            }
+            protected override void BeforeLoad(bool create, ref BundleLoadArgs args)
+            {
+
+                var dps = args.data.dependence;
+                var async = args.async;
+                if (create)
+                {
+                    if (dps == null || dps.Count == 0)
+                        args.dependence = Operation.empty;
+                    else
+                    {
+                        List<Bundle> _bundles = new List<Bundle>();
+                        for (int i = 0; i < dps.Count; i++)
+                            _bundles.Add(bundles.LoadBundle(dps[i], async));
+                        var op = new GroupOperation<Bundle>();
+                        op.Done(_bundles);
+                        args.dependence = op;
+                    }
+                }
+                else
+                {
+                    if (dps == null || dps.Count == 0) return;
+                    for (int i = 0; i < dps.Count; i++)
+                        bundles.LoadBundle(dps[i], async);
+                }
             }
 
 

@@ -37,8 +37,9 @@ namespace WooAsset
         private void Update()
         {
             _frameTime = _watch.ElapsedMilliseconds;
+            DownLoaderSystem.Update();
 
-   
+
             for (int i = loop.Count - 1; i >= 0; i--)
             {
                 var operation = loop[i];

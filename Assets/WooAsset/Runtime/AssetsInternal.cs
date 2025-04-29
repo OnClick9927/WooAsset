@@ -155,7 +155,7 @@ namespace WooAsset
         public static BytesDownLoader DownLoadRawBundle(string version, string bundleName) => DownloadBytes(GetUrlFromBundleName(version, bundleName));
         public static BundleDownLoader DownLoadBundle(string version, string bundleName, uint crc, Hash128 hash)
         {
-            return new BundleDownLoader(GetUrlFromBundleName(version, bundleName), AssetsInternal.GetCachesDownloadedBundles(), crc, hash, GetWebRequestTimeout(), GetWebRequestRetryCount());
+            return DownLoaderSystem.Bundle(GetUrlFromBundleName(version, bundleName), AssetsInternal.GetCachesDownloadedBundles(), crc, hash, GetWebRequestTimeout(), GetWebRequestRetryCount());
         }
 
         public static DownLoader DownLoadBundleFile(string version, string bundleName) =>
@@ -164,8 +164,8 @@ namespace WooAsset
         public static BytesDownLoader DownloadVersion(string version, string bundleName) => DownLoadRawBundle(version, bundleName);
         public static BytesDownLoader DownloadRemoteVersion() =>
             DownloadBytes(GetUrlFromBundleName(AssetsHelper.VersionCollectionName));
-        public static DownLoader DownLoadFile(string url, string path) => new FileDownLoader(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
-        public static BytesDownLoader DownloadBytes(string url) => new BytesDownLoader(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static DownLoader DownLoadFile(string url, string path) => DownLoaderSystem.File(url, path, GetWebRequestTimeout(), GetWebRequestRetryCount());
+        public static BytesDownLoader DownloadBytes(string url) => DownLoaderSystem.Bytes(url, GetWebRequestTimeout(), GetWebRequestRetryCount());
     }
 
 }
