@@ -4,7 +4,7 @@ namespace WooAsset
 {
     partial class AssetsInternal
     {
-        private abstract class NameMap<T> where T : AssetOperation
+        private abstract class NameMap<T,TArg> where T : AssetOperation where TArg : IAssetArgs
         {
             private IAssetLife<T> listen;
             public void SetListen(IAssetLife<T> listen)
@@ -21,7 +21,7 @@ namespace WooAsset
                 map.TryGetValue(uid, out result);
                 return result;
             }
-            protected abstract T CreateNew(IAssetArgs args);
+            protected abstract T CreateNew(TArg args);
 
             public void RetainRef(T asset)
             {
@@ -39,11 +39,12 @@ namespace WooAsset
 
 
 
-
-            protected T LoadAsync(IAssetArgs args)
+            protected virtual void BeforeLoad(bool create,ref TArg args) { }
+            protected T LoadAsync(TArg args)
             {
                 string uid = args.uid;
                 T result = Find(uid);
+                BeforeLoad(result == null, ref args);
                 if (result == null)
                 {
                     result = CreateNew(args);

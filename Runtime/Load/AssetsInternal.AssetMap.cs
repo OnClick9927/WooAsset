@@ -2,32 +2,26 @@
 {
     partial class AssetsInternal
     {
-        private class AssetMap : NameMap<AssetHandle>
+        private class AssetMap : NameMap<AssetHandle, AssetLoadArgs>
         {
 
             public AssetHandle LoadAsset(AssetData data, bool async, System.Type type, bool sub)
             {
-                AssetLoadArgs args = default;
-                //var asset = Find(data.path);
-                //if (asset != null)
-                //    args = asset.loadArgs;
-                //else
-                args = AssetLoadArgs.NormalArg(data, async, type, sub);
+                var args = AssetLoadArgs.NormalArg(data, async, type, sub);
                 return LoadAsync(args);
             }
-            protected override AssetHandle CreateNew(IAssetArgs args)
+            protected override AssetHandle CreateNew(AssetLoadArgs args)
             {
-                AssetLoadArgs arg = (AssetLoadArgs)args;
-                Bundle bundle = bundles.LoadBundle(arg.data.bundleName, arg.async);
+                Bundle bundle = bundles.LoadBundle(args.data.bundleName, args.async);
                 AssetHandle handle;
-                if (arg.data.type == AssetType.Raw)
-                    handle = new RawAsset(arg, bundle);
-                else if (arg.data.type == AssetType.Scene)
-                    handle = new SceneAsset(arg, bundle);
-                else if (arg.sub)
-                    handle = new SubAsset(arg, bundle);
+                if (args.data.type == AssetType.Raw)
+                    handle = new RawAsset(args, bundle);
+                else if (args.data.type == AssetType.Scene)
+                    handle = new SceneAsset(args, bundle);
+                else if (args.sub)
+                    handle = new SubAsset(args, bundle);
                 else
-                    handle = new Asset(arg, bundle);
+                    handle = new Asset(args, bundle);
                 return handle;
             }
 

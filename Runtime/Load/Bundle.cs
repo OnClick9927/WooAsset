@@ -122,15 +122,23 @@ namespace WooAsset
                 await dependence;
                 bundle.SetResult(value);
             }
-
+            byte[] buff_release;
             private async void LoadFromBytes(Operation op)
             {
+
                 await op;
                 byte[] buffer = null;
                 if (op is ReadFileOperation)
+                {
                     buffer = (op as ReadFileOperation).bytes;
+                }
                 else if (op is DownLoader)
-                    buffer = (op as BytesDownLoader).data;
+                {
+                    var data = (op as BytesDownLoader).data;
+                    buffer = AssetsHelper.AllocateByteArray(data.Length);
+                    Array.Copy(data, buffer, data.Length);
+                    buff_release = buffer;
+                }
 
 
 
@@ -146,7 +154,10 @@ namespace WooAsset
                     && AssetsInternal.GetCachesDownloadedBundles()
                     && !AssetsInternal.GetBundleAlwaysFromWebRequest())
                     await AssetsHelper.WriteFile(buffer, path, 0, buffer.Length);
+
+
                 buffer = encrypt.Decode(bundleName, buffer);
+
                 if (raw)
                 {
                     rawObject = RawObject.Create(path, buffer);
@@ -165,7 +176,14 @@ namespace WooAsset
                 }
             }
 
-            public abstract void UnLoad();
+            public virtual void UnLoad()
+            {
+                if (buff_release != null)
+                {
+                    AssetsHelper.RecycleByteArray(buff_release);
+                    buff_release = null;
+                }
+            }
         }
         private class FromFileMode : Mode
         {
@@ -211,8 +229,11 @@ namespace WooAsset
                     End(loadOp.assetBundle);
                 }
             }
+
+
             public override void UnLoad()
             {
+                base.UnLoad();
                 if (filestream != null)
                 {
                     filestream.Dispose();
@@ -251,9 +272,7 @@ namespace WooAsset
                 End((downloader as BundleDownLoader).bundle);
             }
 
-            public override void UnLoad()
-            {
-            }
+
 
 
         }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace WooAsset
 {
@@ -103,7 +104,7 @@ namespace WooAsset
                     case AssetType.Directory:
                     case AssetType.Texture:
                     case AssetType.Scene:
-                    case AssetType.ScriptObject: 
+                    case AssetType.ScriptObject:
                     default:
                         return type;
                 }
@@ -200,6 +201,28 @@ namespace WooAsset
         {
             var bytes = AssetsHelper.WriteBufferObject(version);
             return AssetsHelper.WriteFile(bytes.buffer, path, 0, bytes.length);
+        }
+
+        private static Dictionary<int, Queue<byte[]>> map = new Dictionary<int, Queue<byte[]>>();
+        public static byte[] AllocateByteArray(int length)
+        {
+            var _len = 32;
+            while (_len < length)
+            {
+                _len *= 2;
+            }
+            length = _len;
+            Queue<byte[]> result = GetOrDefaultFromDictionary(map, length);
+            if (result == null || result.Count == 0)
+                return new byte[length];
+            else
+                return result.Dequeue();
+        }
+        public static void RecycleByteArray(byte[] array)
+        {
+            Array.Clear(array, 0, array.Length);
+            Queue<byte[]> result = GetFromDictionary(map, array.Length);
+            result.Enqueue(array);
         }
     }
 }

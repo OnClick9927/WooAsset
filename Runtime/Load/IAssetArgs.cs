@@ -13,12 +13,12 @@
         public string bundleName => data.bundleName;
         public string uid => data.bundleName;
 
-        public BundleLoadArgs(BundleData data, bool async, IAssetEncrypt en, Operation dependence)
+        public BundleLoadArgs(BundleData data, bool async, IAssetEncrypt en)
         {
             this.data = data;
             this.async = async;
             this.encrypt = en;
-            this.dependence = dependence;
+            this.dependence = null;
         }
 
     }
