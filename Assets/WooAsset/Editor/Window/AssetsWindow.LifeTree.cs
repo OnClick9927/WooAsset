@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using System.Linq;
 using static WooAsset.AssetsEditorTool.LifePart;
+using static WooAsset.AssetsEditorTool;
 
 namespace WooAsset
 {
@@ -156,7 +157,7 @@ namespace WooAsset
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     //GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
                     GUI.Label(args.GetCellRect(4), life.assetType.ToString());
-                    EditorGUI.SelectableLabel(args.GetCellRect(5), AssetsEditorTool.GetFileName(life.asset.bundleName));
+                    EditorGUI.LabelField(args.GetCellRect(5), AssetsEditorTool.GetFileName(life.asset.bundleName));
                     GUI.Label(args.GetCellRect(6), GetTagsString(life.tags));
                 }
             }
@@ -188,6 +189,41 @@ namespace WooAsset
             {
                 Reload();
             }
+
+
+            protected override void ContextClicked()
+            {
+                var selection = this.GetSelection();
+                var rows = this.FindRows(selection).ToList().ConvertAll(x => x.displayName);
+                List<string> paths = rows;
+                GenericMenu menu = new GenericMenu();
+                if (paths.Count == 1)
+                {
+                    string name = paths[0];
+                    menu.AddItem(new UnityEngine.GUIContent("CopyPath"), false, () =>
+                    {
+                        GUIUtility.systemCopyBuffer = name;
+                    });
+
+                    if (AssetsEditorTool.LifePart.assets.TryGetValue(name, out AssetLife<AssetHandle> life))
+                    {
+                        menu.AddItem(new UnityEngine.GUIContent("CopyBundleName"), false, () =>
+                        {
+                            GUIUtility.systemCopyBuffer = life.asset.bundleName;
+                        });
+                    }
+
+                }
+                //CreateMenus(paths, menu);
+                if (menu.GetItemCount() > 0)
+                {
+
+                    menu.ShowAsContext();
+                }
+
+                base.ContextClicked();
+            }
+
         }
     }
 }

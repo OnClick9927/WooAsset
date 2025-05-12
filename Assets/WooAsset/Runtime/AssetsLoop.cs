@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using UnityEngine;
 namespace WooAsset
 {
     class AssetsLoop : MonoBehaviour
     {
-        private List<LoopOperation> loop = new List<LoopOperation>();
-
         private static AssetsLoop _instance;
-        private static AssetsLoop instance
+        public static AssetsLoop instance
         {
             get
             {
+                if (!Application.isPlaying)
+                {
+                    return null;
+                }
                 if (_instance == null)
                 {
                     GameObject go = new GameObject("Assets");
@@ -23,38 +25,26 @@ namespace WooAsset
             }
         }
         private Stopwatch _watch;
-        public static bool isBusy
+        public bool isBusy
         {
             get
             {
                 if (!Application.isPlaying)
                     return false;
-                return instance._watch.ElapsedMilliseconds - instance._frameTime >= AssetsInternal.GetLoadingMaxTimeSlice();
+                return _busy;
             }
         }
+        private bool _busy;
+
+        public Action update;
         private long _frameTime;
 
         private void Update()
         {
             _frameTime = _watch.ElapsedMilliseconds;
             DownLoaderSystem.Update();
-
-
-            for (int i = loop.Count - 1; i >= 0; i--)
-            {
-                var operation = loop[i];
-                operation.Update();
-                if (operation.isDone)
-                {
-                    loop.RemoveAt(i);
-                }
-            }
-
-        }
-
-        public static void AddOperation(LoopOperation op)
-        {
-            instance.loop.Add(op);
+            update?.Invoke();
+            _busy = _watch.ElapsedMilliseconds - _frameTime >= AssetsInternal.GetLoadingMaxTimeSlice();
         }
     }
 

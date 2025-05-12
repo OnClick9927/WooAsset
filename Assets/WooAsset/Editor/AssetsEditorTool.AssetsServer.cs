@@ -5,7 +5,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        public class AssetsServer
+        class AssetsServer
         {
             private static void ServerLog(string msg)
             {

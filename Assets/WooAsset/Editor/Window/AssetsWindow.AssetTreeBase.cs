@@ -3,6 +3,8 @@ using UnityEditor.IMGUI.Controls;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 using UnityEngine;
+using static WooAsset.AssetsEditorTool;
+using System.Linq;
 
 namespace WooAsset
 {
@@ -99,7 +101,7 @@ namespace WooAsset
                     var rs = RectEx.VerticalSplit(rect1, 18);
                     GUI.Label(rs[0], Textures.GetMiniThumbnail(path));
 
-                    EditorGUI.SelectableLabel(rs[1], path);
+                    EditorGUI.LabelField(rs[1], path);
 
 
                     EditorGUI.Toggle(args.GetCellRect(1), asset.record);
@@ -108,7 +110,7 @@ namespace WooAsset
                     GUI.Label(args.GetCellRect(4), asset.type.ToString());
                     GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
                     if (asset.in_pkgs.Count != 1)
-                        EditorGUI.SelectableLabel(args.GetCellRect(6), string.Join(",", asset.in_pkgs));
+                        EditorGUI.LabelField(args.GetCellRect(6), string.Join(",", asset.in_pkgs));
                     EditorGUI.SelectableLabel(args.GetCellRect(7), GetTagsString(asset));
                 }
                 else
@@ -125,6 +127,33 @@ namespace WooAsset
                 string path = this.FindItem(id, rootItem).displayName;
                 EditorAssetData asset = tree.GetAssetData(path);
                 this.ping.Ping(asset);
+            }
+
+            protected virtual void CreateMenus(List<string> paths, GenericMenu menu)
+            {
+
+            }
+            protected override void ContextClicked()
+            {
+                var selection = this.GetSelection();
+                var rows = this.FindRows(selection).ToList().ConvertAll(x => x.displayName);
+                List<string> paths = rows;
+                GenericMenu menu = new GenericMenu();
+                if (paths.Count == 1)
+                {
+                    menu.AddItem(new UnityEngine.GUIContent("CopyPath"), false, () =>
+                    {
+                        GUIUtility.systemCopyBuffer = paths[0];
+                    });
+                }
+                CreateMenus(paths, menu);
+                if (menu.GetItemCount() > 0)
+                {
+
+                    menu.ShowAsContext();
+                }
+
+                base.ContextClicked();
             }
         }
     }

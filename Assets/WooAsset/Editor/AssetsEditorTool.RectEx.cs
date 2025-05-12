@@ -2,8 +2,9 @@
 
 namespace WooAsset
 {
-    partial class AssetsWindow
+    partial class AssetsEditorTool
     {
+
         public static class RectEx
         {
 
@@ -142,6 +143,5 @@ namespace WooAsset
             }
         }
     }
-
 
 }

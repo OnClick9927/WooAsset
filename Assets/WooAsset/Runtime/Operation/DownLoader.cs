@@ -13,12 +13,16 @@ namespace WooAsset
         private static Dictionary<string, List<DownLoader>> memory = new Dictionary<string, List<DownLoader>>();
         private static List<DownLoader> update = new List<DownLoader>();
 
+        static DownLoaderSystem()
+        {
+            var ins = AssetsLoop.instance;
 
+
+        }
         private static void DownLoad(DownLoader down)
         {
             update.Add(down);
             Run(down);
-            var is_busy = AssetsLoop.isBusy;
         }
 
 

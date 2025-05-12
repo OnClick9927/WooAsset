@@ -47,7 +47,7 @@ namespace WooAsset
             return type;
         }
 
-        public Bundle(BundleLoadArgs loadArgs)
+        internal Bundle(BundleLoadArgs loadArgs)
         {
             bundleName = loadArgs.bundleName;
             encrypt = loadArgs.encrypt;
@@ -329,9 +329,9 @@ namespace WooAsset
         }
 
         public virtual RawObject LoadRawObject(string path) => rawObject;
-        public virtual AssetRequest LoadAssetWithSubAssetsAsync(string name, Type type) => new RuntimeAssetRequest(value.LoadAssetWithSubAssetsAsync(name, type));
+        internal virtual AssetRequest LoadAssetWithSubAssetsAsync(string name, Type type) => RuntimeAssetRequest.Request(value.LoadAssetWithSubAssetsAsync(name, type));
         public virtual UnityEngine.Object[] LoadAssetWithSubAssets(string name, Type type) => value.LoadAssetWithSubAssets(name, type);
-        public virtual AssetRequest LoadAssetAsync(string name, Type type) => new RuntimeAssetRequest(value.LoadAssetAsync(name, type));
+        internal virtual AssetRequest LoadAssetAsync(string name, Type type) => RuntimeAssetRequest.Request(value.LoadAssetAsync(name, type));
         public virtual UnityEngine.Object LoadAsset(string name, Type type) => value.LoadAsset(name, type);
         public virtual Scene LoadScene(string path, LoadSceneParameters parameters) => SceneManager.LoadScene(AssetsHelper.GetFileNameWithoutExtension(path), parameters);
         public AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => SceneManager.UnloadSceneAsync(AssetsHelper.GetFileNameWithoutExtension(path), op);

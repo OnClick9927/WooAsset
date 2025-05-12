@@ -52,8 +52,8 @@ namespace WooAsset
                 }
                 return _allAssets;
             }
-            public override AssetRequest LoadAssetWithSubAssetsAsync(string path, Type type) => new EditorAssetRequest(AssetDatabase.LoadAllAssetsAtPath(path), AssetDatabase.LoadAssetAtPath(path, type));
-            public override AssetRequest LoadAssetAsync(string name, Type type) => new EditorAssetRequest(null, AssetDatabase.LoadAssetAtPath(name, type));
+            internal override AssetRequest LoadAssetWithSubAssetsAsync(string path, Type type) => new EditorAssetRequest(AssetDatabase.LoadAllAssetsAtPath(path), AssetDatabase.LoadAssetAtPath(path, type));
+            internal override AssetRequest LoadAssetAsync(string name, Type type) => new EditorAssetRequest(null, AssetDatabase.LoadAssetAtPath(name, type));
             public override Object LoadAsset(string name, Type type) => AssetDatabase.LoadAssetAtPath(name, type);
             public override AsyncOperation LoadSceneAsync(string path, LoadSceneParameters parameters) => EditorSceneManager.LoadSceneAsyncInPlayMode(path, parameters);
             public override Scene LoadScene(string path, LoadSceneParameters parameters) => EditorSceneManager.LoadSceneInPlayMode(path, parameters);

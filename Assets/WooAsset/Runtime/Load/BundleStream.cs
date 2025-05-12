@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WooAsset
 {
-    public class BundleStream : FileStream
+    class BundleStream : FileStream
     {
         private static List<BundleStream> streams = new List<BundleStream>();
         public static void CloseStreams()

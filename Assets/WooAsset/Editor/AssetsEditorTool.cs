@@ -88,7 +88,7 @@ namespace WooAsset
         {
             return JsonUtility.FromJson<T>(System.Text.Encoding.UTF8.GetString(ReadFileSync(path)));
         }
-        public static void WriteBufferObjectSync<T>(T t, string path) where T : IBufferObject
+        internal static void WriteBufferObjectSync<T>(T t, string path) where T : IBufferObject
         {
             var bytes = WriteBufferObject(t);
             var buffer = new byte[bytes.length];

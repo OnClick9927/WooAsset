@@ -7,7 +7,7 @@ namespace WooAsset
 
     partial class AssetsEditorTool
     {
-        public class LifePart : AssetModificationProcessor, IAssetLife<Bundle>, IAssetLife<AssetHandle>
+        internal class LifePart : IAssetLife<Bundle>, IAssetLife<AssetHandle>
         {
             async void IAssetLife<Bundle>.OnAssetCreate(string path, Bundle asset)
             {

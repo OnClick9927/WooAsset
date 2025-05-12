@@ -5,12 +5,12 @@ using System.IO;
 
 namespace WooAsset
 {
-    public interface IBufferObject
+    interface IBufferObject
     {
         void ReadData(BufferReader reader);
         void WriteData(BufferWriter writer);
     }
-    public class BufferReader
+    class BufferReader
     {
         private readonly byte[] _buffer;
         private int _index = 0;
@@ -236,7 +236,7 @@ namespace WooAsset
             }
         }
     }
-    public class BufferWriter
+    class BufferWriter
     {
         private byte[] _buffer;
         private int _index = 0;

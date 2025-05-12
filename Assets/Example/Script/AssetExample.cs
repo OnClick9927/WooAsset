@@ -16,6 +16,7 @@ namespace WooAsset
 {
     public class AssetExample : UnityEngine.MonoBehaviour
     {
+        public Image image;
         private void Awake()
         {
             Assets.SetAssetsSetting(new LocalSetting());
@@ -78,6 +79,20 @@ namespace WooAsset
             await sceneAsset.LoadSceneAsync(LoadSceneMode.Additive);
             await Task.Delay(1000);
             await Assets.UnloadSceneAsync("Assets/Example/pkg2/Scene/New Scene2.unity", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                string path = "Assets/Example/pkg2/px/avatar.jpg";
+                string path1 = "Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg";
+                string path2 = "Assets/Example/pkg2/px/OIP.jpg";
+
+                path = i % 3 == 0 ? path : i % 3 == 1 ? path1 : path2;
+                var asset = await Assets.LoadAssetAsync(path);
+                this.image.sprite = asset.GetAsset<Sprite>();
+                await Task.Delay(500);
+            }
+
         }
 
     }

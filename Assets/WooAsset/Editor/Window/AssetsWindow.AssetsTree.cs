@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using static WooAsset.AssetsEditorTool;
 
 namespace WooAsset
 {
@@ -176,14 +177,11 @@ namespace WooAsset
             //    }
 
             //}
-            protected override void ContextClicked()
+
+            protected override void CreateMenus(List<string> paths, GenericMenu menu)
             {
-                var selection = this.GetSelection();
-                var rows = this.FindRows(selection).ToList().ConvertAll(x => x.displayName);
-                List<string> paths = rows;
-                //CollectPath(rows, paths);
                 var tags = AssetsEditorTool.option.GetAllTags();
-                GenericMenu menu = new GenericMenu();
+
                 foreach (var tag in tags)
                 {
                     menu.AddItem(new GUIContent($"Tag/Add/{tag}"), false, () =>
@@ -211,7 +209,7 @@ namespace WooAsset
                 }
                 menu.AddItem(new UnityEngine.GUIContent("Record/AddToIgnore"), false, () =>
                 {
-                    foreach (var path in rows)
+                    foreach (var path in paths)
                     {
                         var data = cache.tree_asset.GetAssetData(path);
                         AssetsEditorTool.option.AddToRecordIgnore(path, data.fileType);
@@ -221,7 +219,7 @@ namespace WooAsset
                 });
                 menu.AddItem(new UnityEngine.GUIContent("Record/RemoveFromIgnore"), false, () =>
                 {
-                    foreach (var path in rows)
+                    foreach (var path in paths)
                     {
                         var data = cache.tree_asset.GetAssetData(path);
                         AssetsEditorTool.option.RemoveFromRecordIgnore(path, data.fileType);
@@ -230,10 +228,7 @@ namespace WooAsset
                     AssetsEditorTool.option.Save();
                     AssetTaskRunner.PreviewAllAssets();
                 });
-                menu.ShowAsContext();
-
             }
-
 
             protected override void RowGUI(RowGUIArgs args)
             {
@@ -292,7 +287,7 @@ namespace WooAsset
                     switch (_searchType)
                     {
                         case SearchType.Name:
-                            source = AssetsEditorTool.GetFileName(asset.path);
+                            source = asset.path;
                             break;
                         case SearchType.Tag:
                             source = GetTagsString(asset);
