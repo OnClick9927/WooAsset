@@ -77,6 +77,7 @@ namespace WooAsset
         internal virtual void ResetIsDone()
         {
             _isDone = false;
+            completed = null;
         }
     }
 

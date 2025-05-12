@@ -38,8 +38,10 @@ namespace WooAsset
         //}
         private async void Done()
         {
+            //ResetIsDone();
             await request;
             InvokeComplete();
+            request = null;
             cache.Enqueue(this);
         }
         public override float progress => request == null ? 0 : request.progress;

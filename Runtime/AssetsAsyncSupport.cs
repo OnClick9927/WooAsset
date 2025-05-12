@@ -17,7 +17,8 @@ namespace WooAsset
             {
                 if (task == null) throw new ArgumentNullException("task");
                 this.task = task;
-                calls = new Queue<Action>();
+                calls = AssetsHelper.AllocateActionQueue(); ;
+
                 this.task.completed += Task_completed;
             }
 
@@ -27,6 +28,8 @@ namespace WooAsset
                 {
                     calls.Dequeue()?.Invoke();
                 }
+                AssetsHelper.RecycleActionQueue(calls);
+
             }
 
             public bool IsCompleted => task.isDone;
@@ -57,6 +60,7 @@ namespace WooAsset
     }
     public static class AssetsAsyncSupport
     {
+
         public interface IAwaiter<out TResult> : INotifyCompletion, ICriticalNotifyCompletion
         {
             bool IsCompleted { get; }
@@ -70,16 +74,19 @@ namespace WooAsset
             {
                 if (task == null) throw new ArgumentNullException("task");
                 this.task = task;
-                calls = new Queue<Action>();
+                calls = AssetsHelper.AllocateActionQueue(); ;
                 this.task.completed += Task_completed;
             }
 
             private void Task_completed(Operation operation)
             {
+
                 while (calls.Count != 0)
                 {
                     calls.Dequeue()?.Invoke();
                 }
+                calls.Clear();
+                AssetsHelper.RecycleActionQueue(calls);
             }
 
             public bool IsCompleted => task.isDone;
@@ -100,11 +107,10 @@ namespace WooAsset
             {
                 if (continuation == null)
                     throw new ArgumentNullException("continuation");
-
                 calls.Enqueue(continuation);
             }
         }
-        public static IAwaiter<T> GetAwaiter<T>(this T target)where T: Operation  =>  new AssetOperationAwaiter<T>(target); 
+        public static IAwaiter<T> GetAwaiter<T>(this T target) where T : Operation => new AssetOperationAwaiter<T>(target);
         public static void WarpErr(this Operation self) { }
 
     }
