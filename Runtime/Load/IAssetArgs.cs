@@ -2,9 +2,9 @@
 {
     interface IAssetArgs
     {
-        string uid { get;}
+        string uid { get; }
     }
-    public struct BundleLoadArgs : IAssetArgs
+    struct BundleLoadArgs : IAssetArgs
     {
         public bool async;
         public IAssetEncrypt encrypt;
@@ -22,7 +22,7 @@
         }
 
     }
-    public struct AssetLoadArgs : IAssetArgs
+    struct AssetLoadArgs : IAssetArgs
     {
         public bool async;
         public System.Type type;

@@ -7,7 +7,32 @@ namespace WooAsset
     public abstract class Operation : IEnumerator
     {
         private static Operation _empty = new EmptyOperation();
+        private static YieldOperation _yield = new YieldOperation();
+        private static WaitBusyOperation _busy = new WaitBusyOperation();
+
         public static Operation empty { get { return _empty; } }
+        public static Operation yield
+        {
+            get
+            {
+                if (_yield.isDone)
+                {
+                    _yield.ResetIsDone();
+                }
+                return _yield.Begin();
+            }
+        }
+        internal static Operation busy
+        {
+            get
+            {
+                if (_busy.isDone)
+                {
+                    _busy.ResetIsDone();
+                }
+                return _busy.Begin();
+            }
+        }
 
         private bool _isDone;
         public bool isDone => _isDone;
@@ -15,7 +40,7 @@ namespace WooAsset
         public abstract float progress { get; }
 
         private string _err;
-        public string error { get { return _err; }protected set { _err = value; } }
+        public string error { get { return _err; } protected set { _err = value; } }
         public bool isErr { get { return !string.IsNullOrEmpty(error); } }
 
         public event Action<Operation> completed;
@@ -45,8 +70,13 @@ namespace WooAsset
         {
             while (!isDone)
             {
-                await new YieldOperation();
+                await Operation.yield;
             }
+        }
+
+        internal virtual void ResetIsDone()
+        {
+            _isDone = false;
         }
     }
 
@@ -107,62 +137,59 @@ namespace WooAsset
 
 
 
-    public abstract class LoopOperation : Operation
+    abstract class LoopOperation : Operation
     {
-        protected virtual void AddToLoop()
+        public Operation Begin()
         {
-            AssetsLoop.AddOperation(this);
+#if UNITY_EDITOR
+            if (!UnityEditor.EditorApplication.isPlaying)
+            {
+                UnityEditor.EditorApplication.update += OnUpdate;
+                return this;
+            }
+#endif
+
+            AssetsLoop.instance.update += OnUpdate;
+            OnBegin();
+            return this;
         }
-        protected LoopOperation()
+        protected virtual void OnBegin() { }
+        protected new void InvokeComplete()
         {
-            AddToLoop();
-        }
-        protected virtual bool NeedUpdate() { return !isDone; }
-        public void Update()
-        {
-            if (NeedUpdate()) OnUpdate();
+#if UNITY_EDITOR
+            if (!UnityEditor.EditorApplication.isPlaying)
+            {
+                UnityEditor.EditorApplication.update -= OnUpdate;
+            }
+#endif
+            AssetsLoop.instance.update -= OnUpdate;
+            base.InvokeComplete();
         }
         protected abstract void OnUpdate();
     }
-    public class YieldOperation : LoopOperation
+    class YieldOperation : LoopOperation
     {
         public override float progress => isDone ? 1 : 0;
-
-        protected virtual async void EditorWait()
-        {
-#if UNITY_EDITOR
-            await System.Threading.Tasks.Task.Delay(1);
-            InvokeComplete();
-#endif
-        }
-        protected override void AddToLoop()
-        {
-#if UNITY_EDITOR
-            EditorWait();
-#else
-            base.AddToLoop();
-
-#endif
-        }
+        int index;
         protected override void OnUpdate()
         {
-            InvokeComplete();
+            if (index++ >= 1)
+            {
+                InvokeComplete();
+            }
+        }
+        protected override void OnBegin()
+        {
+            index = 0;
         }
     }
 
-    class WaitBusyOperation : YieldOperation
+    class WaitBusyOperation : LoopOperation
     {
-        protected async override void EditorWait()
-        {
-#if UNITY_EDITOR
-            while (AssetsLoop.isBusy)
-                await System.Threading.Tasks.Task.Delay(10);
-            InvokeComplete();
-#endif
-        }
+        public override float progress => isDone ? 1 : 0;
         protected override void OnUpdate()
         {
-            if (!AssetsLoop.isBusy)
+            if (!AssetsLoop.instance.isBusy)
                 InvokeComplete();
         }
     }
@@ -199,7 +226,7 @@ namespace WooAsset
                         last -= read;
                         _progress = offset / (float)len;
                         if (last <= 0) break;
-                        await new YieldOperation();
+                        await Operation.yield;
                     }
                 }
             }
@@ -240,7 +267,7 @@ namespace WooAsset
                     _progress = offset / (float)len;
                     if (last <= 0) break;
 
-                    await new YieldOperation();
+                    await Operation.yield;
                 }
             }
 

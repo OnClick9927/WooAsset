@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace WooAsset
 {
-    public static partial class AssetsInternal
+    static partial class AssetsInternal
     {
 
         private static BundleMap bundles;

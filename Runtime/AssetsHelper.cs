@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace WooAsset
 {
@@ -184,27 +183,31 @@ namespace WooAsset
         public static string VersionCollectionName = $"remoteversion{versionExt}";
         public static string GetManifestFileName(string pkgName) => $"manifest_{pkgName}{versionExt}";
 
-        public static BufferWriter WriteBufferObject<T>(T obj) where T : IBufferObject
+
+
+
+
+        internal static BufferWriter WriteBufferObject<T>(T obj) where T : IBufferObject
         {
             BufferWriter writer = new BufferWriter(104857600);
             obj.WriteData(writer);
             return writer;
         }
-        public static T ReadBufferObject<T>(byte[] bytes) where T : IBufferObject, new()
+        internal static T ReadBufferObject<T>(byte[] bytes) where T : IBufferObject, new()
         {
             BufferReader reader = new BufferReader(bytes);
             T t = new T();
             t.ReadData(reader);
             return t;
         }
-        public static Operation WriteBufferObject<T>(T version, string path) where T : IBufferObject
+        internal static Operation WriteBufferObject<T>(T version, string path) where T : IBufferObject
         {
             var bytes = AssetsHelper.WriteBufferObject(version);
             return AssetsHelper.WriteFile(bytes.buffer, path, 0, bytes.length);
         }
 
         private static Dictionary<int, Queue<byte[]>> map = new Dictionary<int, Queue<byte[]>>();
-        public static byte[] AllocateByteArray(int length)
+        internal static byte[] AllocateByteArray(int length)
         {
             var _len = 32;
             while (_len < length)
@@ -218,7 +221,7 @@ namespace WooAsset
             else
                 return result.Dequeue();
         }
-        public static void RecycleByteArray(byte[] array)
+        internal static void RecycleByteArray(byte[] array)
         {
             Array.Clear(array, 0, array.Length);
             Queue<byte[]> result = GetFromDictionary(map, array.Length);

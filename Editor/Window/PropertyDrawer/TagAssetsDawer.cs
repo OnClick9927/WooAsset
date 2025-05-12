@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using static WooAsset.AssetsEditorTool;
 
 namespace WooAsset
 {
@@ -19,14 +20,14 @@ namespace WooAsset
         }
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var rs = AssetsWindow.RectEx.VerticalSplit(position, 150);
+            var rs = RectEx.VerticalSplit(position, 150);
             var tag = property.FindPropertyRelative(nameof(TagAssets.tag));
             var assets = property.FindPropertyRelative(nameof(TagAssets.assets));
             if (!assets.isExpanded)
                 EditorGUI.PropertyField(rs[0], tag, empty);
             else
             {
-                var rss = AssetsWindow.RectEx.HorizontalSplit(rs[0], 20);
+                var rss = RectEx.HorizontalSplit(rs[0], 20);
                 EditorGUI.PropertyField(rss[0], tag, empty);
             }
             //GUI.enabled = false;

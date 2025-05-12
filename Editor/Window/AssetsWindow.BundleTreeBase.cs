@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using static WooAsset.AssetsEditorTool;
+using System.Linq;
 
 namespace WooAsset
 {
@@ -73,7 +75,7 @@ namespace WooAsset
                 var rect1 = RectEx.Zoom(args.GetCellRect(0), TextAnchor.MiddleRight, new Vector2(-indent, 0));
                 var rs = RectEx.VerticalSplit(rect1, 18);
                 GUI.Label(rs[0], Textures.folder);
-                EditorGUI.SelectableLabel(rs[1], args.label);
+                EditorGUI.LabelField(rs[1], args.label);
 
 
                 EditorBundleData group = cache.GetBundleGroupByBundleName(args.label);
@@ -90,7 +92,32 @@ namespace WooAsset
                 var group = groups[id];
                 ping.Ping(group);
             }
-    
+            protected virtual void CreateMenus(List<string> paths, GenericMenu menu)
+            {
+
+            }
+            protected override void ContextClicked()
+            {
+                var selection = this.GetSelection();
+                var rows = this.FindRows(selection).ToList().ConvertAll(x => x.displayName);
+                List<string> paths = rows;
+                GenericMenu menu = new GenericMenu();
+                if (paths.Count == 1)
+                {
+                    menu.AddItem(new UnityEngine.GUIContent("CopyPath"), false, () =>
+                    {
+                        GUIUtility.systemCopyBuffer = paths[0];
+                    });
+                }
+                CreateMenus(paths, menu);
+                if (menu.GetItemCount() > 0)
+                {
+
+                    menu.ShowAsContext();
+                }
+
+                base.ContextClicked();
+            }
         }
     }
 }

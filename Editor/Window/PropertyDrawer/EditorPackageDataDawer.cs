@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
+using static WooAsset.AssetsEditorTool;
 using static WooAsset.AssetsWindow;
 
 namespace WooAsset
@@ -125,7 +126,7 @@ namespace WooAsset
             var builds = property.FindPropertyRelative(nameof(EditorPackageData.builds));
             var tags = property.FindPropertyRelative(nameof(EditorPackageData.tags));
 
-            var rs = AssetsWindow.RectEx.HorizontalSplit(pos, 20);
+            var rs = RectEx.HorizontalSplit(pos, 20);
             var rss = RectEx.VerticalSplit(rs[0], 150);
             var rsss = RectEx.VerticalSplit(rss[1], rss[1].width - 60, 10);
             GUI.Label(rss[0], nameof(EditorPackageData.name));

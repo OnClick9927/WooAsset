@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using static WooAsset.AssetsEditorTool;
 
 namespace WooAsset
 {
@@ -11,7 +12,7 @@ namespace WooAsset
         {
             GUI.enabled = false;
 
-            var rs = AssetsWindow.RectEx.VerticalSplit(position, 100);
+            var rs = RectEx.VerticalSplit(position, 100);
             var type = property.FindPropertyRelative(nameof(FileRecordData.type));
             var path = property.FindPropertyRelative(nameof(FileRecordData.path));
 

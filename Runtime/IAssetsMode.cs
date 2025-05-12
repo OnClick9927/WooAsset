@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WooAsset
 {
-    public interface IAssetsMode
+    interface IAssetsMode
     {
         string version { get; }
         bool Initialized();
@@ -25,7 +25,7 @@ namespace WooAsset
     }
 
 
-    public abstract class AssetsMode : IAssetsMode
+    abstract class AssetsMode : IAssetsMode
     {
         Operation IAssetsMode.InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
@@ -72,7 +72,7 @@ namespace WooAsset
     }
 
 
-    public class NormalAssetsMode : AssetsMode
+    class NormalAssetsMode : AssetsMode
     {
 
         private LoadManifestOperation manifestOp;

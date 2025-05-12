@@ -6,7 +6,7 @@ using UnityEngine;
 namespace WooAsset
 {
     [UnityEditor.CustomPropertyDrawer(typeof(AssetReference), true)]
-    public class AssetReferenceDrawer : UnityEditor.PropertyDrawer
+    class AssetReferenceDrawer : UnityEditor.PropertyDrawer
     {
 
         System.Object GetSerializedPropertyValue(SerializedObject serializedObject, string propertyPath)
