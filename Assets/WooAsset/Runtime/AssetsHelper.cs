@@ -227,5 +227,18 @@ namespace WooAsset
             Queue<byte[]> result = GetFromDictionary(map, array.Length);
             result.Enqueue(array);
         }
+
+        private static Queue<Queue<Action>> pools = new Queue<Queue<Action>>();
+        internal static Queue<Action> AllocateActionQueue()
+        {
+            if (pools.Count == 0)
+                return new Queue<Action>();
+            return pools.Dequeue();
+        }
+        internal static void RecycleActionQueue(Queue<Action> actions)
+        {
+            pools.Enqueue(actions);
+        }
+
     }
 }
