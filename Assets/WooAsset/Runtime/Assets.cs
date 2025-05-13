@@ -131,7 +131,7 @@ namespace WooAsset
             WooAsset.AssetCollection collection = null;
             if (!assetCollections.TryGetValue(key, out collection))
             {
-                collection = new WooAsset.AssetCollection();
+                collection = AssetCollection.Get();
                 assetCollections.Add(key, collection);
             }
 
@@ -139,14 +139,21 @@ namespace WooAsset
         }
         public static void ClearAssetCollection(string key)
         {
-            FindAssetCollection(key)?.Clear();
+            AssetCollection find;
+            if (assetCollections.Remove(key, out find))
+            {
+                find.Clear();
+                AssetCollection.Set(find);
+            }
         }
         public static void ClearAllAssetCollection()
         {
             foreach (var item in assetCollections.Values)
             {
                 item.Clear();
+                AssetCollection.Set(item);
             }
+            assetCollections.Clear();
         }
 
 

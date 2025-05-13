@@ -11,6 +11,24 @@ namespace WooAsset
     }
     class AssetCollection : IAssetCollection
     {
+        static Queue<AssetCollection> collections = new Queue<AssetCollection>();
+        private AssetCollection() { }
+        public static AssetCollection Get()
+        {
+            if (collections.Count == 0)
+                return new AssetCollection();
+            return collections.Dequeue();
+        }
+        public static void Set(AssetCollection collection)
+        {
+            if (collection.map.Count != 0)
+            {
+                AssetsHelper.LogError("AssetCollection is Not Empty");
+                return;
+            }
+            collections.Enqueue(collection);
+        }
+
         private Dictionary<string, AssetHandle> map = new Dictionary<string, AssetHandle>();
         public bool Add(AssetHandle handle)
         {
