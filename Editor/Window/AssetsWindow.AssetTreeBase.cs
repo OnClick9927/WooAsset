@@ -109,7 +109,7 @@ namespace WooAsset
                     DrawCount(args.GetCellRect(3), asset.dependence.Count);
                     GUI.Label(args.GetCellRect(4), asset.type.ToString());
                     GUI.Label(args.GetCellRect(5), GetSizeString(asset.length));
-                    if (asset.in_pkgs.Count != 1)
+                    if (asset.in_pkgs != null && asset.in_pkgs.Count != 1)
                         EditorGUI.LabelField(args.GetCellRect(6), string.Join(",", asset.in_pkgs));
                     EditorGUI.SelectableLabel(args.GetCellRect(7), GetTagsString(asset));
                 }
