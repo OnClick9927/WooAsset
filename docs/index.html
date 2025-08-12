@@ -9,15 +9,16 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
 </head>
 <body>
+
   <div id="app"></div>
   <script>
     window.$docsify = {
           loadSidebar: true,
-            subMaxLevel: 3,
-    
+          subMaxLevel: 3,
               // loadNavbar: true,
     //  cornerExternalLinkTarget: 'https://www.baidu.com', // default: '_blank'
-
+      repo: 'https://github.com/OnClick9927/WooAsset',
+// externalLinkTarget: '_self',
     }
   </script>
   <!-- Docsify v4 -->
@@ -43,26 +44,6 @@
 <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script> -->
 <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
-
-<!-- gitalk 评论 -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-<script>
-  const gitalk = new Gitalk({
-    clientID: '040d9469a7a1d8b8bd45',
-    clientSecret: 'd5a4e6da89d0c7148ddae018218977a6898bcaf6',
-    repo: 'OnClick9927.github.io',
-    owner: 'OnClick9927',
-    admin: ['OnClick9927'],
-    // facebook-like distraction free mode
-    githubID: 'OnClick9927',
-    perPage: 18,
-    distractionFreeMode: true,
-createIssueManually: true
-  })
-  
-</script>
 
 
 </body>
