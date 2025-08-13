@@ -1,6 +1,7 @@
 
 
-# 如果要使用  Scriptable Build Pipeline
+# SBP支持
+
 * [官方的文档](https://docs.unity3d.com/Packages/com.unity.scriptablebuildpipeline@1.20/manual/GettingStarted.html)
 * 使用unity package manager 安装  Scriptable Build Pipeline包
 * 把下面的代码贴到项目内的某个Editor文件夹下

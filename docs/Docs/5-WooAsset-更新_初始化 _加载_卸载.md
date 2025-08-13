@@ -1,9 +1,12 @@
-# 更新_初始化 _加载_卸载
+# 更新_初始化_加载_卸载
 ## 更新
 
-#### 注意该例子演示的没有服务器的情况下，所以需要自己请求资源版本
-#### 如果有服务器 可以跳过请求请求远端版本信息，直接从 Assets.DownloadVersionData(version) 开始
-#### 如果是 WebGL 或者 不希望本地有缓存，直接从初始化开始
+> [!tip|style:callout|label:注意]
+> 注意该例子演示的没有服务器的情况下，所以需要自己请求资源版本
+> 
+> 如果有服务器 可以跳过请求请求远端版本信息，直接从 Assets.DownloadVersionData(version) 开始
+> 
+> 如果是 WebGL 或者 不希望本地有缓存，直接从初始化开始
 
 ``` csharp
 Assets.SetAssetsSetting(new LocalSetting());

@@ -25,43 +25,44 @@ IAssetStreamEncrypt GetEncryptByCode(int code)
 
 }
 ```
-### 打包管线 内建（自带）/SBP（后续文章有）
-
+### 打包管线 
+内建（自带）/SBP（后续文章有）
 ``` csharp
-    public interface IBuildPipeLine
-    {
-        bool BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
-        List<string> GetAllAssetBundles(BundleNameType nameType);
-        List<string> GetAllDependencies(string assetBundleName, BundleNameType nameType);
-        uint GetBundleCrc(string directory, string bundleName, BundleNameType nameType);
-        string GetBundleHash(string directory, string bundleName, BundleNameType nameType);
-        BuildAssetBundleOptions GetBundleOption(AssetTaskParams param, out string err);
-    }
+public interface IBuildPipeLine
+{
+    bool BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+    List<string> GetAllAssetBundles(BundleNameType nameType);
+    List<string> GetAllDependencies(string assetBundleName, BundleNameType nameType);
+    uint GetBundleCrc(string directory, string bundleName, BundleNameType nameType);
+    string GetBundleHash(string directory, string bundleName, BundleNameType nameType);
+    BuildAssetBundleOptions GetBundleOption(AssetTaskParams param, out string err);
+}
 ```
-### 资源分包优化
+### 分包优化
 ``` csharp
-    public interface IBundleOptimizer
-    {
-        List<EditorBundleData> Optimize(List<EditorBundleData> builds, EditorPackageData buildPkg, IAssetsBuild build);
-    }
+public interface IBundleOptimizer
+{
+    List<EditorBundleData> Optimize(List<EditorBundleData> builds, EditorPackageData buildPkg, IAssetsBuild build);
+}
 ```
 ### 内建资源选择
 ``` csharp
-    public interface IBuildInBundleSelector
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="files">打包出的所有文件</param>
-        /// <param name="buildInAssets">编辑器配置</param>
-        /// <param name="buildInConfig">必须拷贝的文件</param>
-        /// <param name="manifest">打包出来的配置文件（Merged）</param>
-        /// <param name="exports">打包报告（Merged）</param>
-        /// <returns></returns>
-        string[] Select(string[] files, List<string> buildInAssets, List<string> buildInConfig, ManifestData manifest, List<PackageExportData> exports);
-    }
+public interface IBuildInBundleSelector
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="files">打包出的所有文件</param>
+    /// <param name="buildInAssets">编辑器配置</param>
+    /// <param name="buildInConfig">必须拷贝的文件</param>
+    /// <param name="manifest">打包出来的配置文件（Merged）</param>
+    /// <param name="exports">打包报告（Merged）</param>
+    /// <returns></returns>
+    string[] Select(string[] files, List<string> buildInAssets, List<string> buildInConfig, ManifestData manifest, List<PackageExportData> exports);
+}
 ```
-### 低代码打包，配合资源组分包 使用，用于选出需要的资源
+### 资源选择器
+低代码打包，配合资源组分包 使用，用于选出需要的资源
 ``` csharp
     public interface IAssetSelector
     {

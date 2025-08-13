@@ -1,5 +1,5 @@
 # 配置
-## 第一次使用
+## 首次使用
 * 打开编辑器窗口，操作如下图
 * 成功后，会在Assets/Editor目录下看到两个配置文件
 * 其中 AssetsEditorCache 可以删除（团队协作时候，不需要同步）
@@ -7,7 +7,7 @@
 ![Alt text](../_media/Pics/firstopen.png)
 ![Alt text](../_media/Pics/configasset.png)
 
-## 配置资源
+## 配置 打包
 ![Alt text](../_media/Pics/options_build1.png)
 
 | 名字                     | 描述                                                                         |
@@ -37,7 +37,7 @@
 | Output Path              | 输出路径                                                                     |
 | History Path             | 历史文件所在文件夹，第一次打包时候把他删了，后续不要动里面的文件             |
 
-### 资源组介绍
+## 配置 package
 | 名字        | 描述                                                            |
 | ----------- | --------------------------------------------------------------- |
 | Build       | 该组是否需要打包 （给分布式打包使用）                           |

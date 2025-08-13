@@ -1,5 +1,5 @@
 # 工具
-## 收集资源预览（Option/Tools页签）
+## Tools页签
 ![Alt text](../_media/Pics/option_tool.png)
 
 ### AssetMode
@@ -13,12 +13,12 @@
 * Enable Server （是否开启本地资源模拟服务）
 * Server Port  （模拟服务绑定的端口）
 
-### Shader Variant 防止 着色器丢失 
+### Shader Variant 
 * Shader Variant Input Directory （需要收集SHader 变体文件夹）
 * Shader Variant output Directory （shader 变体输出文件夹）
 * （如何执行）点击Tools/WooAsset/Help/ShaderVariant
 
-### Sprite Atlas  打图集 
+### Sprite Atlas 
 * 设置好图集相关设置
 * 点击Tools/WooAsset/Help/SpriteAtlas
 
@@ -50,7 +50,7 @@
 
 
 
-## 收集资源预览（Assets页签）
+## Assets页签
 
 ![Alt text](../_media/Pics/assetstab.png)
 
@@ -61,13 +61,13 @@
 * 支持快速搜索
 * 可以查看资源依赖情况
 
-### AssetTags  [简介]
+### AssetTags
 * 具体操作（在Assets页签，选中资源-》右键）
 * 需要先在窗口  （Option/Tools页签/AssetTags） 中 预设tag
 * 如果选中的是一个文件夹，就会标记该文件夹下所有文件
 * 支持多选
 
-### Record Ignore [简介]
+### Record Ignore 
 * 具体操作（在Assets页签，选中资源-》右键）
 * 如果选中的是一个文件夹，就会标记该文件夹下所有文件
 * 支持多选
@@ -75,7 +75,7 @@
 
 
 
-## 构建 Bundle 预览（Bundles页签）
+## Bundles页签
 ![Alt text](../_media/Pics/bundlestab.png)
 * Tools/Editor Simulate(预览所有Pkg 分包情况，会按照Pkg分组)(右上角切换Pkg)
 * 不会真的打包
@@ -84,7 +84,7 @@
 * 双击资源可以定位
 * 支持快速搜索
 
-## 资源加载情况（AssetsLife页签）
+## AssetsLife页签
 ![Alt text](../_media/Pics/资源加载情况.png)
 * 资源加载实践
 * 当前有多少引用

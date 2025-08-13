@@ -11,7 +11,7 @@
   //销毁时候会自动改变引用计数，不需要手动Assets.Release
   oppp.Destroy();
 ```
-## AssetReference && 使用例子
+## AssetReference
 ``` csharp
   [System.Serializable]
   public class AssetReference<T> : AssetReference where T : UnityEngine.Object
@@ -56,8 +56,9 @@ public static string GetRawAssetUrlOrPath(assetpath)
 //得到对应路径数据
  public static AssetData GetAssetData(string assetPath);
 ```
-## 资源组加载
-### 何时使用：某些地方必须需要同步加载资源（先准备一下）/ 一次型加载配置表，读取到内存之后，卸载
+## 资源组
+> [!tip|style:callout|label:注意]
+> 何时使用：某些地方必须需要同步加载资源（先准备一下）/ 一次型加载配置表，读取到内存之后，卸载
 
 ``` csharp
 //准备一组资源
@@ -85,7 +86,7 @@ assets.Release();
 ///配合资源模糊搜索一起使用
 //使用场景，进入战斗场景之前把战斗需要的资源全加载
 ```
-## 方便的资源卸载
+## 资源卸载
 ### 基础方式
 * 场景
 * 一个ui界面上面有一个image
@@ -108,7 +109,7 @@ public static void ReleaseUselessBridges()
 ```
 
 其他类型的资源/组件，可以 继承 AssetBridge< T > 自行实现即可
-### 按照功能分组的释放的方式
+### 按照功能分
 * 场景
 * 一个ui界面上面有一个image
 * 运行时候需要不停的替换image的sprite
@@ -135,10 +136,10 @@ public static void ReleaseUselessBridges()
     {
         Assets.ClearAssetCollection(key);
     }
-
 ```
 
-### 更加方便的方式（有风险）
+### 更加简单
+
 ``` csharp
 public class LocalSetting : AssetsSetting
 {
