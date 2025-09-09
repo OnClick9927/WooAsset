@@ -26,10 +26,20 @@ namespace WooAsset
             {
                 this.fileNameSearchType = fileNameSearchType;
                 param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
+                var floders = option.rudeModeFolders;
+                if (floders == null || floders.Length == 0)
+                {
+                    floders = new string[] {
+                    "Assets",
+                    };
+                }
                 data = new BundleData()
                 {
                     length = -1,
-                    assets = AssetDatabase.GetAllAssetPaths().Where(x =>
+
+                    assets = AssetDatabase.FindAssets("t:object", floders)
+                    .Select(x=> AssetDatabase.GUIDToAssetPath(x))
+                    .Where(x =>
                     {
                         if (!param.GetIsRecord(x))
                             return false;

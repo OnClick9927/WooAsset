@@ -53,16 +53,17 @@ namespace WooAsset
                 var normal = source.FindAll(x => !x.raw);
                 var raws = source.FindAll(x => x.raw);
 
+                var historyPath = context.historyPath;
 
 
-                Dictionary<string, string> needRenameFiles = new Dictionary<string, string>();
+                Dictionary<string, string> bundleNameRemap = new Dictionary<string, string>();
                 if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
                 {
                     if (normal.Count != 0)
                     {
                         var assetbuilds = normal.ConvertAll(x => x.ToAssetBundleBuild()).ToArray();
 
-                        bool succ = context.buildPipe.BuildAssetBundles(context.historyPath,
+                        bool succ = context.buildPipe.BuildAssetBundles(historyPath,
                                 assetbuilds, context.BuildOption, context.buildTarget);
                         if (!succ)
                         {
@@ -70,7 +71,7 @@ namespace WooAsset
                             return;
                         }
 
-                        UpdateHash(normal, context.buildPipe, context.bundleNameType, context.historyPath);
+                        UpdateHash(normal, context.buildPipe, context.bundleNameType, historyPath);
                     }
 
                     if (context.bundleNameType == BundleNameType.NameWithHash)
@@ -93,7 +94,7 @@ namespace WooAsset
                                 foreach (var item in source)
                                     item.ReplaceDependenceHash(bundleName, hash);
                                 bundle.SyncRealHash(hash);
-                                needRenameFiles.Add(bundleName, hash);
+                                bundleNameRemap.Add(hash, bundleName);
                             }
                         }
                     }
@@ -112,28 +113,19 @@ namespace WooAsset
                     {
                         string src_path = item.GetAssets()[0];
                         string bundleName = item.hash;
-                        string dest = AssetsEditorTool.CombinePath(context.historyPath, bundleName);
+                        string dest = AssetsEditorTool.CombinePath(historyPath, bundleName);
                         AssetsEditorTool.CopyFile(src_path, dest);
                     }
-                    if (needRenameFiles.Count > 0)
-                    {
-                        foreach (var src in needRenameFiles.Keys)
-                        {
-                            var dest = needRenameFiles[src];
-                            var destpath = AssetsEditorTool.CombinePath(context.historyPath, dest);
-                            if (AssetsEditorTool.ExistsFile(destpath))
-                                AssetsEditorTool.DeleteFile(destpath);
-                            AssetsEditorTool.MoveFile(
-                                AssetsEditorTool.CombinePath(context.historyPath, src),
-                              destpath);
-                        }
-                    }
+        
 
                     //拷贝打爆出来的到输出目录
                     foreach (var bundle in source)
                     {
                         var bundleName = bundle.hash;
-                        var bytes_src = AssetsEditorTool.ReadFileSync(AssetsEditorTool.CombinePath(context.historyPath, bundleName));
+                        var read_bundleName = bundleName;
+                        if (bundleNameRemap.ContainsKey(bundleName))
+                            read_bundleName = bundleNameRemap[bundleName];
+                        var bytes_src = AssetsEditorTool.ReadFileSync(AssetsEditorTool.CombinePath(historyPath, read_bundleName));
                         var en = context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode());
                         var bytes = en.Encode(bundleName, bytes_src);
                         AssetsEditorTool.WriteFileSync(AssetsEditorTool.CombinePath(context.outputPath, bundleName), bytes);
@@ -220,7 +212,7 @@ namespace WooAsset
             ManifestData manifest = new ManifestData();
             foreach (var item in manifests)
                 ManifestData.Merge(item, manifest, null);
-            manifest.Prepare(context.fuzzySearch,context.fileNameSearchType);
+            manifest.Prepare(context.fuzzySearch, context.fileNameSearchType);
             context.mergedManifest = manifest;
             context.exports = exports;
             if (context.Pipeline == TaskPipelineType.BuildBundle)
