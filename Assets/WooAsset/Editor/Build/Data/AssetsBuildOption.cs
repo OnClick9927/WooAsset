@@ -14,7 +14,7 @@ namespace WooAsset
         public string version = "0.0.1";
         public bool copyToStream = false;
         public BuildMode buildMode = BuildMode.Increase;
-
+        public string[] rudeModeFolders = new string[] { };
         public TypeTreeOption typeTreeOption = TypeTreeOption.IgnoreTypeTreeChanges;
         public BundleNameType bundleNameType = BundleNameType.Hash;
         public BundleNameCalculateType bundleNameCalculate = BundleNameCalculateType.Assets_And_Dependences;

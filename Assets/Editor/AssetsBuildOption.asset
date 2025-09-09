@@ -15,6 +15,8 @@ MonoBehaviour:
   version: 0.0.1
   copyToStream: 0
   buildMode: 0
+  rudeModeFolders:
+  - Assets/Example
   typeTreeOption: 0
   bundleNameType: 0
   bundleNameCalculate: 0
@@ -43,7 +45,7 @@ MonoBehaviour:
   build:
     _select: WooAsset.DefaultAssetsBuild
   mode:
-    _select: WooAsset.NormalAssetsMode
+    _select: WooAsset.AssetsEditorTool+RudeMode
   encrypt:
     _select: WooAsset.DefaultAssetStreamEncrypt
   buildInBundleSelector:
