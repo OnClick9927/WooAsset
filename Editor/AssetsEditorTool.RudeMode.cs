@@ -27,6 +27,7 @@ namespace WooAsset
                 this.fileNameSearchType = fileNameSearchType;
                 param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
                 var floders = option.rudeModeFolders;
+                var rudeModeCheckAssetType = option.rudeModeCheckAssetType;
                 if (floders == null || floders.Length == 0)
                 {
                     floders = new string[] {
@@ -38,11 +39,13 @@ namespace WooAsset
                     length = -1,
 
                     assets = AssetDatabase.FindAssets("t:object", floders)
-                    .Select(x=> AssetDatabase.GUIDToAssetPath(x))
+                    .Select(x => AssetDatabase.GUIDToAssetPath(x))
                     .Where(x =>
                     {
                         if (!param.GetIsRecord(x))
                             return false;
+                        if (!rudeModeCheckAssetType) 
+                            return true;
                         var type = assetBuild.GetAssetType(x);
                         return type != AssetType.Ignore && type != AssetType.Directory;
 
