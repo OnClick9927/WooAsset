@@ -117,6 +117,23 @@ namespace WooAsset
             return (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { tx });
         }
 
+        static MethodInfo _GetMainAssetInstanceID;
+        public static int GetMainAssetInstanceID(string path)
+        {
+            //AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+            if (_GetMainAssetInstanceID == null)
+            {
+                _GetMainAssetInstanceID = typeof(AssetDatabase).GetMethod("GetMainAssetInstanceID", BindingFlags.Static | BindingFlags.NonPublic);
+            }
+            return (int)_GetMainAssetInstanceID.Invoke(null, new object[] { path });
+        }
+        public static Type GetMainAssetTypeAtPath(string path)
+        {
+            return AssetDatabase.GetMainAssetTypeAtPath(path);
+        }
+
+
+
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
         public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute(option.atlasPaths, option.PlatformSetting, option.textureSetting, option.packSetting);
         [MenuItem(TaskPipelineMenu.ShaderVariant)]

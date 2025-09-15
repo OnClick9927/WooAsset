@@ -131,11 +131,12 @@ namespace WooAsset
 
             private void CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result)
             {
-                Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-                if (o == null) return;
+                //Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                var id = AssetsEditorTool.GetMainAssetInstanceID(path);
+                if (!AssetDatabase.Contains(id)) return;
                 var _item = new TreeViewItem()
                 {
-                    id = o.GetInstanceID(),
+                    id = id,
                     depth = 1,
                     displayName = path,
                 };
@@ -252,7 +253,7 @@ namespace WooAsset
                 var rows = this.FindRows(new List<int>() { id });
 
                 if (string.IsNullOrEmpty(searchString))
-                    EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
+                    EditorGUIUtility.PingObject(AssetsEditorTool.GetMainAssetInstanceID(rows[0].displayName));
                 else
                 {
                     if (_searchType == SearchType.Bundle)
@@ -339,7 +340,7 @@ namespace WooAsset
             {
                 if (ping_a != null) return;
                 search.SetVelue("");
-                var id = AssetDatabase.LoadAssetAtPath<Object>(obj.path).GetInstanceID();
+                var id = AssetsEditorTool.GetMainAssetInstanceID(obj.path);
                 var group = cache.GetBundleGroupByAssetPath(obj.path);
                 var index = this.groups.IndexOf(group);
                 this.SetExpanded(index, true);

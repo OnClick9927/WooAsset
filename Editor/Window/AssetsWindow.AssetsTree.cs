@@ -75,7 +75,9 @@ namespace WooAsset
             {
                 var rows = this.FindRows(new List<int>() { id });
                 if (string.IsNullOrEmpty(searchString))
-                    EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
+                    //EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(rows[0].displayName));
+                    EditorGUIUtility.PingObject(AssetsEditorTool.GetMainAssetInstanceID(rows[0].displayName));
+
                 else
                     base.DoubleClickedItem(id);
 
@@ -344,12 +346,16 @@ namespace WooAsset
                 find.Sort((a, b) => { return a.path.Length - b.path.Length > 0 ? 1 : 1; });
                 foreach (var item in find)
                 {
-                    var _id = AssetDatabase.LoadAssetAtPath<Object>(item.path).GetInstanceID();
+                    //var _id = AssetDatabase.LoadAssetAtPath<Object>(item.path).GetInstanceID();
+                    var _id = AssetsEditorTool.GetMainAssetInstanceID(item.path);
+
                     this.SetExpanded(_id, true);
                 }
                 Reload();
                 ping_a = obj;
-                var id = AssetDatabase.LoadAssetAtPath<Object>(obj.path).GetInstanceID();
+                //var id = AssetDatabase.LoadAssetAtPath<Object>(obj.path).GetInstanceID();
+                var id = AssetsEditorTool.GetMainAssetInstanceID(obj.path);
+
                 this.FrameItem(id);
                 await Task.Delay(1000);
                 ping_a = null;
