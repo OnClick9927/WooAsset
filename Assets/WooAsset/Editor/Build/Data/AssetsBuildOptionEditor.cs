@@ -54,6 +54,8 @@ namespace WooAsset
                     option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
                     if (option.GetAssetModeType() == typeof(RudeMode))
                     {
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.rudeModeCheckAssetType)),new GUIContent("Check AssetType"));
+
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.rudeModeFolders)));
                     }
 
