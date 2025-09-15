@@ -5,6 +5,8 @@
 ### AssetMode
 * Normal  正式的模式
 * Rude    粗鲁的，纯粹的编辑器加载，不需要任何配置
+  * Check AssetType  准备资源时候是否检查资源类型（不勾选启动快，未过滤忽略资源）
+  * Rude Mode Folders  限定 资源加载的文件夹列表（不配置默认搜索Assets）
 * AssetDatabase  与 Normal 差不多，但是 不需要打包，是编辑器模拟
 
 ### Simulator
