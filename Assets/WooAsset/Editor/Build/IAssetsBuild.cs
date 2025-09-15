@@ -42,9 +42,10 @@ namespace WooAsset
                 _type = AssetType.Directory;
             else
             {
-                var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-                var type = obj?.GetType();
-                if (obj == null) _type = AssetType.Ignore;
+                //var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                //var type = obj?.GetType();
+                var type = AssetsEditorTool.GetMainAssetTypeAtPath(path);
+                if (type == null) _type = AssetType.Ignore;
                 else if (type == typeof(MonoScript)) _type = AssetType.Ignore;
                 else if (type == typeof(LightingDataAsset)) _type = AssetType.Ignore;
                 else if (type == typeof(SpriteAtlas)) _type = AssetType.Ignore;

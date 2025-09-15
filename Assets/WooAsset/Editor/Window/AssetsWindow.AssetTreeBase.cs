@@ -67,19 +67,16 @@ namespace WooAsset
             }
             protected static TreeViewItem CreateItem(string path, TreeViewItem parent, IList<TreeViewItem> result, int depth)
             {
-                Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-
+                //Object o = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+              
                 TreeViewItem _item = null;
                 _item = new TreeViewItem()
                 {
-                    id = o ? o.GetInstanceID() : -1,
+                    id =  AssetsEditorTool.GetMainAssetInstanceID(path) ,
                     depth = depth,
                     displayName = path,
                 };
-                if (o)
-                {
-
-                }
+        
                 _item.parent = parent;
                 parent.AddChild(_item);
                 result.Add(_item);

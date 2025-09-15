@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -168,12 +169,12 @@ namespace WooAsset
 
                 GUILayout.FlexibleSpace();
                 var tmp = (TreeType)GUILayout.Toolbar((int)treeType, System.Enum.GetNames(typeof(TreeType)), EditorStyles.toolbarButton, GUILayout.Width(300));
-                if (tmp!= treeType)
+                if (tmp != treeType)
                 {
                     treeType = tmp;
                     FreshPreview();
                 }
-                
+
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndArea();

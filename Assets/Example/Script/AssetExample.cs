@@ -92,7 +92,15 @@ namespace WooAsset
                 this.image.sprite = asset.GetAsset<Sprite>();
                 await Task.Delay(500);
             }
+            string _path = "Assets/Example/pkg2/px/test.jpg";
+            for (int i = 0; i < 10; i++)
+            {
+                var index = Mathf.Repeat(i,4);
 
+                var asset = await Assets.LoadSubAsset(_path);
+                this.image.sprite = asset.GetSubAsset<Sprite>($"test_{index}");
+                await Task.Delay(500);
+            }
         }
 
     }
