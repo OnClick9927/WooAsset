@@ -12,20 +12,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92f35693393261449628fc0c28902e5, type: 3}
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
+  shader:
+    InputDirectory: []
+    OutputDirectory: 
+  mode:
+    mode:
+      _select: WooAsset.NormalAssetsMode
+    Folders: []
+    CheckAssetType: 0
+  spriteAtlas:
+    atlasPaths: []
+    packSetting:
+      blockOffset: 1
+      enableRotation: 0
+      enableTightPacking: 0
+      padding: 2
+    textureSetting:
+      readable: 1
+      generateMipMaps: 0
+      sRGB: 1
+      filterMode: 1
+      anisoLevel: 1
+    PlatformSetting:
+      m_Name: DefaultTexturePlatform
+      m_Overridden: 0
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_AndroidETC2FallbackOverride: 0
+  server:
+    enable: 0
+    port: 8080
+  buildIn:
+    copyToStream: 1
+    assets: []
+    selector:
+      _select: WooAsset.DefaultBuildInBundleSelector
+  bundleOptimize:
+    optimizer:
+      _select: WooAsset.NoneBundleOptimizer
+    count: 0
   version: 0.0.1
-  copyToStream: 0
   buildMode: 0
-  rudeModeFolders:
-  - Assets/Example
   typeTreeOption: 0
   bundleNameType: 0
   bundleNameCalculate: 0
   compress: 2
   MaxCacheVersionCount: 8
-  cleanHistory: 1
-  buildInAssets: []
-  enableServer: 1
-  serverPort: 8080
   pkgs:
   - name: pkg1
     description: 
@@ -41,51 +79,15 @@ MonoBehaviour:
     - Assets/Example/pkg2
     builds: []
     build: 1
-  recordIgnore: []
   build:
     _select: WooAsset.DefaultAssetsBuild
-  mode:
-    _select: WooAsset.AssetsEditorTool+RudeMode
   encrypt:
     _select: WooAsset.DefaultAssetStreamEncrypt
-  buildInBundleSelector:
-    _select: WooAsset.DefaultBuildInBundleSelector
   buildPipeline:
     _select: WooAsset.BuildInPipeline
-  bundleOptimizer:
-    _select: WooAsset.NoneBundleOptimizer
-  optimizationCount: 1
+  recordIgnore: []
   tags:
   - tag: test
     assets: []
   - tag: test
     assets: []
-  shaderVariantInputDirectory:
-  - Assets/Example/pkg1
-  - Assets/TextMesh Pro
-  shaderVariantOutputDirectory: Assets/Example/pkg1
-  atlasPaths:
-  - Assets/Example/pkg1/px
-  packSetting:
-    blockOffset: 1
-    enableRotation: 0
-    enableTightPacking: 0
-    padding: 2
-  textureSetting:
-    readable: 1
-    generateMipMaps: 0
-    sRGB: 1
-    filterMode: 1
-    anisoLevel: 1
-  PlatformSetting:
-    m_Name: DefaultTexturePlatform
-    m_Overridden: 0
-    m_MaxTextureSize: 2048
-    m_ResizeAlgorithm: 0
-    m_TextureFormat: -1
-    m_TextureCompression: 1
-    m_CompressionQuality: 50
-    m_ForceMaximumCompressionQuality_BC6H_BC7: 0
-    m_CrunchedCompression: 1
-    m_AllowsAlphaSplitting: 0
-    m_AndroidETC2FallbackOverride: 0

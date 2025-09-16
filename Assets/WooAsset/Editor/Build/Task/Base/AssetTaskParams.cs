@@ -11,7 +11,7 @@ namespace WooAsset
         public CompressType compress;
         public List<EditorPackageData> buildPkgs;
         public TypeTreeOption typeTreeOption;
-        public bool cleanHistory;
+        //public bool cleanHistory;
         public BundleNameCalculateType bundleNameCalculateType;
         public BundleNameType bundleNameType;
         public List<string> buildInAssets;
@@ -64,12 +64,12 @@ namespace WooAsset
             compress = option.compress;
             buildPkgs = option.pkgs;
             typeTreeOption = option.typeTreeOption;
-            cleanHistory = option.cleanHistory;
+            //cleanHistory = option.cleanHistory;
             bundleNameType = option.bundleNameType;
             bundleNameCalculateType = option.bundleNameCalculate;
-            buildInAssets = option.buildInAssets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
+            buildInAssets = option.buildIn.assets.ConvertAll(x => AssetDatabase.GetAssetPath(x));
+            copyToStream = option.buildIn.copyToStream;
             buildMode = option.buildMode;
-            copyToStream = option.copyToStream;
             encrypt = Activator.CreateInstance(option.GetStreamEncryptType()) as IAssetEncrypt;
             assetBuild = Activator.CreateInstance(option.GetAssetBuildType()) as IAssetsBuild;
             buildPipe = Activator.CreateInstance(option.GetBuildPipelineType()) as IBuildPipeLine;
@@ -78,7 +78,7 @@ namespace WooAsset
             version = option.version;
             tags = option.tags;
             recordIgnore = option.recordIgnore;
-            optimizationCount = option.optimizationCount;
+            optimizationCount = option.bundleOptimize.count;
         }
 
         public BuildAssetBundleOptions GetBundleOption(out string err) => buildPipe.GetBundleOption(this, out err);

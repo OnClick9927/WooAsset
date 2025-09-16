@@ -54,8 +54,7 @@ namespace WooAsset
                 var raws = source.FindAll(x => x.raw);
 
                 var historyPath = context.historyPath;
-
-
+         
                 Dictionary<string, string> bundleNameRemap = new Dictionary<string, string>();
                 if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
                 {
@@ -116,7 +115,7 @@ namespace WooAsset
                         string dest = AssetsEditorTool.CombinePath(historyPath, bundleName);
                         AssetsEditorTool.CopyFile(src_path, dest);
                     }
-        
+
 
                     //拷贝打爆出来的到输出目录
                     foreach (var bundle in source)
@@ -171,6 +170,9 @@ namespace WooAsset
         {
             new CollectAssetsTask(),
             new CollectHashBundleGroupTask(),
+
+
+
             new BuildTask(),
         };
 
@@ -179,6 +181,10 @@ namespace WooAsset
         {
             AssetsEditorTool.DeleteDirectory(context.outputPath);
             AssetsEditorTool.CreateDirectory(context.outputPath);
+            if (context.buildMode == BuildMode.ForceRebuild)
+                AssetsEditorTool.DeleteDirectory(context.historyPath);
+
+
 
             var builds = context.buildPkgs.FindAll(x => x.build);
             if (context.Pipeline == TaskPipelineType.EditorSimulate)

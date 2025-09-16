@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
 using UnityEditor;
-using System;
+using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 namespace WooAsset
 {
@@ -50,16 +51,7 @@ namespace WooAsset
             {
                 public override void OnGUI(SerializedObject serializedObject)
                 {
-                    BeginGUI("Asset Mode");
-                    option.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.typeIndex, option.mode.shortTypes);
-                    if (option.GetAssetModeType() == typeof(RudeMode))
-                    {
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.rudeModeCheckAssetType)),new GUIContent("Check AssetType"));
-
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.rudeModeFolders)));
-                    }
-
-                    MidGUI("Simulator");
+                    BeginGUI("Simulator");
                     {
                         GUILayout.BeginHorizontal();
                         GUI.enabled = false;
@@ -73,8 +65,8 @@ namespace WooAsset
                             AssetsEditorTool.DeleteDirectory(EditorSimulatorPath);
                         GUILayout.EndHorizontal();
                     }
-                    GUI.enabled = false;
                     {
+                        GUI.enabled = false;
                         GUILayout.BeginHorizontal();
                         EditorGUILayout.TextField(nameof(ServerDirectory), ServerDirectory);
                         GUI.enabled = true;
@@ -84,28 +76,52 @@ namespace WooAsset
                         if (GUILayout.Button("Clear", GUILayout.Width(50)))
                             AssetsEditorTool.DeleteDirectory(ServerDirectory);
                         GUILayout.EndHorizontal();
-                        GUI.enabled = false;
+                        //GUI.enabled = false;
                     }
+                    GUILayout.Space(5);
+                    option.mode.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.mode.typeIndex, option.mode.mode.shortTypes);
+                    GUILayout.Space(5);
 
+                    if (option.GetAssetModeType() == typeof(RudeMode))
+                    {
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.CheckAssetType)));
 
-                    GUI.enabled = true;
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.Folders)));
+                    }
                     if (option.GetAssetModeType() == typeof(NormalAssetsMode))
                     {
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.enableServer)));
-                        if (option.enableServer)
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.serverPort)));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.server.enable)));
+                        if (option.server.enable)
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
+                                .FindPropertyRelative(nameof(AssetsBuildOption.server.port)));
                     }
+                    //MidGUI("Simulator");
+
+
+
+                    //GUI.enabled = true;
+           
 
 
 
                     MidGUI("Shader Variant");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantOutputDirectory)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shaderVariantInputDirectory)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shader))
+                                        .FindPropertyRelative(nameof(AssetsBuildOption.shader.InputDirectory)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shader))
+                        .FindPropertyRelative(nameof(AssetsBuildOption.shader.OutputDirectory)));
                     MidGUI("Sprite Atlas");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.packSetting)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.textureSetting)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.PlatformSetting)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.atlasPaths)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                        .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.atlasPaths)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                 .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.textureSetting)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                        .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.packSetting)));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                        .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.PlatformSetting)));
+
 
 
                     MidGUI("Asset Tags");
@@ -128,9 +144,9 @@ namespace WooAsset
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.pkgs)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.version)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.MaxCacheVersionCount)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
+                    //EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.cleanHistory)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildMode)));
-           
+
 
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.bundleNameCalculate)));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.bundleNameType)));
@@ -146,15 +162,16 @@ namespace WooAsset
 
                     MidGUI("Bundle Result Optimize");
 
-                    option.bundleOptimizer.typeIndex = EditorGUILayout.Popup("Optimizer", option.bundleOptimizer.typeIndex, option.bundleOptimizer.shortTypes);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.optimizationCount)));
+                    option.bundleOptimize.optimizer.typeIndex = EditorGUILayout.Popup("Optimizer", option.bundleOptimize.optimizer.typeIndex, option.bundleOptimize.optimizer.shortTypes);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.bundleOptimize)).FindPropertyRelative(nameof(AssetsBuildOption.bundleOptimize.count)));
                     MidGUI("Built-in Asset Select");
 
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.copyToStream)));
-                    GUI.enabled = option.copyToStream;
-                    option.buildInBundleSelector.typeIndex = EditorGUILayout.Popup("Selector", option.buildInBundleSelector.typeIndex, option.buildInBundleSelector.shortTypes);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildInAssets)));
-
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildIn))
+                        .FindPropertyRelative(nameof(AssetsBuildOption.buildIn.copyToStream)));
+                    GUI.enabled = option.buildIn.copyToStream;
+                    option.buildIn.selector.typeIndex = EditorGUILayout.Popup("Selector", option.buildIn.selector.typeIndex, option.buildIn.selector.shortTypes);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildIn))
+                                   .FindPropertyRelative(nameof(AssetsBuildOption.buildIn.assets)));
                     MidGUI("Default");
                     GUI.enabled = false;
                     EditorGUILayout.EnumPopup(nameof(AssetsEditorTool.BuildTarget), AssetsEditorTool.BuildTarget);
@@ -232,13 +249,15 @@ namespace WooAsset
 
             private void OnEnable() => tab = (Tab)EditorPrefs.GetInt(key, 0);
             private void OnDisable() => EditorPrefs.SetInt(key, (int)tab);
+            private Vector2 pos;
             public override void OnInspectorGUI()
             {
                 tab = (Tab)GUILayout.Toolbar((int)tab, Enum.GetNames(typeof(Tab)));
                 this.serializedObject.Update();
                 OptionTab _tab = GetTab();
+                pos = EditorGUILayout.BeginScrollView(pos);
                 _tab.OnGUI(this.serializedObject);
-
+                EditorGUILayout.EndScrollView();
                 if (_tab.change)
                 {
                     this.serializedObject.ApplyModifiedProperties();

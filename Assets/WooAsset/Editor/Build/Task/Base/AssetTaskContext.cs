@@ -21,7 +21,7 @@ namespace WooAsset
         public CompressType compress => Params.compress;
         public List<EditorPackageData> buildPkgs => Params.buildPkgs;
         public TypeTreeOption typeTreeOption => Params.typeTreeOption;
-        public bool cleanHistory => Params.cleanHistory;
+        //public bool cleanHistory => Params.cleanHistory;
         public BundleNameType bundleNameType => Params.bundleNameType;
         public BundleNameCalculateType bundleNameCalculateType => Params.bundleNameCalculateType;
 

@@ -25,8 +25,8 @@ namespace WooAsset
             var _op = option;
             AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetsMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
-            if (_op.enableServer && AssetsInternal.isNormalMode)
-                AssetsServer.Run(_op.serverPort, ServerDirectory);
+            if (_op.server.enable && AssetsInternal.isNormalMode)
+                AssetsServer.Run(_op.server.port, ServerDirectory);
         }
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
@@ -135,8 +135,8 @@ namespace WooAsset
 
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
-        public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute(option.atlasPaths, option.PlatformSetting, option.textureSetting, option.packSetting);
+        public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute(option.spriteAtlas.atlasPaths, option.spriteAtlas.PlatformSetting, option.spriteAtlas.textureSetting, option.spriteAtlas.packSetting);
         [MenuItem(TaskPipelineMenu.ShaderVariant)]
-        public static async Task SpriteShaderVariant() => await ShaderVariantTool.Execute(option.shaderVariantOutputDirectory, option.pkgs.SelectMany(x => x.paths).Concat(option.shaderVariantInputDirectory).ToArray());
+        public static async Task SpriteShaderVariant() => await ShaderVariantTool.Execute(option.shader.OutputDirectory, option.pkgs.SelectMany(x => x.paths).Concat(option.shader.InputDirectory).ToArray());
     }
 }

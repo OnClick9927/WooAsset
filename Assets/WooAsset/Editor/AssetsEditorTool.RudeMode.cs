@@ -26,8 +26,8 @@ namespace WooAsset
             {
                 this.fileNameSearchType = fileNameSearchType;
                 param = new AssetTaskParams(TaskPipelineType.EditorSimulate);
-                var floders = option.rudeModeFolders;
-                var rudeModeCheckAssetType = option.rudeModeCheckAssetType;
+                var floders = option.mode.Folders;
+                var rudeModeCheckAssetType = option.mode.CheckAssetType;
                 if (floders == null || floders.Length == 0)
                 {
                     floders = new string[] {
