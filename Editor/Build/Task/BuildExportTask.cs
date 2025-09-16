@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿//using System.Linq;
 
 namespace WooAsset
 {
@@ -6,20 +6,20 @@ namespace WooAsset
     {
         protected override void OnExecute(AssetTaskContext context)
         {
-            if (context.Pipeline == TaskPipelineType.BuildBundle)
-            {
+            //if (context.Pipeline == TaskPipelineType.BuildBundle)
+            //{
 
-                if (context.cleanHistory)
-                {
-                    var useful = AssetsEditorTool.GetDirectoryFiles(context.outputPath)
-                               .Select(x => AssetsEditorTool.GetFileName(x))
-                              .ToList();
-                    AssetsEditorTool.GetDirectoryFiles(context.historyPath)
-                            .Where(x => !useful.Contains(AssetsEditorTool.GetFileName(x)))
-                            .ToList()
-                            .ForEach(x => AssetsEditorTool.DeleteFile(x));
-                }
-            }
+            //    if (context.cleanHistory)
+            //    {
+            //        var useful = AssetsEditorTool.GetDirectoryFiles(context.outputPath)
+            //                   .Select(x => AssetsEditorTool.GetFileName(x))
+            //                  .ToList();
+            //        AssetsEditorTool.GetDirectoryFiles(context.historyPath)
+            //                .Where(x => !useful.Contains(AssetsEditorTool.GetFileName(x)))
+            //                .ToList()
+            //                .ForEach(x => AssetsEditorTool.DeleteFile(x));
+            //    }
+            //}
             if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
             {
 
