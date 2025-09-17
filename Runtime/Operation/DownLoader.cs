@@ -34,15 +34,11 @@ namespace WooAsset
             DownLoad(fd);
             return fd;
         }
-        private static void ReCycleDownLoader(DownLoader loader)
-        {
-        }
-
         public static BytesDownLoader Bytes(string url, int timeout, int retry)
         {
             var list = AssetsHelper.GetFromDictionary(memory, url);
         Again:
-            if (list == null || list.Count == 0)
+            if (list.Count == 0)
             {
                 var fd = new BytesDownLoader(url, timeout, retry);
                 list.Add(fd);
@@ -56,17 +52,11 @@ namespace WooAsset
                 if (downLoader.isErr)
                 {
                     list.RemoveAt(i);
-                    ReCycleDownLoader(downLoader);
-                    list = null;
                     continue;
                 }
-                if (downLoader is BytesDownLoader)
-                {
-                    var bd = downLoader as BytesDownLoader;
+                if (downLoader is BytesDownLoader bd)
                     return bd;
-                }
             }
-            list = null;
             goto Again;
         }
 
@@ -74,7 +64,7 @@ namespace WooAsset
         {
             var list = AssetsHelper.GetFromDictionary(memory, url);
         Again:
-            if (list == null || list.Count == 0)
+            if (list.Count == 0)
             {
                 var fd = new BundleDownLoader(url, cache, crc, hash, timeout, retry);
                 list.Add(fd);
@@ -88,21 +78,21 @@ namespace WooAsset
                 if (downLoader.isErr)
                 {
                     list.RemoveAt(i);
-                    ReCycleDownLoader(downLoader);
-
-                    list = null;
                     continue;
                 }
-                if (downLoader is BundleDownLoader)
+                if (downLoader is BundleDownLoader bd)
                 {
-                    var bd = downLoader as BundleDownLoader;
-                    if (bd.cache == cache && bd.crc == crc && bd.hash == hash)
+
+                    if (bd.isDone && !bd.bundle)
                     {
-                        return bd;
+                        list.RemoveAt(i);
+                        continue;
                     }
+                    if (bd.cache == cache && bd.crc == crc && bd.hash == hash)
+                        return bd;
+
                 }
             }
-            list = null;
             goto Again;
         }
 

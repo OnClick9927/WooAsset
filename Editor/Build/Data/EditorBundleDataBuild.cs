@@ -29,11 +29,16 @@ namespace WooAsset
             One2One,
             N2One,
             N2MBySize,
-            N2MBySizeAndDir,
-
+            N2MByDir,
             N2MByAssetType,
-            N2MBySizeAndDirAndAssetType,
+
+
+
+            N2MBySizeAndDir,
+            N2MByDirAndAssetType,
             N2MByAssetTypeAndSize,
+
+            N2MBySizeAndDirAndAssetType,
         }
 
 
@@ -118,6 +123,10 @@ namespace WooAsset
                 case PackType.N2MBySizeAndDirAndAssetType:
                     EditorBundleTool.N2MBySizeAndDirAndAssetType(list, result, size); break;
 
+                case PackType.N2MByDir:
+                    EditorBundleTool.N2MByDir(list, result); break;
+                case PackType.N2MByDirAndAssetType:
+                    EditorBundleTool.N2MByDirAndAssetType(list, result); break;
             }
         }
     }
