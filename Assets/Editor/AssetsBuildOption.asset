@@ -77,12 +77,15 @@ MonoBehaviour:
     tags: []
     paths:
     - Assets/Example/pkg2
-    builds: []
+    builds:
+    - selectors: []
+      packType: 1
+      size: 0
     build: 1
   build:
     _select: WooAsset.DefaultAssetsBuild
   encrypt:
-    _select: WooAsset.DefaultAssetStreamEncrypt
+    _select: WooAsset.NoneAssetStreamEncrypt
   buildPipeline:
     _select: WooAsset.BuildInPipeline
   recordIgnore: []

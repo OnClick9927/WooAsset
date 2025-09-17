@@ -12,14 +12,14 @@ namespace WooAsset
 {
     public class LocalSetting : AssetsSetting
     {
-        //public override string GetUrlByBundleName(string buildTarget, string bundleName)
-        //{
-        //    return base.GetUrlByBundleName(buildTarget, bundleName) + StreamBundlesData.fileExt;
-        //}
-        //public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
-        //{
-        //    return GetUrlByBundleName(buildTarget, bundleName);
-        //}
+        public override string GetUrlByBundleName(string buildTarget, string bundleName)
+        {
+            return base.GetUrlByBundleName(buildTarget, bundleName) + StreamBundlesData.fileExt;
+        }
+        public override string GetUrlByBundleName(string buildTarget, string version, string bundleName)
+        {
+            return GetUrlByBundleName(buildTarget, bundleName);
+        }
         public override bool GetFuzzySearch()
         {
             return false;
@@ -46,8 +46,8 @@ namespace WooAsset
         }
         protected override string GetBaseUrl()
         {
-            return "http://127.0.0.1:8080";
             return Application.streamingAssetsPath;
+            return "http://127.0.0.1:8080";
             //return "https://pic.trinityleaves.cn/images/xxx";
             //Application.dataPath, "../DLCDownLoad"
             //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());

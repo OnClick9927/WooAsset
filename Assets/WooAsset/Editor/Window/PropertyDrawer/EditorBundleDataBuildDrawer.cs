@@ -17,11 +17,17 @@ namespace WooAsset
         {
             float height;
             var packType = (PackType)property.FindPropertyRelative(nameof(EditorBundleDataBuild.packType)).enumValueIndex;
-            if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir
-                || packType == PackType.N2MBySizeAndDirAndAssetType || packType == PackType.N2MByAssetTypeAndSize)
+
+
+
+
+            if (packType.ToString().Contains("Size"))
                 height = 40;
             else
                 height = 20;
+
+
+
             return height + 20;
         }
         private static Dictionary<int, AssetSelectorAttribute> map = new Dictionary<int, AssetSelectorAttribute>();
@@ -92,8 +98,7 @@ namespace WooAsset
             position = rs_1[1];
             rs_1 = RectEx.HorizontalSplit(position, 20);
             DrawRightProperty(rs_1[0], packType_pro);
-            if (packType == PackType.N2MBySize || packType == PackType.N2MBySizeAndDir
-                   || packType == PackType.N2MBySizeAndDirAndAssetType || packType == PackType.N2MByAssetTypeAndSize)
+            if (packType.ToString().Contains("Size"))
             {
                 DrawRightProperty(rs_1[1], property.FindPropertyRelative(nameof(EditorBundleDataBuild.size)));
             }

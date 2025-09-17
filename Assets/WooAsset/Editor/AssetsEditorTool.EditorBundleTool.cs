@@ -81,6 +81,23 @@ namespace WooAsset
                     N2MBySize(item.Value, result, size);
                 }
             }
+            public static void N2MByDir(List<EditorAssetData> assets, List<EditorBundleData> result)
+            {
+                var path_dic = GroupByDir(assets);
+                foreach (var item in path_dic)
+                {
+                    N2One(item.Value, result);
+                }
+            }
+
+            public static void N2MByDirAndAssetType(List<EditorAssetData> assets, List<EditorBundleData> result)
+            {
+                var path_dic = GroupByDir(assets);
+                foreach (var item in path_dic)
+                {
+                    N2MByAssetType(item.Value, result);
+                }
+            }
 
             public static void N2MByAssetType(List<EditorAssetData> assets, List<EditorBundleData> result)
             {

@@ -278,7 +278,7 @@ MonoBehaviour:
       _hash: 76c9c9307a3f5a429af261ace614ff50
       _length: 459520
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/shadervariants.shadervariants
         name: shadervariants.shadervariants
@@ -315,7 +315,7 @@ MonoBehaviour:
       _hash: 9a898ce7a80940d73902cd443f6768ac
       _length: 9853
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/Cube.prefab
         name: Cube.prefab
@@ -339,7 +339,7 @@ MonoBehaviour:
       _hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
       _length: 2818
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/New Material.mat
         name: New Material.mat
@@ -363,7 +363,7 @@ MonoBehaviour:
       _hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
       _length: 2192
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/a
         name: a
@@ -384,7 +384,7 @@ MonoBehaviour:
       _hash: 85e39d8c25a85eea552a9f3925fe07af
       _length: 0
       _raw: 1
-      _enCode: 1
+      _enCode: 0
     tree:
       assets:
       - path: Assets/Example/pkg1
@@ -586,7 +586,7 @@ MonoBehaviour:
       _hash: d111ba45eb97e7c88c4676972ac2e10c
       _length: 544544
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
         name: LiberationSans.ttf
@@ -609,7 +609,7 @@ MonoBehaviour:
       _hash: 243a4650079c87e8c8a518635f6d055d
       _length: 350200
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/px/1.png
         name: 1.png
@@ -633,7 +633,7 @@ MonoBehaviour:
       _hash: bf1f5a88f21c062b8e99107f99927599
       _length: 202240
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
         name: ReflectionProbe-0.exr
@@ -656,7 +656,7 @@ MonoBehaviour:
       _hash: 81760e582f4d4439068c4d1ca75baf02
       _length: 131232
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg2/Scene/New Scene2.unity
         name: New Scene2.unity
@@ -689,7 +689,7 @@ MonoBehaviour:
       _hash: d0249394ec31d8e20d9bc59137e75f61
       _length: 21636
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
         name: TMP_SDF-Mobile.shader
@@ -713,7 +713,7 @@ MonoBehaviour:
       _hash: da4dc35176a2d52140d21c508ced13db
       _length: 7914
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/Cube.prefab
         name: Cube.prefab
@@ -739,7 +739,7 @@ MonoBehaviour:
       _hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
       _length: 2818
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     - assets:
       - path: Assets/Example/pkg1/New Material.mat
         name: New Material.mat
@@ -765,7 +765,7 @@ MonoBehaviour:
       _hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
       _length: 2192
       _raw: 0
-      _enCode: 1
+      _enCode: 0
     tree:
       assets:
       - path: Assets/Example/pkg2
@@ -982,7 +982,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
   manifest:
-    version: 2025_09_16_18_05_19
+    version: 2025_09_16_22_51_54
     assets:
     - path: Assets/Example/pkg1/px/2.png
       type: 3
@@ -1063,8 +1063,8 @@ MonoBehaviour:
     - bundleName: 76c9c9307a3f5a429af261ace614ff50
       raw: 0
       compress: 2
-      enCode: 1
-      hash: fbd3667502b6c2e4b36137adb8bba422
+      enCode: 0
+      hash: 72f8c927a8db6a1b568c1a39d0e4d9a0
       length: 27248
       bundleHash: 76a1faccc080e259801e939a03644d84
       bundleCrc: 3260823829
@@ -1076,8 +1076,8 @@ MonoBehaviour:
     - bundleName: 9a898ce7a80940d73902cd443f6768ac
       raw: 0
       compress: 2
-      enCode: 1
-      hash: 38888dcf4e3ad257659802d8033847f1
+      enCode: 0
+      hash: 474af1b4ff8b8c273c676ccaacb7bf4a
       length: 112864
       bundleHash: 5095488be118d169521df0bc86d5e58a
       bundleCrc: 888651119
@@ -1088,8 +1088,8 @@ MonoBehaviour:
     - bundleName: 5c89e8abf37d4fa6d1e1215fca7cc1b9
       raw: 0
       compress: 2
-      enCode: 1
-      hash: bc1a853687242678448cce60538f37e1
+      enCode: 0
+      hash: a452cf2ac902f4b4efdced28904735c0
       length: 8256
       bundleHash: d509d4c40e9b9ba705bb89368229b8f7
       bundleCrc: 2311966693
@@ -1100,8 +1100,8 @@ MonoBehaviour:
     - bundleName: 48998a5c94d7e5cbbdeb3f01ec9d8df4
       raw: 0
       compress: 2
-      enCode: 1
-      hash: 8a4b695bbffde6a04d8bce9300b13916
+      enCode: 0
+      hash: a2296b90356a122ff74ad762ce710fd3
       length: 132896
       bundleHash: 2059bdfc63863a0b01121d75dbe45494
       bundleCrc: 1999514936
@@ -1111,7 +1111,7 @@ MonoBehaviour:
     - bundleName: 85e39d8c25a85eea552a9f3925fe07af
       raw: 1
       compress: 2
-      enCode: 1
+      enCode: 0
       hash: d41d8cd98f00b204e9800998ecf8427e
       length: 0
       bundleHash: 
@@ -1122,8 +1122,8 @@ MonoBehaviour:
     - bundleName: d111ba45eb97e7c88c4676972ac2e10c
       raw: 0
       compress: 2
-      enCode: 1
-      hash: 9472b2e5fef82d326819fd1db9ce72d3
+      enCode: 0
+      hash: edd1d1aa7ae12f77db1908406237b9a0
       length: 560752
       bundleHash: 9730d49a762b9f634d3593c42811e483
       bundleCrc: 4047209625
@@ -1136,8 +1136,8 @@ MonoBehaviour:
     - bundleName: 243a4650079c87e8c8a518635f6d055d
       raw: 0
       compress: 2
-      enCode: 1
-      hash: 7267f30a6225253ededc57dd8c9c0d55
+      enCode: 0
+      hash: b13b6a184eacacb2a41408d88b41e5fa
       length: 364304
       bundleHash: 5b02ca63167f879b9c4ea8caae6ba396
       bundleCrc: 143372409
@@ -1147,8 +1147,8 @@ MonoBehaviour:
     - bundleName: bf1f5a88f21c062b8e99107f99927599
       raw: 0
       compress: 2
-      enCode: 1
-      hash: 34936795caf23f5311f77b579b43b28b
+      enCode: 0
+      hash: 5a00567c35aab1e6826d06f9d53754fc
       length: 27024
       bundleHash: e41303da95101375c2b243504a4f547c
       bundleCrc: 4204299413
@@ -1158,8 +1158,8 @@ MonoBehaviour:
     - bundleName: 81760e582f4d4439068c4d1ca75baf02
       raw: 0
       compress: 2
-      enCode: 1
-      hash: 8ed0a1ee4d1a71ab7f7211475c49acf4
+      enCode: 0
+      hash: eb58dca5cf7e6615458718960e2b6d53
       length: 136672
       bundleHash: 319a83529ae2e2c1e7764c9e3fb22222
       bundleCrc: 3873774841
@@ -1169,8 +1169,8 @@ MonoBehaviour:
     - bundleName: d0249394ec31d8e20d9bc59137e75f61
       raw: 0
       compress: 2
-      enCode: 1
-      hash: c7cf56ecc709fcd9a987a16b5584d0ab
+      enCode: 0
+      hash: 2cd6ab7a0a7db16b47fe3090e3f36f29
       length: 1237456
       bundleHash: aa5cf1b0f48533c42bc1bf2b9d7056c6
       bundleCrc: 2032716535
@@ -1186,8 +1186,8 @@ MonoBehaviour:
     - bundleName: da4dc35176a2d52140d21c508ced13db
       raw: 0
       compress: 2
-      enCode: 1
-      hash: baffed4cd6b402c1c45830ee0643ea18
+      enCode: 0
+      hash: 4b6237e10feb854027538ae5b25d4571
       length: 87920
       bundleHash: efc58278cce0c996acccbf00972d5499
       bundleCrc: 2705145988
