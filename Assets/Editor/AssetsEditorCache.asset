@@ -679,12 +679,12 @@ MonoBehaviour:
         - pkg2
       usage: []
       dependence:
-      - 243a4650079c87e8c8a518635f6d055d
-      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
       - 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      - 81760e582f4d4439068c4d1ca75baf02
-      - bf1f5a88f21c062b8e99107f99927599
+      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
       - da4dc35176a2d52140d21c508ced13db
+      - bf1f5a88f21c062b8e99107f99927599
+      - 81760e582f4d4439068c4d1ca75baf02
+      - 243a4650079c87e8c8a518635f6d055d
       _loop: 0
       _hash: d0249394ec31d8e20d9bc59137e75f61
       _length: 21636
@@ -982,7 +982,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
   manifest:
-    version: 2025_09_16_22_51_54
+    version: 2025_09_18_14_05_52
     assets:
     - path: Assets/Example/pkg1/px/2.png
       type: 3
@@ -1064,10 +1064,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 72f8c927a8db6a1b568c1a39d0e4d9a0
-      length: 27248
-      bundleHash: 76a1faccc080e259801e939a03644d84
-      bundleCrc: 3260823829
+      hash: 76c9c9307a3f5a429af261ace614ff50
+      length: 459520
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/px/2.png
       - Assets/Example/pkg1/px/1.png
@@ -1077,10 +1077,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 474af1b4ff8b8c273c676ccaacb7bf4a
-      length: 112864
-      bundleHash: 5095488be118d169521df0bc86d5e58a
-      bundleCrc: 888651119
+      hash: 9a898ce7a80940d73902cd443f6768ac
+      length: 9853
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/shadervariants.shadervariants
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
@@ -1089,10 +1089,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: a452cf2ac902f4b4efdced28904735c0
-      length: 8256
-      bundleHash: d509d4c40e9b9ba705bb89368229b8f7
-      bundleCrc: 2311966693
+      hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
+      length: 2818
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/Cube.prefab
       dependence:
@@ -1101,10 +1101,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: a2296b90356a122ff74ad762ce710fd3
-      length: 132896
-      bundleHash: 2059bdfc63863a0b01121d75dbe45494
-      bundleCrc: 1999514936
+      hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
+      length: 2192
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/New Material.mat
       dependence: []
@@ -1112,7 +1112,7 @@ MonoBehaviour:
       raw: 1
       compress: 2
       enCode: 0
-      hash: d41d8cd98f00b204e9800998ecf8427e
+      hash: 85e39d8c25a85eea552a9f3925fe07af
       length: 0
       bundleHash: 
       bundleCrc: 0
@@ -1123,10 +1123,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: edd1d1aa7ae12f77db1908406237b9a0
-      length: 560752
-      bundleHash: 9730d49a762b9f634d3593c42811e483
-      bundleCrc: 4047209625
+      hash: d111ba45eb97e7c88c4676972ac2e10c
+      length: 544544
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
       - Assets/Example/pkg2/px/OIP.jpg
@@ -1137,10 +1137,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: b13b6a184eacacb2a41408d88b41e5fa
-      length: 364304
-      bundleHash: 5b02ca63167f879b9c4ea8caae6ba396
-      bundleCrc: 143372409
+      hash: 243a4650079c87e8c8a518635f6d055d
+      length: 350200
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
       dependence: []
@@ -1148,10 +1148,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 5a00567c35aab1e6826d06f9d53754fc
-      length: 27024
-      bundleHash: e41303da95101375c2b243504a4f547c
-      bundleCrc: 4204299413
+      hash: bf1f5a88f21c062b8e99107f99927599
+      length: 202240
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/px/1.png
       dependence: []
@@ -1159,10 +1159,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: eb58dca5cf7e6615458718960e2b6d53
-      length: 136672
-      bundleHash: 319a83529ae2e2c1e7764c9e3fb22222
-      bundleCrc: 3873774841
+      hash: 81760e582f4d4439068c4d1ca75baf02
+      length: 131232
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
       dependence: []
@@ -1170,27 +1170,27 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 2cd6ab7a0a7db16b47fe3090e3f36f29
-      length: 1237456
-      bundleHash: aa5cf1b0f48533c42bc1bf2b9d7056c6
-      bundleCrc: 2032716535
+      hash: d0249394ec31d8e20d9bc59137e75f61
+      length: 21636
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg2/Scene/New Scene2.unity
       dependence:
-      - 243a4650079c87e8c8a518635f6d055d
-      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
       - 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      - 81760e582f4d4439068c4d1ca75baf02
-      - bf1f5a88f21c062b8e99107f99927599
+      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
       - da4dc35176a2d52140d21c508ced13db
+      - bf1f5a88f21c062b8e99107f99927599
+      - 81760e582f4d4439068c4d1ca75baf02
+      - 243a4650079c87e8c8a518635f6d055d
     - bundleName: da4dc35176a2d52140d21c508ced13db
       raw: 0
       compress: 2
       enCode: 0
-      hash: 4b6237e10feb854027538ae5b25d4571
-      length: 87920
-      bundleHash: efc58278cce0c996acccbf00972d5499
-      bundleCrc: 2705145988
+      hash: da4dc35176a2d52140d21c508ced13db
+      length: 7914
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       dependence: []

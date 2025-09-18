@@ -17,7 +17,7 @@ MonoBehaviour:
     OutputDirectory: 
   mode:
     mode:
-      _select: WooAsset.NormalAssetsMode
+      _select: WooAsset.AssetsEditorTool+AssetDatabaseMode
     Folders: []
     CheckAssetType: 0
   spriteAtlas:
@@ -79,10 +79,7 @@ MonoBehaviour:
     tags: []
     paths:
     - Assets/Example/pkg2
-    builds:
-    - selectors: []
-      packType: 1
-      size: 0
+    builds: []
     build: 1
   build:
     _select: WooAsset.DefaultAssetsBuild
