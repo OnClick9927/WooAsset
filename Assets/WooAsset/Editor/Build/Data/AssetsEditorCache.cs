@@ -94,10 +94,61 @@ namespace WooAsset
         public class AssetDataBaseCache
         {
             public string path;
-            public long PreviewSize;
-            //public Texture2D thumbnail;
-            public int InstanceID;
-            public string type;
+            private long _PreviewSize;
+            private int _InstanceID;
+            private string _type;
+            private string _hash;
+            private Texture2D _thumb;
+            public Texture2D thumb
+            {
+                get
+                {
+                    if (_thumb == null)
+                    {
+                        _thumb = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path));
+                    }
+                    return _thumb;
+                }
+            }
+            public long PreviewSize
+            {
+                get
+                {
+                    if (_PreviewSize == 0)
+                        _PreviewSize = GetMemorySizeLong(path, AssetsEditorTool.GetTypeByName(type));
+                    return _PreviewSize;
+                }
+            }
+
+            public int InstanceID
+            {
+                get
+                {
+                    if (_InstanceID == 0)
+                        _InstanceID = GetMainAssetInstanceID(path);
+
+                    return _InstanceID;
+                }
+            }
+            public string type
+            {
+                get
+                {
+                    if (string.IsNullOrEmpty(_type))
+                        _type = AssetDatabase.GetMainAssetTypeAtPath(path).FullName;
+                    return _type;
+                }
+            }
+            public string hash
+            {
+                get
+                {
+                    if (string.IsNullOrEmpty(_hash))
+                        _hash = AssetsEditorTool.GetFileHash(path);
+
+                    return _hash;
+                }
+            }
         }
 
         public List<AssetDataBaseCache> cachedAssets = new List<AssetDataBaseCache>();
@@ -116,14 +167,15 @@ namespace WooAsset
                 find = new AssetDataBaseCache()
                 {
                     path = path,
-                    PreviewSize = GetMemorySizeLong(path, type),
-                    InstanceID = GetMainAssetInstanceID(path),
-                    type = type.FullName,
+                    //PreviewSize = GetMemorySizeLong(path, type),
+                    //InstanceID = GetMainAssetInstanceID(path),
+                    //type = type.FullName,
+                    //hash = AssetsEditorTool.GetFileHash(path)
                     //thumbnail = AssetPreview.GetMiniThumbnail(obj),
-                  
+
                 };
                 cachedAssets.Add(find);
-                Save();
+                //Save();
             }
             dic[path] = find;
             return find;
@@ -133,14 +185,14 @@ namespace WooAsset
         static MethodInfo _GetMainAssetInstanceID;
         private static long GetMemorySizeLong(string path, Type obj)
         {
-            if (!(typeof(Texture).IsAssignableFrom(obj) )) return AssetsEditorTool.GetFileLength(path);
+            if (!(typeof(Texture).IsAssignableFrom(obj))) return AssetsEditorTool.GetFileLength(path);
 
             if (_GetTextureMemorySizeLong == null)
             {
                 var type = typeof(AssetDatabase).Assembly.GetType("UnityEditor.TextureUtil");
                 _GetTextureMemorySizeLong = type.GetMethod("GetStorageMemorySizeLong", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
             }
-            var newType = (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { obj });
+            var newType = (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { AssetDatabase.LoadAssetAtPath<Texture>(path) });
             return newType;
         }
 
@@ -160,12 +212,12 @@ namespace WooAsset
         {
             static void RemoveCache(string path)
             {
-                var count = AssetsEditorTool.cache.cachedAssets.RemoveAll(x => x.path == path);
-                if (count > 0)
-                {
-                    AssetsEditorTool.cache.dic.Remove(path);
-                    AssetsEditorTool.cache.Save();
-                }
+                //var count = AssetsEditorTool.cache.cachedAssets.RemoveAll(x => x.path == path);
+                //if (count > 0)
+                //{
+                //    AssetsEditorTool.cache.dic.Remove(path);
+                //    AssetsEditorTool.cache.Save();
+                //}
             }
             // 资源即将被创建时调用
             public static void OnWillCreateAsset(string assetPath)

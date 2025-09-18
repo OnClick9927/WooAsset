@@ -39,25 +39,20 @@ namespace WooAsset
 
         private static void Update<T>(T t) where T : Object
         {
+
             EditorApplication.delayCall += delegate ()
             {
                 EditorUtility.SetDirty(t);
                 AssetDatabase.SaveAssetIfDirty(t);
                 //AssetDatabase.Refresh();
-
+                //_ref = 0;
             };
         }
-
-        private System.DateTime time;
         public void Save()
         {
-            var now = System.DateTime.Now;
-
-            if ((now - time).TotalSeconds > 1)
-            {
-                Update(this);
-                time = now;
-            }
+            //if (_ref != 0) return;
+            //_ref++;
+            Update(this);
 
 
         }

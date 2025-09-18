@@ -16,8 +16,8 @@ MonoBehaviour:
     assets:
     - path: Assets/Example/pkg2
       name: pkg2
-      length: 700194
-      hash: b9f861ed559909addc77f062de81c08a
+      length: 697412
+      hash: 
       dependence: []
       type: 2
       directory: Assets/Example
@@ -30,7 +30,7 @@ MonoBehaviour:
     - path: Assets/Example/pkg2/px
       name: px
       length: 544544
-      hash: a6e1466322c3ded2a4d56fa11b9ce697
+      hash: 
       dependence: []
       type: 2
       directory: Assets/Example/pkg2
@@ -42,8 +42,8 @@ MonoBehaviour:
       - pkg2
     - path: Assets/Example/pkg2/Scene
       name: Scene
-      length: 155650
-      hash: e89dab56b034c1ba1f0425585bf4804b
+      length: 152868
+      hash: 
       dependence: []
       type: 2
       directory: Assets/Example/pkg2
@@ -105,49 +105,10 @@ MonoBehaviour:
       guid: 7bdf3dd9a24e6ed4d805ed5758bad163
       in_pkgs:
       - pkg2
-    - path: Assets/Example/pkg2/Scene/GameObject 1.prefab
-      name: GameObject 1.prefab
-      length: 928
-      hash: fe881c8c80a1216408ff03362e788630
-      dependence: []
-      type: 9
-      directory: Assets/Example/pkg2/Scene
-      tags: []
-      usage: []
-      record: 1
-      guid: 806f74ad5d772af4eb7671bae0958d8a
-      in_pkgs:
-      - pkg2
-    - path: Assets/Example/pkg2/Scene/GameObject 2.prefab
-      name: GameObject 2.prefab
-      length: 928
-      hash: a2b997a3894983f1346aba184910fcdb
-      dependence: []
-      type: 9
-      directory: Assets/Example/pkg2/Scene
-      tags: []
-      usage: []
-      record: 1
-      guid: fe903ea4cc318a943a9739493ecc61c8
-      in_pkgs:
-      - pkg2
-    - path: Assets/Example/pkg2/Scene/GameObject.prefab
-      name: GameObject.prefab
-      length: 926
-      hash: 218da80e87563416c09ea3ef9db13b19
-      dependence: []
-      type: 9
-      directory: Assets/Example/pkg2/Scene
-      tags: []
-      usage: []
-      record: 1
-      guid: fa65c7657c4981b439f6db8b0b3ad816
-      in_pkgs:
-      - pkg2
     - path: Assets/Example/pkg2/Scene/New Scene2
       name: New Scene2
       length: 131232
-      hash: ce34f980c6edf7e6633217d7fd41a98d
+      hash: 
       dependence: []
       type: 2
       directory: Assets/Example/pkg2/Scene
@@ -429,7 +390,7 @@ MonoBehaviour:
       - path: Assets/Example/pkg1
         name: pkg1
         length: 466469
-        hash: 6876961905b561599851efe40e61919e
+        hash: 
         dependence: []
         type: 2
         directory: Assets/Example
@@ -485,7 +446,7 @@ MonoBehaviour:
       - path: Assets/Example/pkg1/px
         name: px
         length: 459520
-        hash: f428bd13763404beb8eceb7791d0160b
+        hash: 
         dependence: []
         type: 2
         directory: Assets/Example/pkg1
@@ -805,75 +766,12 @@ MonoBehaviour:
       _length: 2192
       _raw: 0
       _enCode: 0
-    - assets:
-      - path: Assets/Example/pkg2/Scene/GameObject 1.prefab
-        name: GameObject 1.prefab
-        length: 928
-        hash: fe881c8c80a1216408ff03362e788630
-        dependence: []
-        type: 9
-        directory: Assets/Example/pkg2/Scene
-        tags: []
-        usage: []
-        record: 1
-        guid: 806f74ad5d772af4eb7671bae0958d8a
-        in_pkgs:
-        - pkg2
-      usage: []
-      dependence: []
-      _loop: 0
-      _hash: 4101b26b1065015217d44ae7cf9f539d
-      _length: 928
-      _raw: 0
-      _enCode: 0
-    - assets:
-      - path: Assets/Example/pkg2/Scene/GameObject 2.prefab
-        name: GameObject 2.prefab
-        length: 928
-        hash: a2b997a3894983f1346aba184910fcdb
-        dependence: []
-        type: 9
-        directory: Assets/Example/pkg2/Scene
-        tags: []
-        usage: []
-        record: 1
-        guid: fe903ea4cc318a943a9739493ecc61c8
-        in_pkgs:
-        - pkg2
-      usage: []
-      dependence: []
-      _loop: 0
-      _hash: 7f96a59eba3828d2751e1927d8e7a846
-      _length: 928
-      _raw: 0
-      _enCode: 0
-    - assets:
-      - path: Assets/Example/pkg2/Scene/GameObject.prefab
-        name: GameObject.prefab
-        length: 926
-        hash: 218da80e87563416c09ea3ef9db13b19
-        dependence: []
-        type: 9
-        directory: Assets/Example/pkg2/Scene
-        tags: []
-        usage: []
-        record: 1
-        guid: fa65c7657c4981b439f6db8b0b3ad816
-        in_pkgs:
-        - pkg2
-      usage: []
-      dependence: []
-      _loop: 0
-      _hash: a4d868b716af1c4122e7d087ee7998b2
-      _length: 926
-      _raw: 0
-      _enCode: 0
     tree:
       assets:
       - path: Assets/Example/pkg2
         name: pkg2
-        length: 700194
-        hash: b9f861ed559909addc77f062de81c08a
+        length: 697412
+        hash: 
         dependence: []
         type: 2
         directory: Assets/Example
@@ -886,7 +784,7 @@ MonoBehaviour:
       - path: Assets/Example/pkg2/px
         name: px
         length: 544544
-        hash: a6e1466322c3ded2a4d56fa11b9ce697
+        hash: 
         dependence: []
         type: 2
         directory: Assets/Example/pkg2
@@ -898,8 +796,8 @@ MonoBehaviour:
         - pkg2
       - path: Assets/Example/pkg2/Scene
         name: Scene
-        length: 155650
-        hash: e89dab56b034c1ba1f0425585bf4804b
+        length: 152868
+        hash: 
         dependence: []
         type: 2
         directory: Assets/Example/pkg2
@@ -961,49 +859,10 @@ MonoBehaviour:
         guid: 7bdf3dd9a24e6ed4d805ed5758bad163
         in_pkgs:
         - pkg2
-      - path: Assets/Example/pkg2/Scene/GameObject 1.prefab
-        name: GameObject 1.prefab
-        length: 928
-        hash: fe881c8c80a1216408ff03362e788630
-        dependence: []
-        type: 9
-        directory: Assets/Example/pkg2/Scene
-        tags: []
-        usage: []
-        record: 1
-        guid: 806f74ad5d772af4eb7671bae0958d8a
-        in_pkgs:
-        - pkg2
-      - path: Assets/Example/pkg2/Scene/GameObject 2.prefab
-        name: GameObject 2.prefab
-        length: 928
-        hash: a2b997a3894983f1346aba184910fcdb
-        dependence: []
-        type: 9
-        directory: Assets/Example/pkg2/Scene
-        tags: []
-        usage: []
-        record: 1
-        guid: fe903ea4cc318a943a9739493ecc61c8
-        in_pkgs:
-        - pkg2
-      - path: Assets/Example/pkg2/Scene/GameObject.prefab
-        name: GameObject.prefab
-        length: 926
-        hash: 218da80e87563416c09ea3ef9db13b19
-        dependence: []
-        type: 9
-        directory: Assets/Example/pkg2/Scene
-        tags: []
-        usage: []
-        record: 1
-        guid: fa65c7657c4981b439f6db8b0b3ad816
-        in_pkgs:
-        - pkg2
       - path: Assets/Example/pkg2/Scene/New Scene2
         name: New Scene2
         length: 131232
-        hash: ce34f980c6edf7e6633217d7fd41a98d
+        hash: 
         dependence: []
         type: 2
         directory: Assets/Example/pkg2/Scene
@@ -1123,7 +982,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
   manifest:
-    version: 2025_09_18_15_45_51
+    version: 2025_09_18_17_42_45
     assets:
     - path: Assets/Example/pkg1/px/2.png
       type: 3
@@ -1200,21 +1059,6 @@ MonoBehaviour:
       guid: 7623efd24e38a4e46948380b33aadb32
       tags: []
       bundleName: d0249394ec31d8e20d9bc59137e75f61
-    - path: Assets/Example/pkg2/Scene/GameObject 1.prefab
-      type: 9
-      guid: 806f74ad5d772af4eb7671bae0958d8a
-      tags: []
-      bundleName: 4101b26b1065015217d44ae7cf9f539d
-    - path: Assets/Example/pkg2/Scene/GameObject 2.prefab
-      type: 9
-      guid: fe903ea4cc318a943a9739493ecc61c8
-      tags: []
-      bundleName: 7f96a59eba3828d2751e1927d8e7a846
-    - path: Assets/Example/pkg2/Scene/GameObject.prefab
-      type: 9
-      guid: fa65c7657c4981b439f6db8b0b3ad816
-      tags: []
-      bundleName: a4d868b716af1c4122e7d087ee7998b2
     bundles:
     - bundleName: 76c9c9307a3f5a429af261ace614ff50
       raw: 0
@@ -1350,36 +1194,23 @@ MonoBehaviour:
       assets:
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       dependence: []
-    - bundleName: 4101b26b1065015217d44ae7cf9f539d
-      raw: 0
-      compress: 2
-      enCode: 0
-      hash: 4101b26b1065015217d44ae7cf9f539d
-      length: 928
-      bundleHash: 
-      bundleCrc: 0
-      assets:
-      - Assets/Example/pkg2/Scene/GameObject 1.prefab
-      dependence: []
-    - bundleName: 7f96a59eba3828d2751e1927d8e7a846
-      raw: 0
-      compress: 2
-      enCode: 0
-      hash: 7f96a59eba3828d2751e1927d8e7a846
-      length: 928
-      bundleHash: 
-      bundleCrc: 0
-      assets:
-      - Assets/Example/pkg2/Scene/GameObject 2.prefab
-      dependence: []
-    - bundleName: a4d868b716af1c4122e7d087ee7998b2
-      raw: 0
-      compress: 2
-      enCode: 0
-      hash: a4d868b716af1c4122e7d087ee7998b2
-      length: 926
-      bundleHash: 
-      bundleCrc: 0
-      assets:
-      - Assets/Example/pkg2/Scene/GameObject.prefab
-      dependence: []
+  cachedAssets:
+  - path: Assets/Example/pkg1/a
+  - path: Assets/Example/pkg1/Cube.prefab
+  - path: Assets/Example/pkg1/New Material.mat
+  - path: Assets/Example/pkg1/px.spriteatlas
+  - path: Assets/Example/pkg1/shadervariants.shadervariants
+  - path: Assets/Example/pkg1/px/1.png
+  - path: Assets/Example/pkg1/px/2.png
+  - path: Assets/Example/pkg1/px/3.png
+  - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+  - path: Assets/Example/pkg2/px/avatar.jpg
+  - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
+  - path: Assets/Example/pkg2/px/OIP.jpg
+  - path: Assets/Example/pkg2/px/test.jpg
+  - path: Assets/Example/pkg2/Scene/New Scene2.unity
+  - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+  - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+  - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+  - path: Assets/Example/pkg1
+  - path: Assets/Example/pkg1/px
