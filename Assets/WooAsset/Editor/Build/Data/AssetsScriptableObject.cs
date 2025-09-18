@@ -48,9 +48,18 @@ namespace WooAsset
             };
         }
 
+        private System.DateTime time;
         public void Save()
         {
-            Update(this);
+            var now = System.DateTime.Now;
+
+            if ((now - time).TotalSeconds > 1)
+            {
+                Update(this);
+                time = now;
+            }
+
+
         }
     }
 }
