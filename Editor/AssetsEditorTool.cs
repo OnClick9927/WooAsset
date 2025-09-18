@@ -11,10 +11,10 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        public static string GetEditorAssetDataHash(string path) => cache.GetCache(path).hash;
-        public static long GetPreviewSizeLong(string path) => cache.GetCache(path).PreviewSize;
+        public static string GetEditorAssetDataHash(string path) => cache.GetAssetCache(path).hash;
+        public static long GetPreviewSizeLong(string path) => cache.GetAssetCache(path).PreviewSize;
 
-        public static int GetMainAssetInstanceID(string path) => cache.GetCache(path).InstanceID;
+        public static int GetMainAssetInstanceID(string path) => cache.GetAssetCache(path).InstanceID;
 
 
 
@@ -30,7 +30,7 @@ namespace WooAsset
         }
         public static Type GetMainAssetTypeAtPath(string path)
         {
-            var name = cache.GetCache(path).type;
+            var name = cache.GetAssetCache(path).type;
        
             return GetTypeByName(name);
         }

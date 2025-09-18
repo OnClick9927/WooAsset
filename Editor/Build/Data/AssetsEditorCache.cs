@@ -91,7 +91,7 @@ namespace WooAsset
         }
 
         [System.Serializable]
-        public class AssetDataBaseCache
+        public class AssetCache
         {
             public string path;
             private long _PreviewSize;
@@ -140,9 +140,16 @@ namespace WooAsset
             }
         }
 
-        public List<AssetDataBaseCache> cachedAssets = new List<AssetDataBaseCache>();
-        private Dictionary<string, AssetDataBaseCache> dic = new Dictionary<string, AssetDataBaseCache>();
-        public AssetDataBaseCache GetCache(string path)
+        private List<AssetCache> cachedAssets = new List<AssetCache>();
+        private Dictionary<string, AssetCache> dic = new Dictionary<string, AssetCache>();
+        public void ClearAssetCache()
+        {
+            cachedAssets.Clear();
+            dic.Clear();
+            Save();
+        }
+
+        public AssetCache GetAssetCache(string path)
         {
             if (dic.TryGetValue(path, out var cache))
             {
@@ -153,7 +160,7 @@ namespace WooAsset
             {
                 //var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
                 //var type = AssetDatabase.GetMainAssetTypeAtPath(path);
-                find = new AssetDataBaseCache()
+                find = new AssetCache()
                 {
                     path = path,
                     //PreviewSize = GetMemorySizeLong(path, type),
