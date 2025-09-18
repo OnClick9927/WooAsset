@@ -24,6 +24,8 @@ namespace WooAsset
 
         protected virtual bool IsIgnorePath(string path)
         {
+            if (path.EndsWith(".meta"))
+                return true;
             var list = AssetsEditorTool.ToRegularPath(path).Split('/').ToList();
             if (!list.Contains("Assets") ||
                 list.Contains("Editor") ||

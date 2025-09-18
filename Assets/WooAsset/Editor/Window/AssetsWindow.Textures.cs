@@ -24,25 +24,19 @@ namespace WooAsset
 
             public static Texture err
             {
-                get {
+                get
+                {
                     if (_err == null)
                         _err = EditorGUIUtility.TrIconContent("d_console.erroricon.sml").image;
                     return _err;
                 }
             }
-            private static Dictionary<string, Texture> _textures = new Dictionary<string, Texture>();
             public static Texture GetMiniThumbnail(string path)
             {
                 if (AssetsEditorTool.IsDirectory(path))
                     return folder;
-                Texture tx;
-                _textures.TryGetValue(path, out tx);
-                if (!tx)
-                {
-                    tx = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<Object>(path));
-                    _textures[path] = tx;
-                }
-                return tx;
+                return cache.GetCache(path).thumbnail;
+
             }
         }
     }

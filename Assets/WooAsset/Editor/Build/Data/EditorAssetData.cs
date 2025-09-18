@@ -29,10 +29,10 @@ namespace WooAsset
             else
             {
                 hash = AssetsEditorTool.GetFileHash(path);
-                if (_type == AssetType.Sprite || _type == AssetType.Texture)
-                    length = AssetsEditorTool.GetTextureMemorySizeLong(path);
-                else
-                    length = AssetsEditorTool.GetFileLength(path);
+                length = AssetsEditorTool.GetPreviewSizeLong(path);
+                //if (_type == AssetType.Sprite || _type == AssetType.Texture)
+                //else
+                //length = AssetsEditorTool.GetFileLength(path);
             }
 
             return new EditorAssetData()
