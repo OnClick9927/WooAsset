@@ -9,7 +9,6 @@ namespace WooAsset
             //if (context.Pipeline != TaskPipelineType.BuildBundle)
             {
                 var cache = AssetsEditorTool.cache;
-                cache.RemoveUseLessCache();
                 cache.tree_asset_all = context.assetsCollection;
                 cache.Pipeline = context.Pipeline;
 
