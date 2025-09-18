@@ -207,50 +207,10 @@ namespace WooAsset
 
         }
 
-
-        class CacheModificationProcessor : AssetModificationProcessor
+        public void RemoveUseLessCache()
         {
-            static void RemoveCache(string path)
-            {
-                //var count = AssetsEditorTool.cache.cachedAssets.RemoveAll(x => x.path == path);
-                //if (count > 0)
-                //{
-                //    AssetsEditorTool.cache.dic.Remove(path);
-                //    AssetsEditorTool.cache.Save();
-                //}
-            }
-            // 资源即将被创建时调用
-            public static void OnWillCreateAsset(string assetPath)
-            {
-                RemoveCache(assetPath);
-            }
-
-            // 资源即将被保存时调用
-            public static string[] OnWillSaveAssets(string[] paths)
-            {
-                foreach (string path in paths)
-                {
-                    RemoveCache(path);
-                }
-                return paths; // 必须返回 paths
-            }
-
-            // 资源即将被移动时调用
-            public static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
-            {
-                RemoveCache(sourcePath);
-                RemoveCache(destinationPath);
-
-                return AssetMoveResult.DidNotMove; // 返回 DidMove 允许移动
-            }
-
-            // 资源即将被删除时调用
-            public static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
-            {
-                RemoveCache(assetPath);
-                return AssetDeleteResult.DidNotDelete; // 返回 DidDelete 允许删除
-            }
-
+            cachedAssets.RemoveAll(x => !AssetsEditorTool.ExistsFile(x.path) || !AssetsEditorTool.ExistsDirectory(x.path))
+            dic.Clear();
         }
 
     }
