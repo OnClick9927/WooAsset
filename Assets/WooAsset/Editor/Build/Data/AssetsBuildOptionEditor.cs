@@ -95,8 +95,16 @@ namespace WooAsset
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
                             .FindPropertyRelative(nameof(AssetsBuildOption.server.enable)));
                         if (option.server.enable)
+                        {
                             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
                                 .FindPropertyRelative(nameof(AssetsBuildOption.server.port)));
+                            GUILayout.BeginHorizontal();
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
+                                .FindPropertyRelative(nameof(AssetsBuildOption.server.speed)),new GUIContent("Speed (s)"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
+                     .FindPropertyRelative(nameof(AssetsBuildOption.server.speedType)),new GUIContent(),GUILayout.Width(50));
+                            GUILayout.EndHorizontal();
+                        }
                     }
                     //MidGUI("Simulator");
 

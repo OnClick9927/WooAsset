@@ -46,8 +46,10 @@ MonoBehaviour:
       m_AllowsAlphaSplitting: 0
       m_AndroidETC2FallbackOverride: 0
   server:
-    enable: 0
+    enable: 1
     port: 8080
+    speedType: 1
+    speed: 200
   buildIn:
     copyToStream: 1
     assets: []
