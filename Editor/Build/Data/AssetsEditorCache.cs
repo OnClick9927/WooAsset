@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -94,12 +95,12 @@ namespace WooAsset
         {
             public string path;
             public long PreviewSize;
-            public Texture2D thumbnail;
+            //public Texture2D thumbnail;
             public int InstanceID;
             public string type;
         }
 
-        private List<AssetDataBaseCache> cachedAssets = new List<AssetDataBaseCache>();
+        public List<AssetDataBaseCache> cachedAssets = new List<AssetDataBaseCache>();
         private Dictionary<string, AssetDataBaseCache> dic = new Dictionary<string, AssetDataBaseCache>();
         public AssetDataBaseCache GetCache(string path)
         {
@@ -110,15 +111,15 @@ namespace WooAsset
             var find = cachedAssets.Find(x => x.path == path);
             if (find == null)
             {
-                var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                //var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
                 var type = AssetDatabase.GetMainAssetTypeAtPath(path);
                 find = new AssetDataBaseCache()
                 {
                     path = path,
-                    PreviewSize = GetMemorySizeLong(path, obj),
+                    PreviewSize = GetMemorySizeLong(path, type),
                     InstanceID = GetMainAssetInstanceID(path),
                     type = type.FullName,
-                    thumbnail = AssetPreview.GetMiniThumbnail(obj),
+                    //thumbnail = AssetPreview.GetMiniThumbnail(obj),
                   
                 };
                 cachedAssets.Add(find);
@@ -130,9 +131,9 @@ namespace WooAsset
         }
         private static MethodInfo _GetTextureMemorySizeLong;
         static MethodInfo _GetMainAssetInstanceID;
-        private static long GetMemorySizeLong(string path, UnityEngine.Object obj)
+        private static long GetMemorySizeLong(string path, Type obj)
         {
-            if (!(obj is Texture)) return AssetsEditorTool.GetFileLength(path);
+            if (!(typeof(Texture).IsAssignableFrom(obj) )) return AssetsEditorTool.GetFileLength(path);
 
             if (_GetTextureMemorySizeLong == null)
             {
