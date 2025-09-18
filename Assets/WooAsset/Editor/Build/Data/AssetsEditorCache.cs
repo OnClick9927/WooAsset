@@ -209,7 +209,7 @@ namespace WooAsset
 
         public void RemoveUseLessCache()
         {
-            cachedAssets.RemoveAll(x => !AssetsEditorTool.ExistsFile(x.path) || !AssetsEditorTool.ExistsDirectory(x.path))
+            cachedAssets.RemoveAll(x => !AssetsEditorTool.ExistsFile(x.path) || !AssetsEditorTool.ExistsDirectory(x.path));
             dic.Clear();
         }
 
