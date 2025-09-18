@@ -53,6 +53,24 @@ namespace WooAsset
         {
             public bool enable;
             public int port = 8080;
+
+            public enum SpeedType
+            {
+                B, KB, MB
+            }
+            public SpeedType speedType;
+            public int speed = 1024;
+            public int GetSpeed()
+            {
+                switch (speedType)
+                {
+                    case SpeedType.B: return speed;
+                    case SpeedType.KB: return speed * 1024;
+                    case SpeedType.MB: return speed * 1024 * 1024;
+                    default:
+                        return speed;
+                }
+            }
         }
         [System.Serializable]
         public class BuildInOption
@@ -143,14 +161,14 @@ namespace WooAsset
                 build.baseType = typeof(IAssetsBuild);
                 build.Enable();
             }
-      
+
 
             if (buildPipeline.baseType == null)
             {
                 buildPipeline.baseType = typeof(IBuildPipeLine);
                 buildPipeline.Enable();
             }
-    
+
             recordIgnore.RemoveAll(x =>
 
        (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
