@@ -21,14 +21,14 @@ namespace WooAsset
         public static EditorAssetData Create(string path, AssetType _type)
         {
             long length = 0;
-            string hash;
+            string hash = string.Empty;
             if (_type == AssetType.Directory)
             {
-                hash = AssetsEditorTool.GetStringHash(path);
+                //hash = AssetsEditorTool.GetStringHash(path);
             }
             else
             {
-                hash = AssetsEditorTool.GetFileHash(path);
+                hash = AssetsEditorTool.GetEditorAssetDataHash(path);
                 length = AssetsEditorTool.GetPreviewSizeLong(path);
                 //if (_type == AssetType.Sprite || _type == AssetType.Texture)
                 //else

@@ -11,7 +11,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-
+        public static string GetEditorAssetDataHash(string path) => cache.GetCache(path).hash;
         public static long GetPreviewSizeLong(string path) => cache.GetCache(path).PreviewSize;
 
         public static int GetMainAssetInstanceID(string path) => cache.GetCache(path).InstanceID;
@@ -20,14 +20,19 @@ namespace WooAsset
 
 
         private static Dictionary<string, Type> types = new Dictionary<string, Type>();
+        public static Type GetTypeByName(string name)
+        {
+            if (types.TryGetValue(name, out var type))
+                return type;
+            var _type = Types.First(x => x.FullName == name);
+            types.Add(name, _type);
+            return _type;
+        }
         public static Type GetMainAssetTypeAtPath(string path)
         {
             var name = cache.GetCache(path).type;
-            if (types.TryGetValue(path, out var type))
-                return type;
-            var _type = Types.First(x => x.FullName == name);
-            types.Add(path, _type);
-            return _type;
+       
+            return GetTypeByName(name);
         }
 
     }
