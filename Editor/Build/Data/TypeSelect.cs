@@ -3,7 +3,7 @@ using System.Linq;
 using System;
 using UnityEditor;
 using UnityEngine;
-
+using static WooAsset.AssetsEditorTool;
 namespace WooAsset
 {
     [System.Serializable]
@@ -43,19 +43,6 @@ namespace WooAsset
                 if (types != null && types.Length > 0)
                     _select = types[_index];
             }
-        }
-        public static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
-        {
-            if (self.IsInterface)
-            {
-                return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
-                       where item.GetInterfaces().Contains(self)
-                       select item;
-            }
-
-            return from item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((item) => item.GetTypes())
-                   where item.IsSubclassOf(self)
-                   select item;
         }
         public void Enable()
         {

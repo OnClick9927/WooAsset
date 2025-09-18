@@ -31,7 +31,7 @@ namespace WooAsset
             AssetDatabase.CreateAsset(sto, savePath);
             EditorUtility.SetDirty(sto);
             AssetDatabase.ImportAsset(savePath);
-            AssetDatabase.SaveAssets();
+            AssetDatabase.SaveAssetIfDirty(sto);
             AssetDatabase.Refresh();
             return Load<T>(savePath);
         }
@@ -42,8 +42,8 @@ namespace WooAsset
             EditorApplication.delayCall += delegate ()
             {
                 EditorUtility.SetDirty(t);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                AssetDatabase.SaveAssetIfDirty(t);
+                //AssetDatabase.Refresh();
 
             };
         }

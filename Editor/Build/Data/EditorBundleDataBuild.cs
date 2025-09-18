@@ -60,7 +60,7 @@ namespace WooAsset
 
         private static void SearchTypes()
         {
-            var list = TypeSelect.GetSubTypesInAssemblies(baseType)
+            var list = AssetsEditorTool.GetSubTypesInAssemblies(baseType)
            .Where(type => !type.IsAbstract).ToList();
             list.Sort((x, y) =>
             {

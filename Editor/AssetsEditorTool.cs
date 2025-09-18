@@ -11,89 +11,25 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
-        private static readonly Dictionary<string, int> AssetInstanceCache = new Dictionary<string, int>();
-        private static readonly Dictionary<string, long> textureSizeCache = new Dictionary<string, long>();
-        private static readonly Dictionary<string, Type> AssetTypeCache = new Dictionary<string, Type>();
-        private static MethodInfo _GetTextureMemorySizeLong;
-        static MethodInfo _GetMainAssetInstanceID;
-        public static long GetTextureMemorySizeLong(string path)
-        {
-            if (_GetTextureMemorySizeLong == null)
-            {
-                var type = typeof(AssetDatabase).Assembly.GetType("UnityEditor.TextureUtil");
-                _GetTextureMemorySizeLong = type.GetMethod("GetStorageMemorySizeLong", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            }
 
-            if (textureSizeCache.TryGetValue(path, out long cachedType))
-                return cachedType;
-            var tx = AssetDatabase.LoadAssetAtPath<UnityEngine.Texture>(path);
-            var newType = (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { tx });
-            textureSizeCache[path] = newType;
-            return newType;
-        }
+        public static long GetPreviewSizeLong(string path) => cache.GetCache(path).PreviewSize;
 
-        public static int GetMainAssetInstanceID(string path)
-        {
-            if (_GetMainAssetInstanceID == null)
-            {
-                _GetMainAssetInstanceID = typeof(AssetDatabase).GetMethod("GetMainAssetInstanceID", BindingFlags.Static | BindingFlags.NonPublic);
-            }
-            if (AssetInstanceCache.TryGetValue(path, out int cachedType))
-                return cachedType;
-            int newType = (int)_GetMainAssetInstanceID.Invoke(null, new object[] { path });
-            AssetInstanceCache[path] = newType;
-            return newType;
-        }
-        private static void RemoveCache(string path)
-        {
-            AssetInstanceCache.Remove(path);
-            AssetTypeCache.Remove(path);
-            textureSizeCache.Remove(path);
-        }
+        public static int GetMainAssetInstanceID(string path) => cache.GetCache(path).InstanceID;
+
+
+
+
+        private static Dictionary<string, Type> types = new Dictionary<string, Type>();
         public static Type GetMainAssetTypeAtPath(string path)
         {
-            if (AssetTypeCache.TryGetValue(path, out Type cachedType))
-                return cachedType;
-            Type newType = AssetDatabase.GetMainAssetTypeAtPath(path);
-            AssetTypeCache[path] = newType;
-            return newType;
+            var name = cache.GetCache(path).type;
+            if (types.TryGetValue(path, out var type))
+                return type;
+            var _type = Types.First(x => x.FullName == name);
+            types.Add(path, _type);
+            return _type;
         }
 
-        class CacheModificationProcessor : AssetModificationProcessor
-        {
-            // 资源即将被创建时调用
-            public static void OnWillCreateAsset(string assetPath)
-            {
-                RemoveCache(assetPath);
-            }
-
-            // 资源即将被保存时调用
-            public static string[] OnWillSaveAssets(string[] paths)
-            {
-                foreach (string path in paths)
-                {
-                    RemoveCache(path);
-                }
-                return paths; // 必须返回 paths
-            }
-
-            // 资源即将被移动时调用
-            public static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
-            {
-                RemoveCache(sourcePath);
-                RemoveCache(destinationPath);
-
-                return AssetMoveResult.DidMove; // 返回 DidMove 允许移动
-            }
-
-            // 资源即将被删除时调用
-            public static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
-            {
-                RemoveCache(assetPath);
-                return AssetDeleteResult.DidDelete; // 返回 DidDelete 允许删除
-            }
-
-        }
     }
     public partial class AssetsEditorTool : AssetsHelper
     {
@@ -159,6 +95,32 @@ namespace WooAsset
                 onPipelineFinish?.Invoke();
                 InvokeComplete();
             }
+        }
+        private static List<Type> _types;
+
+        private static List<Type> Types
+        {
+            get
+            {
+                if (_types == null)
+                    _types = AppDomain.CurrentDomain.GetAssemblies()
+                        .SelectMany((item) => item.GetTypes())
+                        .ToList();
+                return _types;
+            }
+        }
+        public static IEnumerable<Type> GetSubTypesInAssemblies(Type self)
+        {
+            if (self.IsInterface)
+            {
+                return from item in Types
+                       where item.GetInterfaces().Contains(self)
+                       select item;
+            }
+
+            return from item in Types
+                   where item.IsSubclassOf(self)
+                   select item;
         }
 
         public static void MoveFile(string srcPath, string targetPath) => System.IO.File.Move(srcPath, targetPath);
