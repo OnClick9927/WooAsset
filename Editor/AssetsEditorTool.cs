@@ -1,13 +1,100 @@
-﻿using UnityEditor;
-using System;
-using UnityEngine;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using UnityEditor;
+using UnityEngine;
 
 namespace WooAsset
 {
+    partial class AssetsEditorTool
+    {
+        private static readonly Dictionary<string, int> AssetInstanceCache = new Dictionary<string, int>();
+        private static readonly Dictionary<string, long> textureSizeCache = new Dictionary<string, long>();
+        private static readonly Dictionary<string, Type> AssetTypeCache = new Dictionary<string, Type>();
+        private static MethodInfo _GetTextureMemorySizeLong;
+        static MethodInfo _GetMainAssetInstanceID;
+        public static long GetTextureMemorySizeLong(string path)
+        {
+            if (_GetTextureMemorySizeLong == null)
+            {
+                var type = typeof(AssetDatabase).Assembly.GetType("UnityEditor.TextureUtil");
+                _GetTextureMemorySizeLong = type.GetMethod("GetStorageMemorySizeLong", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+            }
+
+            if (textureSizeCache.TryGetValue(path, out long cachedType))
+                return cachedType;
+            var tx = AssetDatabase.LoadAssetAtPath<UnityEngine.Texture>(path);
+            var newType = (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { tx });
+            textureSizeCache[path] = newType;
+            return newType;
+        }
+
+        public static int GetMainAssetInstanceID(string path)
+        {
+            if (_GetMainAssetInstanceID == null)
+            {
+                _GetMainAssetInstanceID = typeof(AssetDatabase).GetMethod("GetMainAssetInstanceID", BindingFlags.Static | BindingFlags.NonPublic);
+            }
+            if (AssetInstanceCache.TryGetValue(path, out int cachedType))
+                return cachedType;
+            int newType = (int)_GetMainAssetInstanceID.Invoke(null, new object[] { path });
+            AssetInstanceCache[path] = newType;
+            return newType;
+        }
+        private static void RemoveCache(string path)
+        {
+            AssetInstanceCache.Remove(path);
+            AssetTypeCache.Remove(path);
+            textureSizeCache.Remove(path);
+        }
+        public static Type GetMainAssetTypeAtPath(string path)
+        {
+            if (AssetTypeCache.TryGetValue(path, out Type cachedType))
+                return cachedType;
+            Type newType = AssetDatabase.GetMainAssetTypeAtPath(path);
+            AssetTypeCache[path] = newType;
+            return newType;
+        }
+
+        class CacheModificationProcessor : AssetModificationProcessor
+        {
+            // 资源即将被创建时调用
+            public static void OnWillCreateAsset(string assetPath)
+            {
+                RemoveCache(assetPath);
+            }
+
+            // 资源即将被保存时调用
+            public static string[] OnWillSaveAssets(string[] paths)
+            {
+                foreach (string path in paths)
+                {
+                    RemoveCache(path);
+                }
+                return paths; // 必须返回 paths
+            }
+
+            // 资源即将被移动时调用
+            public static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
+            {
+                RemoveCache(sourcePath);
+                RemoveCache(destinationPath);
+
+                return AssetMoveResult.DidMove; // 返回 DidMove 允许移动
+            }
+
+            // 资源即将被删除时调用
+            public static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
+            {
+                RemoveCache(assetPath);
+                return AssetDeleteResult.DidDelete; // 返回 DidDelete 允许删除
+            }
+
+        }
+    }
     public partial class AssetsEditorTool : AssetsHelper
     {
 
@@ -26,7 +113,7 @@ namespace WooAsset
             AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetsMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
             if (_op.server.enable && AssetsInternal.isNormalMode)
-                AssetsServer.Run(_op.server.port, ServerDirectory,_op.server.GetSpeed());
+                AssetsServer.Run(_op.server.port, ServerDirectory, _op.server.GetSpeed());
         }
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
@@ -104,34 +191,6 @@ namespace WooAsset
         public static bool ExistsDirectory(string path) => Directory.Exists(path);
         public static void DeleteDirectory(string path) => Directory.Delete(path, true);
         public static string CombinePath(string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
-
-        private static MethodInfo _GetTextureMemorySizeLong;
-        public static long GetTextureMemorySizeLong(string path)
-        {
-            if (_GetTextureMemorySizeLong == null)
-            {
-                var type = typeof(AssetDatabase).Assembly.GetType("UnityEditor.TextureUtil");
-                _GetTextureMemorySizeLong = type.GetMethod("GetStorageMemorySizeLong", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            }
-            var tx = AssetDatabase.LoadAssetAtPath<UnityEngine.Texture>(path);
-            return (long)_GetTextureMemorySizeLong.Invoke(null, new object[] { tx });
-        }
-
-        static MethodInfo _GetMainAssetInstanceID;
-        public static int GetMainAssetInstanceID(string path)
-        {
-            //AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-            if (_GetMainAssetInstanceID == null)
-            {
-                _GetMainAssetInstanceID = typeof(AssetDatabase).GetMethod("GetMainAssetInstanceID", BindingFlags.Static | BindingFlags.NonPublic);
-            }
-            return (int)_GetMainAssetInstanceID.Invoke(null, new object[] { path });
-        }
-        public static Type GetMainAssetTypeAtPath(string path)
-        {
-            return AssetDatabase.GetMainAssetTypeAtPath(path);
-        }
-
 
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
