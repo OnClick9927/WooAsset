@@ -11,7 +11,14 @@ namespace WooAsset
         [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
         private IAssetsBuild assetBuild;
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
-        public EditorAssetData GetAssetData(string path) => assets.Find(x => x.path == path);
+        private Dictionary<string, EditorAssetData> asset_map_cache = new Dictionary<string, EditorAssetData>();
+        public EditorAssetData GetAssetData(string path)
+        {
+            if (asset_map_cache.TryGetValue(path, out var result)) return result;
+            var _r = assets.Find(x => x.path == path);
+            asset_map_cache[path] = _r;
+            return _r;
+        }
         public List<EditorAssetData> GetAllAssets() => assets;
         public List<EditorAssetData> GetSubFolders(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type == AssetType.Directory);
         public List<EditorAssetData> GetSubFiles(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type != AssetType.Directory);
@@ -96,7 +103,7 @@ namespace WooAsset
                 foreach (var item in dps)
                     AddToAssets(item, assetMap);
             }
-  
+
             foreach (var asset in assetMap.Values)
             {
                 if (asset.type == AssetType.Directory || asset.type == AssetType.Ignore) continue;
@@ -108,7 +115,7 @@ namespace WooAsset
                 asset.dependence = dpMap[asset.path].Where(x => assetMap.ContainsKey(x) && x != asset.path).ToList();
             }
 
-  
+
 
         }
 
