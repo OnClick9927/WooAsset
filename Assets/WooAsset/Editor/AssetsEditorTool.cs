@@ -11,6 +11,7 @@ namespace WooAsset
 {
     partial class AssetsEditorTool
     {
+        public static string[] GetAssetDependencies(string path) => cache.GetAssetCache(path).dps;
         public static string GetEditorAssetDataHash(string path) => cache.GetAssetCache(path).hash;
         public static long GetPreviewSizeLong(string path) => cache.GetAssetCache(path).PreviewSize;
 

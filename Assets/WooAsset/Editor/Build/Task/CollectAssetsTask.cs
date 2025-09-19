@@ -17,7 +17,7 @@ namespace WooAsset
 
                 foreach (var asset in all)
                 {
-                    asset.in_pkgs = trees.Where(x => x.Value.GetAssetData(asset.path) != null).Select(x => x.Key).ToList() ;
+                    asset.in_pkgs = trees.Where(x => x.Value.GetAssetData(asset.path) != null).Select(x => x.Key).ToList();
                 }
             }
             InvokeComplete();
@@ -35,28 +35,22 @@ namespace WooAsset
                 paths.AddRange(context.buildPkgs.SelectMany(x => x.paths));
             var tree = new EditorAssetCollection();
             tree.ReadPaths(paths, context.assetBuild);
-            List<EditorAssetData> assets = tree.GetAllAssets().FindAll(x => x.type != AssetType.Directory);
+
+            List<EditorAssetData> assets = tree.GetAllAssets();
             context.needBuildAssets = assets;
-            Dictionary<string, List<string>> tag_dic = new Dictionary<string, List<string>>();
-            Dictionary<string, bool> record_dic = new Dictionary<string, bool>();
-            foreach (var asset in tree.GetAllAssets())
+            foreach (var asset in assets)
             {
-                bool record = context.Params.GetIsRecord(asset.path);
-                record_dic[asset.path] = record;
-            }
-            foreach (var item in assets)
-            {
-                if (AssetsEditorTool.GetOrDefaultFromDictionary(tag_dic, item.path) != null) continue;
-                var tag_list = context.Params.GetAssetTags(item.path);
+                if (asset.type == AssetType.Directory) continue;
+                asset.record = context.Params.GetIsRecord(asset.path);
+                var tag_list = context.Params.GetAssetTags(asset.path);
                 if (tag_list == null || tag_list.Count == 0) continue;
-                tag_dic.Add(item.path, tag_list.ToList());
+                asset.tags = tag_list;
             }
-            tree.ReadRecord(record_dic);
-            tree.ReadAssetTags(tag_dic);
             context.assetsCollection = tree;
             if (context.buildPkg != null)
                 context.allAssetCollections[context.buildPkg.name] = tree;
             InvokeComplete();
+
         }
     }
 }
