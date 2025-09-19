@@ -58,22 +58,6 @@ namespace WooAsset
 
         }
 
-
-        public void ReadAssetTags(Dictionary<string, List<string>> tag_dic)
-        {
-            foreach (var item in tag_dic)
-            {
-                GetAssetData(item.Key).tags = item.Value;
-            }
-        }
-        public void ReadRecord(Dictionary<string, bool> record_dic)
-        {
-            foreach (var item in record_dic)
-            {
-                GetAssetData(item.Key).record = item.Value;
-            }
-        }
-
         private long GetLength(EditorAssetData data) => data.type == AssetType.Directory ? this.GetSubDatas(data).Sum(x => GetLength(x)) : data.length;
         private bool NeedRemove(EditorAssetData data)
         {
@@ -103,55 +87,28 @@ namespace WooAsset
         }
         private void CollectDps(Dictionary<string, EditorAssetData> assetMap)
         {
-
-            //var paths = AssetDatabase.GetDependencies(assetMap.Values
-            //    .Where(x => x.type != AssetType.Ignore && x.type != AssetType.Directory)
-            //    .Select(x => x.path).ToArray(), true).Where(x => !assetMap.ContainsKey(x)).ToArray();
             Dictionary<string, string[]> dpMap = new Dictionary<string, string[]>();
             foreach (var asset in assetMap.Values.ToList())
             {
                 if (asset.type == AssetType.Directory || asset.type == AssetType.Ignore) continue;
-                var dps = AssetDatabase.GetDependencies(asset.path, true);
+                var dps = AssetsEditorTool.GetAssetDependencies(asset.path);
                 dpMap[asset.path] = dps;
                 foreach (var item in dps)
                     AddToAssets(item, assetMap);
             }
-            //for (int i = 0; i < paths.Length; i++)
-            //{
-
-            //    AddToAssets(paths[i], assetMap);
-
-            //}
+  
             foreach (var asset in assetMap.Values)
             {
                 if (asset.type == AssetType.Directory || asset.type == AssetType.Ignore) continue;
                 if (!dpMap.ContainsKey(asset.path))
                 {
-                    var dps = AssetDatabase.GetDependencies(asset.path, true);
+                    var dps = AssetsEditorTool.GetAssetDependencies(asset.path);
                     dpMap[asset.path] = dps;
                 }
-                //.Select(x => AssetsHelper.ToRegularPath(x))
                 asset.dependence = dpMap[asset.path].Where(x => assetMap.ContainsKey(x) && x != asset.path).ToList();
             }
 
-            //var paths = AssetDatabase.GetDependencies(assetMap.Values.Where(x => x.type != AssetType.Directory && x.type != AssetType.Ignore)
-            //    .Select(x => x.path).ToArray(), true);
-            //for (int i = 0; i < paths.Length; i++)
-            //{
-            //    var path = AssetsHelper.ToRegularPath(paths[i]);
-            //    AddToAssets(path, assetMap);
-
-            //}
-            //for (int i = 0; i < assets.Count; i++)
-            //{
-            //    var asset = assets[i];
-            //    if (asset.type == AssetType.Directory) continue;
-            //    var result = AssetDatabase.GetDependencies(asset.path, true)
-            //        .ToList()
-            //        .ConvertAll(x => AssetsHelper.ToRegularPath(x))
-            //        .Where(x => x != asset.path && !AssetsEditorTool.IsDirectory(x));
-            //    asset.dependence = result.ToList();
-            //}
+  
 
         }
 

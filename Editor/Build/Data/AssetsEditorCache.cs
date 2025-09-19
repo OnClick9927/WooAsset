@@ -99,6 +99,27 @@ namespace WooAsset
             private string _type;
             private string _hash;
 
+            private string _dp_hash;
+            private string[] _dps;
+            public string[] dps
+            {
+                get
+                {
+                    var dp_hash = AssetDatabase.GetAssetDependencyHash(path).ToString();
+                    if (dp_hash != _dp_hash)
+                    {
+                        _dp_hash = dp_hash;
+                        _dps = null;
+                    }
+
+
+                    if (_dps == null)
+                        _dps = AssetDatabase.GetDependencies(path, true);
+                    return _dps;
+                }
+            }
+
+
             public long PreviewSize
             {
                 get
