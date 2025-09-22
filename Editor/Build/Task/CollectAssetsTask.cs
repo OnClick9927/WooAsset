@@ -36,11 +36,12 @@ namespace WooAsset
             var tree = new EditorAssetCollection();
             tree.ReadPaths(paths, context.assetBuild);
 
-            List<EditorAssetData> assets = tree.GetAllAssets();
+            List<EditorAssetData> assets = tree.GetAllAssets()
+                .FindAll(x=>x.type!= AssetType.Ignore && x.type!= AssetType.Directory);
             context.needBuildAssets = assets;
             foreach (var asset in assets)
             {
-                if (asset.type == AssetType.Directory) continue;
+                //if (asset.type == AssetType.Directory) continue;
                 asset.record = context.Params.GetIsRecord(asset.path);
                 var tag_list = context.Params.GetAssetTags(asset.path);
                 if (tag_list == null || tag_list.Count == 0) continue;
