@@ -12,5 +12,7 @@
 
         public const string ShaderVariant = root + "Help/ShaderVariant";
         public const string SpriteAtlas = root + "Help/SpriteAtlas";
+        public const string ResetCache = root + "Help/ResetCache";
+
     }
 }
