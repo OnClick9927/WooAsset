@@ -32,7 +32,7 @@ namespace WooAsset
         public static Type GetMainAssetTypeAtPath(string path)
         {
             var name = cache.GetAssetCache(path).type;
-       
+
             return GetTypeByName(name);
         }
 
@@ -90,7 +90,7 @@ namespace WooAsset
 
 
         public static AssetsBuildOption option => AssetsScriptableObject.Get<AssetsBuildOption>();
-        public static AssetsEditorCache cache => AssetsScriptableObject.Get<AssetsEditorCache>();
+        internal static AssetsEditorCache cache => AssetsScriptableObject.Get<AssetsEditorCache>();
 
         public static event Action onPipelineFinish;
 
@@ -160,6 +160,14 @@ namespace WooAsset
         public static void DeleteDirectory(string path) => Directory.Delete(path, true);
         public static string CombinePath(string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
 
+
+        [MenuItem(TaskPipelineMenu.ResetCache)]
+        public static async Task ResetCache()
+        {
+            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(cache));
+            //cache.Reset();
+            await CallPipelineFinishTask.Execute(new CallPipelineFinishTask(), null);
+        }
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
         public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute(option.spriteAtlas.atlasPaths, option.spriteAtlas.PlatformSetting, option.spriteAtlas.textureSetting, option.spriteAtlas.packSetting);

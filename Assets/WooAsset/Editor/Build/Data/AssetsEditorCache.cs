@@ -6,12 +6,16 @@ using UnityEngine;
 
 namespace WooAsset
 {
-    public class AssetsEditorCache : AssetsScriptableObject
+    class AssetsEditorCache : AssetsScriptableObject
     {
 
         public EditorAssetCollection tree_asset_all = new EditorAssetCollection();
 
-
+        private void Reset()
+        {
+            cachedAssets.Clear();
+            dic.Clear();
+        }
 
         [System.Serializable]
         public class PkgBundles
@@ -239,7 +243,7 @@ namespace WooAsset
             // 资源即将被创建时调用
             public static void OnWillCreateAsset(string assetPath)
             {
-                RemoveCache(assetPath);
+                //RemoveCache(assetPath);
             }
 
             // 资源即将被保存时调用
