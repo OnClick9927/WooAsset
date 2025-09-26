@@ -30,8 +30,8 @@ namespace WooAsset
             Dictionary<string, EditorAssetData> asset_Map = new Dictionary<string, EditorAssetData>();
 
             folders.RemoveAll(x => !AssetsEditorTool.ExistsDirectory(x));
-            for (int i = 0; i < folders.Count; i++)
-                AddPath(folders[i], asset_Map);
+            AddFolders(folders.ToArray(), asset_Map);
+            //for (int i = 0; i < folders.Count; i++)
             CollectDps(asset_Map);
 
             var _assets = asset_Map.Values.ToList();
@@ -74,12 +74,16 @@ namespace WooAsset
             return !fs.Any(x => !NeedRemove(x));
         }
 
-        private void AddPath(string directory, Dictionary<string, EditorAssetData> assetMap)
+        private void AddFolders(string[] folders, Dictionary<string, EditorAssetData> assetMap)
         {
-            string path = AssetsEditorTool.ToRegularPath(directory);
-            AddToAssets(path, assetMap);
-            var list = AssetsEditorTool.GetDirectoryEntries(directory);
-            foreach (var item in list) AddToAssets(item, assetMap);
+            foreach (var item in folders)
+            {
+                string path = AssetsEditorTool.ToRegularPath(item);
+                AddToAssets(path, assetMap);
+            }
+            var paths = AssetDatabase.FindAssets("t:object", folders).Select(x => AssetDatabase.GUIDToAssetPath(x));
+            //var list = AssetsEditorTool.GetDirectoryEntries(directory);
+            foreach (var item in paths) AddToAssets(item, assetMap);
         }
         private void AddToAssets(string path, Dictionary<string, EditorAssetData> assetMap)
         {
