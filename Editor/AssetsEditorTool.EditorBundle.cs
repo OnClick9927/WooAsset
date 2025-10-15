@@ -33,7 +33,17 @@ namespace WooAsset
             public EditorBundle(BundleLoadArgs loadArgs) : base(loadArgs) { }
             public override float progress => 1;
             public override bool async => false;
-            protected override void OnLoad() => SetResult(null);
+            protected override void OnLoad()
+            {
+                SetResult(null);
+           
+            }
+            protected override long ProfileAsset(AssetBundle value)
+            {
+                return rawLength;
+                //var find = cache.ForceGetBundleGroupByBundleName(this.bundleName);
+                //return find != null ? (int)find.length : 0;
+            }
 
             public override RawObject LoadRawObject(string path) => RawObject.Create(path, AssetsEditorTool.ReadFileSync(path));
 
