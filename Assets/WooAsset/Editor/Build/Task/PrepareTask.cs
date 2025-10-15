@@ -28,7 +28,11 @@
             }
             if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
             {
-                AssetsEditorTool.cache.ClearAssetCache();
+                if (AssetsEditorTool.option.ClearAssetCache)
+                {
+
+                    AssetsEditorTool.cache.ClearAssetCache();
+                }
             }
             context.version = context.assetBuild.GetVersion(context.Params.version, context);
 

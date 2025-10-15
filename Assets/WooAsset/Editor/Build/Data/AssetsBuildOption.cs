@@ -115,6 +115,7 @@ namespace WooAsset
 
 
 
+        public bool ClearAssetCache = true;
 
         public string version = "0.0.1";
         public BuildMode buildMode = BuildMode.Increase;
@@ -131,15 +132,6 @@ namespace WooAsset
 
         public List<FileRecordData> recordIgnore = new List<FileRecordData>();
         public List<TagAssets> tags = new List<TagAssets>();
-
-
-
-
-
-
-
-
-
 
         protected override void OnLoad()
         {

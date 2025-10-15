@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 namespace WooAsset
 {
@@ -11,12 +12,13 @@ namespace WooAsset
         {
             async void IAssetLife<Bundle>.OnAssetCreate(string path, Bundle asset)
             {
+                await asset;
                 AssetLife<Bundle> life = new AssetLife<Bundle>()
                 {
                     asset = asset,
+                    assetLength = asset.length
                 };
                 bundles.Add(asset.bundleName, life);
-                await asset;
                 life.assetLength = asset.length;
                 onAssetLifeChange?.Invoke();
             }
@@ -29,6 +31,7 @@ namespace WooAsset
             }
             async void IAssetLife<AssetHandle>.OnAssetCreate(string path, AssetHandle asset)
             {
+                await asset;
                 var data = asset.data;
                 var life = new AssetLife<AssetHandle>()
                 {
@@ -38,8 +41,7 @@ namespace WooAsset
                 };
                 assets.Add(path, life);
                 onAssetLifeChange?.Invoke();
-                await asset;
-                onAssetLifeChange?.Invoke();
+                //onAssetLifeChange?.Invoke();
             }
             void IAssetLife<AssetHandle>.OnAssetRelease(AssetHandle asset, int count) => onAssetLifeChange?.Invoke();
             void IAssetLife<AssetHandle>.OnAssetRetain(AssetHandle asset, int count) => onAssetLifeChange?.Invoke();

@@ -48,7 +48,7 @@ MonoBehaviour:
   server:
     enable: 1
     port: 8080
-    speedType: 1
+    speedType: 2
     speed: 200
   buildIn:
     copyToStream: 1
@@ -59,6 +59,7 @@ MonoBehaviour:
     optimizer:
       _select: WooAsset.NoneBundleOptimizer
     count: 0
+  ClearAssetCacheBuild: 1
   version: 0.0.1
   buildMode: 0
   typeTreeOption: 0
