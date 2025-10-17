@@ -3,12 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine.UIElements;
-using UnityEngine;
-using UnityEditor;
-using System.Runtime.ConstrainedExecution;
 using System.Linq;
-using static UnityEngine.Networking.UnityWebRequest;
 
 
 namespace WooAsset
@@ -204,6 +199,8 @@ namespace WooAsset
 
             public void Get(out List<AssetData> assets, out List<BundleData> bundles)
             {
+
+
                 assets = new List<AssetData>();
                 bundles = Bundles.ConvertAll(x => new BundleData()
                 {
@@ -265,7 +262,6 @@ namespace WooAsset
                 }
 
 
-
             }
             public void ReadData(BufferReader reader)
             {
@@ -321,6 +317,7 @@ namespace WooAsset
             version = reader.ReadUTF8();
             ser = reader.ReadObject<ForSer>();
             ser.Get(out this.assets, out this.bundles);
+
         }
         void IBufferObject.WriteData(BufferWriter writer)
         {
@@ -406,6 +403,8 @@ namespace WooAsset
             return null;
         }
 
+        static Dictionary<string, bool> dest_bundle_dic = new Dictionary<string, bool>();
+        static Dictionary<string, int> dest_asset_path_index = new Dictionary<string, int>();
         public static void Merge(ManifestData src, ManifestData dest, List<string> prefer_bundles)
         {
             dest.version = src.version;
@@ -413,18 +412,44 @@ namespace WooAsset
             var bundles_src = src.bundles;
             var assets_dest = dest.assets;
             var bundles_dest = dest.bundles;
+
+            dest_bundle_dic.Clear();
+            dest_asset_path_index.Clear();
+            for (int i = 0; i < assets_dest.Count; i++)
+                dest_asset_path_index.Add(assets_dest[i].path, i);
+
+            for (int i = 0; i < bundles_dest.Count; i++)
+                dest_bundle_dic.Add(bundles_dest[i].bundleName, true);
+
+
+
+
+
             for (int src_index = 0; src_index < bundles_src.Count; src_index++)
             {
                 var bundle = bundles_src[src_index];
                 var bundleName = bundle.bundleName;
 
-                if (bundles_dest.Find(x => x.bundleName == bundleName) == null)
+                if (!dest_bundle_dic.ContainsKey(bundleName))
+                {
                     bundles_dest.Add(bundle);
+                    dest_bundle_dic.Add(bundleName, true);
+                }
+
+                //if (bundles_dest.Find(x => x.bundleName == bundleName) == null)
             }
+
+
             for (int src_index = 0; src_index < assets_src.Count; src_index++)
             {
                 var asset = assets_src[src_index];
-                var tar_index = assets_dest.FindIndex(x => x.path == asset.path);
+                int tar_index = -1;
+                if (!dest_asset_path_index.TryGetValue(asset.path, out tar_index))
+                {
+                    tar_index = -1;
+                }
+                ;
+                //var tar_index = assets_dest.FindIndex(x => x.path == asset.path);
 
                 if (tar_index != -1)
                 {
@@ -435,7 +460,10 @@ namespace WooAsset
                         assets_dest[tar_index] = asset;
                 }
                 else
+                {
                     assets_dest.Add(asset);
+                    dest_asset_path_index.Add(asset.path, assets_dest.Count);
+                }
             }
 
 
