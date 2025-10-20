@@ -99,13 +99,13 @@ namespace WooAsset
         public class AssetCache
         {
             public string path;
-            private long _PreviewSize;
-            private int _InstanceID;
-            private string _type;
-            private string _hash;
+            [UnityEngine.SerializeField] private long _PreviewSize;
+           [UnityEngine.SerializeField] private int _InstanceID;
+           [UnityEngine.SerializeField] private string _type;
+           [UnityEngine.SerializeField] private string _hash;
 
-            private string _dp_hash;
-            private string[] _dps;
+           [UnityEngine.SerializeField] private string _dp_hash;
+           [UnityEngine.SerializeField] private string[] _dps;
             public string[] dps
             {
                 get

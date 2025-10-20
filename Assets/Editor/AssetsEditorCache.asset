@@ -982,7 +982,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
   manifest:
-    version: 2025_10_15_16_08_24
+    version: 2025_10_17_18_30_20
     assets:
     - path: Assets/Example/pkg1/px/2.png
       type: 3
