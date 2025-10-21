@@ -15,7 +15,6 @@ namespace WooAsset
         {
             builds.RemoveAll(x => x.GetIsEmpty());
 
-
             for (int i = 0; i < builds.Count; i++)
             {
                 EditorBundleData build = builds[i];
@@ -24,8 +23,8 @@ namespace WooAsset
             }
 
 
-            foreach (EditorBundleData build in builds)
-                build.FindDependence(builds, context.assetsCollection.GetAllAssets().ToDictionary(x=>x.path));
+            foreach (EditorBundleData group in builds)
+                group.FindDependence(builds, context.assetsCollection.GetAllAssets());
             foreach (EditorBundleData group in builds)
                 group.FindUsage(builds);
 
