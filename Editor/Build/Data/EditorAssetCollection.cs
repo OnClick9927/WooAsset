@@ -1,80 +1,86 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace WooAsset
 {
+
     [System.Serializable]
     public class EditorAssetCollection
     {
-        [SerializeField] private List<EditorAssetData> assets = new List<EditorAssetData>();
+        [Serializable]
+        private class EditorAssetDataKeyedList : KeyedList<string, EditorAssetData>
+        {
+            protected override string GetKey(EditorAssetData item) => item.path;
+        }
+
+
+        [SerializeField] private EditorAssetDataKeyedList assets = new EditorAssetDataKeyedList();
         private IAssetsBuild assetBuild;
         public List<EditorAssetData> GetNoneParent() => assets.FindAll(x => GetAssetData(x.directory) == null);
-        private Dictionary<string, EditorAssetData> asset_map_cache = new Dictionary<string, EditorAssetData>();
-        public EditorAssetData GetAssetData(string path)
-        {
-            if (asset_map_cache.TryGetValue(path, out var result)) return result;
-            var _r = assets.Find(x => x.path == path);
-            asset_map_cache[path] = _r;
-            return _r;
-        }
-        public List<EditorAssetData> GetAllAssets() => assets;
+        public EditorAssetData GetAssetData(string path) => assets.Find(path);
+        public List<EditorAssetData> GetAllAssets() => assets.GetValues();
         public List<EditorAssetData> GetSubFolders(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type == AssetType.Directory);
         public List<EditorAssetData> GetSubFiles(EditorAssetData data) => assets.FindAll(x => x.directory == data.path && x.type != AssetType.Directory);
-        private List<EditorAssetData> GetSubDatas(EditorAssetData data) => assets.FindAll(x => x.directory == data.path);
+
+
 
         public void ReadPaths(List<string> folders, IAssetsBuild assetBuild)
         {
+            this.assets.Clear();
             this.assetBuild = assetBuild;
-            Dictionary<string, EditorAssetData> asset_Map = new Dictionary<string, EditorAssetData>();
+            EditorAssetDataKeyedList asset_Map = new EditorAssetDataKeyedList();
 
             folders.RemoveAll(x => !AssetsEditorTool.ExistsDirectory(x));
             AddFolders(folders.ToArray(), asset_Map);
-            //for (int i = 0; i < folders.Count; i++)
             CollectDps(asset_Map);
+            Remove(asset_Map);
+            Remove(asset_Map);
 
-            var _assets = asset_Map.Values.ToList();
-            this.assets = _assets;
-
-            for (int i = _assets.Count - 1; i >= 0; i--)
-            {
-                var _asset = _assets[i];
-                var need = NeedRemove(_asset);
-                if (need)
-                {
-                    _assets.RemoveAt(i);
-                    asset_Map.Remove(_asset.path);
-                }
-            }
-            _assets.RemoveAll(x => NeedRemove(x));
-
-            for (int i = 0; i < _assets.Count; i++)
-                _assets[i].dependence.RemoveAll(x => !asset_Map.ContainsKey(x));
-
-
+            var _assets = asset_Map.GetValues();
             for (int i = 0; i < _assets.Count; i++)
             {
                 var asset = _assets[i];
+                    asset.dependence.RemoveAll(x => !asset_Map.ContainsKey(x));
                 if (asset.type == AssetType.Directory)
-                    asset.length = GetLength(asset);
+                    asset.length = GetLength(asset, _assets);
                 else
                     asset.usage = _assets.FindAll(x => x.dependence.Contains(asset.path)).Select(x => x.path).ToList();
 
             }
 
+            this.assets.SetList(_assets);
+
         }
 
-        private long GetLength(EditorAssetData data) => data.type == AssetType.Directory ? this.GetSubDatas(data).Sum(x => GetLength(x)) : data.length;
-        private bool NeedRemove(EditorAssetData data)
+        private static List<EditorAssetData> GetSubDatas(EditorAssetData data, List<EditorAssetData> assets) => assets.FindAll(x => x.directory == data.path);
+
+        private static long GetLength(EditorAssetData data, List<EditorAssetData> assets) => data.type == AssetType.Directory ? GetSubDatas(data, assets).Sum(x => GetLength(x,assets)) : data.length;
+        private static bool NeedRemove(EditorAssetData data, List<EditorAssetData> assets)
         {
             if (data.type == AssetType.Ignore) return true;
             if (data.type != AssetType.Directory) return false;
-            var fs = this.GetSubDatas(data);
-            return !fs.Any(x => !NeedRemove(x));
+            var fs = GetSubDatas(data, assets);
+            return !fs.Any(x => !NeedRemove(x, assets));
+        }
+        private static void Remove(EditorAssetDataKeyedList asset_Map)
+        {
+            List<EditorAssetData> need_remove = new List<EditorAssetData>();
+
+            var _assets = asset_Map.GetValues();
+            foreach (var _asset in _assets)
+            {
+                var need = NeedRemove(_asset, _assets);
+                if (need)
+                    need_remove.Add(_asset);
+            }
+            foreach (var _asset in need_remove)
+                asset_Map.Remove(_asset);
         }
 
-        private void AddFolders(string[] folders, Dictionary<string, EditorAssetData> assetMap)
+        private void AddFolders(string[] folders, EditorAssetDataKeyedList assetMap)
         {
             foreach (var item in folders)
             {
@@ -85,21 +91,22 @@ namespace WooAsset
             //var list = AssetsEditorTool.GetDirectoryEntries(directory);
             foreach (var item in paths) AddToAssets(item, assetMap);
         }
-        private void AddToAssets(string path, Dictionary<string, EditorAssetData> assetMap)
+        private void AddToAssets(string path, EditorAssetDataKeyedList assetMap)
         {
             if (!assetMap.ContainsKey(path))
             {
                 var type = assetBuild.GetAssetType(path);
                 if (type != AssetType.Ignore)
                 {
-                    assetMap.Add(path, EditorAssetData.Create(path, type));
+                    assetMap.Add(EditorAssetData.Create(path, type));
                 }
             }
         }
-        private void CollectDps(Dictionary<string, EditorAssetData> assetMap)
+        private void CollectDps(EditorAssetDataKeyedList assetMap)
         {
             Dictionary<string, string[]> dpMap = new Dictionary<string, string[]>();
-            foreach (var asset in assetMap.Values.ToList())
+            var values = new List<EditorAssetData>(assetMap.GetValues());
+            foreach (var asset in values)
             {
                 if (asset.type == AssetType.Directory || asset.type == AssetType.Ignore) continue;
                 var dps = AssetsEditorTool.GetAssetDependencies(asset.path);
@@ -107,8 +114,9 @@ namespace WooAsset
                 foreach (var item in dps)
                     AddToAssets(item, assetMap);
             }
-
-            foreach (var asset in assetMap.Values)
+            values.Clear();
+            values.AddRange(assetMap.GetValues());
+            foreach (var asset in values)
             {
                 if (asset.type == AssetType.Directory || asset.type == AssetType.Ignore) continue;
                 if (!dpMap.ContainsKey(asset.path))
