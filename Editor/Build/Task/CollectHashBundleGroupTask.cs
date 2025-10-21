@@ -23,8 +23,8 @@ namespace WooAsset
             }
 
 
-            foreach (EditorBundleData group in builds)
-                group.FindDependence(builds, context.assetsCollection.GetAllAssets());
+            foreach (EditorBundleData build in builds)
+                build.FindDependence(builds, context.assetsCollection.GetAllAssets().ToDictionary(x => x.path));
             foreach (EditorBundleData group in builds)
                 group.FindUsage(builds);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
 
 namespace WooAsset
 {
@@ -102,11 +103,11 @@ namespace WooAsset
             }
         }
 
-        public void FindDependence(List<EditorBundleData> source, List<EditorAssetData> assets)
+        public void FindDependence(List<EditorBundleData> source, Dictionary<string,EditorAssetData> assets)
         {
             dependence.Clear();
             var result = GetAssets()
-                   .Select(assetPath => assets.Find(asset => asset.path == assetPath))
+                   .Select(assetPath => assets[assetPath])
                    .SelectMany(x => x.dependence)
                    .Distinct()
                    .Select(assetPath => source.Find(y => y.ContainsAsset(assetPath)))

@@ -10,7 +10,7 @@ namespace WooAsset
         static GUIContent empty = new GUIContent();
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            GUI.enabled = false;
+            //GUI.enabled = false;
 
             var rs = RectEx.VerticalSplit(position, 100);
             var type = property.FindPropertyRelative(nameof(FileRecordData.type));
@@ -18,7 +18,7 @@ namespace WooAsset
 
             EditorGUI.PropertyField(rs[0], type, empty);
             EditorGUI.PropertyField(rs[1], path, empty);
-            GUI.enabled = true;
+            //GUI.enabled = true;
 
         }
     }
