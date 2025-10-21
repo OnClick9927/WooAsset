@@ -59,7 +59,7 @@ MonoBehaviour:
     optimizer:
       _select: WooAsset.NoneBundleOptimizer
     count: 0
-  ClearAssetCacheBuild: 1
+  ClearAssetCache: 1
   version: 0.0.1
   buildMode: 0
   typeTreeOption: 0
@@ -88,7 +88,9 @@ MonoBehaviour:
     _select: WooAsset.NoneAssetStreamEncrypt
   buildPipeline:
     _select: WooAsset.BuildInPipeline
-  recordIgnore: []
+  recordIgnore:
+  - type: 0
+    path: 
   tags:
   - tag: test
     assets: []
