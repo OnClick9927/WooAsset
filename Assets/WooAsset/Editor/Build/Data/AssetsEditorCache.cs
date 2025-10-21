@@ -15,7 +15,7 @@ namespace WooAsset
         private void Reset()
         {
             cachedAssets.Clear();
-            //dic.Clear();
+            dic.Clear();
         }
 
         [System.Serializable]
@@ -100,12 +100,12 @@ namespace WooAsset
         {
             public string path;
             [UnityEngine.SerializeField] private long _PreviewSize;
-            [UnityEngine.SerializeField] private int _InstanceID;
-            [UnityEngine.SerializeField] private string _type;
-            [UnityEngine.SerializeField] private string _hash;
+           [UnityEngine.SerializeField] private int _InstanceID;
+           [UnityEngine.SerializeField] private string _type;
+           [UnityEngine.SerializeField] private string _hash;
 
-            [UnityEngine.SerializeField] private string _dp_hash;
-            [UnityEngine.SerializeField] private string[] _dps;
+           [UnityEngine.SerializeField] private string _dp_hash;
+           [UnityEngine.SerializeField] private string[] _dps;
             public string[] dps
             {
                 get
@@ -166,40 +166,41 @@ namespace WooAsset
             }
         }
 
-        [Serializable]
-        public class AssetCacheCollection : KeyedList<string, AssetCache>
-        {
-            protected override string GetKey(AssetCache item)
-            {
-                return item.path;
-            }
-        }
-
-        private AssetCacheCollection cachedAssets = new AssetCacheCollection();
-        //private Dictionary<string, AssetCache> dic = new Dictionary<string, AssetCache>();
+        private List<AssetCache> cachedAssets = new List<AssetCache>();
+        private Dictionary<string, AssetCache> dic = new Dictionary<string, AssetCache>();
         public void ClearAssetCache()
         {
             cachedAssets.Clear();
-            //dic.Clear();
+            dic.Clear();
             Save();
         }
 
         public AssetCache GetAssetCache(string path)
         {
-            var result = cachedAssets.Find(path);
-
-            if (result == null)
+            if (dic.TryGetValue(path, out var cache))
             {
-                result = new AssetCache()
+                return cache;
+            }
+            var find = cachedAssets.Find(x => x.path == path);
+            if (find == null)
+            {
+                //var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                //var type = AssetDatabase.GetMainAssetTypeAtPath(path);
+                find = new AssetCache()
                 {
                     path = path,
-
+                    //PreviewSize = GetMemorySizeLong(path, type),
+                    //InstanceID = GetMainAssetInstanceID(path),
+                    //type = type.FullName,
+                    //hash = AssetsEditorTool.GetFileHash(path)
+                    //thumbnail = AssetPreview.GetMiniThumbnail(obj),
 
                 };
-                cachedAssets.Add(result);
+                cachedAssets.Add(find);
+                //Save();
             }
-
-            return result;
+            dic[path] = find;
+            return find;
 
         }
         private static MethodInfo _GetTextureMemorySizeLong;
@@ -233,8 +234,10 @@ namespace WooAsset
         {
             static void RemoveCache(string path)
             {
-                if (AssetsEditorTool.cache.cachedAssets.Remove(path))
+                var count = AssetsEditorTool.cache.cachedAssets.RemoveAll(x => x.path == path);
+                if (count > 0)
                 {
+                    AssetsEditorTool.cache.dic.Remove(path);
                     AssetsEditorTool.cache.Save();
                 }
             }
