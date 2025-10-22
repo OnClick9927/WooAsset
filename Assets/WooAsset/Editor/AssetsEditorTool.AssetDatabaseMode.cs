@@ -37,7 +37,7 @@ namespace WooAsset
             }
             protected override LoadRemoteVersionsOperation LoadRemoteVersions() => new AssetDataBaseCheck();
 
-            protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args) => new EditorBundle(args);
+            protected override Bundle CreateBundle(string bundleName, BundleLoadArgs args) => new EditorBundle(args, EditorBundle.Mode.AssetDataBase);
 
             protected override VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => new AssetDatabaseCompare(version, pkgs, compareType);
         }

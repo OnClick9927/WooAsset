@@ -82,14 +82,7 @@ namespace WooAsset
                     option.mode.mode.typeIndex = EditorGUILayout.Popup("Mode", option.mode.mode.typeIndex, option.mode.mode.shortTypes);
                     GUILayout.Space(5);
 
-                    if (option.GetAssetModeType() == typeof(RudeMode))
-                    {
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
-                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.CheckAssetType)));
-
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
-                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.Folders)));
-                    }
+           
                     if (option.GetAssetModeType() == typeof(NormalAssetsMode))
                     {
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
@@ -106,12 +99,29 @@ namespace WooAsset
                             GUILayout.EndHorizontal();
                         }
                     }
+                    else
+                    {
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.loadSpeed)), new GUIContent("Speed (ms)"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                 .FindPropertyRelative(nameof(AssetsBuildOption.mode.speedType)), new GUIContent(), GUILayout.Width(50));
+                        GUILayout.EndHorizontal();
+                    }
+                    if (option.GetAssetModeType() == typeof(RudeMode))
+                    {
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.CheckAssetType)));
+
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.Folders)));
+                    }
                     //MidGUI("Simulator");
 
 
 
                     //GUI.enabled = true;
-           
+
 
 
 

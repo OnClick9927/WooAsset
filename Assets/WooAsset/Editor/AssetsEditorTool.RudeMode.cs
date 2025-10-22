@@ -62,7 +62,7 @@ namespace WooAsset
                     data = data,
                     dependence = Operation.empty,
                     encrypt = new NoneAssetStreamEncrypt(),
-                });
+                }, EditorBundle.Mode.Rude);
                 for (int i = 0; i < data.assets.Count; i++)
                 {
                     var assetPath = data.assets[i];

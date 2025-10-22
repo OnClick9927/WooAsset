@@ -17,9 +17,11 @@ MonoBehaviour:
     OutputDirectory: 
   mode:
     mode:
-      _select: WooAsset.AssetsEditorTool+AssetDatabaseMode
+      _select: WooAsset.AssetsEditorTool+RudeMode
     Folders: []
     CheckAssetType: 0
+    speedType: 0
+    loadSpeed: 20
   spriteAtlas:
     atlasPaths: []
     packSetting:
@@ -88,9 +90,7 @@ MonoBehaviour:
     _select: WooAsset.NoneAssetStreamEncrypt
   buildPipeline:
     _select: WooAsset.BuildInPipeline
-  recordIgnore:
-  - type: 0
-    path: 
+  recordIgnore: []
   tags:
   - tag: test
     assets: []

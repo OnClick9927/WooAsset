@@ -102,8 +102,12 @@ namespace WooAsset
                 length += item.length;
             }
         }
+        public void SyncBundleFileLength(long length)
+        {
+            this.length = length;
+        }
 
-        public void FindDependence(List<EditorBundleData> source, Dictionary<string,EditorAssetData> assets)
+        public void FindDependence(List<EditorBundleData> source, Dictionary<string, EditorAssetData> assets)
         {
             dependence.Clear();
             var result = GetAssets()
