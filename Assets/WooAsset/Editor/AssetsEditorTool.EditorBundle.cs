@@ -54,11 +54,7 @@ namespace WooAsset
             public override bool async => false;
             static long GetWaitTime(long length)
             {
-                var speed = option.mode.GetEditorReadSpeed();
-                var dev = (int)(length / speed);
-                if (dev < 0) return 0;
-                return dev;
-                //return (int)(length / option.mode.GetEditorReadSpeed() / 1000f);
+                return option.mode.GetEditorWaitTime(length);
             }
             static void ThreadSleep(string path)
             {

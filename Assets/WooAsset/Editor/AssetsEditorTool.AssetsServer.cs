@@ -71,7 +71,7 @@ namespace WooAsset
                 _speed = speed;
                 _dir = directory;
                 _port = port;
-                ServerLog($"Server Start {_dir}:{_port}");
+                ServerLog($"Server Start {_dir}:{_port}_{speed}");
                 httpListener = new HttpListener();
 
                 httpListener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
