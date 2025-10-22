@@ -20,18 +20,19 @@ namespace WooAsset
             {
                 B, KB, MB, GB
             }
-            public SpeedType speedType= SpeedType.MB;
+            public SpeedType speedType = SpeedType.MB;
             public int loadSpeed = 1024;
-            public int GetEditorReadSpeed()
+            public long GetEditorWaitTime(long length)
             {
+                length /= loadSpeed;
                 switch (speedType)
                 {
-                    case SpeedType.B: return loadSpeed;
-                    case SpeedType.KB: return loadSpeed * 1024;
-                    case SpeedType.MB: return loadSpeed * 1024 * 1024;
-                    case SpeedType.GB: return loadSpeed * 1024 * 1024 * 1024;
+                    case SpeedType.B: return length;
+                    case SpeedType.KB: return length / 1024;
+                    case SpeedType.MB: return length / 1024 / 1024;
+                    case SpeedType.GB: return length / 1024 / 1024 / 1024;
                     default:
-                        return loadSpeed;
+                        return length;
                 }
             }
             internal void OnEnable()
@@ -74,10 +75,11 @@ namespace WooAsset
 
             public enum SpeedType
             {
-                B, KB, MB, GB
+                B, KB, MB
             }
             public SpeedType speedType;
             public int speed = 1024;
+
             public int GetSpeed()
             {
                 switch (speedType)
@@ -85,7 +87,6 @@ namespace WooAsset
                     case SpeedType.B: return speed;
                     case SpeedType.KB: return speed * 1024;
                     case SpeedType.MB: return speed * 1024 * 1024;
-                    case SpeedType.GB: return speed * 1024 * 1024 * 1024;
                     default:
                         return speed;
                 }
