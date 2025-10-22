@@ -70,9 +70,13 @@ namespace WooAsset
         {
             private T task;
             private Queue<Action> calls;
+            bool start_playing;
+
             public AssetOperationAwaiter(T task)
             {
+
                 if (task == null) throw new ArgumentNullException("task");
+                start_playing = UnityEngine.Application.isPlaying;
                 this.task = task;
                 calls = AssetsHelper.AllocateActionQueue(); ;
                 this.task.completed += Task_completed;
@@ -80,11 +84,15 @@ namespace WooAsset
 
             private void Task_completed(Operation operation)
             {
+                bool call = true;
 
-                while (calls.Count != 0)
-                {
-                    calls.Dequeue()?.Invoke();
-                }
+                if (start_playing != Application.isPlaying && operation is AssetOperation)
+                    call = false;
+                if (call)
+                    while (calls.Count != 0)
+                    {
+                        calls.Dequeue()?.Invoke();
+                    }
                 calls.Clear();
                 AssetsHelper.RecycleActionQueue(calls);
             }
