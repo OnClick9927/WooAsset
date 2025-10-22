@@ -52,15 +52,19 @@ namespace WooAsset
             }
             public override float progress => 1;
             public override bool async => false;
-            static int GetWaitTime(long length)
+            static long GetWaitTime(long length)
             {
-                return (int)(length / option.mode.GetEditorReadSpeed() / 1f);
+                var speed = option.mode.GetEditorReadSpeed();
+                var dev = (int)(length / speed);
+                if (dev < 0) return 0;
+                return dev;
+                //return (int)(length / option.mode.GetEditorReadSpeed() / 1000f);
             }
             static void ThreadSleep(string path)
             {
                 var length = AssetsEditorTool.GetPreviewSizeLong(path);
                 var time = GetWaitTime(length);
-                System.Threading.Thread.Sleep(time);
+                System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(time));
             }
             protected override async void OnLoad()
             {
