@@ -282,12 +282,12 @@ namespace WooAsset
         public override float progress => mode?.progress ?? 0;
 
 
-        protected virtual long ProfileAsset(AssetBundle value)
+        protected long ProfileAsset(AssetBundle value)
         {
-
-            if (raw) return rawLength;
-            if (value == null) return 0;
-            return Profiler.GetRuntimeMemorySizeLong(value);
+            return rawLength;
+            //if (raw) return rawLength;
+            //if (value == null) return 0;
+            //return Profiler.GetRuntimeMemorySizeLong(value);
         }
 
         protected void SetResult(AssetBundle value)
@@ -309,7 +309,7 @@ namespace WooAsset
             this.value = value;
             InvokeComplete();
         }
-    
+
 
 
 

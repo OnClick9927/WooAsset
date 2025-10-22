@@ -16,6 +16,24 @@ namespace WooAsset
 
             public string[] Folders = new string[] { };
             public bool CheckAssetType = false;
+            public enum SpeedType
+            {
+                B, KB, MB, GB
+            }
+            public SpeedType speedType= SpeedType.MB;
+            public int loadSpeed = 1024;
+            public int GetEditorReadSpeed()
+            {
+                switch (speedType)
+                {
+                    case SpeedType.B: return loadSpeed;
+                    case SpeedType.KB: return loadSpeed * 1024;
+                    case SpeedType.MB: return loadSpeed * 1024 * 1024;
+                    case SpeedType.GB: return loadSpeed * 1024 * 1024 * 1024;
+                    default:
+                        return loadSpeed;
+                }
+            }
             internal void OnEnable()
             {
                 if (mode.baseType == null)
@@ -56,7 +74,7 @@ namespace WooAsset
 
             public enum SpeedType
             {
-                B, KB, MB
+                B, KB, MB, GB
             }
             public SpeedType speedType;
             public int speed = 1024;
@@ -67,6 +85,7 @@ namespace WooAsset
                     case SpeedType.B: return speed;
                     case SpeedType.KB: return speed * 1024;
                     case SpeedType.MB: return speed * 1024 * 1024;
+                    case SpeedType.GB: return speed * 1024 * 1024 * 1024;
                     default:
                         return speed;
                 }
