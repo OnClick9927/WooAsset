@@ -15,10 +15,10 @@ namespace WooAsset
         {
             get
             {
-                if (_yield.isDone)
-                {
-                    _yield.ResetIsDone();
-                }
+                //if (_yield.isDone)
+                //{
+                //    //_yield.ResetIsDone();
+                //}
                 return _yield.Begin();
             }
         }
@@ -76,8 +76,8 @@ namespace WooAsset
 
         internal virtual void ResetIsDone()
         {
-            _isDone = false;
             completed = null;
+            _isDone = false;
         }
     }
 
@@ -140,18 +140,24 @@ namespace WooAsset
 
     abstract class LoopOperation : Operation
     {
+        bool working;
         public Operation Begin()
         {
 #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying)
             {
-                UnityEditor.EditorApplication.update += OnUpdate;
+                if (!working)
+
+                    UnityEditor.EditorApplication.update += OnUpdate;
                 return this;
             }
 #endif
-
-            AssetsLoop.instance.update += OnUpdate;
-            OnBegin();
+            if (!working)
+            {
+                AssetsLoop.instance.update += OnUpdate;
+                working = true;
+                OnBegin();
+            }
             return this;
         }
         protected virtual void OnBegin() { }
@@ -164,6 +170,8 @@ namespace WooAsset
             }
 #endif
             AssetsLoop.instance.update -= OnUpdate;
+            working = false;
+
             base.InvokeComplete();
         }
         protected abstract void OnUpdate();
@@ -172,22 +180,19 @@ namespace WooAsset
     {
         public override float progress => isDone ? 1 : 0;
         int index;
-        internal override void ResetIsDone()
-        {
-            index = 0;
-            base.ResetIsDone();
 
-        }
         protected override void OnUpdate()
         {
             if (index++ >= 1)
             {
                 InvokeComplete();
+                index = 0;
+
+                base.ResetIsDone();
+
             }
         }
-        protected override void OnBegin()
-        {
-        }
+
     }
 
     class WaitBusyOperation : LoopOperation
