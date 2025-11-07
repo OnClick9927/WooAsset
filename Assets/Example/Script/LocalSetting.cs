@@ -20,13 +20,19 @@ namespace WooAsset
         //{
         //    return GetUrlByBundleName(buildTarget, bundleName);
         //}
+
+
+        public override string GetBundleLocalPath(string bundlePath)
+        {
+            return $"{base.GetBundleLocalPath(bundlePath)}{StreamBundlesData.fileExt}";
+        }
         public override bool GetFuzzySearch()
         {
             return false;
         }
         public override bool NeedCopyStreamBundles()
         {
-            return true;
+            return false;
         }
         public override bool GetAutoUnloadBundle()
         {
@@ -38,20 +44,20 @@ namespace WooAsset
         }
         public override bool GetBundleAlwaysFromWebRequest()
         {
-            return true;
+            return false;
         }
         public override bool GetCachesDownloadedBundles()
         {
             return false;
         }
-        protected override string GetBaseUrl()
-        {
-            return "http://127.0.0.1:8080";
-            return Application.streamingAssetsPath;
-            //return "https://pic.trinityleaves.cn/images/xxx";
-            //Application.dataPath, "../DLCDownLoad"
-            //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());
-        }
+        //protected override string GetBaseUrl()
+        //{
+        //    return Application.streamingAssetsPath;
+        //    return "http://127.0.0.1:8080";
+        //    //return "https://pic.trinityleaves.cn/images/xxx";
+        //    //Application.dataPath, "../DLCDownLoad"
+        //    //return AssetsInternal.ToRegularPath(AssetsInternal.CombinePath());
+        //}
    
         public override IAssetLife GetAssetLife()
         {

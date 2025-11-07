@@ -1,0 +1,8 @@
+{
+    "name": "AVProVideo.Extensions.UnityUI",
+    "references": [
+        "AVProVideo.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

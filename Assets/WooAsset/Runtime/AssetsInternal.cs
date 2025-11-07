@@ -126,7 +126,7 @@ namespace WooAsset
         public static void Release(string assetPath) => assets.Release(assetPath);
         public static void UnloadBundles() => bundles.UnloadBundles();
 
-        public static string GetBundleLocalPath(string bundleName) => AssetsHelper.CombinePath(localSaveDir, bundleName);
+        public static string GetBundleLocalPath(string bundleName) => setting.GetBundleLocalPath(AssetsHelper.CombinePath(localSaveDir, bundleName));
 
 
 

@@ -16,7 +16,7 @@ MonoBehaviour:
     assets:
     - path: Assets/Example/pkg2
       name: pkg2
-      length: 697412
+      length: 5053712
       hash: 
       dependence: []
       type: 2
@@ -25,6 +25,33 @@ MonoBehaviour:
       usage: []
       record: 1
       guid: bf73bba9e8d27544c913a69ca3f81298
+      in_pkgs:
+      - pkg2
+    - path: Assets/Example/pkg2/diwugejijiejiuba.prefab
+      name: diwugejijiejiuba.prefab
+      length: 7716
+      hash: 89ba0ef6742ea7d7e23d1e57d445170e
+      dependence:
+      - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+      type: 9
+      directory: Assets/Example/pkg2
+      tags: []
+      usage: []
+      record: 1
+      guid: 3686fca1edea25140b4986aa6b791c8e
+      in_pkgs:
+      - pkg2
+    - path: Assets/Example/pkg2/jiuba.mp4
+      name: jiuba.mp4
+      length: 4348584
+      hash: b75bedf1e9321567464e8e4dfc534c45
+      dependence: []
+      type: 16
+      directory: Assets/Example/pkg2
+      tags: []
+      usage: []
+      record: 1
+      guid: f1243aaa91c61004d98098f378ef026c
       in_pkgs:
       - pkg2
     - path: Assets/Example/pkg2/px
@@ -149,6 +176,20 @@ MonoBehaviour:
       usage: []
       record: 1
       guid: 7623efd24e38a4e46948380b33aadb32
+      in_pkgs:
+      - pkg2
+    - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+      name: Sample-Local-MP4-Cones.asset
+      length: 175476
+      hash: d4211510e6ab1bce29f0000882808b5c
+      dependence: []
+      type: 14
+      directory: Assets/AVProVideo/Demos/SampleMedia
+      tags: []
+      usage:
+      - Assets/Example/pkg2/diwugejijiejiuba.prefab
+      record: 1
+      guid: 9c4b497c86e965b4e8a37e8aa70b2fe0
       in_pkgs:
       - pkg2
     - path: Assets/Example/pkg1/Cube.prefab
@@ -276,7 +317,7 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 76c9c9307a3f5a429af261ace614ff50
-      _length: 459520
+      _length: 27248
       _raw: 0
       _enCode: 0
     - assets:
@@ -313,7 +354,7 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 9a898ce7a80940d73902cd443f6768ac
-      _length: 9853
+      _length: 112864
       _raw: 0
       _enCode: 0
     - assets:
@@ -337,7 +378,7 @@ MonoBehaviour:
       - 48998a5c94d7e5cbbdeb3f01ec9d8df4
       _loop: 0
       _hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      _length: 2818
+      _length: 8256
       _raw: 0
       _enCode: 0
     - assets:
@@ -361,7 +402,7 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
-      _length: 2192
+      _length: 132896
       _raw: 0
       _enCode: 0
     - assets:
@@ -528,6 +569,27 @@ MonoBehaviour:
   - pkgName: pkg2
     previewBundles:
     - assets:
+      - path: Assets/Example/pkg2/jiuba.mp4
+        name: jiuba.mp4
+        length: 4348584
+        hash: b75bedf1e9321567464e8e4dfc534c45
+        dependence: []
+        type: 16
+        directory: Assets/Example/pkg2
+        tags: []
+        usage: []
+        record: 1
+        guid: f1243aaa91c61004d98098f378ef026c
+        in_pkgs:
+        - pkg2
+      usage: []
+      dependence: []
+      _loop: 0
+      _hash: 0ec0371021c1dfc1fa8cdcc500836707
+      _length: 4348584
+      _raw: 1
+      _enCode: 0
+    - assets:
       - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
         name: b_da5501a6ee682f0b0cbba61a7ad46106.jpg
         length: 80000
@@ -584,7 +646,7 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: d111ba45eb97e7c88c4676972ac2e10c
-      _length: 544544
+      _length: 560752
       _raw: 0
       _enCode: 0
     - assets:
@@ -607,7 +669,7 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 243a4650079c87e8c8a518635f6d055d
-      _length: 350200
+      _length: 364304
       _raw: 0
       _enCode: 0
     - assets:
@@ -631,7 +693,30 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: bf1f5a88f21c062b8e99107f99927599
-      _length: 202240
+      _length: 27024
+      _raw: 0
+      _enCode: 0
+    - assets:
+      - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+        name: Sample-Local-MP4-Cones.asset
+        length: 175476
+        hash: d4211510e6ab1bce29f0000882808b5c
+        dependence: []
+        type: 14
+        directory: Assets/AVProVideo/Demos/SampleMedia
+        tags: []
+        usage:
+        - Assets/Example/pkg2/diwugejijiejiuba.prefab
+        record: 1
+        guid: 9c4b497c86e965b4e8a37e8aa70b2fe0
+        in_pkgs:
+        - pkg2
+      usage:
+      - 42f4b03649ebf97811c49bd01f8b1ead
+      dependence: []
+      _loop: 0
+      _hash: d249dfaa922cee069644d41e2fdd16eb
+      _length: 6144
       _raw: 0
       _enCode: 0
     - assets:
@@ -654,7 +739,7 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 81760e582f4d4439068c4d1ca75baf02
-      _length: 131232
+      _length: 136672
       _raw: 0
       _enCode: 0
     - assets:
@@ -679,15 +764,15 @@ MonoBehaviour:
         - pkg2
       usage: []
       dependence:
-      - 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
-      - da4dc35176a2d52140d21c508ced13db
-      - bf1f5a88f21c062b8e99107f99927599
-      - 81760e582f4d4439068c4d1ca75baf02
       - 243a4650079c87e8c8a518635f6d055d
+      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
+      - 5c89e8abf37d4fa6d1e1215fca7cc1b9
+      - 81760e582f4d4439068c4d1ca75baf02
+      - bf1f5a88f21c062b8e99107f99927599
+      - da4dc35176a2d52140d21c508ced13db
       _loop: 0
       _hash: d0249394ec31d8e20d9bc59137e75f61
-      _length: 21636
+      _length: 1237456
       _raw: 0
       _enCode: 0
     - assets:
@@ -711,7 +796,30 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: da4dc35176a2d52140d21c508ced13db
-      _length: 7914
+      _length: 87920
+      _raw: 0
+      _enCode: 0
+    - assets:
+      - path: Assets/Example/pkg2/diwugejijiejiuba.prefab
+        name: diwugejijiejiuba.prefab
+        length: 7716
+        hash: 89ba0ef6742ea7d7e23d1e57d445170e
+        dependence:
+        - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+        type: 9
+        directory: Assets/Example/pkg2
+        tags: []
+        usage: []
+        record: 1
+        guid: 3686fca1edea25140b4986aa6b791c8e
+        in_pkgs:
+        - pkg2
+      usage: []
+      dependence:
+      - d249dfaa922cee069644d41e2fdd16eb
+      _loop: 0
+      _hash: 42f4b03649ebf97811c49bd01f8b1ead
+      _length: 27968
       _raw: 0
       _enCode: 0
     - assets:
@@ -737,7 +845,7 @@ MonoBehaviour:
       - 48998a5c94d7e5cbbdeb3f01ec9d8df4
       _loop: 0
       _hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      _length: 2818
+      _length: 8256
       _raw: 0
       _enCode: 0
     - assets:
@@ -763,14 +871,14 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
-      _length: 2192
+      _length: 132896
       _raw: 0
       _enCode: 0
     tree:
       assets:
       - path: Assets/Example/pkg2
         name: pkg2
-        length: 697412
+        length: 5053712
         hash: 
         dependence: []
         type: 2
@@ -779,6 +887,33 @@ MonoBehaviour:
         usage: []
         record: 1
         guid: bf73bba9e8d27544c913a69ca3f81298
+        in_pkgs:
+        - pkg2
+      - path: Assets/Example/pkg2/diwugejijiejiuba.prefab
+        name: diwugejijiejiuba.prefab
+        length: 7716
+        hash: 89ba0ef6742ea7d7e23d1e57d445170e
+        dependence:
+        - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+        type: 9
+        directory: Assets/Example/pkg2
+        tags: []
+        usage: []
+        record: 1
+        guid: 3686fca1edea25140b4986aa6b791c8e
+        in_pkgs:
+        - pkg2
+      - path: Assets/Example/pkg2/jiuba.mp4
+        name: jiuba.mp4
+        length: 4348584
+        hash: b75bedf1e9321567464e8e4dfc534c45
+        dependence: []
+        type: 16
+        directory: Assets/Example/pkg2
+        tags: []
+        usage: []
+        record: 1
+        guid: f1243aaa91c61004d98098f378ef026c
         in_pkgs:
         - pkg2
       - path: Assets/Example/pkg2/px
@@ -905,6 +1040,20 @@ MonoBehaviour:
         guid: 7623efd24e38a4e46948380b33aadb32
         in_pkgs:
         - pkg2
+      - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+        name: Sample-Local-MP4-Cones.asset
+        length: 175476
+        hash: d4211510e6ab1bce29f0000882808b5c
+        dependence: []
+        type: 14
+        directory: Assets/AVProVideo/Demos/SampleMedia
+        tags: []
+        usage:
+        - Assets/Example/pkg2/diwugejijiejiuba.prefab
+        record: 1
+        guid: 9c4b497c86e965b4e8a37e8aa70b2fe0
+        in_pkgs:
+        - pkg2
       - path: Assets/Example/pkg1/Cube.prefab
         name: Cube.prefab
         length: 2818
@@ -982,7 +1131,7 @@ MonoBehaviour:
         in_pkgs:
         - pkg2
   manifest:
-    version: 2025_10_22_16_26_24
+    version: 0.0.1
     assets:
     - path: Assets/Example/pkg1/px/2.png
       type: 3
@@ -1024,6 +1173,11 @@ MonoBehaviour:
       guid: 761f850b39e3f7c47889d83787d3b39e
       tags: []
       bundleName: 85e39d8c25a85eea552a9f3925fe07af
+    - path: Assets/Example/pkg2/jiuba.mp4
+      type: 16
+      guid: f1243aaa91c61004d98098f378ef026c
+      tags: []
+      bundleName: 0ec0371021c1dfc1fa8cdcc500836707
     - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
       type: 3
       guid: 59f6a89c1a651824a936bd18d75b7eaf
@@ -1049,6 +1203,11 @@ MonoBehaviour:
       guid: e3265ab4bf004d28a9537516768c1c75
       tags: []
       bundleName: 243a4650079c87e8c8a518635f6d055d
+    - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+      type: 14
+      guid: 9c4b497c86e965b4e8a37e8aa70b2fe0
+      tags: []
+      bundleName: d249dfaa922cee069644d41e2fdd16eb
     - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
       type: 4
       guid: 09d8b16787f44f5428261130f83b4c1c
@@ -1059,15 +1218,20 @@ MonoBehaviour:
       guid: 7623efd24e38a4e46948380b33aadb32
       tags: []
       bundleName: d0249394ec31d8e20d9bc59137e75f61
+    - path: Assets/Example/pkg2/diwugejijiejiuba.prefab
+      type: 9
+      guid: 3686fca1edea25140b4986aa6b791c8e
+      tags: []
+      bundleName: 42f4b03649ebf97811c49bd01f8b1ead
     bundles:
     - bundleName: 76c9c9307a3f5a429af261ace614ff50
       raw: 0
       compress: 2
       enCode: 0
-      hash: 76c9c9307a3f5a429af261ace614ff50
-      length: 459520
-      bundleHash: 
-      bundleCrc: 0
+      hash: 72f8c927a8db6a1b568c1a39d0e4d9a0
+      length: 27248
+      bundleHash: 76a1faccc080e259801e939a03644d84
+      bundleCrc: 3260823829
       assets:
       - Assets/Example/pkg1/px/2.png
       - Assets/Example/pkg1/px/1.png
@@ -1077,10 +1241,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 9a898ce7a80940d73902cd443f6768ac
-      length: 9853
-      bundleHash: 
-      bundleCrc: 0
+      hash: 474af1b4ff8b8c273c676ccaacb7bf4a
+      length: 112864
+      bundleHash: 5095488be118d169521df0bc86d5e58a
+      bundleCrc: 888651119
       assets:
       - Assets/Example/pkg1/shadervariants.shadervariants
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
@@ -1089,10 +1253,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      length: 2818
-      bundleHash: 
-      bundleCrc: 0
+      hash: a452cf2ac902f4b4efdced28904735c0
+      length: 8256
+      bundleHash: d509d4c40e9b9ba705bb89368229b8f7
+      bundleCrc: 2311966693
       assets:
       - Assets/Example/pkg1/Cube.prefab
       dependence:
@@ -1101,10 +1265,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
-      length: 2192
-      bundleHash: 
-      bundleCrc: 0
+      hash: a2296b90356a122ff74ad762ce710fd3
+      length: 132896
+      bundleHash: 2059bdfc63863a0b01121d75dbe45494
+      bundleCrc: 1999514936
       assets:
       - Assets/Example/pkg1/New Material.mat
       dependence: []
@@ -1112,21 +1276,32 @@ MonoBehaviour:
       raw: 1
       compress: 2
       enCode: 0
-      hash: 85e39d8c25a85eea552a9f3925fe07af
+      hash: d41d8cd98f00b204e9800998ecf8427e
       length: 0
       bundleHash: 
       bundleCrc: 0
       assets:
       - Assets/Example/pkg1/a
       dependence: []
+    - bundleName: 0ec0371021c1dfc1fa8cdcc500836707
+      raw: 1
+      compress: 2
+      enCode: 0
+      hash: b75bedf1e9321567464e8e4dfc534c45
+      length: 4348584
+      bundleHash: 
+      bundleCrc: 0
+      assets:
+      - Assets/Example/pkg2/jiuba.mp4
+      dependence: []
     - bundleName: d111ba45eb97e7c88c4676972ac2e10c
       raw: 0
       compress: 2
       enCode: 0
-      hash: d111ba45eb97e7c88c4676972ac2e10c
-      length: 544544
-      bundleHash: 
-      bundleCrc: 0
+      hash: edd1d1aa7ae12f77db1908406237b9a0
+      length: 560752
+      bundleHash: 9730d49a762b9f634d3593c42811e483
+      bundleCrc: 4047209625
       assets:
       - Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
       - Assets/Example/pkg2/px/OIP.jpg
@@ -1137,10 +1312,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 243a4650079c87e8c8a518635f6d055d
-      length: 350200
-      bundleHash: 
-      bundleCrc: 0
+      hash: b13b6a184eacacb2a41408d88b41e5fa
+      length: 364304
+      bundleHash: 5b02ca63167f879b9c4ea8caae6ba396
+      bundleCrc: 143372409
       assets:
       - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
       dependence: []
@@ -1148,21 +1323,32 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: bf1f5a88f21c062b8e99107f99927599
-      length: 202240
-      bundleHash: 
-      bundleCrc: 0
+      hash: 5a00567c35aab1e6826d06f9d53754fc
+      length: 27024
+      bundleHash: e41303da95101375c2b243504a4f547c
+      bundleCrc: 4204299413
       assets:
       - Assets/Example/pkg1/px/1.png
+      dependence: []
+    - bundleName: d249dfaa922cee069644d41e2fdd16eb
+      raw: 0
+      compress: 2
+      enCode: 0
+      hash: b749fd2460af7a92aefcdc378dff3491
+      length: 6144
+      bundleHash: 28f224c66fe669258a3b888949c2807f
+      bundleCrc: 1522119354
+      assets:
+      - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
       dependence: []
     - bundleName: 81760e582f4d4439068c4d1ca75baf02
       raw: 0
       compress: 2
       enCode: 0
-      hash: 81760e582f4d4439068c4d1ca75baf02
-      length: 131232
-      bundleHash: 
-      bundleCrc: 0
+      hash: eb58dca5cf7e6615458718960e2b6d53
+      length: 136672
+      bundleHash: 319a83529ae2e2c1e7764c9e3fb22222
+      bundleCrc: 3873774841
       assets:
       - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
       dependence: []
@@ -1170,27 +1356,39 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: d0249394ec31d8e20d9bc59137e75f61
-      length: 21636
-      bundleHash: 
-      bundleCrc: 0
+      hash: 2cd6ab7a0a7db16b47fe3090e3f36f29
+      length: 1237456
+      bundleHash: aa5cf1b0f48533c42bc1bf2b9d7056c6
+      bundleCrc: 2032716535
       assets:
       - Assets/Example/pkg2/Scene/New Scene2.unity
       dependence:
-      - 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
-      - da4dc35176a2d52140d21c508ced13db
-      - bf1f5a88f21c062b8e99107f99927599
-      - 81760e582f4d4439068c4d1ca75baf02
       - 243a4650079c87e8c8a518635f6d055d
+      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
+      - 5c89e8abf37d4fa6d1e1215fca7cc1b9
+      - 81760e582f4d4439068c4d1ca75baf02
+      - bf1f5a88f21c062b8e99107f99927599
+      - da4dc35176a2d52140d21c508ced13db
     - bundleName: da4dc35176a2d52140d21c508ced13db
       raw: 0
       compress: 2
       enCode: 0
-      hash: da4dc35176a2d52140d21c508ced13db
-      length: 7914
-      bundleHash: 
-      bundleCrc: 0
+      hash: 4b6237e10feb854027538ae5b25d4571
+      length: 87920
+      bundleHash: efc58278cce0c996acccbf00972d5499
+      bundleCrc: 2705145988
       assets:
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       dependence: []
+    - bundleName: 42f4b03649ebf97811c49bd01f8b1ead
+      raw: 0
+      compress: 2
+      enCode: 0
+      hash: 718aef9a63f7b9682131214603e22429
+      length: 27968
+      bundleHash: 7226f557f174eb305deedc6431a4194f
+      bundleCrc: 2227927181
+      assets:
+      - Assets/Example/pkg2/diwugejijiejiuba.prefab
+      dependence:
+      - d249dfaa922cee069644d41e2fdd16eb

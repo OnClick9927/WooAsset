@@ -1,0 +1,45 @@
+"This asset is governed by the Asset Store EULA; however, the following components are governed by the licenses indicated below: 
+
+Google ExoPlayer
+Apache License 2.0
+https://github.com/google/ExoPlayer
+
+
+Libsamplerate
+BSD 2-Clause "Simplified" License
+Copyright (c) 2012-2016, Erik de Castro Lopo <erikd@mega-nerd.com> All rights reserved.
+https://github.com/libsndfile/libsamplerate
+
+
+Vidvox Hap
+BSD 2-Clause "Simplified" License
+Copyright (c) 2012-2013, Tom Butterworth and Vidvox LLC.
+All rights reserved.
+https://github.com/Vidvox/hap
+
+
+HapInAVFoundation
+Copyright (c) 2012-2014, Tom Butterworth and Vidvox LLC.
+All rights reserved.
+https://github.com/Vidvox/hap-in-avfoundation
+
+
+Squish
+MIT License
+Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
+
+
+Google Snappy
+BSD-type custom license
+Copyright 2011, Google Inc. All rights reserved.
+https://github.com/google/snappy
+
+
+Facebook Audio 360
+https://facebook360.fb.com/spatial-workstation/
+
+
+GDCL-MPEG4
+GDCL Source Code License
+Copyright (c) GDCL 2004-6. All Rights Reserved. 
+https://www.gdcl.co.uk/downloads.htm

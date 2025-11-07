@@ -1,0 +1,12 @@
+{
+    "name": "AVProVideo.Extensions.UnityUI.Editor",
+    "references": [
+	"AVProVideo.Runtime",
+	"AVProVideo.Editor",
+        "AVProVideo.Extensions.UnityUI"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

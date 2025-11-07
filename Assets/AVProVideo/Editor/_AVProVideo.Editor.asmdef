@@ -1,0 +1,7 @@
+{
+    "name": "AVProVideo.Editor",
+    "references": [ "AVProVideo.Runtime" ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}

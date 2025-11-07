@@ -1,0 +1,9 @@
+{
+    "name": "AVProVideo.Extensions.VisualEffectGraph",
+    "references": [
+        "AVProVideo.Runtime"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

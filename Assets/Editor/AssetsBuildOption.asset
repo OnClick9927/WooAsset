@@ -17,7 +17,7 @@ MonoBehaviour:
     OutputDirectory: 
   mode:
     mode:
-      _select: WooAsset.AssetsEditorTool+AssetDatabaseMode
+      _select: WooAsset.NormalAssetsMode
     Folders: []
     CheckAssetType: 0
     speedType: 1
@@ -48,7 +48,7 @@ MonoBehaviour:
       m_AllowsAlphaSplitting: 0
       m_AndroidETC2FallbackOverride: 0
   server:
-    enable: 1
+    enable: 0
     port: 8080
     speedType: 2
     speed: 200
@@ -85,7 +85,7 @@ MonoBehaviour:
     builds: []
     build: 1
   build:
-    _select: WooAsset.DefaultAssetsBuild
+    _select: WooAsset.MyAssetBuild
   encrypt:
     _select: WooAsset.NoneAssetStreamEncrypt
   buildPipeline:

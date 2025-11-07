@@ -36,11 +36,11 @@ namespace WooAsset
 
         private Mode mode;
 
-        public static BundleLoadType GetLoadType(string bundleName)
+        public static BundleLoadType GetLoadType(string bundleName) => GetLoadTypeByPath(AssetsInternal.GetBundleLocalPath(bundleName));
+        public static BundleLoadType GetLoadTypeByPath(string bundle)
         {
             var type = AssetsInternal.GetBundleAlwaysFromWebRequest() ? BundleLoadType.FromRequest : BundleLoadType.FromFile;
-            var _path = AssetsInternal.GetBundleLocalPath(bundleName);
-            if (type == BundleLoadType.FromFile && !AssetsHelper.ExistsFile(_path))
+            if (type == BundleLoadType.FromFile && !AssetsHelper.ExistsFile(bundle))
             {
                 type = BundleLoadType.FromRequest;
             }
@@ -59,7 +59,7 @@ namespace WooAsset
             bundleHash = Hash128.Parse(loadArgs.data.bundleHash);
             _path = AssetsInternal.GetBundleLocalPath(bundleName);
             _async = loadArgs.async;
-            type = GetLoadType(bundleName);
+            type = GetLoadTypeByPath(_path);
             if (type == BundleLoadType.FromRequest)
             {
                 _async = true;
