@@ -49,6 +49,13 @@ namespace WooAsset
 
             private class ToolTab : OptionTab
             {
+                protected void DrawSplit()
+                {
+                    GUILayout.Space(2);
+
+                    EditorGUILayout.LabelField("", (GUIStyle)"in title", GUILayout.Height(0));
+
+                }
                 public override void OnGUI(SerializedObject serializedObject)
                 {
                     BeginGUI("Simulator");
@@ -85,6 +92,8 @@ namespace WooAsset
            
                     if (option.GetAssetModeType() == typeof(NormalAssetsMode))
                     {
+                        DrawSplit();
+                        EditorGUILayout.LabelField("Server", EditorStyles.boldLabel);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
                             .FindPropertyRelative(nameof(AssetsBuildOption.server.enable)));
                         if (option.server.enable)
@@ -101,6 +110,9 @@ namespace WooAsset
                     }
                     else
                     {
+                        DrawSplit();
+                        EditorGUILayout.LabelField("File Read", EditorStyles.boldLabel);
+
                         GUILayout.BeginHorizontal();
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
                             .FindPropertyRelative(nameof(AssetsBuildOption.mode.loadSpeed)), new GUIContent("Speed (ms)"));
@@ -110,6 +122,7 @@ namespace WooAsset
                     }
                     if (option.GetAssetModeType() == typeof(RudeMode))
                     {
+                        DrawSplit();
                         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
                             .FindPropertyRelative(nameof(AssetsBuildOption.mode.CheckAssetType)));
 

@@ -40,7 +40,7 @@ namespace WooAsset
 
 
 
-
+        public virtual string GetBundleLocalPath(string bundlePath) => bundlePath;
 
         public virtual bool GetFuzzySearch() => false;
         public virtual FileNameSearchType GetFileNameSearchType() => FileNameSearchType.FileName;

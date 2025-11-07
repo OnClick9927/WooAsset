@@ -8,6 +8,8 @@ namespace WooAsset
 {
     public partial class Assets
     {
+
+        public static void SetLocalSaveDir(string path) => AssetsInternal.SetLocalSaveDir(path);
         public static void SetAssetsSetting(AssetsSetting setting) => AssetsInternal.SetAssetsSetting(setting);
         public static LoadRemoteVersionsOperation LoadRemoteVersions() => AssetsInternal.LoadRemoteVersions();
         public static VersionCompareOperation CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType = VersionCompareType.Manifest) => AssetsInternal.CompareVersion(version, pkgs, compareType);

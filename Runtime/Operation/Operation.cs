@@ -172,6 +172,12 @@ namespace WooAsset
     {
         public override float progress => isDone ? 1 : 0;
         int index;
+        internal override void ResetIsDone()
+        {
+            index = 0;
+            base.ResetIsDone();
+
+        }
         protected override void OnUpdate()
         {
             if (index++ >= 1)
@@ -181,7 +187,6 @@ namespace WooAsset
         }
         protected override void OnBegin()
         {
-            index = 0;
         }
     }
 
