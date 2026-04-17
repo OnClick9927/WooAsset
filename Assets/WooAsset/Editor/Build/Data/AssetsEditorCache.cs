@@ -99,13 +99,13 @@ namespace WooAsset
         public class AssetCache
         {
             public string path;
-            [UnityEngine.SerializeField] private long _PreviewSize;
-           [UnityEngine.SerializeField] private int _InstanceID;
-           [UnityEngine.SerializeField] private string _type;
-           [UnityEngine.SerializeField] private string _hash;
+            [UnityEngine.SerializeField] private long _PreviewSize=-1;
+            [UnityEngine.SerializeField] private int _InstanceID;
+            [UnityEngine.SerializeField] private string _type;
+            [UnityEngine.SerializeField] private string _hash;
 
-           [UnityEngine.SerializeField] private string _dp_hash;
-           [UnityEngine.SerializeField] private string[] _dps;
+            [UnityEngine.SerializeField] private string _dp_hash;
+            [UnityEngine.SerializeField] private string[] _dps;
             public string[] dps
             {
                 get
@@ -129,8 +129,13 @@ namespace WooAsset
             {
                 get
                 {
-                    if (_PreviewSize == 0)
-                        _PreviewSize = GetMemorySizeLong(path, AssetsEditorTool.GetTypeByName(type));
+                    if (_PreviewSize == -1)
+                    {
+                        if (unknownType)
+                            _PreviewSize = 0;
+                        else
+                            _PreviewSize = GetMemorySizeLong(path, AssetsEditorTool.GetTypeByName(type));
+                    }
                     return _PreviewSize;
                 }
             }
@@ -145,12 +150,18 @@ namespace WooAsset
                     return _InstanceID;
                 }
             }
+
+            public bool unknownType => type == "_unknown_";
             public string type
             {
                 get
                 {
                     if (string.IsNullOrEmpty(_type))
-                        _type = AssetDatabase.GetMainAssetTypeAtPath(path).FullName;
+                    {
+                        var __type = AssetDatabase.GetMainAssetTypeAtPath(path);
+                        _type = __type != null ? __type.FullName : "_unknown_";
+
+                    }
                     return _type;
                 }
             }
@@ -164,9 +175,11 @@ namespace WooAsset
                     return _hash;
                 }
             }
+
+
         }
 
-        private List<AssetCache> cachedAssets = new List<AssetCache>();
+        [SerializeField] private List<AssetCache> cachedAssets = new List<AssetCache>();
         private Dictionary<string, AssetCache> dic = new Dictionary<string, AssetCache>();
         public void ClearAssetCache()
         {
@@ -175,8 +188,10 @@ namespace WooAsset
             Save();
         }
 
+
         public AssetCache GetAssetCache(string path)
         {
+
             if (dic.TryGetValue(path, out var cache))
             {
                 return cache;

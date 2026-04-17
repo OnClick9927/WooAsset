@@ -70,8 +70,11 @@ namespace WooAsset
             //}
 
 
-            await Assets.InitAsync("", false);
-
+          var init=  await Assets.InitAsync("", false);
+            if (init.isErr)
+            {
+                return;
+            }
 
 
             //var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/pkg2/Scene/New Scene2.unity");
@@ -112,6 +115,9 @@ namespace WooAsset
             //}
 
             Assets.InstantiateAsync("Assets/Example/pkg2/diwugejijiejiuba.prefab", image.transform);
+
+            var scene = await Assets.LoadSceneAssetAsync("Assets/Example/pkg2/Scene/New Scene2.unity");
+            scene.LoadSceneAsync(LoadSceneMode.Additive);
         }
 
     }

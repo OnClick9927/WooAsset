@@ -19,9 +19,9 @@ namespace WooAsset
         [UnityEngine.SerializeField] private long _length;
         [UnityEngine.SerializeField] private bool _raw;
         [UnityEngine.SerializeField] private int _enCode;
+        public bool IsScene;
         internal string bundleHash;
         internal uint bundleCrc;
-
         public bool loopDependence { get => _loop; private set { _loop = value; } }
         public int usageCount => usage.Count;
         public int dependenceCount => dependence.Count;
@@ -115,6 +115,7 @@ namespace WooAsset
                    .SelectMany(x => x.dependence)
                    .Distinct()
                    .Select(assetPath => source.Find(y => y.ContainsAsset(assetPath)))
+                   .Where(x => !x.IsScene)
                    .Where(x => x != null)
                    .Distinct()
                    .Where(x => x.hash != hash)

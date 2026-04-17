@@ -7,17 +7,19 @@
  *History:        2018.11--
 *********************************************************************************/
 
+using System;
+
 namespace WooAsset
 {
     public class MyAssetBuild : IAssetsBuild
     {
-        protected override AssetType CoverAssetType(string path, AssetType type)
+        protected override AssetType CoverAssetType(string path, AssetType assetType, Type type)
         {
-            if (type== AssetType.VideoClip)
+            if (assetType == AssetType.VideoClip)
             {
                 return AssetType.Raw;
             }
-            return base.CoverAssetType(path, type);
+            return base.CoverAssetType(path, assetType, type);
         }
     }
 }

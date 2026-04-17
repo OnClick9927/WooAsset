@@ -52,14 +52,30 @@ namespace WooAsset
             }
 
             List<EditorBundleData> result = new List<EditorBundleData>();
-            EditorBundleTool.N2One(assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant), result);
-            EditorBundleTool.One2One(assets.FindAll(x => x.type == AssetType.Scene), result);
+            var shaders = assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant || x.type == AssetType.ComputeShader);
             var raws = assets.FindAll(x => x.type == AssetType.Raw);
+            var scenes = assets.FindAll(x => x.type == AssetType.Scene);
+            EditorBundleTool.N2One(shaders, result);
             foreach (var asset in raws)
                 result.Add(EditorBundleData.CreateRaw(asset));
+            assets.RemoveAll(x => shaders.Contains(x) || raws.Contains(x) || scenes.Contains(x));
+            foreach (var scene in scenes)
+            {
+                var bundle = EditorBundleData.Create(scene);
+                bundle.IsScene = true;
+                result.Add(bundle);
 
-            assets.RemoveAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant
-            || x.type == AssetType.Scene || x.type == AssetType.Raw);
+                var list = scene.dependence.ConvertAll(x => assets.Find(y => y.path == x));
+                list.RemoveAll(x => x == null);
+                assets.RemoveAll(x => list.Contains(x));
+                EditorBundleTool.N2MBySize(list, result);
+            }
+
+
+
+
+
+
 
 
 
@@ -89,7 +105,12 @@ namespace WooAsset
             foreach (var asset in result)
             {
                 if (asset.loopDependence)
-                    AssetsEditorTool.LogError($"Bundle Contains Loop {asset.hash}");
+                {
+                    SetErr($"Bundle Contains Loop {asset.hash}");
+                    InvokeComplete();
+                    return;
+                    //AssetsEditorTool.LogError(this.error);
+                }
             }
 
 
