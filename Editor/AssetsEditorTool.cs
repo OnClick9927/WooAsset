@@ -23,17 +23,20 @@ namespace WooAsset
         private static Dictionary<string, Type> types = new Dictionary<string, Type>();
         public static Type GetTypeByName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return null;
             if (types.TryGetValue(name, out var type))
                 return type;
-            var _type = Types.First(x => x.FullName == name);
+            var _type = Types.FirstOrDefault(x => x.FullName == name);
+            if (_type == null) return null;
             types.Add(name, _type);
             return _type;
         }
         public static Type GetMainAssetTypeAtPath(string path)
         {
-            var name = cache.GetAssetCache(path).type;
-
-            return GetTypeByName(name);
+            var _cache = cache.GetAssetCache(path);
+            if (_cache.unknownType) return null;
+            return GetTypeByName(_cache.type);
         }
 
     }

@@ -34,7 +34,7 @@ namespace WooAsset
             }
 
 
-            public static void N2MBySize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
+            public static void N2MBySize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 2 * 1024 * 1024)
             {
                 var big = assets.FindAll(x => x.length >= size);
                 assets.RemoveAll(x => x.length >= size);
@@ -73,7 +73,7 @@ namespace WooAsset
                     N2One(tmp, result);
                 }
             }
-            public static void N2MBySizeAndDir(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
+            public static void N2MBySizeAndDir(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 2 * 1024 * 1024)
             {
                 var path_dic = GroupByDir(assets);
                 foreach (var item in path_dic)
@@ -105,14 +105,14 @@ namespace WooAsset
                 foreach (var item in path_dic)
                     N2One(item.Value, result);
             }
-            public static void N2MByAssetTypeAndSize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
+            public static void N2MByAssetTypeAndSize(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 2 * 1024 * 1024)
             {
                 var path_dic = GroupByAssetType(assets);
                 foreach (var item in path_dic)
                     N2MBySize(item.Value, result, size);
             }
 
-            public static void N2MBySizeAndDirAndAssetType(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 8 * 1024 * 1024)
+            public static void N2MBySizeAndDirAndAssetType(List<EditorAssetData> assets, List<EditorBundleData> result, long size = 2 * 1024 * 1024)
             {
                 var path_dic = GroupByDir(assets);
                 foreach (var item in path_dic)

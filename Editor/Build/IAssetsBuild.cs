@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEngine.U2D;
-using UnityEngine.Video;
+//using UnityEngine.U2D;
+//using UnityEngine.Video;
 using UnityEngine;
-using UnityEditor.Animations;
+//using UnityEditor.Animations;
 using static WooAsset.AssetsEditorTool;
-using UnityEngine.Audio;
+//using UnityEngine.Audio;
 using System;
+//using UnityEditor.Build.Content;
 
 
 namespace WooAsset
@@ -20,52 +21,51 @@ namespace WooAsset
 
         public virtual List<string> GetAssetTags(string path) => null;
         public virtual string GetVersion(string settingVersion, AssetTaskContext context) => settingVersion;
-        protected virtual AssetType CoverAssetType(string path, AssetType type) => type;
+        protected virtual AssetType CoverAssetType(string path, AssetType assetType, Type type) => assetType;
 
         protected virtual bool IsIgnorePath(string path)
         {
-            if (path.EndsWith(".meta"))
+            if (path.EndsWith(".meta") || path.EndsWith(".asmdef") || path.EndsWith(".asmref"))
                 return true;
             var list = AssetsEditorTool.ToRegularPath(path).Split('/').ToList();
             if (!list.Contains("Assets") ||
                 list.Contains("Editor") ||
                 list.Contains("Resources") ||
                 list.Contains("Editor Default Resources") ||
-                list.Contains("Gizmos")
+                list.Contains("Gizmos") || list.Contains("StreamingAssets")
                 )
                 return true;
             return false;
         }
         public AssetType GetAssetType(string path)
         {
+
             if (IsIgnorePath(path)) return AssetType.Ignore;
             AssetType _type = AssetType.None;
             if (AssetsEditorTool.IsDirectory(path))
                 _type = AssetType.Directory;
             else
             {
-                //var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-                //var type = obj?.GetType();
                 var type = AssetsEditorTool.GetMainAssetTypeAtPath(path);
                 if (type == null) _type = AssetType.Ignore;
                 else if (type == typeof(MonoScript)) _type = AssetType.Ignore;
-                else if (type == typeof(LightingDataAsset)) _type = AssetType.Ignore;
-                else if (type == typeof(SpriteAtlas)) _type = AssetType.Ignore;
+                else if (type.Name == "SpriteAtlas") _type = AssetType.Ignore;
+                else if (type.Name == nameof(AssetType.AudioMixer)) _type = AssetType.AudioMixer;
+                else if (type.Name == nameof(AssetType.VideoClip)) _type = AssetType.VideoClip;
+                else if (type == typeof(LightingDataAsset)) _type = AssetType.LightingData;
                 else if (type == typeof(UnityEditor.SceneAsset)) _type = AssetType.Scene;
                 else if (type == typeof(GameObject)) _type = AssetType.GameObject;
                 else if (type == typeof(AnimationClip)) _type = AssetType.AnimationClip;
-                else if (type == typeof(AnimatorController)) _type = AssetType.AnimatorController;
+                else if (type == typeof(UnityEditor.Animations.AnimatorController)) _type = AssetType.AnimatorController;
                 else if (type == typeof(Font)) _type = AssetType.Font;
                 else if (type == typeof(Mesh)) _type = AssetType.Mesh;
                 else if (type == typeof(Material)) _type = AssetType.Material;
                 else if (type == typeof(AudioClip)) _type = AssetType.AudioClip;
-                else if (type == typeof(VideoClip)) _type = AssetType.VideoClip;
                 else if (type == typeof(TextAsset)) _type = AssetType.TextAsset;
                 else if (type == typeof(Shader)) _type = AssetType.Shader;
                 else if (type == typeof(ShaderVariantCollection)) _type = AssetType.ShaderVariant;
                 else if (type == typeof(ComputeShader)) _type = AssetType.ComputeShader;
                 else if (type == typeof(PhysicMaterial)) _type = AssetType.PhysicMaterial;
-                else if (type == typeof(AudioMixer)) _type = AssetType.AudioMixer;
                 else if (type == typeof(GUISkin)) _type = AssetType.GUISkin;
                 else if (type == typeof(DefaultAsset)) _type = AssetType.Raw;
                 else if (typeof(ScriptableObject).IsAssignableFrom(type)) _type = AssetType.ScriptObject;
@@ -79,7 +79,21 @@ namespace WooAsset
                             _type = AssetType.Sprite;
                     }
                 }
-                _type = CoverAssetType(path, _type);
+
+                if (_type == AssetType.Scene)
+                {
+                    foreach (var scene in EditorBuildSettings.scenes)
+                    {
+                        if (!scene.enabled) continue;
+                        if (scene.path == path)
+                        {
+                            _type = AssetType.Ignore;
+                            break;
+                        }
+                    }
+
+                }
+                _type = CoverAssetType(path, _type, type);
             }
             return _type;
         }
@@ -98,40 +112,7 @@ namespace WooAsset
                     tagAssets.RemoveAll(x => find.Contains(x));
                     EditorBundleTool.N2MBySize(find, result);
                 }
-                List<AssetType> _n2mSize = new List<AssetType>() {
-                    AssetType.TextAsset
-                };
-                List<AssetType> _n2mSizeDir = new List<AssetType>() {
-                     AssetType.Texture,
-                     AssetType.Material,
-                };
-                List<AssetType> _one2one = new List<AssetType>() {
-                    AssetType.Font,
-                    AssetType.AudioClip,
-                    AssetType.VideoClip,
-                    AssetType.GameObject,
-                    AssetType.AnimationClip,
-                    AssetType.AnimatorController,
-                    AssetType.ScriptObject,
-                };
-                foreach (var item in _one2one)
-                {
-                    List<EditorAssetData> fits = assets.FindAll(x => x.type == item);
-                    assets.RemoveAll(x => x.type == item);
-                    EditorBundleTool.One2One(fits, result);
-                }
-                foreach (var item in _n2mSize)
-                {
-                    List<EditorAssetData> fits = assets.FindAll(x => x.type == item);
-                    assets.RemoveAll(x => x.type == item);
-                    EditorBundleTool.N2MBySize(fits, result);
-                }
-                foreach (var item in _n2mSizeDir)
-                {
-                    List<EditorAssetData> fits = assets.FindAll(x => x.type == item);
-                    assets.RemoveAll(x => x.type == item);
-                    EditorBundleTool.N2MBySizeAndDir(fits, result);
-                }
+        
             }
             else
             {

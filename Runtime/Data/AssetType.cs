@@ -15,6 +15,8 @@
 
         VideoClip = 5,
         Scene = 6,
+        LightingData = 24,
+
         Material = 7,
         Mesh = 8,
         GameObject = 9,
