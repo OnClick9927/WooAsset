@@ -99,28 +99,15 @@ namespace WooAsset
         }
         public virtual void Create(List<EditorAssetData> assets, List<EditorBundleData> result, EditorPackageData pkg)
         {
-            var builds = pkg.builds;
-            if (builds == null || builds.Count == 0)
+            var tagAssets = assets.FindAll(x => x.tags != null && x.tags.Count != 0);
+            assets.RemoveAll(x => tagAssets.Contains(x));
+            var tags = tagAssets.SelectMany(x => x.tags).Distinct().ToList();
+            tags.Sort();
+            foreach (var tag in tags)
             {
-                var tagAssets = assets.FindAll(x => x.tags != null && x.tags.Count != 0);
-                assets.RemoveAll(x => tagAssets.Contains(x));
-                var tags = tagAssets.SelectMany(x => x.tags).Distinct().ToList();
-                tags.Sort();
-                foreach (var tag in tags)
-                {
-                    List<EditorAssetData> find = tagAssets.FindAll(x => x.tags.Contains(tag));
-                    tagAssets.RemoveAll(x => find.Contains(x));
-                    EditorBundleTool.N2MBySize(find, result);
-                }
-        
-            }
-            else
-            {
-                for (int i = 0; i < builds.Count; i++)
-                {
-                    var build = builds[i];
-                    build.Build(assets, result);
-                }
+                List<EditorAssetData> find = tagAssets.FindAll(x => x.tags.Contains(tag));
+                tagAssets.RemoveAll(x => find.Contains(x));
+                EditorBundleTool.N2MBySize(find, result);
             }
             EditorBundleTool.N2MBySizeAndDir(assets, result);
 
