@@ -65,10 +65,10 @@ namespace WooAsset
                 bundle.IsScene = true;
                 result.Add(bundle);
 
-                var list = scene.dependence.ConvertAll(x => assets.Find(y => y.path == x));
-                list.RemoveAll(x => x == null);
-                assets.RemoveAll(x => list.Contains(x));
-                EditorBundleTool.N2MBySize(list, result);
+                //var list = scene.dependence.ConvertAll(x => assets.Find(y => y.path == x));
+                //list.RemoveAll(x => x == null);
+                //assets.RemoveAll(x => list.Contains(x));
+                //EditorBundleTool.N2MBySize(list, result);
             }
 
 
@@ -83,6 +83,15 @@ namespace WooAsset
             {
 
                 var builds = new List<EditorBundleData>();
+                {
+                    var _builds = context.buildPkg.builds;
+                    if (_builds != null)
+                        for (int i = 0; i < _builds.Count; i++)
+                        {
+                            var build = _builds[i];
+                            build.Build(assets, result);
+                        }
+                }
 
                 context.assetBuild.Create(new List<EditorAssetData>(assets), builds, context.buildPkg);
                 builds = (this as ICalcEditorBundleList).Calc(builds);
