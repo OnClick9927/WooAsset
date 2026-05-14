@@ -81,6 +81,7 @@ namespace WooAsset
                 return tree_bundle;
             }
         }
+        public List<PackageExportData> exports;
 
 
         public ManifestData manifest;

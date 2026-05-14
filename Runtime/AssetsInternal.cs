@@ -90,6 +90,8 @@ namespace WooAsset
     {
         public static bool Initialized() => mode.Initialized();
         public static Operation InitAsync(string version, bool ignoreLocalVersion, bool again, Func<VersionData, List<PackageData>> getPkgs) => mode.InitAsync(version, ignoreLocalVersion, again, GetFuzzySearch(), GetFileNameSearchType(), getPkgs);
+        public static ManifestData GetPkgManifestData(string pkg) => mode.GetPkgManifestData(pkg);
+
         public static string GetVersion() => Initialized() ? mode.version : string.Empty;
 
 
@@ -110,8 +112,11 @@ namespace WooAsset
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
             {
-                AssetsHelper.LogError($"Not Found Asset: {path}");
-                return null;
+                var result = assets.LoadAssetCustom(path, async, type);
+                if (result == null)
+                    AssetsHelper.LogError($"Not Found Asset: {path}");
+
+                return result;
             }
             return assets.LoadAsset(data, async, type, sub);
         }

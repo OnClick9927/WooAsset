@@ -22,11 +22,14 @@ namespace WooAsset
         IReadOnlyList<string> GetAssetsByAssetName(string name);
         IReadOnlyList<string> GetAllAssetPaths(string bundleName);
         string GUIDToAssetPath(string guid);
+       ManifestData GetPkgManifestData(string pkg);
+
     }
 
 
     abstract class AssetsMode : IAssetsMode
     {
+        ManifestData IAssetsMode.GetPkgManifestData(string pkg) => GetPkgManifestData(pkg);
         Operation IAssetsMode.InitAsync(string version, bool ignoreLocalVersion, bool again, bool fuzzySearch, FileNameSearchType fileNameSearchType, Func<VersionData, List<PackageData>> getPkgs)
         {
             SetVersion(version);
@@ -37,8 +40,8 @@ namespace WooAsset
         LoadRemoteVersionsOperation IAssetsMode.LoadRemoteVersions() => LoadRemoteVersions();
         Bundle IAssetsMode.CreateBundle(string bundleName, BundleLoadArgs args) => CreateBundle(bundleName, args);
         VersionCompareOperation IAssetsMode.CompareVersion(VersionData version, List<PackageData> pkgs, VersionCompareType compareType) => CompareVersion(version, pkgs, compareType);
-        protected virtual ManifestData manifest { get; }
-
+        protected abstract ManifestData manifest { get; }
+        protected abstract ManifestData GetPkgManifestData(string pkg);
         public string version { get; private set; }
         protected void SetVersion(string version) => (this).version = version;
         protected abstract bool Initialized();
@@ -78,6 +81,7 @@ namespace WooAsset
         private LoadManifestOperation manifestOp;
 
         protected override ManifestData manifest => Initialized() ? manifestOp.manifest : null;
+        protected override ManifestData GetPkgManifestData(string pkg) => Initialized() ? manifestOp.GetManifestData(pkg) : null;
 
         protected override bool Initialized()
         {

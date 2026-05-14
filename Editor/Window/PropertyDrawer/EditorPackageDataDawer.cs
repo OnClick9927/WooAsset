@@ -12,8 +12,8 @@ namespace WooAsset
         static GUIContent empty = new GUIContent();
         static GUIContent tags = new GUIContent(nameof(EditorPackageData.tags));
         static GUIContent paths = new GUIContent(nameof(EditorPackageData.paths));
-        static GUIContent builds = new GUIContent(nameof(EditorPackageData.builds));
-        static EditorBundleDataBuildDrawer draw = new EditorBundleDataBuildDrawer();
+        static GUIContent builds = new GUIContent(nameof(EditorPackageData.rules));
+        //static EditorBundleDataBuildDrawer draw = new EditorBundleDataBuildDrawer();
 
 
         public static void DrawArray(Rect pos, GUIContent content, SerializedProperty tags, Func<SerializedProperty, float> getheight, Action<Rect, SerializedProperty> drawEle)
@@ -104,17 +104,13 @@ namespace WooAsset
         {
             var tags = property.FindPropertyRelative(nameof(EditorPackageData.tags));
             var description = property.FindPropertyRelative(nameof(EditorPackageData.description));
-            var builds = property.FindPropertyRelative(nameof(EditorPackageData.builds));
-
+            var builds = property.FindPropertyRelative(nameof(EditorPackageData.rules));
             var height = 40 + GetPathsHeight(property) + GetTagsHeight(property);
             if (builds.isExpanded)
             {
-                for (int i = 0; i < builds.arraySize; i++)
-                {
-                    height += draw.GetPropertyHeight(builds.GetArrayElementAtIndex(i), null);
-                }
+                height += builds.arraySize * 20 + 40;
             }
-            return height + 20 + 20;
+            return height + 20;
         }
         private void DrawLeft(Rect pos, SerializedProperty property)
         {
@@ -123,7 +119,7 @@ namespace WooAsset
             var description = property.FindPropertyRelative(nameof(EditorPackageData.description));
 
             var paths = property.FindPropertyRelative(nameof(EditorPackageData.paths));
-            var builds = property.FindPropertyRelative(nameof(EditorPackageData.builds));
+            var builds = property.FindPropertyRelative(nameof(EditorPackageData.rules));
             var tags = property.FindPropertyRelative(nameof(EditorPackageData.tags));
 
             var rs = RectEx.HorizontalSplit(pos, 20);
@@ -132,10 +128,10 @@ namespace WooAsset
             GUI.Label(rss[0], nameof(EditorPackageData.name));
             EditorGUI.PropertyField(rsss[0], name, empty);
             build.boolValue = GUI.Toggle(rsss[1], build.boolValue, nameof(EditorPackageData.build), EditorStyles.toggleGroup);
-            rs = RectEx.HorizontalSplit(rs[1], 20, 5);
-            rss = RectEx.VerticalSplit(rs[0], 150);
-            GUI.Label(rss[0], nameof(EditorPackageData.description));
-            EditorGUI.PropertyField(rss[1], description, empty);
+            //rs = RectEx.HorizontalSplit(rs[1], 20, 5);
+            //rss = RectEx.VerticalSplit(rs[0], 150);
+            //GUI.Label(rss[0], nameof(EditorPackageData.description));
+            //EditorGUI.PropertyField(rss[1], description, empty);
 
             rs = RectEx.HorizontalSplit(rs[1], GetPathsHeight(property), 8);
 
@@ -148,13 +144,8 @@ namespace WooAsset
             {
                 EditorGUI.PropertyField(pos, _property, empty);
             });
-            DrawArray(rs[1], EditorPackageDataDawer.builds, builds, (p) =>
-            {
-                return draw.GetPropertyHeight(p, null);
-            }, (pos, _property) =>
-            {
-                EditorGUI.PropertyField(pos, _property, empty);
-            });
+
+            EditorGUI.PropertyField(rs[1], builds, EditorPackageDataDawer.builds);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

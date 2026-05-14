@@ -173,8 +173,33 @@ namespace WooAsset
         }
 
         [MenuItem(TaskPipelineMenu.SpriteAtlas)]
-        public static async Task BuildSpriteAtlas() => await SpriteAtlasTool.Execute(option.spriteAtlas.atlasPaths, option.spriteAtlas.PlatformSetting, option.spriteAtlas.textureSetting, option.spriteAtlas.packSetting);
+        public static async Task BuildSpriteAtlas()
+        {
+            var option = AssetsScriptableObject.Get<SpriteAtlasOption>();
+
+            await SpriteAtlasTool.Execute(option.atlasPaths, option.PlatformSetting, option.textureSetting, option.packSetting);
+
+        }
         [MenuItem(TaskPipelineMenu.ShaderVariant)]
-        public static async Task SpriteShaderVariant() => await ShaderVariantTool.Execute(option.shader.OutputDirectory, option.pkgs.SelectMany(x => x.paths).Concat(option.shader.InputDirectory).ToArray());
+        public static async Task SpriteShaderVariant()
+        {
+            var _option = AssetsScriptableObject.Get<ShaderOption>();
+
+            await ShaderVariantTool.Execute(_option.OutputDirectory, option.pkgs.SelectMany(x => x.paths).Concat(_option.InputDirectory).ToArray());
+        }
+        [MenuItem(TaskPipelineMenu.SpriteAtlasOption)]
+        public static void SpriteAtlasOption()
+        {
+            var option = AssetsScriptableObject.Get<SpriteAtlasOption>();
+            Selection.activeObject = option;
+
+        }
+        [MenuItem(TaskPipelineMenu.ShaderVariantOption)]
+        public static void ShaderVariantOption()
+        {
+            var _option = AssetsScriptableObject.Get<ShaderOption>();
+            Selection.activeObject = _option;
+
+        }
     }
 }

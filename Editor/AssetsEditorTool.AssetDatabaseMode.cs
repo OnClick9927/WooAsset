@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace WooAsset
 {
@@ -22,6 +23,12 @@ namespace WooAsset
         }
         private class AssetDatabaseMode : AssetsMode
         {
+
+            protected override ManifestData GetPkgManifestData(string pkg)
+            {
+                var find = cache.exports.FirstOrDefault(x => x.pkg.name == pkg);
+                return find == null ? null : find.manifest;
+            }
 
 
             private AssetTask _task;

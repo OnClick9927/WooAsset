@@ -10,7 +10,7 @@ namespace WooAsset
         //public string description;
         //public List<string> tags = new List<string>();
         public List<string> paths = new List<string>();
-        public List<EditorBundleDataBuild> builds = new List<EditorBundleDataBuild>();
+        public List<BundleRule> rules = new List<BundleRule>();
         public bool build;
 
         public bool HasSamePath() => paths.Distinct().Count() != paths.Count();

@@ -10,8 +10,17 @@
                 var args = AssetLoadArgs.NormalArg(data, async, type, sub);
                 return LoadAsync(args);
             }
+            public AssetHandle LoadAssetCustom(string path, bool async, System.Type type)
+            {
+                var args = AssetLoadArgs.CustomArg(path, async, type);
+                return LoadAsync(args);
+            }
             protected override AssetHandle CreateNew(AssetLoadArgs args)
             {
+                if (ResourceAsset.IsFit(args.path))
+                {
+                    return new ResourceAsset(args.path, args.async, args.type);
+                }
                 Bundle bundle = bundles.LoadBundle(args.data.bundleName, args.async);
                 AssetHandle handle;
                 if (args.data.type == AssetType.Raw)
@@ -32,14 +41,16 @@
                 if (asset == null) return;
                 ReleaseRef(asset);
                 TryRealUnload(path);
-                bundles.Release(asset.bundleName);
+                if (asset.IsBundleAsset)
+                    bundles.Release(asset.bundleName);
             }
 
             protected override void OnRetain(AssetHandle asset, bool old)
             {
                 base.OnRetain(asset, old);
                 if (!old) return;
-                bundles.LoadBundle(asset.bundleName, false);
+                if (asset.IsBundleAsset)
+                    bundles.LoadBundle(asset.bundleName, false);
             }
         }
     }

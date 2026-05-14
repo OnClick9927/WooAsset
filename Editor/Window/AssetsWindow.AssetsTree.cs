@@ -209,22 +209,22 @@ namespace WooAsset
                     });
 
                 }
-                menu.AddItem(new UnityEngine.GUIContent("Record/AddToIgnore"), false, () =>
+                menu.AddItem(new UnityEngine.GUIContent($"Record/Add {option.record.type}"), false, () =>
                 {
                     foreach (var path in paths)
                     {
                         var data = cache.tree_asset.GetAssetData(path);
-                        AssetsEditorTool.option.AddToRecordIgnore(path, data.fileType);
+                        AssetsEditorTool.option.AddToRecord(path, data.fileType);
                     }
                     AssetsEditorTool.option.Save();
                     AssetTaskRunner.PreviewAllAssets();
                 });
-                menu.AddItem(new UnityEngine.GUIContent("Record/RemoveFromIgnore"), false, () =>
+                menu.AddItem(new UnityEngine.GUIContent($"Record/Remove {option.record.type}"), false, () =>
                 {
                     foreach (var path in paths)
                     {
                         var data = cache.tree_asset.GetAssetData(path);
-                        AssetsEditorTool.option.RemoveFromRecordIgnore(path, data.fileType);
+                        AssetsEditorTool.option.RemoveFromRecord(path, data.fileType);
 
                     }
                     AssetsEditorTool.option.Save();
