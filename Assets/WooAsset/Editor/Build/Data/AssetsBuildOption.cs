@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System;
-using UnityEditor;
-using Object = UnityEngine.Object;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Object = UnityEngine.Object;
 
 namespace WooAsset
 {
-
     public class AssetsBuildOption : AssetsScriptableObject
     {
         [System.Serializable]
@@ -44,28 +42,23 @@ namespace WooAsset
                 }
             }
         }
-        [System.Serializable]
-        public class ShaderOption
-        {
-            public List<string> InputDirectory;
-            public string OutputDirectory;
-        }
-        [System.Serializable]
-        public class SpriteAtlasOption
-        {
-            public List<string> atlasPaths = new List<string>();
-            public PackingSetting packSetting = new PackingSetting();
-            public TextureSetting textureSetting = new TextureSetting();
-            public TextureImporterPlatformSettings PlatformSetting = new TextureImporterPlatformSettings()
-            {
-                maxTextureSize = 2048,
-                format = TextureImporterFormat.Automatic,
-                crunchedCompression = true,
-                textureCompression = TextureImporterCompression.Compressed,
-                compressionQuality = 50,
-            };
 
-        }
+        //[System.Serializable]
+        //public class SpriteAtlasOption
+        //{
+        //    public List<string> atlasPaths = new List<string>();
+        //    public PackingSetting packSetting = new PackingSetting();
+        //    public TextureSetting textureSetting = new TextureSetting();
+        //    public TextureImporterPlatformSettings PlatformSetting = new TextureImporterPlatformSettings()
+        //    {
+        //        maxTextureSize = 2048,
+        //        format = TextureImporterFormat.Automatic,
+        //        crunchedCompression = true,
+        //        textureCompression = TextureImporterCompression.Compressed,
+        //        compressionQuality = 50,
+        //    };
+
+        //}
 
         [System.Serializable]
         public class SimulatorServerOption
@@ -124,9 +117,9 @@ namespace WooAsset
             }
         }
 
-        public ShaderOption shader = new ShaderOption();
+        //public ShaderOption shader = new ShaderOption();
         public ModeOption mode = new ModeOption();
-        public SpriteAtlasOption spriteAtlas = new SpriteAtlasOption();
+        //public SpriteAtlasOption spriteAtlas = new SpriteAtlasOption();
         public SimulatorServerOption server = new SimulatorServerOption();
         public BuildInOption buildIn = new BuildInOption();
         public BundleOptimizeOption bundleOptimize = new BundleOptimizeOption();
@@ -149,8 +142,27 @@ namespace WooAsset
         public TypeSelect encrypt = new TypeSelect();
         public TypeSelect buildPipeline = new TypeSelect();
 
+        [System.Serializable]
+        public class RecordOption
+        {
+            public enum RecordType
+            {
+                Ignore,
+                Record,
+            }
+            public RecordType type = RecordType.Ignore;
+            public List<FileRecordData> records = new List<FileRecordData>();
 
-        public List<FileRecordData> recordIgnore = new List<FileRecordData>();
+            public void OnEnable()
+            {
+                records.RemoveAll(x =>
+
+(x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
+(x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path)));
+
+            }
+        }
+        public RecordOption record = new RecordOption();
         public List<TagAssets> tags = new List<TagAssets>();
 
         protected override void OnLoad()
@@ -180,13 +192,9 @@ namespace WooAsset
                 buildPipeline.baseType = typeof(IBuildPipeLine);
                 buildPipeline.Enable();
             }
-
-            recordIgnore.RemoveAll(x =>
-
-       (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
-       (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path)));
+            record.OnEnable();
             tags.ForEach(z => z.assets.RemoveAll(x => (x.type == FileType.File && !AssetsEditorTool.ExistsFile(x.path)) ||
-       (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path))));
+      (x.type == FileType.Directory && !AssetsEditorTool.ExistsDirectory(x.path))));
         }
 
 
@@ -248,12 +256,12 @@ namespace WooAsset
 
 
 
-        public void AddToRecordIgnore(string path, FileType type)
+        public void AddToRecord(string path, FileType type)
         {
-            if (recordIgnore.Any(x => x.path == path && x.type == type)) return;
-            recordIgnore.Add(new FileRecordData() { type = type, path = path });
+            if (record.records.Any(x => x.path == path && x.type == type)) return;
+            record.records.Add(new FileRecordData() { type = type, path = path });
         }
-        public void RemoveFromRecordIgnore(string path, FileType type) => recordIgnore.RemoveAll(x => x.path == path && x.type == type);
+        public void RemoveFromRecord(string path, FileType type) => record.records.RemoveAll(x => x.path == path && x.type == type);
 
 
 

@@ -218,6 +218,7 @@ namespace WooAsset
                 });
             }
             var manifests = exports.ConvertAll(x => x.manifest);
+            
             ManifestData manifest = new ManifestData();
             foreach (var item in manifests)
                 ManifestData.Merge(item, manifest, null);

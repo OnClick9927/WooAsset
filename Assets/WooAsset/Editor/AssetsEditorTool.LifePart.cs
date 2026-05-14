@@ -32,7 +32,7 @@ namespace WooAsset
             async void IAssetLife<AssetHandle>.OnAssetCreate(string path, AssetHandle asset)
             {
                 await asset;
-                var data = asset.data;
+                //var data = asset.data;
                 var life = new AssetLife<AssetHandle>()
                 {
                     asset = asset,

@@ -18,7 +18,7 @@ namespace WooAsset
             private Dictionary<string, List<string>> tags = new Dictionary<string, List<string>>();
             Dictionary<string, string> _fuzzleAssets = new Dictionary<string, string>();
 
-
+            protected override ManifestData GetPkgManifestData(string pkg) => null;
             protected override ManifestData manifest => null;
             protected override bool Initialized() => true;
             protected override Operation CopyToSandBox(string from, string to) => Operation.empty;

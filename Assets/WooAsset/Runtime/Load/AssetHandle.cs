@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 using Object = UnityEngine.Object;
 
 namespace WooAsset
 {
-
-
-
     public abstract class AssetHandle<T> : AssetHandle
     {
-        internal AssetHandle(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
+        protected AssetHandle(string path, bool async, Type type) : base(path, async, type)
         {
         }
 
@@ -23,20 +21,54 @@ namespace WooAsset
             InvokeComplete();
         }
     }
+
     public abstract class AssetHandle : AssetOperation
     {
-        protected System.Type type => loadArgs.type;
+        public virtual string bundleName => string.Empty;
 
+        public virtual bool IsBundleAsset => false;
+        private bool _async;
+        public string path { get; private set; }
+        public Type type { get; private set; }
+
+        public override bool async => _async;
+        protected AssetHandle(string path, bool async, Type type)
+        {
+            _async = async;
+            this.type = type;
+            this.path = path;
+        }
+
+
+
+    }
+    public abstract class BundleAssetHandle<T> : BundleAssetHandle
+    {
+        internal BundleAssetHandle(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
+        {
+        }
+
+        public T value { get; private set; }
+        protected virtual void SetResult(T value)
+        {
+            this.value = value;
+            InvokeComplete();
+        }
+    }
+    public abstract class BundleAssetHandle : AssetHandle
+    {
+        public override sealed string bundleName => data.bundleName;
+        //protected System.Type type => loadArgs.type;
+        public sealed override bool IsBundleAsset => true;
         public override bool async => loadArgs.async;
         protected Bundle bundle { get; private set; }
         public AssetData data => loadArgs.data;
 
         public AssetType assetType => data.type;
-        public string path => data.path;
-        public string bundleName => data.bundleName;
+        //public string path => data.path;
         private AssetLoadArgs loadArgs;
 
-        internal AssetHandle(AssetLoadArgs loadArgs, Bundle bundle)
+        internal BundleAssetHandle(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs.data.path, loadArgs.async, loadArgs.type)
         {
             this.loadArgs = loadArgs;
             this.bundle = bundle;
@@ -53,8 +85,54 @@ namespace WooAsset
         protected abstract void InternalLoad();
 
     }
+    public class ResourceAsset : AssetHandle<UnityEngine.Object>
+    {
+        public const string flag = "Resources:";
+        public static bool IsFit(string path)
+        {
+            return path.StartsWith(flag);
+        }
 
-    public class Asset : AssetHandle<UnityEngine.Object>
+        private ResourceRequest loadOp;
+
+        public ResourceAsset(string path, bool async, Type type) : base(path, async, type)
+        {
+        }
+
+        public System.Type GetAssetType() => isDone && !isErr ? value.GetType() : null;
+
+        public override float progress => isDone ? 1 : (async ? loadOp.progress : 0);
+        public T GetAsset<T>() where T : Object => isDone ? value as T : null;
+        protected sealed override async void OnLoad()
+        {
+            if (AssetsLoop.instance.isBusy)
+                await Operation.busy;
+            InternalLoad();
+        }
+
+        protected async void InternalLoad()
+        {
+            if (async)
+            {
+                loadOp = Resources.LoadAsync(path, type);
+                await loadOp;
+                SetResult(loadOp.asset);
+            }
+            else
+            {
+                var result = Resources.Load(path, type);
+                SetResult(result);
+            }
+        }
+
+        protected override void OnUnLoad()
+        {
+            if (value != null)
+                Resources.UnloadAsset(value);
+        }
+    }
+
+    public class Asset : BundleAssetHandle<UnityEngine.Object>
     {
         private AssetRequest loadOp;
         internal Asset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
@@ -148,7 +226,7 @@ namespace WooAsset
             return result[0];
         }
     }
-    public class RawAsset : AssetHandle<RawObject>
+    public class RawAsset : BundleAssetHandle<RawObject>
     {
         internal RawAsset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
         {
@@ -177,7 +255,7 @@ namespace WooAsset
         }
     }
 
-    public class SceneAsset : AssetHandle
+    public class SceneAsset : BundleAssetHandle
     {
         public override float progress => isDone ? 1 : bundle.progress;
         internal SceneAsset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)

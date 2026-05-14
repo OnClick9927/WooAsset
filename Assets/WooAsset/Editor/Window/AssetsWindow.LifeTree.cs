@@ -157,7 +157,8 @@ namespace WooAsset
                     GUI.Label(args.GetCellRect(2), life.asset.time.ToString());
                     //GUI.Label(args.GetCellRect(3), GetSizeString(life.assetLength));
                     GUI.Label(args.GetCellRect(4), life.assetType.ToString());
-                    EditorGUI.LabelField(args.GetCellRect(5), AssetsEditorTool.GetFileName(life.asset.bundleName));
+                    if (life.asset.IsBundleAsset)
+                        EditorGUI.LabelField(args.GetCellRect(5), AssetsEditorTool.GetFileName((life.asset).bundleName));
                     GUI.Label(args.GetCellRect(6), GetTagsString(life.tags));
                 }
             }
@@ -207,10 +208,14 @@ namespace WooAsset
 
                     if (AssetsEditorTool.LifePart.assets.TryGetValue(name, out AssetLife<AssetHandle> life))
                     {
-                        menu.AddItem(new UnityEngine.GUIContent("CopyBundleName"), false, () =>
+                        if (life.asset.IsBundleAsset)
                         {
-                            GUIUtility.systemCopyBuffer = life.asset.bundleName;
-                        });
+
+                            menu.AddItem(new UnityEngine.GUIContent("CopyBundleName"), false, () =>
+                            {
+                                GUIUtility.systemCopyBuffer = (life.asset).bundleName;
+                            });
+                        }
                     }
 
                 }

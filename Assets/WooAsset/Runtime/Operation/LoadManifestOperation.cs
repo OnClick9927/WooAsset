@@ -9,8 +9,12 @@ namespace WooAsset
         public override float progress => isDone ? 1 : _progress;
         private float _progress;
         public ManifestData manifest;
+        private Dictionary<string, ManifestData> pkgs = new Dictionary<string, ManifestData>();
         private string initVersion = "";
-
+        public ManifestData GetManifestData(string pkg)
+        {
+            return pkgs.TryGetValue(pkg, out var manifest) ? manifest : null;
+        }
 
         private bool fuzzySearch;
         private Func<VersionData, List<PackageData>> getPkgs;
@@ -84,6 +88,7 @@ namespace WooAsset
                     }
 
                 }
+                this.pkgs[pkg.name] = sub_mainifest;
                 ManifestData.Merge(sub_mainifest, _manifest, this.loadedBundles);
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }

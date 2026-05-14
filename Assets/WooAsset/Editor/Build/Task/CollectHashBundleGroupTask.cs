@@ -84,7 +84,7 @@ namespace WooAsset
 
                 var builds = new List<EditorBundleData>();
                 {
-                    var _builds = context.buildPkg.builds;
+                    var _builds = context.buildPkg.rules;
                     if (_builds != null)
                         for (int i = 0; i < _builds.Count; i++)
                         {

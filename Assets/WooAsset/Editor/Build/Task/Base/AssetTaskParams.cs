@@ -1,7 +1,9 @@
-﻿using UnityEditor;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using System.Linq;
+using UnityEditor;
+using static UnityEditor.Progress;
+using static WooAsset.AssetsBuildOption;
 
 namespace WooAsset
 {
@@ -30,7 +32,7 @@ namespace WooAsset
 
         //public List<AssetTask> pipelineStartTasks;
         //public List<AssetTask> pipelineEndTasks;
-        public List<FileRecordData> recordIgnore;
+        public RecordOption record;
         public bool fuzzySearch;
         public FileNameSearchType fileNameSearchType;
         public readonly TaskPipelineType Pipeline;
@@ -48,12 +50,26 @@ namespace WooAsset
         public bool GetIsRecord(string path)
         {
             if (!assetBuild.GetIsRecord(path)) return false;
-            for (int i = 0; i < recordIgnore.Count; i++)
+            var item = record.records;
+            if (record.type == RecordOption.RecordType.Ignore)
             {
-                var ignore = recordIgnore[i];
-                if (ignore.Fit(path)) return false;
+                for (int i = 0; i < item.Count; i++)
+                {
+                    var ignore = item[i];
+                    if (ignore.Fit(path)) return false;
+                }
+                return true;
             }
-            return true;
+            else
+            {
+                for (int i = 0; i < item.Count; i++)
+                {
+                    var ignore = item[i];
+                    if (ignore.Fit(path)) return true;
+                }
+                return false;
+            }
+
         }
 
         public AssetTaskParams(TaskPipelineType Pipeline)
@@ -77,7 +93,7 @@ namespace WooAsset
             buildInBundleSelector = Activator.CreateInstance(option.GetBuildInBundleSelectorType()) as IBuildInBundleSelector;
             version = option.version;
             tags = option.tags;
-            recordIgnore = option.recordIgnore;
+            record = option.record;
             optimizationCount = option.bundleOptimize.count;
         }
 
@@ -100,11 +116,11 @@ namespace WooAsset
                     if (!AssetsEditorTool.ExistsDirectory(paths[j]))
                         return $"Pkg path not exist {paths[j]}";
                 }
-                if (pkg.builds != null && pkg.builds.Count > 0)
+                if (pkg.rules != null && pkg.rules.Count > 0)
                 {
-                    for (int j = 0; j < pkg.builds.Count; j++)
+                    for (int j = 0; j < pkg.rules.Count; j++)
                     {
-                        var build = pkg.builds[j];
+                        var build = pkg.rules[j];
                         if (build.selectors.Count(x => x.type == AssetSelectorParam.SelectType.Union) == 0)
                         {
                             return $"Pkg-->{pkg.name} Build at-->{j} :  at least one Union ";

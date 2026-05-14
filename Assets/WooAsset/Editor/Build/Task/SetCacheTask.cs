@@ -26,6 +26,7 @@ namespace WooAsset
                 }
                 cache.viewAllAssets = context.Pipeline == TaskPipelineType.PreviewAllAssets;
                 cache.index = -1;
+                cache.exports = context.exports;
                 cache.manifest = context.mergedManifest;
                 cache.Save();
 

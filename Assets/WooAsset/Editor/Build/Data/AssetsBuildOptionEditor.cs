@@ -138,28 +138,28 @@ namespace WooAsset
 
 
 
-                    MidGUI("Shader Variant");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shader))
-                                        .FindPropertyRelative(nameof(AssetsBuildOption.shader.InputDirectory)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shader))
-                        .FindPropertyRelative(nameof(AssetsBuildOption.shader.OutputDirectory)));
-                    MidGUI("Sprite Atlas");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
-                        .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.atlasPaths)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
-                 .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.textureSetting)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
-                        .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.packSetting)));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
-                        .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.PlatformSetting)));
+                    //MidGUI("Shader Variant");
+                    //EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shader))
+                    //                    .FindPropertyRelative(nameof(AssetsBuildOption.shader.InputDirectory)));
+                    //EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.shader))
+                    //    .FindPropertyRelative(nameof(AssetsBuildOption.shader.OutputDirectory)));
+                 //   MidGUI("Sprite Atlas");
+                 //   EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                 //       .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.atlasPaths)));
+                 //   EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                 //.FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.textureSetting)));
+                 //   EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                 //       .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.packSetting)));
+                 //   EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.spriteAtlas))
+                 //       .FindPropertyRelative(nameof(AssetsBuildOption.spriteAtlas.PlatformSetting)));
 
 
 
                     MidGUI("Asset Tags");
 
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.tags)));
-                    MidGUI("Record Ignore");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.recordIgnore)));
+                    MidGUI("Record");
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.record)));
                     EndGUI();
 
 
