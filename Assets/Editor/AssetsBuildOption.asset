@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92f35693393261449628fc0c28902e5, type: 3}
   m_Name: AssetsBuildOption
   m_EditorClassIdentifier: 
-  shader:
-    InputDirectory: []
-    OutputDirectory: 
   mode:
     mode:
       _select: WooAsset.NormalAssetsMode
@@ -22,31 +19,6 @@ MonoBehaviour:
     CheckAssetType: 0
     speedType: 1
     loadSpeed: 20
-  spriteAtlas:
-    atlasPaths: []
-    packSetting:
-      blockOffset: 1
-      enableRotation: 0
-      enableTightPacking: 0
-      padding: 2
-    textureSetting:
-      readable: 1
-      generateMipMaps: 0
-      sRGB: 1
-      filterMode: 1
-      anisoLevel: 1
-    PlatformSetting:
-      m_Name: DefaultTexturePlatform
-      m_Overridden: 0
-      m_MaxTextureSize: 2048
-      m_ResizeAlgorithm: 0
-      m_TextureFormat: -1
-      m_TextureCompression: 1
-      m_CompressionQuality: 50
-      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
-      m_CrunchedCompression: 1
-      m_AllowsAlphaSplitting: 0
-      m_AndroidETC2FallbackOverride: 0
   server:
     enable: 0
     port: 8080
@@ -71,18 +43,16 @@ MonoBehaviour:
   MaxCacheVersionCount: 8
   pkgs:
   - name: pkg1
-    description: 
     tags: []
     paths:
     - Assets/Example/pkg1
-    builds: []
+    rules: []
     build: 1
   - name: pkg2
-    description: 
     tags: []
     paths:
     - Assets/Example/pkg2
-    builds: []
+    rules: []
     build: 1
   build:
     _select: WooAsset.MyAssetBuild
@@ -90,7 +60,9 @@ MonoBehaviour:
     _select: WooAsset.NoneAssetStreamEncrypt
   buildPipeline:
     _select: WooAsset.BuildInPipeline
-  recordIgnore: []
+  record:
+    type: 0
+    records: []
   tags:
   - tag: test
     assets: []

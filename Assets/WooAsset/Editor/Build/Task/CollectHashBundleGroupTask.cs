@@ -55,7 +55,10 @@ namespace WooAsset
             var shaders = assets.FindAll(x => x.type == AssetType.Shader || x.type == AssetType.ShaderVariant || x.type == AssetType.ComputeShader);
             var raws = assets.FindAll(x => x.type == AssetType.Raw);
             var scenes = assets.FindAll(x => x.type == AssetType.Scene);
-            EditorBundleTool.N2One(shaders, result);
+            var shader = EditorBundleTool.N2One(shaders, result);
+            shader.IsShader = true;
+
+
             foreach (var asset in raws)
                 result.Add(EditorBundleData.CreateRaw(asset));
             assets.RemoveAll(x => shaders.Contains(x) || raws.Contains(x) || scenes.Contains(x));
@@ -82,27 +85,27 @@ namespace WooAsset
 
             {
 
-                var builds = new List<EditorBundleData>();
                 {
                     var _builds = context.buildPkg.rules;
                     if (_builds != null)
                         for (int i = 0; i < _builds.Count; i++)
                         {
-                            var build = _builds[i];
-                            build.Build(assets, result);
+                            var rule = _builds[i];
+                            rule.Build(assets, result);
                         }
                 }
+                //var builds = new List<EditorBundleData>();
 
-                context.assetBuild.Create(new List<EditorAssetData>(assets), builds, context.buildPkg);
-                builds = (this as ICalcEditorBundleList).Calc(builds);
+                context.assetBuild.Create(new List<EditorAssetData>(assets), result, context.buildPkg);
 
+
+                result = (this as ICalcEditorBundleList).Calc(result);
                 for (int i = 0; i < context.optimizationCount; i++)
                 {
-                    builds = context.bundleOptimiser.Optimize(builds, this, context.buildPkg, context.assetBuild);
-                    builds = (this as ICalcEditorBundleList).Calc(builds);
+                    result = context.bundleOptimiser.Optimize(result, this, context.buildPkg, context.assetBuild);
+                    result = (this as ICalcEditorBundleList).Calc(result);
                 }
-
-                result.AddRange(builds);
+                //result.AddRange(builds);
             }
 
             result = (this as ICalcEditorBundleList).Calc(result);

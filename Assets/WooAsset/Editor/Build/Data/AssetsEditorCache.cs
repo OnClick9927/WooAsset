@@ -18,27 +18,30 @@ namespace WooAsset
             dic.Clear();
         }
 
-        [System.Serializable]
-        public class PkgBundles
-        {
-            public string pkgName;
-            public List<EditorBundleData> previewBundles = new List<EditorBundleData>();
-            public EditorAssetCollection tree = new EditorAssetCollection();
+        //[System.Serializable]
+        //public class PkgBundles
+        //{
+        //    public string pkgName;
+        //    public List<EditorBundleData> previewBundles = new List<EditorBundleData>();
+        //    public EditorAssetCollection tree = new EditorAssetCollection();
 
-        }
+        //}
 
         private int _index = 0;
         public int index
         {
             get
             {
-                _index = Mathf.Clamp(_index, 0, pkgBundles.Count);
+                _index = Mathf.Clamp(_index, 0, exports.Count);
                 return _index;
 
             }
             set
             {
-                _index = Mathf.Clamp(value, 0, pkgBundles.Count);
+                if (exports == null)
+                    _index = 0;
+                else
+                    _index = Mathf.Clamp(value, 0, exports.Count);
             }
         }
 
@@ -46,7 +49,7 @@ namespace WooAsset
         public bool viewAllAssets;
 
 
-        public List<PkgBundles> pkgBundles = new List<PkgBundles>();
+        //public List<PkgBundles> pkgBundles = new List<PkgBundles>();
 
         private List<EditorBundleData> previewBundles_noerr = new List<EditorBundleData>();
         private EditorAssetCollection tree_bundle_noerr = new EditorAssetCollection();
@@ -55,9 +58,9 @@ namespace WooAsset
         {
             get
             {
-                if (pkgBundles.Count == 0)
+                if (exports == null || exports.Count == 0)
                     return previewBundles_noerr;
-                return pkgBundles[index].previewBundles;
+                return exports[index].bundles;
 
             }
         }
@@ -65,9 +68,9 @@ namespace WooAsset
         {
             get
             {
-                if (pkgBundles.Count == 0)
+                if (exports == null || exports.Count == 0)
                     return tree_bundle_noerr;
-                return pkgBundles[index].tree;
+                return exports[index].tree;
 
             }
 
@@ -81,7 +84,7 @@ namespace WooAsset
                 return tree_bundle;
             }
         }
-        public List<PackageExportData> exports;
+        public List<PackageExportData> exports = new List<PackageExportData>();
 
 
         public ManifestData manifest;
@@ -100,7 +103,7 @@ namespace WooAsset
         public class AssetCache
         {
             public string path;
-            [UnityEngine.SerializeField] private long _PreviewSize=-1;
+            [UnityEngine.SerializeField] private long _PreviewSize = -1;
             [UnityEngine.SerializeField] private int _InstanceID;
             [UnityEngine.SerializeField] private string _type;
             [UnityEngine.SerializeField] private string _hash;

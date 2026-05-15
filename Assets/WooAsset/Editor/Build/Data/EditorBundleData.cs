@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
-using UnityEditor.VersionControl;
 
 namespace WooAsset
 {
@@ -20,6 +19,8 @@ namespace WooAsset
         [UnityEngine.SerializeField] private bool _raw;
         [UnityEngine.SerializeField] private int _enCode;
         public bool IsScene;
+        public bool IsShader;
+
         internal string bundleHash;
         internal uint bundleCrc;
         public bool loopDependence { get => _loop; private set { _loop = value; } }
@@ -110,13 +111,18 @@ namespace WooAsset
         public void FindDependence(List<EditorBundleData> source, Dictionary<string, EditorAssetData> assets)
         {
             dependence.Clear();
-            var result = GetAssets()
+            var dpAssets = GetAssets()
                    .Select(assetPath => assets[assetPath])
                    .SelectMany(x => x.dependence)
-                   .Distinct()
+                   .Distinct();
+
+
+            var result = dpAssets
+
+
                    .Select(assetPath => source.Find(y => y.ContainsAsset(assetPath)))
                    .Where(x => !x.IsScene)
-                   .Where(x => x != null)
+                   //.Where(x => x != null)
                    .Distinct()
                    .Where(x => x.hash != hash)
                    .Select(x => x.hash);

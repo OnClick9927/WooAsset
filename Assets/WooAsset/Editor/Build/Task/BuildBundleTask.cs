@@ -207,8 +207,9 @@ namespace WooAsset
                 for (int j = 0; j < tasks.Count; j++)
                     await Execute(tasks[j], context);
 
-                exports.Add(new PackageExportData()
+                exports.Add(new PackageExportData(context.buildPkg.name)
                 {
+             
                     pkg = context.buildPkg.ToPackageData(),
                     manifest = context.manifest,
                     encrypt = context.encrypt.ToString(),
@@ -225,6 +226,8 @@ namespace WooAsset
             manifest.Prepare(context.fuzzySearch, context.fileNameSearchType);
             context.mergedManifest = manifest;
             context.exports = exports;
+
+
             if (context.Pipeline == TaskPipelineType.BuildBundle)
             {
                 var versions = context.historyVersions;

@@ -298,9 +298,124 @@ MonoBehaviour:
       in_pkgs:
       - pkg2
   viewAllAssets: 0
-  pkgBundles:
+  exports:
   - pkgName: pkg1
-    previewBundles:
+    encrypt: WooAsset.NoneAssetStreamEncrypt
+    version: 0.0.1
+    compress: Uncompressed
+    typeTreeOption: 0
+    pkg:
+      name: pkg1
+      tags: []
+    manifest:
+      version: 0.0.1
+      assets:
+      - path: Assets/Example/pkg1/px/2.png
+        type: 3
+        guid: 05fd5d23dddee404b9812904baadb6db
+        tags: []
+        bundleName: 76c9c9307a3f5a429af261ace614ff50
+      - path: Assets/Example/pkg1/px/1.png
+        type: 3
+        guid: a30f6eb37b63cc742adb33161147194e
+        tags: []
+        bundleName: 76c9c9307a3f5a429af261ace614ff50
+      - path: Assets/Example/pkg1/px/3.png
+        type: 3
+        guid: e8a889971385c9d46aad1104720159ce
+        tags: []
+        bundleName: 76c9c9307a3f5a429af261ace614ff50
+      - path: Assets/Example/pkg1/shadervariants.shadervariants
+        type: 22
+        guid: 8509778ade282b04aa4076d291359936
+        tags: []
+        bundleName: 7df1b2de664b192449fd8b3fab293174
+      - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+        type: 21
+        guid: fe393ace9b354375a9cb14cdbbc28be4
+        tags: []
+        bundleName: 7df1b2de664b192449fd8b3fab293174
+      - path: Assets/Example/pkg1/px/New Scene.unity
+        type: 6
+        guid: e8643e19ff822eb4aa13c0a53af79707
+        tags: []
+        bundleName: 5988c516f8e168d28972b2ee396bcb3b
+      - path: Assets/Example/pkg1/New Material.mat
+        type: 7
+        guid: 53c7d5590ab282b48b54fe2a05c094c6
+        tags: []
+        bundleName: 7f9177166815399d012a62e4b798c47b
+      - path: Assets/Example/pkg1/Cube.prefab
+        type: 9
+        guid: faee63170bb43064c8285f3e474e739a
+        tags: []
+        bundleName: 7f9177166815399d012a62e4b798c47b
+      - path: Assets/Example/pkg1/a
+        type: 16
+        guid: 761f850b39e3f7c47889d83787d3b39e
+        tags: []
+        bundleName: 85e39d8c25a85eea552a9f3925fe07af
+      bundles:
+      - bundleName: 76c9c9307a3f5a429af261ace614ff50
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 76c9c9307a3f5a429af261ace614ff50
+        length: 459520
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/px/2.png
+        - Assets/Example/pkg1/px/1.png
+        - Assets/Example/pkg1/px/3.png
+        dependence: []
+      - bundleName: 7df1b2de664b192449fd8b3fab293174
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 7df1b2de664b192449fd8b3fab293174
+        length: 9922
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/shadervariants.shadervariants
+        - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+        dependence: []
+      - bundleName: 5988c516f8e168d28972b2ee396bcb3b
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 5988c516f8e168d28972b2ee396bcb3b
+        length: 7874
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/px/New Scene.unity
+        dependence: []
+      - bundleName: 7f9177166815399d012a62e4b798c47b
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 7f9177166815399d012a62e4b798c47b
+        length: 5010
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/New Material.mat
+        - Assets/Example/pkg1/Cube.prefab
+        dependence: []
+      - bundleName: 85e39d8c25a85eea552a9f3925fe07af
+        raw: 1
+        compress: 2
+        enCode: 0
+        hash: 85e39d8c25a85eea552a9f3925fe07af
+        length: 0
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/a
+        dependence: []
+    bundles:
     - assets:
       - path: Assets/Example/pkg1/px/2.png
         name: 2.png
@@ -346,9 +461,11 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 76c9c9307a3f5a429af261ace614ff50
-      _length: 474416
+      _length: 459520
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 0
     - assets:
       - path: Assets/Example/pkg1/shadervariants.shadervariants
         name: shadervariants.shadervariants
@@ -383,33 +500,34 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: 7df1b2de664b192449fd8b3fab293174
-      _length: 112864
+      _length: 9922
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 1
     - assets:
-      - path: Assets/Example/pkg1/Cube.prefab
-        name: Cube.prefab
-        length: 2818
-        hash: 0054d698cd54e7b26ff87a0dac58085c
-        dependence:
-        - Assets/Example/pkg1/New Material.mat
-        type: 9
-        directory: Assets/Example/pkg1
+      - path: Assets/Example/pkg1/px/New Scene.unity
+        name: New Scene.unity
+        length: 7874
+        hash: 574352eb82584f793ea132886d972280
+        dependence: []
+        type: 6
+        directory: Assets/Example/pkg1/px
         tags: []
         usage: []
         record: 1
-        guid: faee63170bb43064c8285f3e474e739a
+        guid: e8643e19ff822eb4aa13c0a53af79707
         in_pkgs:
         - pkg1
-        - pkg2
       usage: []
-      dependence:
-      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
+      dependence: []
       _loop: 0
-      _hash: 5c89e8abf37d4fa6d1e1215fca7cc1b9
-      _length: 8256
+      _hash: 5988c516f8e168d28972b2ee396bcb3b
+      _length: 7874
       _raw: 0
       _enCode: 0
+      IsScene: 1
+      IsShader: 0
     - assets:
       - path: Assets/Example/pkg1/New Material.mat
         name: New Material.mat
@@ -426,14 +544,30 @@ MonoBehaviour:
         in_pkgs:
         - pkg1
         - pkg2
-      usage:
-      - 5c89e8abf37d4fa6d1e1215fca7cc1b9
+      - path: Assets/Example/pkg1/Cube.prefab
+        name: Cube.prefab
+        length: 2818
+        hash: 0054d698cd54e7b26ff87a0dac58085c
+        dependence:
+        - Assets/Example/pkg1/New Material.mat
+        type: 9
+        directory: Assets/Example/pkg1
+        tags: []
+        usage: []
+        record: 1
+        guid: faee63170bb43064c8285f3e474e739a
+        in_pkgs:
+        - pkg1
+        - pkg2
+      usage: []
       dependence: []
       _loop: 0
-      _hash: 48998a5c94d7e5cbbdeb3f01ec9d8df4
-      _length: 132896
+      _hash: 7f9177166815399d012a62e4b798c47b
+      _length: 5010
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 0
     - assets:
       - path: Assets/Example/pkg1/a
         name: a
@@ -455,11 +589,13 @@ MonoBehaviour:
       _length: 0
       _raw: 1
       _enCode: 0
+      IsScene: 0
+      IsShader: 0
     tree:
       assets:
       - path: Assets/Example/pkg1
         name: pkg1
-        length: 466538
+        length: 474412
         hash: 
         dependence: []
         type: 2
@@ -515,7 +651,7 @@ MonoBehaviour:
         - pkg2
       - path: Assets/Example/pkg1/px
         name: px
-        length: 459520
+        length: 467394
         hash: 
         dependence: []
         type: 2
@@ -566,6 +702,19 @@ MonoBehaviour:
         guid: e8a889971385c9d46aad1104720159ce
         in_pkgs:
         - pkg1
+      - path: Assets/Example/pkg1/px/New Scene.unity
+        name: New Scene.unity
+        length: 7874
+        hash: 574352eb82584f793ea132886d972280
+        dependence: []
+        type: 6
+        directory: Assets/Example/pkg1/px
+        tags: []
+        usage: []
+        record: 1
+        guid: e8643e19ff822eb4aa13c0a53af79707
+        in_pkgs:
+        - pkg1
       - path: Assets/Example/pkg1/shadervariants.shadervariants
         name: shadervariants.shadervariants
         length: 2008
@@ -596,7 +745,218 @@ MonoBehaviour:
         - pkg1
         - pkg2
   - pkgName: pkg2
-    previewBundles:
+    encrypt: WooAsset.NoneAssetStreamEncrypt
+    version: 0.0.1
+    compress: Uncompressed
+    typeTreeOption: 0
+    pkg:
+      name: pkg2
+      tags: []
+    manifest:
+      version: 0.0.1
+      assets:
+      - path: Assets/Example/pkg2/jiuba.mp4
+        type: 16
+        guid: f1243aaa91c61004d98098f378ef026c
+        tags: []
+        bundleName: 0ec0371021c1dfc1fa8cdcc500836707
+      - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
+        type: 3
+        guid: 59f6a89c1a651824a936bd18d75b7eaf
+        tags: []
+        bundleName: d111ba45eb97e7c88c4676972ac2e10c
+      - path: Assets/Example/pkg2/px/OIP.jpg
+        type: 3
+        guid: cabab0a9317c1734981026db88f07d34
+        tags: []
+        bundleName: d111ba45eb97e7c88c4676972ac2e10c
+      - path: Assets/Example/pkg2/px/avatar.jpg
+        type: 3
+        guid: 6c73cfa19278e404cbb6d1bbbfe97aec
+        tags: []
+        bundleName: d111ba45eb97e7c88c4676972ac2e10c
+      - path: Assets/Example/pkg2/px/test.jpg
+        type: 3
+        guid: 7bdf3dd9a24e6ed4d805ed5758bad163
+        tags: []
+        bundleName: d111ba45eb97e7c88c4676972ac2e10c
+      - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+        type: 10
+        guid: e3265ab4bf004d28a9537516768c1c75
+        tags: []
+        bundleName: 243a4650079c87e8c8a518635f6d055d
+      - path: Assets/Example/pkg1/px/1.png
+        type: 3
+        guid: a30f6eb37b63cc742adb33161147194e
+        tags: []
+        bundleName: bf1f5a88f21c062b8e99107f99927599
+      - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+        type: 14
+        guid: 9c4b497c86e965b4e8a37e8aa70b2fe0
+        tags: []
+        bundleName: bc8f402a9bf965b8157a546aaaf6ed0f
+      - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        type: 24
+        guid: 3745ceb4d2ffd8f45912804ee9f7fc35
+        tags: []
+        bundleName: 299f9d77f649441208506a2d2f6a564f
+      - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+        type: 4
+        guid: 09d8b16787f44f5428261130f83b4c1c
+        tags: []
+        bundleName: 299f9d77f649441208506a2d2f6a564f
+      - path: Assets/Example/pkg2/Scene/New Scene2.unity
+        type: 6
+        guid: 7623efd24e38a4e46948380b33aadb32
+        tags: []
+        bundleName: 5f10b08b534ae592666f668dc0182f2f
+      - path: Assets/Example/pkg2/diwugejijiejiuba.prefab
+        type: 9
+        guid: 3686fca1edea25140b4986aa6b791c8e
+        tags: []
+        bundleName: a213b631e3164fd9198f9fd0b57b604a
+      - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+        type: 21
+        guid: fe393ace9b354375a9cb14cdbbc28be4
+        tags: []
+        bundleName: da4dc35176a2d52140d21c508ced13db
+      - path: Assets/Example/pkg1/New Material.mat
+        type: 7
+        guid: 53c7d5590ab282b48b54fe2a05c094c6
+        tags: []
+        bundleName: 7f9177166815399d012a62e4b798c47b
+      - path: Assets/Example/pkg1/Cube.prefab
+        type: 9
+        guid: faee63170bb43064c8285f3e474e739a
+        tags: []
+        bundleName: 7f9177166815399d012a62e4b798c47b
+      bundles:
+      - bundleName: 0ec0371021c1dfc1fa8cdcc500836707
+        raw: 1
+        compress: 2
+        enCode: 0
+        hash: 0ec0371021c1dfc1fa8cdcc500836707
+        length: 4348584
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg2/jiuba.mp4
+        dependence: []
+      - bundleName: d111ba45eb97e7c88c4676972ac2e10c
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: d111ba45eb97e7c88c4676972ac2e10c
+        length: 544544
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
+        - Assets/Example/pkg2/px/OIP.jpg
+        - Assets/Example/pkg2/px/avatar.jpg
+        - Assets/Example/pkg2/px/test.jpg
+        dependence: []
+      - bundleName: 243a4650079c87e8c8a518635f6d055d
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 243a4650079c87e8c8a518635f6d055d
+        length: 350200
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+        dependence: []
+      - bundleName: bf1f5a88f21c062b8e99107f99927599
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: bf1f5a88f21c062b8e99107f99927599
+        length: 202240
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/px/1.png
+        dependence: []
+      - bundleName: bc8f402a9bf965b8157a546aaaf6ed0f
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: bc8f402a9bf965b8157a546aaaf6ed0f
+        length: 175505
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
+        dependence: []
+      - bundleName: 299f9d77f649441208506a2d2f6a564f
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 299f9d77f649441208506a2d2f6a564f
+        length: 149424
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+        dependence:
+        - 7f9177166815399d012a62e4b798c47b
+        - da4dc35176a2d52140d21c508ced13db
+        - bf1f5a88f21c062b8e99107f99927599
+        - 243a4650079c87e8c8a518635f6d055d
+      - bundleName: 5f10b08b534ae592666f668dc0182f2f
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 5f10b08b534ae592666f668dc0182f2f
+        length: 22399
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        dependence:
+        - 7f9177166815399d012a62e4b798c47b
+        - 299f9d77f649441208506a2d2f6a564f
+        - da4dc35176a2d52140d21c508ced13db
+        - bf1f5a88f21c062b8e99107f99927599
+        - 243a4650079c87e8c8a518635f6d055d
+      - bundleName: a213b631e3164fd9198f9fd0b57b604a
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: a213b631e3164fd9198f9fd0b57b604a
+        length: 8012
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg2/diwugejijiejiuba.prefab
+        dependence:
+        - bc8f402a9bf965b8157a546aaaf6ed0f
+      - bundleName: da4dc35176a2d52140d21c508ced13db
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: da4dc35176a2d52140d21c508ced13db
+        length: 7914
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+        dependence: []
+      - bundleName: 7f9177166815399d012a62e4b798c47b
+        raw: 0
+        compress: 2
+        enCode: 0
+        hash: 7f9177166815399d012a62e4b798c47b
+        length: 5010
+        bundleHash: 
+        bundleCrc: 0
+        assets:
+        - Assets/Example/pkg1/New Material.mat
+        - Assets/Example/pkg1/Cube.prefab
+        dependence: []
+    bundles:
     - assets:
       - path: Assets/Example/pkg2/jiuba.mp4
         name: jiuba.mp4
@@ -618,116 +978,8 @@ MonoBehaviour:
       _length: 4348584
       _raw: 1
       _enCode: 0
-    - assets:
-      - path: Assets/Example/pkg1/Cube.prefab
-        name: Cube.prefab
-        length: 2818
-        hash: 0054d698cd54e7b26ff87a0dac58085c
-        dependence:
-        - Assets/Example/pkg1/New Material.mat
-        type: 9
-        directory: Assets/Example/pkg1
-        tags: []
-        usage:
-        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        record: 1
-        guid: faee63170bb43064c8285f3e474e739a
-        in_pkgs:
-        - pkg1
-        - pkg2
-      - path: Assets/Example/pkg1/New Material.mat
-        name: New Material.mat
-        length: 2192
-        hash: fd1f846bb3962a8af608fbbac95842cc
-        dependence: []
-        type: 7
-        directory: Assets/Example/pkg1
-        tags: []
-        usage:
-        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        - Assets/Example/pkg1/Cube.prefab
-        record: 1
-        guid: 53c7d5590ab282b48b54fe2a05c094c6
-        in_pkgs:
-        - pkg1
-        - pkg2
-      - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-        name: LightingData.asset
-        length: 18192
-        hash: 4ce8aeae5dfc29344c8f437d327b63b6
-        dependence:
-        - Assets/Example/pkg1/Cube.prefab
-        - Assets/Example/pkg1/New Material.mat
-        - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
-        - Assets/Example/pkg1/px/1.png
-        - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
-        type: 24
-        directory: Assets/Example/pkg2/Scene/New Scene2
-        tags: []
-        usage:
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        record: 1
-        guid: 3745ceb4d2ffd8f45912804ee9f7fc35
-        in_pkgs:
-        - pkg2
-      - path: Assets/Example/pkg1/px/1.png
-        name: 1.png
-        length: 202240
-        hash: e2f30f55a684a7d510149a288e134f56
-        dependence: []
-        type: 3
-        directory: Assets/Example/pkg1/px
-        tags: []
-        usage:
-        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        record: 1
-        guid: a30f6eb37b63cc742adb33161147194e
-        in_pkgs:
-        - pkg1
-        - pkg2
-      - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
-        name: ReflectionProbe-0.exr
-        length: 131232
-        hash: 8abb9da324817b701da15499b1315c4b
-        dependence: []
-        type: 4
-        directory: Assets/Example/pkg2/Scene/New Scene2
-        tags: []
-        usage:
-        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        record: 1
-        guid: 09d8b16787f44f5428261130f83b4c1c
-        in_pkgs:
-        - pkg2
-      - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
-        name: LiberationSans.ttf
-        length: 350200
-        hash: bbbd0bdbfba093dec2ee4ca8b62e61f9
-        dependence: []
-        type: 10
-        directory: Assets/TextMesh Pro/Fonts
-        tags: []
-        usage:
-        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-        - Assets/Example/pkg2/Scene/New Scene2.unity
-        record: 1
-        guid: e3265ab4bf004d28a9537516768c1c75
-        in_pkgs:
-        - pkg2
-      usage:
-      - 5f10b08b534ae592666f668dc0182f2f
-      dependence: []
-      _loop: 1
-      _hash: e532400da57a3eaea2a005809533e40c
-      _length: 840288
-      _raw: 0
-      _enCode: 0
+      IsScene: 0
+      IsShader: 0
     - assets:
       - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
         name: b_da5501a6ee682f0b0cbba61a7ad46106.jpg
@@ -785,9 +1037,66 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: d111ba45eb97e7c88c4676972ac2e10c
-      _length: 560752
+      _length: 544544
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 0
+    - assets:
+      - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+        name: LiberationSans.ttf
+        length: 350200
+        hash: bbbd0bdbfba093dec2ee4ca8b62e61f9
+        dependence: []
+        type: 10
+        directory: Assets/TextMesh Pro/Fonts
+        tags: []
+        usage:
+        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        record: 1
+        guid: e3265ab4bf004d28a9537516768c1c75
+        in_pkgs:
+        - pkg2
+      usage:
+      - 5f10b08b534ae592666f668dc0182f2f
+      - 299f9d77f649441208506a2d2f6a564f
+      dependence: []
+      _loop: 0
+      _hash: 243a4650079c87e8c8a518635f6d055d
+      _length: 350200
+      _raw: 0
+      _enCode: 0
+      IsScene: 0
+      IsShader: 0
+    - assets:
+      - path: Assets/Example/pkg1/px/1.png
+        name: 1.png
+        length: 202240
+        hash: e2f30f55a684a7d510149a288e134f56
+        dependence: []
+        type: 3
+        directory: Assets/Example/pkg1/px
+        tags: []
+        usage:
+        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        record: 1
+        guid: a30f6eb37b63cc742adb33161147194e
+        in_pkgs:
+        - pkg1
+        - pkg2
+      usage:
+      - 5f10b08b534ae592666f668dc0182f2f
+      - 299f9d77f649441208506a2d2f6a564f
+      dependence: []
+      _loop: 0
+      _hash: bf1f5a88f21c062b8e99107f99927599
+      _length: 202240
+      _raw: 0
+      _enCode: 0
+      IsScene: 0
+      IsShader: 0
     - assets:
       - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
         name: Sample-Local-MP4-Cones.asset
@@ -808,9 +1117,62 @@ MonoBehaviour:
       dependence: []
       _loop: 0
       _hash: bc8f402a9bf965b8157a546aaaf6ed0f
-      _length: 6144
+      _length: 175505
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 0
+    - assets:
+      - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        name: LightingData.asset
+        length: 18192
+        hash: 4ce8aeae5dfc29344c8f437d327b63b6
+        dependence:
+        - Assets/Example/pkg1/Cube.prefab
+        - Assets/Example/pkg1/New Material.mat
+        - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+        - Assets/Example/pkg1/px/1.png
+        - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+        type: 24
+        directory: Assets/Example/pkg2/Scene/New Scene2
+        tags: []
+        usage:
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        record: 1
+        guid: 3745ceb4d2ffd8f45912804ee9f7fc35
+        in_pkgs:
+        - pkg2
+      - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+        name: ReflectionProbe-0.exr
+        length: 131232
+        hash: 8abb9da324817b701da15499b1315c4b
+        dependence: []
+        type: 4
+        directory: Assets/Example/pkg2/Scene/New Scene2
+        tags: []
+        usage:
+        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        record: 1
+        guid: 09d8b16787f44f5428261130f83b4c1c
+        in_pkgs:
+        - pkg2
+      usage:
+      - 5f10b08b534ae592666f668dc0182f2f
+      dependence:
+      - 7f9177166815399d012a62e4b798c47b
+      - da4dc35176a2d52140d21c508ced13db
+      - bf1f5a88f21c062b8e99107f99927599
+      - 243a4650079c87e8c8a518635f6d055d
+      _loop: 0
+      _hash: 299f9d77f649441208506a2d2f6a564f
+      _length: 149424
+      _raw: 0
+      _enCode: 0
+      IsScene: 0
+      IsShader: 0
     - assets:
       - path: Assets/Example/pkg2/Scene/New Scene2.unity
         name: New Scene2.unity
@@ -835,13 +1197,18 @@ MonoBehaviour:
         - pkg2
       usage: []
       dependence:
+      - 7f9177166815399d012a62e4b798c47b
+      - 299f9d77f649441208506a2d2f6a564f
       - da4dc35176a2d52140d21c508ced13db
-      - e532400da57a3eaea2a005809533e40c
-      _loop: 1
+      - bf1f5a88f21c062b8e99107f99927599
+      - 243a4650079c87e8c8a518635f6d055d
+      _loop: 0
       _hash: 5f10b08b534ae592666f668dc0182f2f
-      _length: 1236832
+      _length: 22399
       _raw: 0
       _enCode: 0
+      IsScene: 1
+      IsShader: 0
     - assets:
       - path: Assets/Example/pkg2/diwugejijiejiuba.prefab
         name: diwugejijiejiuba.prefab
@@ -862,9 +1229,11 @@ MonoBehaviour:
       - bc8f402a9bf965b8157a546aaaf6ed0f
       _loop: 0
       _hash: a213b631e3164fd9198f9fd0b57b604a
-      _length: 27968
+      _length: 8012
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 0
     - assets:
       - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
         name: TMP_SDF-Mobile.shader
@@ -884,12 +1253,61 @@ MonoBehaviour:
         - pkg2
       usage:
       - 5f10b08b534ae592666f668dc0182f2f
+      - 299f9d77f649441208506a2d2f6a564f
       dependence: []
       _loop: 0
       _hash: da4dc35176a2d52140d21c508ced13db
-      _length: 87920
+      _length: 7914
       _raw: 0
       _enCode: 0
+      IsScene: 0
+      IsShader: 1
+    - assets:
+      - path: Assets/Example/pkg1/New Material.mat
+        name: New Material.mat
+        length: 2192
+        hash: fd1f846bb3962a8af608fbbac95842cc
+        dependence: []
+        type: 7
+        directory: Assets/Example/pkg1
+        tags: []
+        usage:
+        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        - Assets/Example/pkg1/Cube.prefab
+        record: 1
+        guid: 53c7d5590ab282b48b54fe2a05c094c6
+        in_pkgs:
+        - pkg1
+        - pkg2
+      - path: Assets/Example/pkg1/Cube.prefab
+        name: Cube.prefab
+        length: 2818
+        hash: 0054d698cd54e7b26ff87a0dac58085c
+        dependence:
+        - Assets/Example/pkg1/New Material.mat
+        type: 9
+        directory: Assets/Example/pkg1
+        tags: []
+        usage:
+        - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+        - Assets/Example/pkg2/Scene/New Scene2.unity
+        record: 1
+        guid: faee63170bb43064c8285f3e474e739a
+        in_pkgs:
+        - pkg1
+        - pkg2
+      usage:
+      - 5f10b08b534ae592666f668dc0182f2f
+      - 299f9d77f649441208506a2d2f6a564f
+      dependence: []
+      _loop: 0
+      _hash: 7f9177166815399d012a62e4b798c47b
+      _length: 5010
+      _raw: 0
+      _enCode: 0
+      IsScene: 0
+      IsShader: 0
     tree:
       assets:
       - path: Assets/Example/pkg2
@@ -1203,16 +1621,21 @@ MonoBehaviour:
       guid: fe393ace9b354375a9cb14cdbbc28be4
       tags: []
       bundleName: 7df1b2de664b192449fd8b3fab293174
-    - path: Assets/Example/pkg1/Cube.prefab
-      type: 9
-      guid: faee63170bb43064c8285f3e474e739a
+    - path: Assets/Example/pkg1/px/New Scene.unity
+      type: 6
+      guid: e8643e19ff822eb4aa13c0a53af79707
       tags: []
-      bundleName: 5c89e8abf37d4fa6d1e1215fca7cc1b9
+      bundleName: 5988c516f8e168d28972b2ee396bcb3b
     - path: Assets/Example/pkg1/New Material.mat
       type: 7
       guid: 53c7d5590ab282b48b54fe2a05c094c6
       tags: []
-      bundleName: 48998a5c94d7e5cbbdeb3f01ec9d8df4
+      bundleName: 7f9177166815399d012a62e4b798c47b
+    - path: Assets/Example/pkg1/Cube.prefab
+      type: 9
+      guid: faee63170bb43064c8285f3e474e739a
+      tags: []
+      bundleName: 7f9177166815399d012a62e4b798c47b
     - path: Assets/Example/pkg1/a
       type: 16
       guid: 761f850b39e3f7c47889d83787d3b39e
@@ -1223,21 +1646,6 @@ MonoBehaviour:
       guid: f1243aaa91c61004d98098f378ef026c
       tags: []
       bundleName: 0ec0371021c1dfc1fa8cdcc500836707
-    - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-      type: 24
-      guid: 3745ceb4d2ffd8f45912804ee9f7fc35
-      tags: []
-      bundleName: e532400da57a3eaea2a005809533e40c
-    - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
-      type: 4
-      guid: 09d8b16787f44f5428261130f83b4c1c
-      tags: []
-      bundleName: e532400da57a3eaea2a005809533e40c
-    - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
-      type: 10
-      guid: e3265ab4bf004d28a9537516768c1c75
-      tags: []
-      bundleName: e532400da57a3eaea2a005809533e40c
     - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
       type: 3
       guid: 59f6a89c1a651824a936bd18d75b7eaf
@@ -1258,11 +1666,26 @@ MonoBehaviour:
       guid: 7bdf3dd9a24e6ed4d805ed5758bad163
       tags: []
       bundleName: d111ba45eb97e7c88c4676972ac2e10c
+    - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+      type: 10
+      guid: e3265ab4bf004d28a9537516768c1c75
+      tags: []
+      bundleName: 243a4650079c87e8c8a518635f6d055d
     - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
       type: 14
       guid: 9c4b497c86e965b4e8a37e8aa70b2fe0
       tags: []
       bundleName: bc8f402a9bf965b8157a546aaaf6ed0f
+    - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+      type: 24
+      guid: 3745ceb4d2ffd8f45912804ee9f7fc35
+      tags: []
+      bundleName: 299f9d77f649441208506a2d2f6a564f
+    - path: Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+      type: 4
+      guid: 09d8b16787f44f5428261130f83b4c1c
+      tags: []
+      bundleName: 299f9d77f649441208506a2d2f6a564f
     - path: Assets/Example/pkg2/Scene/New Scene2.unity
       type: 6
       guid: 7623efd24e38a4e46948380b33aadb32
@@ -1278,10 +1701,10 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 3487e55b58d637345a896d656fbb717b
-      length: 474416
-      bundleHash: 12473525d91d13ab9f0d55870cd274d5
-      bundleCrc: 962084405
+      hash: 76c9c9307a3f5a429af261ace614ff50
+      length: 459520
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/px/2.png
       - Assets/Example/pkg1/px/1.png
@@ -1291,42 +1714,42 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 4412c8cc7044772bd7bc41e097a3cedd
-      length: 112864
-      bundleHash: faedd48298eb6bd6446e542829ee2fde
-      bundleCrc: 3910067162
+      hash: 7df1b2de664b192449fd8b3fab293174
+      length: 9922
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/shadervariants.shadervariants
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       dependence: []
-    - bundleName: 5c89e8abf37d4fa6d1e1215fca7cc1b9
+    - bundleName: 5988c516f8e168d28972b2ee396bcb3b
       raw: 0
       compress: 2
       enCode: 0
-      hash: a452cf2ac902f4b4efdced28904735c0
-      length: 8256
-      bundleHash: 98f6649b228658a1fcc5c2a6ccfbf577
-      bundleCrc: 2311966693
+      hash: 5988c516f8e168d28972b2ee396bcb3b
+      length: 7874
+      bundleHash: 
+      bundleCrc: 0
       assets:
-      - Assets/Example/pkg1/Cube.prefab
-      dependence:
-      - 48998a5c94d7e5cbbdeb3f01ec9d8df4
-    - bundleName: 48998a5c94d7e5cbbdeb3f01ec9d8df4
+      - Assets/Example/pkg1/px/New Scene.unity
+      dependence: []
+    - bundleName: 7f9177166815399d012a62e4b798c47b
       raw: 0
       compress: 2
       enCode: 0
-      hash: a2296b90356a122ff74ad762ce710fd3
-      length: 132896
-      bundleHash: f66ebfd6ffdc67fe35348b6e446141fa
-      bundleCrc: 1999514936
+      hash: 7f9177166815399d012a62e4b798c47b
+      length: 5010
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg1/New Material.mat
+      - Assets/Example/pkg1/Cube.prefab
       dependence: []
     - bundleName: 85e39d8c25a85eea552a9f3925fe07af
       raw: 1
       compress: 2
       enCode: 0
-      hash: d41d8cd98f00b204e9800998ecf8427e
+      hash: 85e39d8c25a85eea552a9f3925fe07af
       length: 0
       bundleHash: 
       bundleCrc: 0
@@ -1337,75 +1760,100 @@ MonoBehaviour:
       raw: 1
       compress: 2
       enCode: 0
-      hash: b75bedf1e9321567464e8e4dfc534c45
+      hash: 0ec0371021c1dfc1fa8cdcc500836707
       length: 4348584
       bundleHash: 
       bundleCrc: 0
       assets:
       - Assets/Example/pkg2/jiuba.mp4
       dependence: []
-    - bundleName: e532400da57a3eaea2a005809533e40c
-      raw: 0
-      compress: 2
-      enCode: 0
-      hash: 17d68f924aba46c62fd10f8e725cdc30
-      length: 840288
-      bundleHash: d31f1668bda4ebb65fc8f0af167d07b4
-      bundleCrc: 2516380725
-      assets:
-      - Assets/Example/pkg1/Cube.prefab
-      - Assets/Example/pkg1/New Material.mat
-      - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
-      - Assets/Example/pkg1/px/1.png
-      - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
-      - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
-      dependence: []
     - bundleName: d111ba45eb97e7c88c4676972ac2e10c
       raw: 0
       compress: 2
       enCode: 0
-      hash: edd1d1aa7ae12f77db1908406237b9a0
-      length: 560752
-      bundleHash: 67ad992934c321b9c989ac0be93c655f
-      bundleCrc: 4047209625
+      hash: d111ba45eb97e7c88c4676972ac2e10c
+      length: 544544
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
       - Assets/Example/pkg2/px/OIP.jpg
       - Assets/Example/pkg2/px/avatar.jpg
       - Assets/Example/pkg2/px/test.jpg
       dependence: []
+    - bundleName: 243a4650079c87e8c8a518635f6d055d
+      raw: 0
+      compress: 2
+      enCode: 0
+      hash: 243a4650079c87e8c8a518635f6d055d
+      length: 350200
+      bundleHash: 
+      bundleCrc: 0
+      assets:
+      - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+      dependence: []
+    - bundleName: bf1f5a88f21c062b8e99107f99927599
+      raw: 0
+      compress: 2
+      enCode: 0
+      hash: bf1f5a88f21c062b8e99107f99927599
+      length: 202240
+      bundleHash: 
+      bundleCrc: 0
+      assets:
+      - Assets/Example/pkg1/px/1.png
+      dependence: []
     - bundleName: bc8f402a9bf965b8157a546aaaf6ed0f
       raw: 0
       compress: 2
       enCode: 0
-      hash: 40ee054ffbb7837d31bbe7484661d141
-      length: 6144
-      bundleHash: adcdf1c6512d96b722e42f91d7c9a038
-      bundleCrc: 3430257687
+      hash: bc8f402a9bf965b8157a546aaaf6ed0f
+      length: 175505
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
       dependence: []
+    - bundleName: 299f9d77f649441208506a2d2f6a564f
+      raw: 0
+      compress: 2
+      enCode: 0
+      hash: 299f9d77f649441208506a2d2f6a564f
+      length: 149424
+      bundleHash: 
+      bundleCrc: 0
+      assets:
+      - Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
+      - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
+      dependence:
+      - 7f9177166815399d012a62e4b798c47b
+      - da4dc35176a2d52140d21c508ced13db
+      - bf1f5a88f21c062b8e99107f99927599
+      - 243a4650079c87e8c8a518635f6d055d
     - bundleName: 5f10b08b534ae592666f668dc0182f2f
       raw: 0
       compress: 2
       enCode: 0
-      hash: 75c17829bb891e3ac5d48b483a36f70a
-      length: 1236832
-      bundleHash: f647e9f1838f5c8a8637f5724c7a700e
-      bundleCrc: 917995841
+      hash: 5f10b08b534ae592666f668dc0182f2f
+      length: 22399
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg2/Scene/New Scene2.unity
       dependence:
+      - 7f9177166815399d012a62e4b798c47b
+      - 299f9d77f649441208506a2d2f6a564f
       - da4dc35176a2d52140d21c508ced13db
-      - e532400da57a3eaea2a005809533e40c
+      - bf1f5a88f21c062b8e99107f99927599
+      - 243a4650079c87e8c8a518635f6d055d
     - bundleName: a213b631e3164fd9198f9fd0b57b604a
       raw: 0
       compress: 2
       enCode: 0
-      hash: 76fb5ecff815cfc3a072078e2263a7e6
-      length: 27968
-      bundleHash: 105e896e9e1840ebe4a9be67ac1ef9d7
-      bundleCrc: 3765902543
+      hash: a213b631e3164fd9198f9fd0b57b604a
+      length: 8012
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/Example/pkg2/diwugejijiejiuba.prefab
       dependence:
@@ -1414,17 +1862,17 @@ MonoBehaviour:
       raw: 0
       compress: 2
       enCode: 0
-      hash: 4b6237e10feb854027538ae5b25d4571
-      length: 87920
-      bundleHash: efc58278cce0c996acccbf00972d5499
-      bundleCrc: 2705145988
+      hash: da4dc35176a2d52140d21c508ced13db
+      length: 7914
+      bundleHash: 
+      bundleCrc: 0
       assets:
       - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
       dependence: []
   cachedAssets:
   - path: Assets/Example/pkg1/a
     _PreviewSize: 0
-    _InstanceID: 32408
+    _InstanceID: 19272
     _type: UnityEditor.DefaultAsset
     _hash: d41d8cd98f00b204e9800998ecf8427e
     _dp_hash: fc205aaab4dd82c5576dd6ce84c6b60f
@@ -1432,7 +1880,7 @@ MonoBehaviour:
     - Assets/Example/pkg1/a
   - path: Assets/Example/pkg1/Cube.prefab
     _PreviewSize: 2818
-    _InstanceID: 32000
+    _InstanceID: 19074
     _type: UnityEngine.GameObject
     _hash: 0054d698cd54e7b26ff87a0dac58085c
     _dp_hash: 074529fddcc45eab61d4b6d0b64acd55
@@ -1441,7 +1889,7 @@ MonoBehaviour:
     - Assets/Example/pkg1/New Material.mat
   - path: Assets/Example/pkg1/New Material.mat
     _PreviewSize: 2192
-    _InstanceID: 30426
+    _InstanceID: 19104
     _type: UnityEngine.Material
     _hash: fd1f846bb3962a8af608fbbac95842cc
     _dp_hash: ecb325053fef3e3a7b346ea963d69a53
@@ -1456,35 +1904,36 @@ MonoBehaviour:
     _dps: []
   - path: Assets/Example/pkg1/px/1.png
     _PreviewSize: 202240
-    _InstanceID: 30450
+    _InstanceID: 19080
     _type: UnityEngine.Texture2D
     _hash: e2f30f55a684a7d510149a288e134f56
-    _dp_hash: 6949a369e75ea36efd427bc973a1c282
+    _dp_hash: 49b5f0f52f86b367f7fdbd51370fd196
     _dps:
     - Assets/Example/pkg1/px/1.png
   - path: Assets/Example/pkg1/px/2.png
     _PreviewSize: 51200
-    _InstanceID: 30452
+    _InstanceID: 19278
     _type: UnityEngine.Texture2D
     _hash: ad6c8de70668d4a6dd34ce44ab6f815a
-    _dp_hash: 0d5ddf3ccc2302e1bac969fb54de4da5
+    _dp_hash: 1cbe69f427dfb3c615068d3ab28b0a80
     _dps:
     - Assets/Example/pkg1/px/2.png
   - path: Assets/Example/pkg1/px/3.png
     _PreviewSize: 206080
-    _InstanceID: 30454
+    _InstanceID: 19280
     _type: UnityEngine.Texture2D
     _hash: 89774a5daaaf4992a55619ccb6660c7b
-    _dp_hash: 37a6a973ed7727e0ecd28456b316d597
+    _dp_hash: c11ce998cb3c04fbb63db95fc53bcf29
     _dps:
     - Assets/Example/pkg1/px/3.png
   - path: Assets/Example/pkg1/px/New Scene.unity
-    _PreviewSize: -1
-    _InstanceID: 0
+    _PreviewSize: 7874
+    _InstanceID: 19282
     _type: UnityEditor.SceneAsset
-    _hash: 
-    _dp_hash: 
-    _dps: []
+    _hash: 574352eb82584f793ea132886d972280
+    _dp_hash: 8342cb25563327234368f440d5f185fb
+    _dps:
+    - Assets/Example/pkg1/px/New Scene.unity
   - path: Assets/Example/pkg1/px.spriteatlas
     _PreviewSize: -1
     _InstanceID: 0
@@ -1494,7 +1943,7 @@ MonoBehaviour:
     _dps: []
   - path: Assets/Example/pkg1/shadervariants.shadervariants
     _PreviewSize: 2008
-    _InstanceID: 30430
+    _InstanceID: 19288
     _type: UnityEngine.ShaderVariantCollection
     _hash: f3f83e9d88d6738ca2aa88a3b1313cba
     _dp_hash: fca8e6b0903503997434b840e1155bd6
@@ -1503,7 +1952,7 @@ MonoBehaviour:
     - Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
   - path: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
     _PreviewSize: 7914
-    _InstanceID: 30432
+    _InstanceID: 400
     _type: UnityEngine.Shader
     _hash: d236bb724260067379b11736bb8c6e91
     _dp_hash: 65b5a8b77ba2567e18c2d496d66dcdd9
@@ -1525,7 +1974,7 @@ MonoBehaviour:
     - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
   - path: Assets/Example/pkg2/jiuba.mp4
     _PreviewSize: 4348584
-    _InstanceID: 0
+    _InstanceID: 19294
     _type: UnityEngine.Video.VideoClip
     _hash: b75bedf1e9321567464e8e4dfc534c45
     _dp_hash: 7f470e4e605a647e776703160ffd9e6d
@@ -1533,34 +1982,34 @@ MonoBehaviour:
     - Assets/Example/pkg2/jiuba.mp4
   - path: Assets/Example/pkg2/px/avatar.jpg
     _PreviewSize: 180000
-    _InstanceID: 0
+    _InstanceID: 19296
     _type: UnityEngine.Texture2D
     _hash: 6de058942339e09666a74eccc57d7a00
-    _dp_hash: 353eab2866b1f2941ecb84659268e76c
+    _dp_hash: a0aa9326aaa303da58aacc6af7eae545
     _dps:
     - Assets/Example/pkg2/px/avatar.jpg
   - path: Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
     _PreviewSize: 80000
-    _InstanceID: 0
+    _InstanceID: 19298
     _type: UnityEngine.Texture2D
     _hash: 9041de02961ec2cddd934ba36de85682
-    _dp_hash: cc057f000f344bb6a61af442ecbc138b
+    _dp_hash: 9c217121a17ba53b4a3d50feedd426ba
     _dps:
     - Assets/Example/pkg2/px/b_da5501a6ee682f0b0cbba61a7ad46106.jpg
   - path: Assets/Example/pkg2/px/OIP.jpg
     _PreviewSize: 104544
-    _InstanceID: 0
+    _InstanceID: 19300
     _type: UnityEngine.Texture2D
     _hash: 0ba4a8ee6dc628e7c24042acb0db868e
-    _dp_hash: 51bb6f8de1a21e7d12e7833985a8c8d2
+    _dp_hash: 8373b155fd4ad242b69a4cc7a87621ca
     _dps:
     - Assets/Example/pkg2/px/OIP.jpg
   - path: Assets/Example/pkg2/px/test.jpg
     _PreviewSize: 180000
-    _InstanceID: 0
+    _InstanceID: 19302
     _type: UnityEngine.Texture2D
     _hash: 6de058942339e09666a74eccc57d7a00
-    _dp_hash: aeb2ed9889e37ba6da6ccaab39ab45d7
+    _dp_hash: 945332b2fbc47af0d1c17dd2d0d2bd07
     _dps:
     - Assets/Example/pkg2/px/test.jpg
   - path: Assets/Example/pkg2/Scene/New Scene2/LightingData.asset
@@ -1596,7 +2045,7 @@ MonoBehaviour:
     _InstanceID: 0
     _type: UnityEngine.Cubemap
     _hash: 8abb9da324817b701da15499b1315c4b
-    _dp_hash: 54158759bc2b9a05eda62e5b7e9f6da3
+    _dp_hash: 47b78fb46cf94b858cf8224337e771bb
     _dps:
     - Assets/Example/pkg2/Scene/New Scene2/ReflectionProbe-0.exr
   - path: Assets/Example/pkg2/Scene/New Scene2.unity
@@ -1657,7 +2106,7 @@ MonoBehaviour:
     _dps: []
   - path: Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
     _PreviewSize: 175505
-    _InstanceID: 0
+    _InstanceID: 19758
     _type: RenderHeads.Media.AVProVideo.MediaReference
     _hash: 03d2e41d8c13845a637d4164091ae3dd
     _dp_hash: 14c9a6acae15f3a7620e4a3dd11d7613
@@ -1667,7 +2116,7 @@ MonoBehaviour:
     - Assets/AVProVideo/Demos/SampleMedia/Sample-Local-MP4-Cones.asset
   - path: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
     _PreviewSize: 350200
-    _InstanceID: 0
+    _InstanceID: 19084
     _type: UnityEngine.Font
     _hash: bbbd0bdbfba093dec2ee4ca8b62e61f9
     _dp_hash: adcc76c97b6dc3a89b95f675e718caef
@@ -1675,14 +2124,21 @@ MonoBehaviour:
     - Assets/TextMesh Pro/Fonts/LiberationSans.ttf
   - path: Assets/Example/pkg1
     _PreviewSize: -1
-    _InstanceID: 31918
+    _InstanceID: 19228
     _type: 
     _hash: 
     _dp_hash: 
     _dps: []
   - path: Assets/Example/pkg1/px
     _PreviewSize: -1
-    _InstanceID: 32410
+    _InstanceID: 19236
+    _type: 
+    _hash: 
+    _dp_hash: 
+    _dps: []
+  - path: Assets/Example/pkg2
+    _PreviewSize: -1
+    _InstanceID: 19230
     _type: 
     _hash: 
     _dp_hash: 
