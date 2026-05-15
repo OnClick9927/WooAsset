@@ -69,7 +69,8 @@ namespace WooAsset
 
 
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
-
+        private static CustomAsset CreateCustomAsset(string path, bool async, Type type) => setting.CreateCustomAsset(path, async, type);
+        private static bool IsCustomAsset(string path, bool async, Type type) => setting.IsCustomAsset(path, async, type);
 
 
         private static IAssetEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
@@ -109,14 +110,16 @@ namespace WooAsset
         private static Bundle CreateBundle(BundleLoadArgs args) => mode.CreateBundle(args.bundleName, args);
         public static AssetHandle LoadAsset(string path, bool sub, bool async, Type type)
         {
+            if (AssetsInternal.IsCustomAsset(path, async, type))
+            {
+                return assets.LoadAssetCustom(path, async, type);
+            }
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
             {
-                var result = assets.LoadAssetCustom(path, async, type);
-                if (result == null)
-                    AssetsHelper.LogError($"Not Found Asset: {path}");
+                AssetsHelper.LogError($"Not Found Asset: {path}");
 
-                return result;
+                return null;
             }
             return assets.LoadAsset(data, async, type, sub);
         }

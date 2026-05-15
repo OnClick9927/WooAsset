@@ -29,24 +29,25 @@
         public AssetData data;
         public bool sub;
         public string path;
-        public string uid => data.path;
-
-        private AssetLoadArgs(string path, AssetData data, bool async, System.Type type, bool sub)
+        public string uid => custom ? path : data.path;
+        public bool custom;
+        private AssetLoadArgs(string path, AssetData data, bool async, System.Type type, bool sub, bool custom)
         {
             this.data = data;
             this.async = async;
             this.type = type;
             this.sub = sub;
             this.path = path;
+            this.custom = custom;
         }
 
         public static AssetLoadArgs NormalArg(AssetData data, bool async, System.Type type, bool sub)
         {
-            return new AssetLoadArgs(data.path, data, async, type, sub);
+            return new AssetLoadArgs(data.path, data, async, type, sub, false);
         }
         public static AssetLoadArgs CustomArg(string path, bool async, System.Type type)
         {
-            return new AssetLoadArgs(path, null, async, type, false);
+            return new AssetLoadArgs(path, null, async, type, false, true);
         }
 
     }

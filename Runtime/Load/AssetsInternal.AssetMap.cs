@@ -17,10 +17,8 @@
             }
             protected override AssetHandle CreateNew(AssetLoadArgs args)
             {
-                if (ResourceAsset.IsFit(args.path))
-                {
-                    return new ResourceAsset(args.path, args.async, args.type);
-                }
+                if (args.custom)
+                    return CreateCustomAsset(args.path, args.async, args.type);
                 Bundle bundle = bundles.LoadBundle(args.data.bundleName, args.async);
                 AssetHandle handle;
                 if (args.data.type == AssetType.Raw)

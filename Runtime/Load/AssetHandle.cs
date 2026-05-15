@@ -3,23 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 using Object = UnityEngine.Object;
 
 namespace WooAsset
 {
-    public abstract class AssetHandle<T> : AssetHandle
+    public interface ICanGetAsset
     {
-        protected AssetHandle(string path, bool async, Type type) : base(path, async, type)
-        {
-        }
-
-        public T value { get; private set; }
-        protected virtual void SetResult(T value)
-        {
-            this.value = value;
-            InvokeComplete();
-        }
+        public T GetAsset<T>() where T : Object;
+        System.Type GetAssetType();
     }
 
     public abstract class AssetHandle : AssetOperation
@@ -85,7 +76,31 @@ namespace WooAsset
         protected abstract void InternalLoad();
 
     }
-    public class ResourceAsset : AssetHandle<UnityEngine.Object>
+
+    public abstract class CustomAsset : AssetHandle
+    {
+        public sealed override string bundleName => string.Empty;
+        public sealed override bool IsBundleAsset => false;
+        protected CustomAsset(string path, bool async, Type type) : base(path, async, type)
+        {
+        }
+    }
+    public abstract class CustomAsset<T> : CustomAsset
+    {
+        protected CustomAsset(string path, bool async, Type type) : base(path, async, type)
+        {
+        }
+
+        public T value { get; private set; }
+        protected virtual void SetResult(T value)
+        {
+            this.value = value;
+            InvokeComplete();
+        }
+    }
+
+
+    public class ResourceAsset : CustomAsset<UnityEngine.Object>, ICanGetAsset
     {
         public const string flag = "Resources:";
         public static bool IsFit(string path)
@@ -112,8 +127,10 @@ namespace WooAsset
 
         protected async void InternalLoad()
         {
+            var path = this.path.Remove(0, flag.Length);
             if (async)
             {
+
                 loadOp = Resources.LoadAsync(path, type);
                 await loadOp;
                 SetResult(loadOp.asset);
@@ -127,12 +144,18 @@ namespace WooAsset
 
         protected override void OnUnLoad()
         {
-            if (value != null)
-                Resources.UnloadAsset(value);
+            //if (value != null)
+            //    Resources.UnloadAsset(value);
+        }
+
+        public static string MakeResPath(string path)
+        {
+            return $"{flag}{path}";
         }
     }
 
-    public class Asset : BundleAssetHandle<UnityEngine.Object>
+
+    public class Asset : BundleAssetHandle<UnityEngine.Object>, ICanGetAsset
     {
         private AssetRequest loadOp;
         internal Asset(AssetLoadArgs loadArgs, Bundle bundle) : base(loadArgs, bundle)
