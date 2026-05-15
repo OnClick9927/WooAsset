@@ -36,7 +36,7 @@ namespace WooAsset
                 var life = new AssetLife<AssetHandle>()
                 {
                     asset = asset,
-                    tags = Assets.GetAssetTags(path),
+                    tags = asset.IsBundleAsset ? Assets.GetAssetTags(path) : new List<string>(),
                     assetType = asset.IsBundleAsset ? AssetsInternal.GetAssetData(path).type.ToString() : AssetType.None.ToString(),
                 };
                 assets.Add(path, life);

@@ -77,7 +77,7 @@ namespace WooAsset
                     || cache.Pipeline == TaskPipelineType.BuildBundle
                     || cache.Pipeline == TaskPipelineType.DryBuild)
                 {
-                    var tmp = EditorGUILayout.Popup(cache.index, cache.pkgBundles.Select(x => x.pkgName).ToArray(), GUILayout.Width(100));
+                    var tmp = EditorGUILayout.Popup(cache.index, cache.exports.Select(x => x.pkgName).ToArray(), GUILayout.Width(100));
                     if (tmp != cache.index)
                     {
                         cache.index = tmp;

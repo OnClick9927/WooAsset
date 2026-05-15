@@ -121,7 +121,7 @@ namespace WooAsset
                     GUILayout.FlexibleSpace();
                     if (!cache.viewAllAssets)
                     {
-                        var tmp = EditorGUILayout.Popup(cache.index, cache.pkgBundles.Select(x => x.pkgName).ToArray(), GUILayout.Width(100));
+                        var tmp = EditorGUILayout.Popup(cache.index, cache.exports.Select(x => x.pkgName).ToArray(), GUILayout.Width(100));
                         if (tmp != cache.index)
                         {
                             cache.index = tmp;

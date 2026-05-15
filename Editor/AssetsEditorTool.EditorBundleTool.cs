@@ -28,9 +28,11 @@ namespace WooAsset
                     result.Add(EditorBundleData.Create(atlas));
                 }
             }
-            public static void N2One(List<EditorAssetData> assets, List<EditorBundleData> result)
+            public static EditorBundleData N2One(List<EditorAssetData> assets, List<EditorBundleData> result)
             {
-                result.Add(EditorBundleData.Create(assets));
+                EditorBundleData data = EditorBundleData.Create(assets);
+                result.Add(data);
+                return data;
             }
 
 
