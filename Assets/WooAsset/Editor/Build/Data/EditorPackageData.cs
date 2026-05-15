@@ -20,7 +20,7 @@ namespace WooAsset
         {
             return new PackageData()
             {
-                description = description,
+                //description = description,
                 name = name,
                 tags = tags
             };
