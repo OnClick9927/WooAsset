@@ -9,21 +9,30 @@ namespace WooAsset
         public GameObject gameObject { get; private set; }
 
         private GameObjectBridge bridge;
-    
-        public InstantiateObjectOperation(Asset asset, Transform parent)
+
+        public InstantiateObjectOperation(AssetHandle asset, Transform parent)
         {
-            Done(asset, parent);
+            if (asset is ICanGetAsset)
+            {
+
+                Done(asset, parent);
+            }
+            else
+            {
+                SetErr($"not valid asset: {asset.path}");
+
+            }
         }
-        private async void Done(Asset asset, Transform parent)
+        private async void Done(AssetHandle asset, Transform parent)
         {
             await asset;
             Create(asset, parent);
         }
-        private void Create(Asset asset, Transform parent)
+        private void Create(AssetHandle asset, Transform parent)
         {
             if (!asset.isErr)
             {
-                GameObject prefab = asset.GetAsset<GameObject>();
+                GameObject prefab = (asset as ICanGetAsset).GetAsset<GameObject>();
                 if (prefab == null)
                 {
                     SetErr($"could not load gameObject from : {asset.path}");

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WooAsset
 {
@@ -54,6 +55,23 @@ namespace WooAsset
             map.TryGetValue(code, out en);
             return en;
         }
+
+        public virtual CustomAsset CreateCustomAsset(string path, bool async, Type type)
+        {
+            if(ResourceAsset.IsFit(path))
+                return new ResourceAsset(path, async, type);
+            return null;
+        }
+
+        public virtual bool IsCustomAsset(string path, bool async, Type type)
+        {
+            if (ResourceAsset.IsFit(path))
+            {
+                return true;
+            }
+            return false;
+        }
+
         private Dictionary<int, IAssetEncrypt> map = new Dictionary<int, IAssetEncrypt>()
         {
             {NoneAssetStreamEncrypt.code,new NoneAssetStreamEncrypt() },

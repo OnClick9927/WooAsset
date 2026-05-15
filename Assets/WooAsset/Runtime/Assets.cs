@@ -46,8 +46,18 @@ namespace WooAsset
         public static SceneAsset LoadSceneAsset(string path) => AssetsInternal.LoadAsset(path, false, false, null) as SceneAsset;
         public static AsyncOperation UnloadSceneAsync(string path, UnloadSceneOptions op) => AssetsInternal.UnloadSceneAsync(path, op);
 
+        public static ResourceAsset LoadResourceAssetAsync(string path, Type type)
+        {
+            return AssetsInternal.LoadAsset(ResourceAsset.MakeResPath(path), false, true, type) as ResourceAsset;
+        }
 
+        public static ResourceAsset LoadResourceAsset(string path, Type type)
+        {
+            return AssetsInternal.LoadAsset(ResourceAsset.MakeResPath(path), false, false, type) as ResourceAsset;
+        }
+        public static ResourceAsset LoadResourceAssetAsync<T>(string path) where T : UnityEngine.Object => LoadResourceAssetAsync(path, typeof(T));
 
+        public static ResourceAsset LoadResourceAsset<T>(string path) where T : UnityEngine.Object => LoadResourceAsset(path, typeof(T));
 
         public static void Release(AssetHandle asset) => AssetsInternal.Release(asset.path);
         public static void Release(string assetPath) => AssetsInternal.Release(assetPath);
@@ -206,7 +216,7 @@ namespace WooAsset
         public static AssetsGroupOperation PrepareAssets(IReadOnlyList<string> paths) => new AssetsGroupOperation(paths);
         public static AssetsGroupOperation PrepareAssetsByTag(string tag) => PrepareAssets(Assets.GetTagAssetPaths(tag));
 
-        public static InstantiateObjectOperation InstantiateAsync(Asset asset, Transform parent) => new InstantiateObjectOperation(asset, parent);
+        public static InstantiateObjectOperation InstantiateAsync<T>(T asset, Transform parent) where T : AssetHandle, ICanGetAsset => new InstantiateObjectOperation(asset, parent);
         public static InstantiateObjectOperation InstantiateAsync(string path, Transform parent) => InstantiateAsync(Assets.LoadAssetAsync<GameObject>(path), parent);
         public static void Destroy(GameObject gameObject)
         {

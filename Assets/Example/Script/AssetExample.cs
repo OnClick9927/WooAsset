@@ -21,10 +21,14 @@ namespace WooAsset
         {
             Assets.SetLocalSaveDir($"{Application.streamingAssetsPath}/{AssetsHelper.buildTarget}");
             Assets.SetAssetsSetting(new LocalSetting());
-
         }
         private async void Start()
         {
+            var res = await Assets.LoadResourceAssetAsync<GameObject>("Cube");
+            var prefab = res.GetAsset<GameObject>();
+            await Assets.InstantiateAsync(res, null);
+            await Task.Delay(1000);
+            Assets.Release(res);
 
             //await Operation.yield;
             //await Operation.yield;
@@ -70,12 +74,11 @@ namespace WooAsset
             //}
 
 
-          var init=  await Assets.InitAsync("", false);
+            var init = await Assets.InitAsync("", false);
             if (init.isErr)
             {
                 return;
             }
-
 
             //var sceneAsset = await Assets.LoadSceneAssetAsync("Assets/Example/pkg2/Scene/New Scene2.unity");
 
