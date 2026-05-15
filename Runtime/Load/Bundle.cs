@@ -9,6 +9,10 @@ namespace WooAsset
 
     public class Bundle : AssetOperation
     {
+        public enum Errcode
+        {
+            CanNotLoad,
+        }
         public enum BundleLoadType
         {
             FromFile,
@@ -298,9 +302,7 @@ namespace WooAsset
                 if (!raw)
                 {
                     if (value == null)
-                    {
-                        SetErr($"Can not Load Bundle {bundleName}");
-                    }
+                        SetErr(OperationException.Create(ExceptionType.Bundle, Errcode.CanNotLoad, $"Can not Load Bundle {bundleName}"));
                 }
 
 

@@ -25,13 +25,6 @@ namespace WooAsset
                 {
                     var task = tasks[i];
                     await Execute(task, context);
-                    if (task.isErr)
-                    {
-                        var err = $"{context.Pipeline}\t\t-->{task.GetType().Name} \t\t {task.error}";
-                        AssetsHelper.LogError(err);
-                        SetErr(err);
-                        break;
-                    }
                 }
             }
             sw.Stop();

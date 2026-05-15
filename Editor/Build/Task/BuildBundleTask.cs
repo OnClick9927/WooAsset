@@ -5,6 +5,11 @@ namespace WooAsset
 {
     public class BuildBundleTask : AssetTask
     {
+        public enum ErrCode
+        {
+            Nothing_To_Build,
+            BundleNotFind
+        }
 
         public class BuildTask : AssetTask
         {
@@ -150,7 +155,7 @@ namespace WooAsset
                         }
                         else
                         {
-                            this.SetErr($"can't find last bundle version {bundleName}");
+                            this.SetErr(ErrCode.BundleNotFind, $"can't find last bundle version {bundleName}");
                             InvokeComplete();
                             return;
                         }
@@ -179,7 +184,6 @@ namespace WooAsset
             new BuildTask(),
         };
 
-
         protected override async void OnExecute(AssetTaskContext context)
         {
             AssetsEditorTool.DeleteDirectory(context.outputPath);
@@ -194,7 +198,7 @@ namespace WooAsset
                 builds = context.buildPkgs;
             if (builds.Count == 0)
             {
-                SetErr("Nothing To Build");
+                SetErr(ErrCode.Nothing_To_Build);
                 InvokeComplete();
                 return;
             }
