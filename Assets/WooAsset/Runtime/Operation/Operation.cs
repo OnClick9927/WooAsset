@@ -4,6 +4,45 @@ using System.Collections.Generic;
 using System.IO;
 namespace WooAsset
 {
+    public enum ExceptionType
+    {
+        Unknown,
+        IO,
+        Bundle,
+        Instantiate,
+        DownLoad,
+        LoadManifestOperation,
+        Editor
+    }
+    public class OperationException
+    {
+        //public OperationException() : base() { }
+        //public OperationException(string message) : base(message) { }
+        //public OperationException(string message, Exception inner) : base(message, inner) { }
+        public Enum code { get; private set; }
+        public string message { get; private set; }
+        public ExceptionType type { get; private set; }
+        public Exception exception { get; private set; }
+
+        public static OperationException Create(ExceptionType exceptionType, Enum code, string msg = "")
+        {
+            var ex = new OperationException();
+            ex.type = exceptionType;
+            ex.message = msg;
+            ex.code = code;
+            return ex;
+        }
+        public static OperationException CreateUnknown(ExceptionType exceptionType, Exception inner)
+        {
+            var ex = new OperationException();
+            ex.type = exceptionType;
+            ex.message = inner.Message;
+            ex.exception = inner;
+            ex.code = ExceptionType.Unknown;
+            return ex;
+        }
+    }
+
     public abstract class Operation : IEnumerator
     {
         private static Operation _empty = new EmptyOperation();
@@ -39,12 +78,14 @@ namespace WooAsset
 
         public abstract float progress { get; }
 
-        private string _err;
-        public string error { get { return _err; } protected set { _err = value; } }
-        public bool isErr { get { return !string.IsNullOrEmpty(error); } }
+
+
+        private OperationException _err;
+        public OperationException error { get { return _err; } protected set { _err = value; } }
+
+        public bool isErr => _err != null;
 
         public event Action<Operation> completed;
-
         protected void InvokeComplete()
         {
             if (_isDone)
@@ -52,17 +93,28 @@ namespace WooAsset
             _isDone = true;
             completed?.Invoke(this);
         }
-        protected void SetErr(string err)
+        protected void SetErr(OperationException ex)
         {
-            _err = err;
-            AssetsHelper.LogError(this.error);
+            _err = ex;
+            if (ex.exception != null)
+            {
+                throw ex.exception;
+            }
+            else
+            {
+                string _msg = $"{this.GetType().Name}_{ex.type}_{ex.code}:{ex.message}";
+                if (ex.type == ExceptionType.Editor)
+                    throw new Exception(_msg);
+                else
+                    AssetsHelper.LogError(_msg);
+            }
         }
         bool IEnumerator.MoveNext() => !_isDone;
         void IEnumerator.Reset()
         {
             _isDone = false;
             completed = null;
-            _err = String.Empty;
+            _err = null;
         }
         object IEnumerator.Current => _isDone ? this : null;
 
@@ -106,19 +158,17 @@ namespace WooAsset
                 {
                     var op = ops[i];
                     if (op.isDone)
-                        _index++;
+                        Op_completed(op);
                     else
                         op.completed += Op_completed;
                 }
             }
-            CheckComplete();
+            else
+            {
+                InvokeComplete();
+            }
         }
         protected virtual void BeforeInvokeComplete() { }
-        private void CheckComplete()
-        {
-            if (_index >= _count)
-                InvokeComplete();
-        }
         public new void InvokeComplete()
         {
             if (isDone) return;
@@ -128,11 +178,11 @@ namespace WooAsset
         private void Op_completed(Operation operation)
         {
             _index++;
-            //AssetsHelper.LogError(progress.ToString());
             operation.completed -= Op_completed;
             if (operation.isErr)
                 SetErr(operation.error);
-            CheckComplete();
+            if (_index >= _count)
+                InvokeComplete();
         }
     }
 
@@ -204,8 +254,15 @@ namespace WooAsset
                 InvokeComplete();
         }
     }
+
+
     public class ReadFileOperation : Operation
     {
+
+        public enum Errcode
+        {
+            FileNotExist,
+        }
         private int n;
         private string path;
         public byte[] bytes;
@@ -222,30 +279,49 @@ namespace WooAsset
         }
         private async void Done()
         {
-            if (async)
+            if (!AssetsHelper.ExistsFile(this.path))
             {
-                int offset = 0;
-                using (FileStream fs = File.OpenRead(path))
-                {
-                    long len = fs.Length;
-                    bytes = new byte[len];
-                    long last = len;
-                    while (last > 0)
-                    {
-                        var read = fs.Read(bytes, offset, (int)Math.Min(n, last));
-                        offset += read;
-                        last -= read;
-                        _progress = offset / (float)len;
-                        if (last <= 0) break;
-                        await Operation.yield;
-                    }
-                }
+                SetErr(OperationException.Create(ExceptionType.IO, Errcode.FileNotExist));
+                InvokeComplete();
             }
             else
             {
-                bytes = File.ReadAllBytes(path);
+                try
+                {
+                    if (async)
+                    {
+                        int offset = 0;
+                        using (FileStream fs = File.OpenRead(path))
+                        {
+                            long len = fs.Length;
+                            bytes = new byte[len];
+                            long last = len;
+                            while (last > 0)
+                            {
+                                var read = fs.Read(bytes, offset, (int)Math.Min(n, last));
+                                offset += read;
+                                last -= read;
+                                _progress = offset / (float)len;
+                                if (last <= 0) break;
+                                await Operation.yield;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bytes = File.ReadAllBytes(path);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SetErr(OperationException.CreateUnknown(ExceptionType.IO, ex));
+
+                }
+                finally
+                {
+                    InvokeComplete();
+                }
             }
-            InvokeComplete();
         }
     }
     class WriteFileOperation : Operation
@@ -262,27 +338,39 @@ namespace WooAsset
         }
         private async void CopyFromBytes(byte[] bytes, int start, int _len)
         {
-            int offset = start;
-            long len = _len;
-            long last = len;
-            using (FileStream _fs = File.OpenWrite(targetPath))
+            try
             {
-                _fs.Seek(0, SeekOrigin.Begin);
 
-                while (last > 0)
+                int offset = start;
+                long len = _len;
+                long last = len;
+                using (FileStream _fs = File.OpenWrite(targetPath))
                 {
-                    var read = (int)Math.Min(n, last);
-                    _fs.Write(bytes, offset, read);
-                    offset += read;
-                    last -= read;
-                    _progress = offset / (float)len;
-                    if (last <= 0) break;
+                    _fs.Seek(0, SeekOrigin.Begin);
 
-                    await Operation.yield;
+                    while (last > 0)
+                    {
+                        var read = (int)Math.Min(n, last);
+                        _fs.Write(bytes, offset, read);
+                        offset += read;
+                        last -= read;
+                        _progress = offset / (float)len;
+                        if (last <= 0) break;
+
+                        await Operation.yield;
+                    }
                 }
-            }
 
-            InvokeComplete();
+            }
+            catch (Exception ex)
+            {
+                SetErr(OperationException.CreateUnknown(ExceptionType.IO, ex));
+
+            }
+            finally
+            {
+                InvokeComplete();
+            }
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WooAsset
@@ -23,11 +24,9 @@ namespace WooAsset
         }
         protected AssetTaskContext context;
         protected abstract void OnExecute(AssetTaskContext context);
-
-        protected new void SetErr(string err)
+        protected void SetErr(Enum code, string msg = "")
         {
-            base.error = err;
-
+            base.SetErr(OperationException.Create(ExceptionType.Editor, code, msg));
         }
 
     }

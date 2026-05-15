@@ -28,7 +28,7 @@ namespace WooAsset
             AssetsHelper.Log($"init by version {version}");
             InvokeComplete();
         }
-        private void ExitErr(string version, string err)
+        private void ExitErr(string version, OperationException err)
         {
             this.initVersion = version;
             SetErr(err);
@@ -97,11 +97,12 @@ namespace WooAsset
             SetResult(_manifest, version.version);
         }
 
+
         private async void LoadVersion(string localVersionPath, string targetVersion, bool AlwaysFromWebRequest)
         {
             var _op = await AssetsInternal.DownloadVersionData(targetVersion);
             if (_op.isErr)
-                ExitErr(targetVersion, $"can not download VersionData with {targetVersion}");
+                ExitErr(targetVersion, _op.error);
             else
             {
                 var version = _op.GetVersion();
@@ -116,7 +117,7 @@ namespace WooAsset
             var remote = await AssetsInternal.LoadRemoteVersions();
             if (remote.isErr)
             {
-                ExitErr(targetVersion, " can not load VersionCollection");
+                ExitErr(targetVersion, remote.error);
             }
             else
             {
