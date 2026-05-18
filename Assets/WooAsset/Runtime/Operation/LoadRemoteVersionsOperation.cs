@@ -16,13 +16,10 @@
             downloader = AssetsInternal.DownloadRemoteVersion();
             await downloader;
             if (downloader.isErr)
-            {
                 SetErr(downloader.error);
-            }
             else
-            {
                 remote = AssetsHelper.ReadBufferObject<VersionCollectionData>(downloader.data);
-            }
+
             AssetsHelper.Log($"Check Version Complete");
             InvokeComplete();
         }

@@ -26,7 +26,7 @@ namespace WooAsset
                 }
                 catch (System.Exception e)
                 {
-                    this.SetErr(OperationException.CreateUnknown(ExceptionType.Editor, e));
+                    this.SetErr(OperationException.CreateUnknown(ExceptionCodes.ExceptionType.Editor, e));
                 }
             }
             InvokeComplete();

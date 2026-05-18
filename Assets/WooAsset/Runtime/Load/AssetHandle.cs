@@ -231,7 +231,7 @@ namespace WooAsset
             ? null :
             allAssets
             .Where(x => x.name == name)
-            .FirstOrDefault() as T;
+            .FirstOrDefault(x=>x is T) as T;
 
 
         internal override AssetRequest LoadAsync(string path, Type type)

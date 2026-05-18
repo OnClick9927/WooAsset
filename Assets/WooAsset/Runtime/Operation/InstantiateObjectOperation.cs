@@ -5,12 +5,7 @@ namespace WooAsset
 
     public class InstantiateObjectOperation : Operation
     {
-        public enum ErrorCode
-        {
-            SourceNull,
-            SourceInvalid,
-            GameObjectNull
-        }
+
         public override float progress { get { return isDone ? 1 : 0; } }
         public GameObject gameObject { get; private set; }
 
@@ -21,7 +16,7 @@ namespace WooAsset
 
             if (asset == null)
             {
-                SetErr(OperationException.Create(ExceptionType.Instantiate, ErrorCode.SourceNull));
+                SetErr(OperationException.Create(ExceptionCodes.ExceptionType.Instantiate, ExceptionCodes.InstantiateErr.SourceNull));
                 InvokeComplete();
             }
             else
@@ -33,7 +28,7 @@ namespace WooAsset
                 }
                 else
                 {
-                    SetErr(OperationException.Create(ExceptionType.Instantiate, ErrorCode.SourceInvalid, $"not valid asset: {asset.path}"));
+                    SetErr(OperationException.Create(ExceptionCodes.ExceptionType.Instantiate, ExceptionCodes.InstantiateErr.SourceInvalid, $"not valid asset: {asset.path}"));
                     InvokeComplete();
                 }
             }
@@ -50,7 +45,7 @@ namespace WooAsset
                 GameObject prefab = (asset as ICanGetAsset).GetAsset<GameObject>();
                 if (prefab == null)
                 {
-                    SetErr(OperationException.Create(ExceptionType.Instantiate, ErrorCode.GameObjectNull, $"could not load gameObject from : {asset.path}"));
+                    SetErr(OperationException.Create(ExceptionCodes.ExceptionType.Instantiate, ExceptionCodes.InstantiateErr.GameObjectNull, $"could not load gameObject from : {asset.path}"));
                 }
                 else
                 {

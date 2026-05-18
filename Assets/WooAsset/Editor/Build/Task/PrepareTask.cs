@@ -2,16 +2,12 @@
 {
     public class PrepareTask : AssetTask
     {
-        public enum PrepareErrcode
-        {
-            Param, BundleOption
-        }
         protected override void OnExecute(AssetTaskContext context)
         {
             string err = context.Params.CheckLegal();
             if (!string.IsNullOrEmpty(err))
             {
-                SetErr(PrepareErrcode.Param, err);
+                SetErr(ExceptionCodes.EditorErr.PrepareParam, err);
                 InvokeComplete();
                 return;
             }
@@ -26,7 +22,7 @@
             context.BuildOption = context.Params.GetBundleOption(out err);
             if (!string.IsNullOrEmpty(err))
             {
-                SetErr(PrepareErrcode.BundleOption, err);
+                SetErr(ExceptionCodes.EditorErr.BundleOption, err);
                 InvokeComplete();
                 return;
             }

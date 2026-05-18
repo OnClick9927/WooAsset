@@ -4,16 +4,45 @@ using System.Collections.Generic;
 using System.IO;
 namespace WooAsset
 {
-    public enum ExceptionType
+    public class ExceptionCodes
     {
-        Unknown,
-        IO,
-        Bundle,
-        Instantiate,
-        DownLoad,
-        LoadManifestOperation,
-        Editor
+        public enum ExceptionType
+        {
+            Unknown,
+            IO,
+            Bundle,
+            Instantiate,
+            DownLoad,
+            //LoadManifestOperation,
+            Editor,
+            //VersionCompare,
+            //LoadVersion
+        }
+        public enum IOErr
+        {
+            FileNotExist,
+        }
+        public enum BundleErr
+        {
+            CanNotLoad,
+        }
+        public enum InstantiateErr
+        {
+            SourceNull,
+            SourceInvalid,
+            GameObjectNull
+        }
+        public enum EditorErr
+        {
+            Nothing_To_Build,
+            BundleNotFind,
+            PrepareParam,
+            BundleOption,
+            BundleLoop,
+        }
+
     }
+
     public class OperationException
     {
         //public OperationException() : base() { }
@@ -21,10 +50,10 @@ namespace WooAsset
         //public OperationException(string message, Exception inner) : base(message, inner) { }
         public Enum code { get; private set; }
         public string message { get; private set; }
-        public ExceptionType type { get; private set; }
+        public ExceptionCodes.ExceptionType type { get; private set; }
         public Exception exception { get; private set; }
 
-        public static OperationException Create(ExceptionType exceptionType, Enum code, string msg = "")
+        public static OperationException Create(ExceptionCodes.ExceptionType exceptionType, Enum code, string msg = "")
         {
             var ex = new OperationException();
             ex.type = exceptionType;
@@ -32,13 +61,14 @@ namespace WooAsset
             ex.code = code;
             return ex;
         }
-        public static OperationException CreateUnknown(ExceptionType exceptionType, Exception inner)
+
+        public static OperationException CreateUnknown(ExceptionCodes.ExceptionType exceptionType, Exception inner)
         {
             var ex = new OperationException();
             ex.type = exceptionType;
             ex.message = inner.Message;
             ex.exception = inner;
-            ex.code = ExceptionType.Unknown;
+            ex.code = ExceptionCodes.ExceptionType.Unknown;
             return ex;
         }
     }
@@ -103,7 +133,7 @@ namespace WooAsset
             else
             {
                 string _msg = $"{this.GetType().Name}_{ex.type}_{ex.code}:{ex.message}";
-                if (ex.type == ExceptionType.Editor)
+                if (ex.type == ExceptionCodes.ExceptionType.Editor)
                     throw new Exception(_msg);
                 else
                     AssetsHelper.LogError(_msg);
@@ -259,10 +289,7 @@ namespace WooAsset
     public class ReadFileOperation : Operation
     {
 
-        public enum Errcode
-        {
-            FileNotExist,
-        }
+
         private int n;
         private string path;
         public byte[] bytes;
@@ -281,7 +308,7 @@ namespace WooAsset
         {
             if (!AssetsHelper.ExistsFile(this.path))
             {
-                SetErr(OperationException.Create(ExceptionType.IO, Errcode.FileNotExist));
+                SetErr(OperationException.Create(ExceptionCodes.ExceptionType.IO, ExceptionCodes.IOErr.FileNotExist));
                 InvokeComplete();
             }
             else
@@ -314,7 +341,7 @@ namespace WooAsset
                 }
                 catch (Exception ex)
                 {
-                    SetErr(OperationException.CreateUnknown(ExceptionType.IO, ex));
+                    SetErr(OperationException.CreateUnknown(ExceptionCodes.ExceptionType.IO, ex));
 
                 }
                 finally
@@ -364,7 +391,7 @@ namespace WooAsset
             }
             catch (Exception ex)
             {
-                SetErr(OperationException.CreateUnknown(ExceptionType.IO, ex));
+                SetErr(OperationException.CreateUnknown(ExceptionCodes.ExceptionType.IO, ex));
 
             }
             finally
