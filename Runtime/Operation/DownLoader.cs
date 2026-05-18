@@ -207,7 +207,7 @@ namespace WooAsset
                     else
                     {
 
-                        SetErr(OperationException.Create(ExceptionType.DownLoad, request.result, $"{request.error}:{url}"));
+                        SetErr(OperationException.Create(ExceptionCodes.ExceptionType.DownLoad, request.result, $"{request.error}:{url}"));
                         InvokeComplete();
                     }
                     request.Dispose();

@@ -66,7 +66,6 @@ namespace WooAsset
                 else
                 {
                     remote_main = AssetsHelper.ReadBufferObject<ManifestData>(downloader.data);
-
                     if (compareType != VersionCompareType.Manifest)
                     {
                         if (remoteBundles == null)

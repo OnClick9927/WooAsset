@@ -5,11 +5,6 @@ namespace WooAsset
 {
     public class CollectEachPkgAssetTask : AssetTask
     {
-        public enum Errcode
-        {
-            NothingToBuild
-        }
-
         private List<AssetTask> tasks = new List<AssetTask>()
         {
             new CollectAssetsTask(),
@@ -21,7 +16,7 @@ namespace WooAsset
             var builds = context.buildPkgs;
             if (builds.Count == 0)
             {
-                SetErr(Errcode.NothingToBuild, "Nothing To Build");
+                SetErr(ExceptionCodes.EditorErr.Nothing_To_Build, "Nothing To Build");
                 InvokeComplete();
                 return;
             }

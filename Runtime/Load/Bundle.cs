@@ -9,10 +9,7 @@ namespace WooAsset
 
     public class Bundle : AssetOperation
     {
-        public enum Errcode
-        {
-            CanNotLoad,
-        }
+
         public enum BundleLoadType
         {
             FromFile,
@@ -86,7 +83,7 @@ namespace WooAsset
                     }
                 }
             }
-            private Bundle bundle;
+            protected Bundle bundle {  get; private set; }
             public bool raw => bundle.raw;
             public IAssetEncrypt encrypt => bundle.encrypt;
             protected CompressType compress => bundle.compress;
@@ -131,14 +128,20 @@ namespace WooAsset
             {
 
                 await op;
-                byte[] buffer = null;
-                if (op is ReadFileOperation)
+                if (op.isErr)
                 {
-                    buffer = (op as ReadFileOperation).bytes;
+                    bundle.SetErr(op.error);
+                    End(null);
+                    return;
                 }
-                else if (op is DownLoader)
+                byte[] buffer = null;
+                if (op is ReadFileOperation read)
                 {
-                    var data = (op as BytesDownLoader).data;
+                    buffer = read.bytes;
+                }
+                else if (op is BytesDownLoader loader)
+                {
+                    var data = loader.data;
                     buffer = AssetsHelper.AllocateByteArray(data.Length);
                     Array.Copy(data, buffer, data.Length);
                     buff_release = buffer;
@@ -146,12 +149,7 @@ namespace WooAsset
 
 
 
-                if (op.isErr)
-                {
-                    bundle.SetErr(op.error);
-                    End(null);
-                    return;
-                }
+          
 
 
                 if (bundle.type == BundleLoadType.FromRequest
@@ -273,6 +271,9 @@ namespace WooAsset
             protected override async void OnLoad()
             {
                 await downloader;
+                if (downloader.isErr)
+                    this.bundle.SetErr(downloader.error);
+
                 End((downloader as BundleDownLoader).bundle);
             }
 
@@ -302,7 +303,7 @@ namespace WooAsset
                 if (!raw)
                 {
                     if (value == null)
-                        SetErr(OperationException.Create(ExceptionType.Bundle, Errcode.CanNotLoad, $"Can not Load Bundle {bundleName}"));
+                        SetErr(OperationException.Create(ExceptionCodes.ExceptionType.Bundle, ExceptionCodes.BundleErr.CanNotLoad, $"Can not Load Bundle {bundleName}"));
                 }
 
 

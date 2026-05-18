@@ -5,11 +5,6 @@ namespace WooAsset
 {
     public class BuildBundleTask : AssetTask
     {
-        public enum ErrCode
-        {
-            Nothing_To_Build,
-            BundleNotFind
-        }
 
         public class BuildTask : AssetTask
         {
@@ -155,7 +150,7 @@ namespace WooAsset
                         }
                         else
                         {
-                            this.SetErr(ErrCode.BundleNotFind, $"can't find last bundle version {bundleName}");
+                            this.SetErr(ExceptionCodes.EditorErr.BundleNotFind, $"can't find last bundle version {bundleName}");
                             InvokeComplete();
                             return;
                         }
@@ -198,7 +193,7 @@ namespace WooAsset
                 builds = context.buildPkgs;
             if (builds.Count == 0)
             {
-                SetErr(ErrCode.Nothing_To_Build);
+                SetErr(ExceptionCodes.EditorErr.Nothing_To_Build);
                 InvokeComplete();
                 return;
             }

@@ -24,9 +24,10 @@ namespace WooAsset
         }
         protected AssetTaskContext context;
         protected abstract void OnExecute(AssetTaskContext context);
-        protected void SetErr(Enum code, string msg = "")
+
+        protected void SetErr(ExceptionCodes.EditorErr code, string msg = "")
         {
-            base.SetErr(OperationException.Create(ExceptionType.Editor, code, msg));
+            base.SetErr(OperationException.Create(ExceptionCodes.ExceptionType.Editor, code, msg));
         }
 
     }

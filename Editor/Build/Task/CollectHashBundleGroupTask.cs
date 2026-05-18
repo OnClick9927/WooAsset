@@ -11,10 +11,7 @@ namespace WooAsset
     }
     public class CollectHashBundleGroupTask : AssetTask, ICalcEditorBundleList
     {
-        public enum ErrCode
-        {
-            BundleLoop
-        }
+
         List<EditorBundleData> ICalcEditorBundleList.Calc(List<EditorBundleData> builds)
         {
             builds.RemoveAll(x => x.GetIsEmpty());
@@ -122,7 +119,7 @@ namespace WooAsset
             {
                 if (asset.loopDependence)
                 {
-                    SetErr(ErrCode.BundleLoop, $"Bundle Contains Loop {asset.hash}");
+                    SetErr(ExceptionCodes.EditorErr.BundleLoop, $"Bundle Contains Loop {asset.hash}");
                     InvokeComplete();
                     return;
                     //AssetsEditorTool.LogError(this.error);
