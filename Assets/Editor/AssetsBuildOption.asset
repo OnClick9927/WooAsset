@@ -14,16 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode:
     mode:
-      _select: WooAsset.NormalAssetsMode
+      _select: WooAsset.AssetsEditorTool+RudeMode
     Folders: []
     CheckAssetType: 0
     speedType: 1
     loadSpeed: 20
-  server:
-    enable: 0
-    port: 8080
-    speedType: 2
-    speed: 200
+    ServerEnable: 0
+    ServerPort: 8080
+    downloadSpeedType: 2
+    DownloadSpeed: 1024
   buildIn:
     copyToStream: 1
     assets: []

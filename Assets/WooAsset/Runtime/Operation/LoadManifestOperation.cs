@@ -89,6 +89,7 @@ namespace WooAsset
 
                 }
                 this.pkgs[pkg.name] = sub_mainifest;
+                sub_mainifest.Prepare(fuzzySearch, fileNameSearchType);
                 ManifestData.Merge(sub_mainifest, _manifest, this.loadedBundles);
                 _progress = 0.5f + i / pkgs.Count / 2f;
             }

@@ -48,13 +48,16 @@ namespace WooAsset
         public virtual long GetLoadingMaxTimeSlice() => long.MaxValue;
         public virtual bool GetAutoUnloadBundle() => true;
         public virtual IAssetLife GetAssetLife() => null;
-        public virtual IAssetEncrypt GetEncrypt(int code)
+        public virtual List<IAssetEncrypt> GetAssetEncrypts()
         {
-
-            IAssetEncrypt en = null;
-            map.TryGetValue(code, out en);
-            return en;
+            return new List<IAssetEncrypt>()
+            {
+                new NoneAssetStreamEncrypt(),
+                new DefaultAssetStreamEncrypt(),
+                new OffsetAssetStreamEncrypt(),
+            };
         }
+
 
         public virtual CustomAsset CreateCustomAsset(string path, bool async, Type type)
         {
@@ -62,26 +65,5 @@ namespace WooAsset
                 return new ResourceAsset(path, async, type);
             return null;
         }
-
-        public virtual bool IsCustomAsset(string path, bool async, Type type)
-        {
-            if (ResourceAsset.IsFit(path))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private Dictionary<int, IAssetEncrypt> map = new Dictionary<int, IAssetEncrypt>()
-        {
-            {NoneAssetStreamEncrypt.code,new NoneAssetStreamEncrypt() },
-            {DefaultAssetStreamEncrypt.code,new DefaultAssetStreamEncrypt() },
-            {OffsetAssetStreamEncrypt.code,new OffsetAssetStreamEncrypt() },
-
-        };
-
-
-
-
     }
 }

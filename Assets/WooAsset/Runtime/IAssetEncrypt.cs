@@ -4,6 +4,7 @@ namespace WooAsset
 {
     public interface IAssetEncrypt
     {
+        int code {  get; }
         byte[] Encode(string bundleName, byte[] buffer);
         byte[] Decode(string bundleName, byte[] buffer);
         byte[] Decode(string bundleName, byte[] buffer, int offset, int length);
@@ -12,7 +13,9 @@ namespace WooAsset
     }
     public class NoneAssetStreamEncrypt : IAssetEncrypt
     {
-        public const int code = 0;
+
+
+        public int code => 0;
 
         byte[] IAssetEncrypt.Decode(string bundleName, byte[] buffer)
         {
@@ -31,7 +34,7 @@ namespace WooAsset
     }
     public class DefaultAssetStreamEncrypt : IAssetEncrypt
     {
-        public const int code = 1;
+        int IAssetEncrypt.code => 1;
         byte[] IAssetEncrypt.Decode(string bundleName, byte[] buffer)
         {
             return ((IAssetEncrypt)this).Decode(bundleName, buffer, 0, buffer.Length);
@@ -54,7 +57,7 @@ namespace WooAsset
 
     public class OffsetAssetStreamEncrypt : IAssetEncrypt
     {
-        public const int code = 3;
+        int IAssetEncrypt.code => 3;
 
         public virtual ulong GetOffset(string bundleName) => 8;
         public byte[] Decode(string bundleName, byte[] buffer)
