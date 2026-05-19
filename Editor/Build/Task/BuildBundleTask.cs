@@ -57,7 +57,7 @@ namespace WooAsset
                 var raws = source.FindAll(x => x.raw);
 
                 var historyPath = context.historyPath;
-         
+
                 Dictionary<string, string> bundleNameRemap = new Dictionary<string, string>();
                 if (context.Pipeline == TaskPipelineType.BuildBundle || context.Pipeline == TaskPipelineType.DryBuild)
                 {
@@ -128,7 +128,7 @@ namespace WooAsset
                         if (bundleNameRemap.ContainsKey(bundleName))
                             read_bundleName = bundleNameRemap[bundleName];
                         var bytes_src = AssetsEditorTool.ReadFileSync(AssetsEditorTool.CombinePath(historyPath, read_bundleName));
-                        var en = context.assetBuild.GetEncryptByCode(bundle.GetEncryptCode());
+                        var en = AssetsHelper.GetEncrypt(bundle.GetEncryptCode());
                         var bytes = en.Encode(bundleName, bytes_src);
                         AssetsEditorTool.WriteFileSync(AssetsEditorTool.CombinePath(context.outputPath, bundleName), bytes);
                     }
@@ -208,7 +208,7 @@ namespace WooAsset
 
                 exports.Add(new PackageExportData(context.buildPkg.name)
                 {
-             
+
                     pkg = context.buildPkg.ToPackageData(),
                     manifest = context.manifest,
                     encrypt = context.encrypt.ToString(),
@@ -218,10 +218,13 @@ namespace WooAsset
                 });
             }
             var manifests = exports.ConvertAll(x => x.manifest);
-            
+
             ManifestData manifest = new ManifestData();
             foreach (var item in manifests)
+            {
+                item.Prepare(context.fuzzySearch, context.fileNameSearchType);
                 ManifestData.Merge(item, manifest, null);
+            }
             manifest.Prepare(context.fuzzySearch, context.fileNameSearchType);
             context.mergedManifest = manifest;
             context.exports = exports;

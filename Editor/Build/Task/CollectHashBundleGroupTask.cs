@@ -130,7 +130,7 @@ namespace WooAsset
             foreach (EditorBundleData group in result)
             {
                 var en = context.assetBuild.GetBundleEncrypt(context.buildPkg, group, context.encrypt);
-                int code = context.assetBuild.GetEncryptCode(en);
+                int code = en.code;
                 group.SetEncryptCode(code);
             }
 

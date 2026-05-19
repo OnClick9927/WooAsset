@@ -79,6 +79,8 @@ namespace WooAsset
 
     public abstract class CustomAsset : AssetHandle
     {
+        protected const string flag_custom = "c_";
+        public static bool IsCustom(string path) => path.StartsWith(flag_custom);
         public sealed override string bundleName => string.Empty;
         public sealed override bool IsBundleAsset => false;
         protected CustomAsset(string path, bool async, Type type) : base(path, async, type)
@@ -102,11 +104,17 @@ namespace WooAsset
 
     public class ResourceAsset : CustomAsset<UnityEngine.Object>, ICanGetAsset
     {
-        public const string flag = "Resources:";
-        public static bool IsFit(string path)
+        private static string flag;
+        static ResourceAsset()
         {
-            return path.StartsWith(flag);
+            flag = $"{CustomAsset.flag_custom}res_";
         }
+        public static bool IsFit(string path) => path.StartsWith(flag);
+        public static string MakeResPath(string path) => $"{flag}{path}";
+
+
+
+
 
         private ResourceRequest loadOp;
 
@@ -148,10 +156,7 @@ namespace WooAsset
             //    Resources.UnloadAsset(value);
         }
 
-        public static string MakeResPath(string path)
-        {
-            return $"{flag}{path}";
-        }
+   
     }
 
 
@@ -231,7 +236,7 @@ namespace WooAsset
             ? null :
             allAssets
             .Where(x => x.name == name)
-            .FirstOrDefault(x=>x is T) as T;
+            .FirstOrDefault(x => x is T) as T;
 
 
         internal override AssetRequest LoadAsync(string path, Type type)

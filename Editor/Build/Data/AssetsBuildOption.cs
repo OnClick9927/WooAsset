@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace WooAsset
@@ -11,8 +12,9 @@ namespace WooAsset
         public class ModeOption
         {
             public TypeSelect mode = new TypeSelect();
-
+            [Tooltip("RudeMode Search Folders \n Will Search whole Assets if empty")]
             public string[] Folders = new string[] { };
+            [Tooltip("RudeMode Check  AssetType     if false↓↓↓\n1、Launch faster \n2、May Contains illegal Assets")]
             public bool CheckAssetType = false;
             public enum SpeedType
             {
@@ -41,50 +43,31 @@ namespace WooAsset
                     mode.Enable();
                 }
             }
-        }
 
-        //[System.Serializable]
-        //public class SpriteAtlasOption
-        //{
-        //    public List<string> atlasPaths = new List<string>();
-        //    public PackingSetting packSetting = new PackingSetting();
-        //    public TextureSetting textureSetting = new TextureSetting();
-        //    public TextureImporterPlatformSettings PlatformSetting = new TextureImporterPlatformSettings()
-        //    {
-        //        maxTextureSize = 2048,
-        //        format = TextureImporterFormat.Automatic,
-        //        crunchedCompression = true,
-        //        textureCompression = TextureImporterCompression.Compressed,
-        //        compressionQuality = 50,
-        //    };
+            public bool ServerEnable;
+            public int ServerPort = 8080;
 
-        //}
+            //public enum SpeedType
+            //{
+            //    B, KB, MB
+            //}
+            public SpeedType downloadSpeedType = SpeedType.MB;
+            public int DownloadSpeed = 1024;
 
-        [System.Serializable]
-        public class SimulatorServerOption
-        {
-            public bool enable;
-            public int port = 8080;
-
-            public enum SpeedType
-            {
-                B, KB, MB
-            }
-            public SpeedType speedType;
-            public int speed = 1024;
-
-            public int GetSpeed()
+            public int GetDownloadSpeed()
             {
                 switch (speedType)
                 {
-                    case SpeedType.B: return speed;
-                    case SpeedType.KB: return speed * 1024;
-                    case SpeedType.MB: return speed * 1024 * 1024;
+                    case SpeedType.B: return DownloadSpeed;
+                    case SpeedType.KB: return DownloadSpeed * 1024;
+                    case SpeedType.MB: return DownloadSpeed * 1024 * 1024;
+                    case SpeedType.GB: return DownloadSpeed * 1024 * 1024 * 1024;
                     default:
-                        return speed;
+                        return DownloadSpeed;
                 }
             }
         }
+
         [System.Serializable]
         public class BuildInOption
         {
@@ -117,10 +100,7 @@ namespace WooAsset
             }
         }
 
-        //public ShaderOption shader = new ShaderOption();
         public ModeOption mode = new ModeOption();
-        //public SpriteAtlasOption spriteAtlas = new SpriteAtlasOption();
-        public SimulatorServerOption server = new SimulatorServerOption();
         public BuildInOption buildIn = new BuildInOption();
         public BundleOptimizeOption bundleOptimize = new BundleOptimizeOption();
 
@@ -205,6 +185,9 @@ namespace WooAsset
         public Type GetAssetModeType() => mode.mode.GetSelectType();
         public Type GetBuildInBundleSelectorType() => buildIn.selector.GetSelectType();
         public Type GetBuildPipelineType() => buildPipeline.GetSelectType();
+        public Type GetBundleOptimizerType() => bundleOptimize.optimizer.GetSelectType();
+
+
         public bool SetBundleOptimizerType(Type type)
         {
             if (bundleOptimize.optimizer.SetType(type))
@@ -214,9 +197,6 @@ namespace WooAsset
             }
             return false;
         }
-        public Type GetBundleOptimizerType() => bundleOptimize.optimizer.GetSelectType();
-
-
         public bool SetAssetBuildType(Type type)
         {
             if (build.SetType(type))

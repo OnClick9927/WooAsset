@@ -240,5 +240,15 @@ namespace WooAsset
             pools.Enqueue(actions);
         }
 
+        private static Dictionary<int, IAssetEncrypt> EnMap = new Dictionary<int, IAssetEncrypt>();
+        internal static IAssetEncrypt GetEncrypt(int enCode)
+        {
+            return EnMap.TryGetValue(enCode, out IAssetEncrypt result) ? result : null;
+        }
+        internal static void AddEncrypt(IAssetEncrypt encrypt)
+        {
+            if (GetEncrypt(encrypt.code) != null) return;
+            EnMap[encrypt.code] = encrypt;
+        }
     }
 }

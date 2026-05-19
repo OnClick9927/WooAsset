@@ -18,8 +18,8 @@ namespace WooAsset
     public abstract class IAssetsBuild
     {
         public virtual bool GetIsRecord(string path) => true;
-
         public virtual List<string> GetAssetTags(string path) => null;
+
         public virtual string GetVersion(string settingVersion, AssetTaskContext context) => settingVersion;
         protected virtual AssetType CoverAssetType(string path, AssetType assetType, Type type) => assetType;
 
@@ -114,26 +114,6 @@ namespace WooAsset
         }
 
         public virtual IAssetEncrypt GetBundleEncrypt(EditorPackageData pkg, EditorBundleData data, IAssetEncrypt en) => en;
-        public virtual int GetEncryptCode(IAssetEncrypt en)
-        {
-            foreach (var item in map)
-                if (item.Value.GetType() == en.GetType())
-                    return item.Key;
-            return -1;
-        }
-        private Dictionary<int, IAssetEncrypt> map = new Dictionary<int, IAssetEncrypt>()
-        {
-            {NoneAssetStreamEncrypt.code,new NoneAssetStreamEncrypt() },
-            {DefaultAssetStreamEncrypt.code,new DefaultAssetStreamEncrypt() },
-            {OffsetAssetStreamEncrypt.code,new OffsetAssetStreamEncrypt() },
-        };
-
-        public virtual IAssetEncrypt GetEncryptByCode(int code)
-        {
-            IAssetEncrypt en = null;
-            map.TryGetValue(code, out en);
-            return en;
-        }
 
     }
 

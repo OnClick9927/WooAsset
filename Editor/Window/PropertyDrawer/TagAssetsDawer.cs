@@ -16,7 +16,7 @@ namespace WooAsset
             var _base = base.GetPropertyHeight(assets, label);
             if (!assets.isExpanded)
                 return _base;
-            return assets.arraySize * _base + 60;
+            return Mathf.Max(assets.arraySize,1) * _base + 60;
         }
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

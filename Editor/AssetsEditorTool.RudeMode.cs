@@ -51,7 +51,7 @@ namespace WooAsset
 
                     }).ToList(),
                     bundleName = "Rude",
-                    enCode = NoneAssetStreamEncrypt.code,
+                    enCode = new NoneAssetStreamEncrypt().code,
                     dependence = new List<string>(),
                     hash = "Rude",
                     raw = false,

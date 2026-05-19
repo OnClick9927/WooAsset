@@ -46,9 +46,11 @@ namespace WooAsset
         [InitializeOnLoadMethod]
         static void Tool()
         {
+            foreach (var type in option.encrypt.realTypes)
+                AssetsHelper.AddEncrypt((IAssetEncrypt)Activator.CreateInstance(type));
+
             AssetsInternal.AddAssetLife(new LifePart());
             EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
-
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Tool2()
@@ -57,8 +59,8 @@ namespace WooAsset
             var _op = option;
             AssetsInternal.mode = Activator.CreateInstance(_op.GetAssetModeType()) as IAssetsMode;
             AssetsInternal.SetLocalSaveDir(AssetsEditorTool.EditorSimulatorPath);
-            if (_op.server.enable && AssetsInternal.isNormalMode)
-                AssetsServer.Run(_op.server.port, ServerDirectory, _op.server.GetSpeed());
+            if (_op.mode.ServerEnable && AssetsInternal.isNormalMode)
+                AssetsServer.Run(_op.mode.ServerPort, ServerDirectory, _op.mode.GetDownloadSpeed());
         }
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)

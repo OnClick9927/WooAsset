@@ -94,17 +94,17 @@ namespace WooAsset
                     {
                         DrawSplit();
                         EditorGUILayout.LabelField("Server", EditorStyles.boldLabel);
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
-                            .FindPropertyRelative(nameof(AssetsBuildOption.server.enable)));
-                        if (option.server.enable)
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                            .FindPropertyRelative(nameof(AssetsBuildOption.mode.ServerEnable)));
+                        if (option.mode.ServerEnable)
                         {
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
-                                .FindPropertyRelative(nameof(AssetsBuildOption.server.port)));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                                .FindPropertyRelative(nameof(AssetsBuildOption.mode.ServerPort)));
                             GUILayout.BeginHorizontal();
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
-                                .FindPropertyRelative(nameof(AssetsBuildOption.server.speed)),new GUIContent("Speed (s)"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.server))
-                     .FindPropertyRelative(nameof(AssetsBuildOption.server.speedType)),new GUIContent(),GUILayout.Width(50));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                                .FindPropertyRelative(nameof(AssetsBuildOption.mode.DownloadSpeed)),new GUIContent("Speed (s)"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.mode))
+                     .FindPropertyRelative(nameof(AssetsBuildOption.mode.speedType)),new GUIContent(),GUILayout.Width(50));
                             GUILayout.EndHorizontal();
                         }
                     }
@@ -160,6 +160,60 @@ namespace WooAsset
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.tags)));
                     MidGUI("Record");
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.record)));
+
+
+                    MidGUI("Default");
+                    GUI.enabled = false;
+                    EditorGUILayout.EnumPopup(nameof(AssetsEditorTool.BuildTarget), AssetsEditorTool.BuildTarget);
+                    EditorGUILayout.TextField(nameof(AssetsEditorTool.BuildTargetName), AssetsEditorTool.BuildTargetName);
+
+                    {
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField(nameof(AssetsEditorTool.StreamBundlePath), AssetsEditorTool.StreamBundlePath);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(AssetsEditorTool.StreamBundlePath);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(AssetsEditorTool.StreamBundlePath);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
+                    //GUILayout.Space(20);
+
+                    {
+                        //EditorGUILayout.HelpBox("Dest Bundle Output Folder", MessageType.Warning);
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField("Dest Bundle Output Path", AssetsEditorTool.OutputPath);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(OutputPath);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(OutputPath);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
+                    {
+                        EditorGUILayout.HelpBox("Source Bundle Output Folder  don't modify the file", MessageType.Warning);
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.TextField(nameof(AssetsEditorTool.HistoryPath), AssetsEditorTool.HistoryPath);
+                        GUI.enabled = true;
+
+                        if (GUILayout.Button("Open", GUILayout.Width(40)))
+                            EditorUtility.OpenWithDefaultApp(HistoryPath);
+                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
+                            AssetsEditorTool.DeleteDirectory(HistoryPath);
+                        GUILayout.EndHorizontal();
+                        GUI.enabled = false;
+                    }
+
+
+
+                    GUI.enabled = true;
+
                     EndGUI();
 
 
@@ -205,57 +259,9 @@ namespace WooAsset
                     option.buildIn.selector.typeIndex = EditorGUILayout.Popup("Selector", option.buildIn.selector.typeIndex, option.buildIn.selector.shortTypes);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AssetsBuildOption.buildIn))
                                    .FindPropertyRelative(nameof(AssetsBuildOption.buildIn.assets)));
-                    MidGUI("Default");
-                    GUI.enabled = false;
-                    EditorGUILayout.EnumPopup(nameof(AssetsEditorTool.BuildTarget), AssetsEditorTool.BuildTarget);
-                    EditorGUILayout.TextField(nameof(AssetsEditorTool.BuildTargetName), AssetsEditorTool.BuildTargetName);
-
-                    {
-                        GUILayout.BeginHorizontal();
-                        EditorGUILayout.TextField(nameof(AssetsEditorTool.StreamBundlePath), AssetsEditorTool.StreamBundlePath);
-                        GUI.enabled = true;
-
-                        if (GUILayout.Button("Open", GUILayout.Width(40)))
-                            EditorUtility.OpenWithDefaultApp(AssetsEditorTool.StreamBundlePath);
-                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
-                            AssetsEditorTool.DeleteDirectory(AssetsEditorTool.StreamBundlePath);
-                        GUILayout.EndHorizontal();
-                        GUI.enabled = false;
-                    }
-
-                    GUILayout.Space(20);
-
-                    {
-                        EditorGUILayout.HelpBox("don't modify the file", MessageType.Warning);
-                        GUILayout.BeginHorizontal();
-                        EditorGUILayout.TextField("Output Path", AssetsEditorTool.OutputPath);
-                        GUI.enabled = true;
-
-                        if (GUILayout.Button("Open", GUILayout.Width(40)))
-                            EditorUtility.OpenWithDefaultApp(OutputPath);
-                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
-                            AssetsEditorTool.DeleteDirectory(OutputPath);
-                        GUILayout.EndHorizontal();
-                        GUI.enabled = false;
-                    }
-
-                    {
-                        EditorGUILayout.HelpBox("The first time you need to delete a folder,\n don't modify the file manually after that", MessageType.Warning);
-                        GUILayout.BeginHorizontal();
-                        EditorGUILayout.TextField(nameof(AssetsEditorTool.HistoryPath), AssetsEditorTool.HistoryPath);
-                        GUI.enabled = true;
-
-                        if (GUILayout.Button("Open", GUILayout.Width(40)))
-                            EditorUtility.OpenWithDefaultApp(HistoryPath);
-                        if (GUILayout.Button("Clear", GUILayout.Width(50)))
-                            AssetsEditorTool.DeleteDirectory(HistoryPath);
-                        GUILayout.EndHorizontal();
-                        GUI.enabled = false;
-                    }
-
-
-
-                    GUI.enabled = true;
+               
+                    
+                  
                     EndGUI();
                 }
             }

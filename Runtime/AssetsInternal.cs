@@ -53,6 +53,9 @@ namespace WooAsset
         {
             AssetsInternal.setting = setting;
             IAssetLife life = setting.GetAssetLife();
+            var ens = setting.GetAssetEncrypts();
+            for (int i = 0; i < ens.Count; i++)
+                AssetsHelper.AddEncrypt(ens[i]);
             if (life != null)
                 AddAssetLife(life);
             DownLoader.RequestCountAtSameTime = setting.GetWebRequestCountAtSameTime();
@@ -70,10 +73,9 @@ namespace WooAsset
 
         private static bool GetAutoUnloadBundle() => setting.GetAutoUnloadBundle();
         private static CustomAsset CreateCustomAsset(string path, bool async, Type type) => setting.CreateCustomAsset(path, async, type);
-        private static bool IsCustomAsset(string path, bool async, Type type) => setting.IsCustomAsset(path, async, type);
 
 
-        private static IAssetEncrypt GetEncrypt(int enCode) => setting.GetEncrypt(enCode);
+        //private static IAssetEncrypt GetEncrypt(int enCode) => AssetsHelper.GetEncrypt(enCode);
         public static bool GetSaveBytesWhenPlaying() => setting.GetSaveBytesWhenPlaying() && !GetBundleAlwaysFromWebRequest();
         public static bool GetCachesDownloadedBundles() => setting.GetCachesDownloadedBundles();
 
@@ -110,10 +112,8 @@ namespace WooAsset
         private static Bundle CreateBundle(BundleLoadArgs args) => mode.CreateBundle(args.bundleName, args);
         public static AssetHandle LoadAsset(string path, bool sub, bool async, Type type)
         {
-            if (AssetsInternal.IsCustomAsset(path, async, type))
-            {
+            if (CustomAsset.IsCustom(path))
                 return assets.LoadAssetCustom(path, async, type);
-            }
             var data = GetAssetData(AssetsHelper.ToRegularPath(path));
             if (data == null)
             {

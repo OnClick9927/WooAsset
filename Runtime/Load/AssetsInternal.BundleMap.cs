@@ -12,7 +12,7 @@ namespace WooAsset
             {
                 var data = GetBundleData(bundleName);
                 BundleLoadArgs args = default;
-                args = new BundleLoadArgs(data, async, GetEncrypt(data.enCode));
+                args = new BundleLoadArgs(data, async, AssetsHelper.GetEncrypt(data.enCode));
                 return LoadAsync(args);
             }
             protected override void BeforeLoad(bool create, ref BundleLoadArgs args)
